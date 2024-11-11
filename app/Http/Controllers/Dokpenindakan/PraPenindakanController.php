@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TblNoRef;
 use App\Models\TblLaporanInformasi;
+use App\Models\TblSbp;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -52,9 +53,22 @@ public function edit($id)
     return view('Dokpenindakan.pra-penindakan.edit', compact('praPenindakan','no_ref','users'));
 }
 
-public function update($id){
-    
+public function update($id)
+{
+    // Mengambil data dari input form
+    $data = request()->all();
+
+    // Mencari data berdasarkan ID dan melakukan update
+    $item = TblLaporanInformasi::find($id);
+    if ($item) {
+        $item->update($data);
+        return redirect()->route('pra-penindakan.index')->with('success', 'Data berhasil diperbarui.');
+    }
+
+    return redirect()->route('pra-penindakan.index')->with('error', 'Data tidak ditemukan.');
 }
+
+
 
 
 public function print($id)
@@ -101,53 +115,53 @@ public function print($id)
     }
 
     if ($praPenindakan->pelaku === 'YA') {
-        $data['p_d'] = '✔';  // Diketahui diberi centang
-        $data['p_t'] = '✘'; // Tidak Diketahui diberi silang
+        $data['p_d'] = '✔';  
+        $data['p_t'] = '✘'; 
     } else {
-        $data['p_d'] = '✘';  // Diketahui diberi silang
-        $data['p_t'] = '✔'; // Tidak Diketahui diberi centang
+        $data['p_d'] = '✘';  
+        $data['p_t'] = '✔'; 
     }
 
     if ($praPenindakan->dugaan_pelanggaran === 'YA') {
-        $data['d_p'] = '✔';  // Diketahui diberi centang
-        $data['d_t'] = '✘'; // Tidak Diketahui diberi silang
+        $data['d_p'] = '✔';  
+        $data['d_t'] = '✘'; 
     } else {
-        $data['d_p'] = '✘';  // Diketahui diberi silang
-        $data['d_t'] = '✔'; // Tidak Diketahui diberi centang
+        $data['d_p'] = '✘';  
+        $data['d_t'] = '✔'; 
     }
 
     if ($praPenindakan->locus === 'YA') {
-        $data['l_y'] = '✔';  // Diketahui diberi centang
-        $data['l_t'] = '✘'; // Tidak Diketahui diberi silang
+        $data['l_y'] = '✔';  
+        $data['l_t'] = '✘'; 
     } else {
-        $data['l_y'] = '✘';  // Diketahui diberi silang
-        $data['l_t'] = '✔'; // Tidak Diketahui diberi centang
+        $data['l_y'] = '✘';  
+        $data['l_t'] = '✔'; 
     }
 
     if ($praPenindakan->tempus === 'YA') {
-        $data['t_y'] = '✔';  // Diketahui diberi centang
-        $data['t_t'] = '✘'; // Tidak Diketahui diberi silang
+        $data['t_y'] = '✔';  
+        $data['t_t'] = '✘'; 
     } else {
-        $data['t_y'] = '✘';  // Diketahui diberi silang
-        $data['t_t'] = '✔'; // Tidak Diketahui diberi centang
+        $data['t_y'] = '✘'; 
+        $data['t_t'] = '✔'; 
     }
 
     if ($praPenindakan->layak_penindakan === 'YA') {
-        $data['lp'] = '✔';  // Diketahui diberi centang
+        $data['lp'] = '✔';  
     } else {
-        $data['lp'] = '✘';  // Diketahui diberi silang
+        $data['lp'] = '✘';  
     }
 
     if ($praPenindakan->layak_patroli === 'YA') {
-        $data['lpt'] = '✔';  // Diketahui diberi centang
+        $data['lpt'] = '✔'; 
     } else {
-        $data['lpt'] = '✘';  // Diketahui diberi silang
+        $data['lpt'] = '✘'; 
     }
 
     if ($praPenindakan->tidak_layak === 'YA') {
-        $data['tl'] = '✔';  // Diketahui diberi centang
+        $data['tl'] = '✔';  
     } else {
-        $data['tl'] = '✘';  // Diketahui diberi silang
+        $data['tl'] = '✘';  
     }
 
     // Tambahkan tahun sekarang ke dalam array data
@@ -162,14 +176,13 @@ public function print($id)
     }, $data);
 
     // Load template .docx
-    $templateProcessor = new TemplateProcessor(resource_path('templates/template.docx'));
+    $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/template-pra-penindakan.docx'));
 
     // Replace placeholder dengan data dari array
     $templateProcessor->setValues($data);
 
     // Tentukan nama file yang akan diunduh
-    // $fileName = 'Laporan_' . $praPenindakan->nama_laporan . '.docx';
-    $fileName = 'Laporan_Informasi' . '.docx';
+    $fileName = 'Laporan_Informasi_Nomor_' . $praPenindakan->no_li . '.docx';
 
     // Simpan file sementara
     $filePath = storage_path('app/public/' . $fileName);

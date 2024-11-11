@@ -102,7 +102,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="laporanInfoModalLabel">Pilih Nomor Laporan Informasi</h5>
+                <h5 class="modal-title" id="laporanInfoModalLabel">Pilih Nomor Surat Perintah</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -110,18 +110,18 @@
                 <table id="fixed-header-datatable" class="table table-striped dt-responsive nowrap table-striped w-100">
                     <thead>
                         <tr>
-                            <th>Nomor Laporan Informasi</th>
-                            <th>Tanggal Laporan Informasi</th>
+                            <th>Nomor Surat Perintah</th>
+                            <th>Tanggal Surat Perintah</th>
                             <th>Pilih</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($laporanInformasi as $laporan)
                         <tr>
-                            <td>{{ $laporan->no_li }}</td>
-                            <td>{{ $laporan->tgl_li }}</td>
+                            <td>{{ $laporan->no_print }}</td>
+                            <td>{{ $laporan->tanggal_mulai_print }}</td>
                             <td>
-                                <button type="button" class="btn btn-primary pilih-laporan" data-nomor="{{ $laporan->no_li }}">
+                                <button type="button" class="btn btn-primary pilih-laporan" data-nomor="{{ $laporan->no_print }}">
                                     Pilih
                                 </button>
                             </td>
@@ -142,28 +142,38 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body table-responsive">
-                    <table id="fixed-header-datatable" class="table table-striped dt-responsive nowrap table-striped w-100">
+                     <table id="fixed-header-datatable" class="table table-striped dt-responsive nowrap table-striped w-100">
                         <thead>
-                            <tr>
+                            <tr align="center">
                                 <th>No</th>
-                                <th>No Sbp</th>
-                                <th>Tanggal Sbp</th>
-                                <th>NO.Passpor/MAWB</th>
-                                <th>Nama Pemilik Barang</th>
-                                <th>Jenis Barang</th>
-                                <th>Jumlah Barang</th>
-                                <th>Jumlah Kemasan</th>
-                                <th>BAP</th>
-                                <th>BAST</th>
-                                <th>BA MUSNAH</th>
-                                <th>BA TEGAH</th>
-                                <th>BA RIKSA</th>
-                                <th>Nama Petugas</th>
-                                <th>Print</th>
+                                <th>No Penindakan</th>
+                                <th>Tanggal Penindakan</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach ($penindakans as $index => $penindakan  )
+                            <tr align="center">
+                            <td>{{$index + 1}}</td>
+                            <td>{{$penindakan->no_sbp}}</td>
+                            <td>{{$penindakan->tgl_sbp}}</td>
+                             <td>
+                                        <a href="" class="btn btn-primary btn-sm">
+                                            <i data-feather="edit" style="width: 16px; height: 16px;" class="me-1"></i> Edit
+                                        </a>
+                                        <a href="{{ route('DaftarSbp.print', $penindakan->id) }}" class="btn btn-info btn-sm">
+                                            <i data-feather="printer" style="width: 16px; height: 16px;" class="me-1"></i> Print
+                                        </a>
+                                        <form action="{{ route('DaftarSbp.destroy', $penindakan->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                            <i data-feather="trash" style="width: 16px; height: 16px;" class="me-1"></i> Delete
+                                         </button>
+                                    </form>
+                                    </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

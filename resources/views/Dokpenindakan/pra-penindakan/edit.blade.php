@@ -11,13 +11,20 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-{{-- <form action="{{ route('pra-penindakan.update') }}" method="POST"> --}}
-@csrf
+    <form action="{{ route('pra-penindakan.update', ['pra_penindakan' => $praPenindakan->id]) }}" method="POST">
+    @csrf
+    @method('PUT')
     <!-- Card Container -->
     <div class="card mb-3 mt-4">
-        <div class="card-header">
-            <h5 class="card-title mb-0"> <i data-feather="book" style="width: 20px; height: 20px;" class="me-1"></i>Form Laporan Informasi (LI)</h5>
-        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="card-title mb-0">
+        <i data-feather="book" style="width: 20px; height: 20px;" class="me-1"></i> Form Edit Laporan Informasi (LI)
+    </h5>
+    <a href="{{ url()->previous() }}" class="btn btn-danger btn-sm">
+        <i data-feather="log-out" class="me-1"></i> Kembali
+    </a>
+</div>
+
         
         <div class="card-body">
             <div class="row">
@@ -728,14 +735,10 @@
 
 <div class="card-footer d-flex justify-content-end">
             
-            <button type="button" class="btn btn-danger btn-sm me-2">
-             <a href="{{ url()->previous() }}" class="btn btn-danger">
-              <i data-feather="log-out"></i> Kembali
-              </a>
-            </button>
-            <button type="submit" class="btn btn-success btn-sm me-2">
-                <i data-feather="save"></i> Simpan Data SBP
-            </button>
+            
+    <button type="submit" class="btn btn-success btn-sm d-flex align-items-center">
+        <i data-feather="save" class="me-1"></i> Simpan Data SBP
+    </button>
         </div>
 
                         </div><!-- end tab pane -->

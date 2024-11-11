@@ -684,7 +684,7 @@
                     </div>
 
 
-                    <div class="col-md-12 mb-3">
+                    {{-- <div class="col-md-12 mb-3">
                     <label for="plh">Pelaksana Harian</label>
                     <select class="form-control" id="plh" name="plh" required>
                         <option value="" selected disabled>- Pilih -</option>
@@ -692,7 +692,7 @@
                         <option value="">Tidak Ada Pelaksana Harian</option>
                           
                     </select>
-                </div>
+                </div> --}}
 
 
                     <div class="col-md-12 mb-3">

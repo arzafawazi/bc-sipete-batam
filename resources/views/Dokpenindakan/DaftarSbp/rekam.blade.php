@@ -39,15 +39,15 @@
 
      
     <div class="col-md-6 mb-3">
-            <label>No. Laporan Informasi</label>
-            <input type="text" class="form-control bg-primary text-white" name="no_li" id="no_li" value="{{ $nomor_laporan }}" readonly>
+            <label>No. Surat Perintah</label>
+            <input type="text" class="form-control bg-primary text-white" name="no_print" id="no_print" value="{{ $nomor_laporan }}" readonly>
         </div>
 
         <input type="hidden" name="id_sbp" id="id_sbp">
 
       <div class="col-md-6 mb-3">
-            <label>Tgl. Laporan Informasi</label>
-            <input type="text" class="form-control bg-primary text-white" value="{{ $laporan->tgl_li }}" readonly>
+            <label>Tgl. Surat Perintah</label>
+            <input type="text" class="form-control bg-primary text-white" value="{{ $laporan->tanggal_mulai_print }}" readonly>
         </div>  
 
 
@@ -64,8 +64,8 @@
 
 
 
-        {{-- <!-- Jenis Barang -->
-        <div class="col-md-6 mb-3">
+        <!-- Jenis Barang -->
+        {{-- <div class="col-md-6 mb-3">
             <label>Jenis Barang</label>
             <select class="form-control" id="jenis_barang" name="jenis_barang" required
             style="background-color:#4cc2af; color:white;">
@@ -74,29 +74,18 @@
             <option value="CARGO">Barang Kiriman/Cargo</option>
             </select>
         </div> --}}
-        
-        {{-- <!-- Skema Penindakan -->
-        <div class="col-md-6 mb-3">
+
+         <!-- Skema Penindakan -->
+        <div class="col-md-12 mb-3">
             <label>Skema Penindakan</label>
-            <select class="form-control"style="background-color:#4cc2af; color:white;"
+            <select class="form-control"
             id="skema_penindakan" name="skema_penindakan" required>
                 <option value="">- Pilih -</option>
                 <option value="MANDIRI">Mandiri</option>
                 <option value="BERSAMA">Bersama</option>
             </select>
-        </div> --}}
+        </div>  
         
-        <!-- Nomor Surat Perintah -->
-        <div class="col-md-6 mb-3">
-            <label>Nomor Surat Perintah</label>
-            <input type="text" class="form-control" placeholder="No. Surat (lengkap)" id="no_print" name="no_print" required>
-        </div>
-        
-        <!-- Tgl. Surat Perintah -->
-        <div class="col-md-6 mb-3">
-            <label>Tgl. Surat Perintah</label>
-            <input type="date" class="form-control" placeholder="yyyy-mm-dd" id="tanggal_print" name="tanggal_print" required>
-        </div>
 
         <h6>B. Data Petugas</h6>
                     <hr>
@@ -338,7 +327,7 @@
             <div class="row mb-3 form-group">
                 <label class="col-sm-4 col-form-label">Jumlah/Jenis/Ukuran/Nomor</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control form-input" placeholder="Jumlah/Jenis/Ukuran/Nomor" name="jumlah_jenis_barang" disabled>
+                    <input type="text" class="form-control form-input" placeholder="Jumlah/Jenis/Ukuran/Nomor" name="jumlah_jenis_ukuran_no" disabled>
                 </div>
             </div>
             <div class="row mb-3 form-group">
@@ -682,21 +671,21 @@
             <div class="row mb-3 form-group">
                 <label class="col-sm-4 col-form-label">Lokasi Pemeriksaan</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control form-input" placeholder="Lokasi Pemeriksaan" name="lokasi_pemeriksaan" disabled>
+                    <input type="text" class="form-control form-input" placeholder="Lokasi Pemeriksaan" name="lokasi_pemeriksaan" >
                 </div>
             </div>
 
             <div class="row mb-3 form-group">
                 <label class="col-sm-4 col-form-label">Jumlah Lampiran Pemeriksaan</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control form-input" placeholder="Jumlah Lampiran Pemeriksaan" name="jumlah_lampiran_pemeriksaan" disabled>
+                    <input type="text" class="form-control form-input" placeholder="Jumlah Lampiran Pemeriksaan" name="jumlah_lampiran_pemeriksaan" >
                 </div>
             </div>
 
             <div class="row mb-3 form-group">
                 <label class="col-sm-4 col-form-label">Rincian Hasil Pemeriksaan</label>
                 <div class="col-sm-8">
-                    <textarea class="form-control form-input" placeholder="Rincian Hasil Pemeriksaan" row="2" name="rincian_hasil_pemeriksaan" disabled></textarea>
+                    <textarea class="form-control form-input" placeholder="Rincian Hasil Pemeriksaan" row="2" name="rincian_hasil_pemeriksaan"></textarea>
                 </div>
             </div>
             
@@ -734,7 +723,7 @@
             <div class="row mb-3 form-group">
                 <label class="col-sm-4 col-form-label">Jenis Segel</label>
                 <div class="col-sm-8">
-                  <select class="form-control form-input" name="id_segel" disabled>
+                  <select class="form-control form-input" name="id_segel" >
                                 <option value=""> - Pilih -</option>
                                 @foreach ($segels as $segel)
                                     <option value="{{ $segel->id_segel }}">{{ $segel->jenis_segel }}</option>
@@ -746,7 +735,7 @@
             <div class="row mb-3 form-group">
                 <label class="col-sm-4 col-form-label">Jumlah Segel</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control form-input" placeholder="Jumlah Segel" name="jumlah_segel" disabled>
+                    <input type="text" class="form-control form-input" placeholder="Jumlah Segel" name="jumlah_segel" >
                 </div>
             </div>
 
@@ -755,7 +744,7 @@
               <div class="row mb-3 form-group">
                 <label class="col-sm-4 col-form-label">Peletakan Segel</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control form-input" placeholder="Peletakan Segel" name="peletakan_segel" disabled>
+                    <input type="text" class="form-control form-input" placeholder="Peletakan Segel" name="peletakan_segel" >
                 </div>
             </div>
 
@@ -765,15 +754,15 @@
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                D. Badan
+                D. B.A Lainnya
             </button>
         </h2>
         <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body bg-light">
               <div class="row mb-3">
-                <label for="badanSelect" class="col-sm-4 col-form-label">ISI DATA</label>
+                <label for="ba_lainnya" class="col-sm-4 col-form-label">ISI DATA</label>
                 <div class="col-sm-8">
-                    <select id="badanSelect" class="form-select" onchange="toggleForm(this.value, 'flush-collapseFour')"> <!-- Ubah ID di sini -->
+                    <select id="ba_lainnya" name="ba_lainnya" class="form-select" onchange="toggleForm(this.value, 'flush-collapseFour')"> <!-- Ubah ID di sini -->
                         <option value="TIDAK">TIDAK</option>
                         <option value="YA">YA</option>
                     </select>
@@ -782,33 +771,25 @@
 
             
             <div class="row mb-3 form-group">
-                <label class="col-sm-4 col-form-label">Nama</label>
+                <label class="col-sm-4 col-form-label">Keterangan BA Lainnya</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control form-input" placeholder="-" disabled>
+                    <textarea row="2" class="form-control form-input" name="keterangan_ba_lainnya" placeholder="Keterangan BA Lainnya" disabled></textarea>
                 </div>
             </div>
 
-            <div class="row mb-3 form-group">
-                <label class="col-sm-4 col-form-label">Tgl. Lahir | Kewarganegaraan</label>
-                <div class="col-sm-4">
-                    <input type="date" class="form-control form-input" placeholder="-" disabled>
-                </div>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control form-input" placeholder="-" disabled>
-                </div>
-            </div>
+          
 
              <div class="row mb-3 form-group">
-                <label class="col-sm-4 col-form-label">Alamat</label>
+                <label class="col-sm-4 col-form-label">No Ba Lainnya</label>
                 <div class="col-sm-8">
-                    <textarea class="form-control form-input" placeholder="-" rows="2" disabled></textarea>
+                    <input type="text" class="form-control form-input" name="no_ba_lainnya" placeholder="-" disabled>
                 </div>
             </div>
             
             <div class="row mb-3 form-group">
-                <label class="col-sm-4 col-form-label">Nomor Identitas</label>
+                <label class="col-sm-4 col-form-label">Tanggal BA Lainnya</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control form-input" placeholder="-" disabled>
+                    <input type="text" class="form-control form-input" name="tgl_ba_lainnya" placeholder="-" disabled>
                 </div>
             </div>
 
@@ -850,9 +831,6 @@
                 </div>
             </div>
         </div>
-
-        
-        
     </div>
     </form>
 </div>

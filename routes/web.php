@@ -109,6 +109,7 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 
     // Dokpenindakan routes
     Route::resource('Dokpenindakan/DaftarSbp', PenindakanController::class);
+    Route::get('Dokpenindakan/DaftarSbp/{id}/print', [PenindakanController::class, 'print'])->name('DaftarSbp.print');
     Route::get('/getNomorSegel/{id}', [PenindakanController::class, 'getNomorSegel']);
 
 
