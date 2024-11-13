@@ -1,5 +1,5 @@
 <!-- Left Sidebar Start -->
-<div class="app-sidebar-menu shadow-lg">
+ <div class="app-sidebar-menu shadow-lg">
     <div class="h-100" data-simplebar>
 
         <!--- Sidemenu -->
@@ -12,17 +12,42 @@
                     </span>
                     <span class="logo-lg">
                         <img src="/images/bea.png" alt="" height="84">
+                        
                     </span>
                 </a>
                 <a href="#" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="/images/bea.png" alt="" height="82">
+                        
                     </span>
                     <span class="logo-lg">
                         <img src="/images/bea.png" alt="" height="84">
+                        
                     </span>
                 </a>
-            </div>
+            </div> 
+
+            
+
+            {{-- <div class="app-sidebar-menu shadow-lg">
+    <div class="h-100" data-simplebar>
+
+        <!--- Sidemenu -->
+        <div id="sidebar-menu">
+
+            <div class="logo-box text-center">
+    <a href="#" class="logo logo-light">
+        <span class="logo-lg d-flex align-items-start justify-content-center me-3">
+            <img src="/images/bea.png" alt="" height="84">
+            <p class="ms-0 mb-0 fs-30 fw-bold text-white text-center custom-logo">
+    Bea Cukai Batam 
+</p>
+        </span>
+    </a>
+</div> --}}
+{{-- <br>
+<br>
+<hr> --}}
 @php
 $displayedMenus = [];
 @endphp

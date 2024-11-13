@@ -231,7 +231,7 @@ class UserController extends Controller
 
 
 
-    public function storeUsers(Request $request)
+    public function store(Request $request)
     {
         try {
             // Log request data for debugging

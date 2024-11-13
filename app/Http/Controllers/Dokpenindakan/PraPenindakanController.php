@@ -68,6 +68,15 @@ public function update($id)
     return redirect()->route('pra-penindakan.index')->with('error', 'Data tidak ditemukan.');
 }
 
+public function destroy($id){
+    $praPenindakan = TblLaporanInformasi::find($id);
+    if ($praPenindakan) {
+        $praPenindakan->delete();
+        return redirect()->route('pra-penindakan.index')->with('success', 'Data berhasil dihapus.');
+    }
+    return redirect()->route('pra-penindakan.index')->with('error', 'Data tidak ditemukan.');
+}
+
 
 
 

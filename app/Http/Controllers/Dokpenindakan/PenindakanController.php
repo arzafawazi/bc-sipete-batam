@@ -21,7 +21,7 @@ class PenindakanController extends Controller
     public function index()
     {
         $penindakans = TblSbp::all();
-        $laporanInformasi = TblLaporanInformasi::select('no_print', 'tanggal_mulai_print')->get();
+        $laporanInformasi = TblLaporanInformasi::select('no_print', 'tanggal_mulai_print', 'no_li', 'tgl_li')->get();
         return view('Dokpenindakan.DaftarSbp.index', compact('laporanInformasi','penindakans'));
     }
 
@@ -47,10 +47,19 @@ class PenindakanController extends Controller
 
 public function store(Request $request){
     // Ambil data dari form
-    TblLaporanInformasi::create($request->all());
+    TblSbp::create($request->all());
 
     return redirect()->route('DaftarSbp.index')->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
 
+}
+
+public function destroy($id){
+    $penindakan = TblSbp::find($id);
+    if ($penindakan) {
+        $penindakan->delete();
+        return redirect()->route('DaftarSbp.index')->with('success', 'Data berhasil dihapus.');
+    }
+    return redirect()->route('DaftarSbp.index')->with('error', 'Data tidak ditemukan.');
 }
 
     
@@ -72,16 +81,18 @@ public function store(Request $request){
 
     // Daftar kolom pejabat yang perlu diambil datanya
     $pejabatKeys = [
-        'id_petugas_sbp_1',
-        'id_petugas_sbp_2',
+        'id_petugas_1_sbp',
+        'id_petugas_2_sbp',
     ];
 
     // Loop untuk mendapatkan data pejabat secara dinamis
     foreach ($pejabatKeys as $key) {
         if ($penindakan->$key) {
             // Ambil data relasi pejabat sesuai key
-            $pejabat = $penindakan->pejabat($key)->first();
+            $pejabat = $penindakan->getPejabat($key)->first();
 
+            
+    
             // Jika data pejabat ditemukan, masukkan ke array data
             if ($pejabat) {
                 $data[$key . '_nama'] = $pejabat->nama_admin;
@@ -98,6 +109,34 @@ public function store(Request $request){
         }
     }
 
+    // dd($data);
+
+    $kode_kantor = "KBC.0204";
+
+    $no_sprint = $penindakan->no_print . " tanggal " . $this->formatDates(['tgl_print' => $penindakan->tgl_print])['tgl_print'];
+     $data['no_sprint'] = $no_sprint;
+
+     $ba_pemeriksaan = $penindakan->no_ba_riksa != "" ? "BA-" . ltrim($penindakan->no_ba_riksa, '0') . "/Riksa/" . $kode_kantor . "/" . date('Y') : "--";
+     $data['ba_pemeriksaan'] = $ba_pemeriksaan;
+
+     
+    $ba_penegahan = $penindakan->no_ba_tegah != "" ? "BA-" . ltrim($penindakan->no_ba_tegah, '0') . "/Tegah/" . $kode_kantor . "/" . date('Y') : "--";
+    $data['ba_penegahan'] = $ba_penegahan;
+
+    
+    $ba_penyegelan = $penindakan->no_ba_segel != "" ? "BA-" . ltrim($penindakan->no_ba_segel, '0') . "/Segel/" . $kode_kantor . "/" . date('Y') : "--";
+    $data['ba_penyegelan'] = $ba_penyegelan;
+
+   
+    $tindakan_lain = $penindakan->no_ba_lainnya != "" ? "BA-" . ltrim($penindakan->no_ba_lainnya, '0') . "/Lainnya/" . $kode_kantor . "/" . date('Y') : "--";
+    $data['tindakan_lain'] = $tindakan_lain;
+
+
+
+
+
+
+     
 
     // Tambahkan tahun sekarang ke dalam array data
     $data['tahun_sekarang'] = date('Y');  // Mendapatkan tahun saat ini
@@ -118,7 +157,7 @@ public function store(Request $request){
 
     // Tentukan nama file yang akan diunduh
     // $fileName = 'Laporan_' . $penindakan->nama_laporan . '.docx';
-    $fileName = 'Dokumen Surat Bukti Penindakan' . '.docx';
+    $fileName = 'Dokumen_Surat_Bukti_Penindakan' . $penindakan->no_sbp . '.docx';
 
     // Simpan file sementara
     $filePath = storage_path('app/public/' . $fileName);

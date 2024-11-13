@@ -62,7 +62,6 @@
             <th>ID Petugas</th>
             <th>Username</th>
             <th>Nama Petugas</th>
-            <th>NIP</th>
             <th>Otoritas</th>
             <th>Status</th>
             <th>Action</th> 
@@ -80,7 +79,6 @@
             <td>{{ $user->id_admin }}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->nama_admin }}</td>
-            <td>{{ $user->nip }}</td>
             <td>{{ $user->otoritas }}</td>
             <td>
     <div class="form-check form-switch mb-2">

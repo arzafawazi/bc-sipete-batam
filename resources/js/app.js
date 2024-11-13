@@ -14,7 +14,8 @@ import 'select2/dist/css/select2.min.css'; // Mengimpor CSS Select2
 
 $(document).ready(function() {  
     $('.select2').select2({
-        theme: 'bootstrap-5'  // Menggunakan tema Bootstrap 5 untuk Select2
+        theme: 'bootstrap-5',
+        width: '100%'
     });
 });
 

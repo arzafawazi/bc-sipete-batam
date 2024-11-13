@@ -17,9 +17,9 @@ class TblSbp extends Model
     protected $guarded = [];
 
 
-    public function pejabat($key)
-    {
-        return $this->belongsTo(User::class, $key, 'id_admin');
-    }
-    
+    public function getPejabat($key)
+{
+    return $this->belongsTo(User::class, $key, 'id_admin');
+}
+
 }

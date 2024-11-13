@@ -110,7 +110,7 @@
             @foreach ($menus as $index => $menu)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $menu->uraian_menu }}</td>
+                <td>{{ strtoupper($menu->uraian_menu) }}</td>
                 <td>
                     <select name="akses[{{ $menu->kode }}]" class="form-select" onchange="toggleSubMenu('{{ $menu->kode }}', this.value)">
                         <option value="NO" selected>NO</option>

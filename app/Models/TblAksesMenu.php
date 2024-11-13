@@ -37,28 +37,30 @@ class TblAksesMenu extends Model
     }
 
     public static function getMenus()
-    {
-        $userId = auth()->user()->id_admin; // Ambil ID admin yang sedang login
-        $menuItems = TblMenu::with(['subMenus', 'aksesMenu']) // Ambil menu dan sub-menu
-            ->whereNull('sub') // Ambil hanya menu yang tidak memiliki sub
-            ->orWhere('sub', 'NO') // Atau yang memiliki sub = 'NO'
-            ->get();
+{
+    $userId = auth()->user()->id_admin; // Ambil ID admin yang sedang login
+    $menuItems = TblMenu::with(['subMenus', 'aksesMenu']) // Ambil menu dan sub-menu
+        ->whereNull('sub') // Ambil hanya menu yang tidak memiliki sub
+        ->orWhere('sub', 'NO') // Atau yang memiliki sub = 'NO'
+        ->orderBy('id') // Urutkan berdasarkan id
+        ->get();
 
-        // Tambahkan informasi akses ke setiap item menu
-        $menuItems->map(function ($menu) {
-            $menu->hasAccess = $menu->aksesMenu->isNotEmpty(); // Cek apakah ada akses 'YES'
-            $menu->sub = $menu->subMenus->isNotEmpty() ? $menu->subMenus : collect();
+    // Tambahkan informasi akses ke setiap item menu
+    $menuItems->map(function ($menu) {
+        $menu->hasAccess = $menu->aksesMenu->isNotEmpty(); // Cek apakah ada akses 'YES'
+        $menu->sub = $menu->subMenus->isNotEmpty() ? $menu->subMenus->sortBy('id') : collect(); // Urutkan sub-menu berdasarkan id
 
-            // Cek sub-menu
-            $menu->sub->map(function ($subMenu) {
-                // Pastikan subMenu memiliki aksesMenu sebelum memanggil isNotEmpty()
-                $subMenu->hasAccess = $subMenu->aksesMenu ? $subMenu->aksesMenu->where('opsi', 'YES')->isNotEmpty() : false;
-                return $subMenu;
-            });
-
-            return $menu;
+        // Cek sub-menu
+        $menu->sub->map(function ($subMenu) {
+            // Pastikan subMenu memiliki aksesMenu sebelum memanggil isNotEmpty()
+            $subMenu->hasAccess = $subMenu->aksesMenu ? $subMenu->aksesMenu->where('opsi', 'YES')->isNotEmpty() : false;
+            return $subMenu;
         });
 
-        return $menuItems; // Kembalikan koleksi menu
-    }
+        return $menu;
+    });
+
+    return $menuItems; 
+}
+
 }

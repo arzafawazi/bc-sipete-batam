@@ -32,29 +32,29 @@
                     
                     <!-- No. Passpor -->
                     <div class="col-md-4 mb-3">
-                        <label>No. Passpor:</label>
+                        <label>No. Surat Perintah:</label>
                         <input type="text" class="form-control" name="passport_number" placeholder="Keyword">
                     </div>
                     
                     <!-- Nama Penumpang -->
                     <div class="col-md-4 mb-3">
-                        <label>Nama Penumpang:</label>
+                        <label>Peletakan Segel:</label>
                         <input type="text" class="form-control" name="passenger_name" placeholder="Keyword">
                     </div>
                     
                     <!-- Nomor Dokumen -->
                     <div class="col-md-4 mb-3">
-                        <label>Nomor Dokumen:</label>
+                        <label>Nomor Penindakan:</label>
                         <input type="text" class="form-control" name="document_number" placeholder="Keyword">
                     </div>
                     
                     <!-- Komoditi -->
                     <div class="col-md-4 mb-3">
-                        <label>Komoditi:</label>
+                        <label>Skema Penindakan:</label>
                         <select class="form-control" name="commodity">
-                            <option value="">Semua Komoditi</option>
-                            <option value="Komoditi1">Komoditi 1</option>
-                            <option value="Komoditi2">Komoditi 2</option>
+                            <option value="">Semua Skema Penindakan</option>
+                            <option value="BERSAMA">Penindakan Bersama</option>
+                            <option value="MANDIRI">Penindakan Mandiri</option>
                             <!-- Add other options as needed -->
                         </select>
                     </div>
@@ -98,18 +98,21 @@
         </div>
     </div>
 
-    <div class="modal fade" id="laporanInfoModal" tabindex="-1" aria-labelledby="laporanInfoModalLabel" aria-hidden="true">
+<div class="modal fade" id="laporanInfoModal" tabindex="-1" aria-labelledby="laporanInfoModalLabel" aria-hidden="true">
+    
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="laporanInfoModalLabel">Pilih Nomor Surat Perintah</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body table-responsive">
                 <!-- Tabel atau daftar nomor laporan informasi -->
-                <table id="fixed-header-datatable" class="table table-striped dt-responsive nowrap table-striped w-100">
+                <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                     <thead>
-                        <tr>
+                        <tr align="center">
+                            <th>Nomor Laporan Informasi</th>
+                            <th>Tanggal Laporan Informasi</th>
                             <th>Nomor Surat Perintah</th>
                             <th>Tanggal Surat Perintah</th>
                             <th>Pilih</th>
@@ -117,7 +120,9 @@
                     </thead>
                     <tbody>
                         @foreach($laporanInformasi as $laporan)
-                        <tr>
+                        <tr align="center">
+                            <td>{{ $laporan->no_li }}</td>
+                            <td>{{ $laporan->tgl_li }}</td>
                             <td>{{ $laporan->no_print }}</td>
                             <td>{{ $laporan->tanggal_mulai_print }}</td>
                             <td>
@@ -136,18 +141,46 @@
         </div>
     </div>
 </div>
+
+@if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+ @if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Periksa kembali:</strong>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
     
     <!-- Table Section -->
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body table-responsive">
-                     <table id="fixed-header-datatable" class="table table-striped dt-responsive nowrap table-striped w-100">
+                      <table id="fixed-header-datatable" class="table table-striped dt-responsive nowrap table-striped w-100">
                         <thead>
                             <tr align="center">
                                 <th>No</th>
                                 <th>No Penindakan</th>
                                 <th>Tanggal Penindakan</th>
+                                <th>No Surat Perintah</th>
+                                <th>Tanggal Surat Perintah</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -157,6 +190,8 @@
                             <td>{{$index + 1}}</td>
                             <td>{{$penindakan->no_sbp}}</td>
                             <td>{{$penindakan->tgl_sbp}}</td>
+                            <td>{{$penindakan->no_print}}</td>
+                            <td>{{$penindakan->tgl_print}}</td>
                              <td>
                                         <a href="" class="btn btn-primary btn-sm">
                                             <i data-feather="edit" style="width: 16px; height: 16px;" class="me-1"></i> Edit
@@ -180,8 +215,11 @@
             </div>
         </div>
     </div>
+    
 </div>
  <!-- container-fluid -->
+
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

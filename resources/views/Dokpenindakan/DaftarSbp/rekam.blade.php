@@ -23,7 +23,7 @@
     <button type="button" class="btn btn-danger btn-sm" onclick="window.history.back()">
         <i data-feather="log-out"></i> Kembali
     </button>
-</div>
+        </div>
 
         
         <div class="card-body">
@@ -33,7 +33,7 @@
                 <!-- Left Column (Sections A and B) -->
                 <div class="col-lg-6">
                     <!-- A. Informasi Header -->
-                    <h6>A. Data Awal</h6>
+                    <h6><b>A. Data Awal</b></h6>
                     <hr>
     <div class="row">
 
@@ -43,11 +43,11 @@
             <input type="text" class="form-control bg-primary text-white" name="no_print" id="no_print" value="{{ $nomor_laporan }}" readonly>
         </div>
 
-        <input type="hidden" name="id_sbp" id="id_sbp">
+        <input type="hidden" name="id_sbp" id="id_sbp_test" value="">
 
       <div class="col-md-6 mb-3">
             <label>Tgl. Surat Perintah</label>
-            <input type="text" class="form-control bg-primary text-white" value="{{ $laporan->tanggal_mulai_print }}" readonly>
+            <input type="text" class="form-control bg-primary text-white" name="tgl_print" value="{{ $laporan->tgl_print }}" readonly>
         </div>  
 
 
@@ -87,7 +87,7 @@
         </div>  
         
 
-        <h6>B. Data Petugas</h6>
+        <h6><b>B. Data Petugas</b></h6>
                     <hr>
 
         <div class="col-md-6 mb-3">
@@ -114,7 +114,7 @@
 
             
 
-                 <h6>C. Data Saksi</h6>
+                 <h6><b>C. Data Saksi</b></h6>
                     <hr>     
 
                     <div class="col-md-6 mb-3">
@@ -237,7 +237,7 @@
     </div>
 
                     <!-- D. Objek Penindakan -->
-                    <h6>D. Objek Penindakan</h6>
+                    <h6><b>D. Objek Penindakan</b></h6>
                     <hr>
                     <div class="card-body">
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -333,7 +333,7 @@
             <div class="row mb-3 form-group">
                 <label class="col-sm-4 col-form-label">Peti Kemasan / Kemasan</label>
                 <div class="col-sm-8">
-                            <select class="form-control form-input" name="id_kemasan" disabled>
+                            <select class="form-control form-input select2" name="id_kemasan" disabled>
                                 <option value="" disabled selected>- Pilih -</option>
                                 @foreach ($kemasans as $kemasan)
                                     <option value="{{ $kemasan->id_kemasan }}">{{ $kemasan->nama_kemasan }}</option>
@@ -498,7 +498,7 @@
                 <!-- Right Column (Sections C, D, and E) -->
                 <div class="col-lg-6">
                     <!-- C. Informasi Pelapor dan Hasil Penindakan -->
-                    <h6>E. Data Penindakan</h6>
+                    <h6><b>E. Data Penindakan</b></h6>
                     <hr>
                     <div class="row">
                         <div class="col-md-12 mb-3">
@@ -549,13 +549,13 @@
 
                     <div class="col-md-12 mb-3">
                             <label>Hal Yang Terjadi</label>
-                           <textarea class="form-control" placeholder="Hal Yang Terjadi" name="hal_yang_terjadi" rows="2"></textarea>
+                           <textarea class="form-control" placeholder="Hal Yang Terjadi" name="hal_yang_terjadi" rows="4"></textarea>
                         </div>
                         </div>
 
                    <div class="col-lg-12">
     <!-- D. Dokumen Pendukung -->
-    <h6>F. Dokumen Pendukung</h6>
+    <h6><b>F. Dokumen Pendukung</b></h6>
     <hr>
    <div class="card-body">
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -563,7 +563,7 @@
     <div class="accordion-item">
     <h2 class="accordion-header">
         <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse1" aria-expanded="false" aria-controls="flush-collapse1">
-            B. B.A Tegah
+            A. B.A Tegah
         </button>
     </h2>
     <div id="flush-collapse1" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -893,16 +893,21 @@ document.querySelector('select[name="jenis_segel"]').addEventListener('change', 
 </script>
 
 
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         let tahun = new Date().getFullYear();
-        let random_number = Math.floor(Math.random() * 9000000) + 1000000;  // Hasil antara 1000 dan 9999
-     let id_sbp = tahun.toString() + random_number;  // Pastikan tahun adalah string
+        let random_number = Math.floor(Math.random() * 9000000) + 1000000;
+        let id_sbp = tahun.toString() + random_number;
 
-       
-        document.getElementById('id_sbp').value = id_sbp;
+        let inputElement = document.getElementById('id_sbp_test');
+        if (inputElement) {
+            inputElement.value = id_sbp;
+            console.log("Nilai id_sbp yang diset pada input test: ", id_sbp);
+        }
     });
 </script>
+
 
     <script>
         function toggleForm(selectedValue, sectionId) {

@@ -6,6 +6,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    overflow: hidden;
     margin: 0;
     padding: 0;
 }
@@ -15,72 +16,77 @@ body {
 
 
 
-<div class="d-flex align-items-center justify-content-center vh-100">
-    <div class="col-xl-5">
-        <div class="row">
-            <div class="col-md-8 mx-auto">
-                <div class="card  mb-0 shadow-lg">
-                    <div class="card-body">
-                        <div class="mb-0 border-0 p-md-5 p-lg-0 p-4">
-                            <div class="mb-4 p-0 text-center">
-                                    <img src="/images/beacukai.png" alt="logo-dark" class="mx-auto" height="188" />
-                            </div>
-                            <div class="auth-title-section mb-3 text-center">
-                                <h3 class="text-dark fs-20 fw-medium mb-2">Selamat Datang</h3>
-                                <p class="text-dark text-capitalize fs-14 mb-0">Silahkan Login</p>
-                            </div>
-                            <div class="pt-0">
-                                <form method="POST" action="{{ route('login')}}" class="my-4">
-                                    @csrf
-                                    @if (sizeof($errors) > 0)
-                                    @foreach ($errors->all() as $error)
-                                    <p class="text-danger mb-3">{{ $error }}</p>
-                                    @endforeach
-                                    @endif
-                                    <div class="form-group mb-3">
-                                        <label for="name" class="form-label">Username</label>
-                                        <input class="form-control" type="text" name="name" id="name" required placeholder="Masukkan username">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input class="form-control" type="password" required id="password" name="password" placeholder="Masukkan password">
-                                    </div>
-                                    <div class="form-group d-flex mb-3">
-                                        {{-- <div class="col-sm-6">
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="checkbox-signin" checked>
-                                                <label class="form-check-label" for="checkbox-signin">Remember me</label>
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-sm-6 text-end">
-                                            <a class='text-muted fs-14' href='{{ route('second', [ 'auth' , 'recoverpw']) }}'>Forgot password?</a>
-                                        </div> --}}
-                                    </div>
-                                    <div class="form-group mb-0 row">
-                                        <div class="col-12">
-                                            <div class="d-grid">
-                                                <button class="btn btn-primary" type="submit">Login</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+@section('content')
+<div class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+        <div class="card shadow-lg border-0">
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <img src="{{ asset('images/beacukai.png') }}" alt="logo" height="150" class="mb-3" />
+                    <h3 class="text-dark fs-4 fw-bold">KPU BEA CUKAI TIPE B BATAM</h3>
+                    <h3 class="text-dark fs-4 fw-bold"><i>SIPETE</i></h3>
+                    <p class="text-muted mb-0">Silahkan Login</p>
+                </div>
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    {{-- Display validation errors --}}
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <p class="mb-1">{{ $error }}</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            @endforeach
                         </div>
+                    @endif
+
+                    {{-- Username field --}}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Username</label>
+                        <input type="text" name="name" id="name" class="form-control" required placeholder="Masukkan username">
+                    </div>
+
+                    {{-- Password field --}}
+                    <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" name="password" id="password" class="form-control" required placeholder="Masukkan password">
+                        <button class="btn btn-primary" type="button" id="togglePassword">
+                            <i data-feather="eye-off" id="eyeIcon"></i> <!-- Ikon mata terbuka dari Feather -->
+                        </button>
                     </div>
                 </div>
+
+<!-- Pastikan Anda memuat Bootstrap dan Icon Library untuk menggunakan icon -->
+
+
+                    {{-- Login button --}}
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-{{-- <div class="col-xl-7">
-    <div class="account-page-bg p-md-5 p-4">
-        <div class="text-center">
-            <div class="auth-image">
-                <img src="/images/beacukai.png" class="mx-auto img-fluid" alt="images">
-            </div>
-        </div>
-    </div>
-</div> --}}
+<script>
 
+document.getElementById('togglePassword').addEventListener('click', function () {
+    const passwordField = document.getElementById('password');
+    const passwordType = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = passwordType;
+
+    
+    const icon = document.getElementById('eyeIcon');
+    if (passwordType === 'password') {
+        icon.setAttribute('data-feather', 'eye-off');
+    } else {
+        icon.setAttribute('data-feather', 'eye'); 
+    }
+
+    
+    feather.replace(); 
+});
+</script>
 @endsection
+

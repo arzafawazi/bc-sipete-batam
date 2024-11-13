@@ -1,4 +1,4 @@
-@extends('layouts.vertical', ['title' => 'Rekam Pra-penindakan'])
+@extends('layouts.vertical', ['title' => 'Rekam Laporan Pengawasan'])
 
 @section('css')
     @vite([
@@ -9,16 +9,17 @@
         'node_modules/datatables.net-select-bs5/css/select.bootstrap5.min.css'
      ])
 @endsection
+
 @section('content')
 <div class="container-fluid">
-<form action="{{ route('pra-penindakan.store') }}" method="POST">
+<form action="{{ route('laporan-pengawasan.store') }}" method="POST">
 @csrf
     <!-- Card Container -->
     <div class="card mb-3 mt-4">
         <div class="card-header d-flex justify-content-between align-items-center">
     <h5 class="card-title mb-0">
         <i data-feather="book" style="width: 20px; height: 20px;" class="me-1"></i>
-        Form Laporan Informasi (LI)
+        Form Laporan Pengawasan Intelijen
     </h5>
     <!-- Tombol Kembali -->
     <button type="button" class="btn btn-danger btn-sm" onclick="window.history.back()">
@@ -32,100 +33,134 @@
                 <div class="col-xl-12">
             <div class="card">
 
-                <div class="card-body">
-                    <ul class="nav nav-pills nav-justified flex-nowrap overflow-auto" style="white-space: nowrap;" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="navtabs2-home-tab" data-bs-toggle="tab" href="#navtabs2-home" role="tab" aria-controls="navtabs2-home" aria-selected="true">
-                            <span class="d-block d-sm-none">(LA)</span>
-                            <span class="d-none d-sm-block">Laporan Informasi (LA)</span>    
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="navtabs2-profile-tab" data-bs-toggle="tab" href="#navtabs2-profile" role="tab" aria-controls="navtabs2-profile" aria-selected="false">
-                            <span class="d-block d-sm-none">LAP</i></span>
-                            <span class="d-none d-sm-block">Lembar Analisis Pra Penindakan (LAP)</span>    
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="navtabs2-messages-tab" data-bs-toggle="tab" href="#navtabs2-messages" role="tab" aria-controls="navtabs2-messages" aria-selected="false">
-                            <span class="d-block d-sm-none">NPI</i></span>
-                            <span class="d-none d-sm-block">Nota Pengembalian Informasi (NPI)</span>    
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="navtabs2-settings-tab" data-bs-toggle="tab" href="#navtabs2-settings" role="tab" aria-controls="navtabs2-settings" aria-selected="false">
-                            <span class="d-block d-sm-none">SP</span>
-                            <span class="d-none d-sm-block">Surat Perintah </span>    
-                        </a>
-                    </li>
-                </ul>
+                <ul class="nav nav-pills nav-justified flex-nowrap overflow-auto" style="white-space: nowrap;" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="st1-tab" data-bs-toggle="tab" href="#st1" role="tab" aria-controls="st1" aria-selected="true">
+                    <span class="d-block d-sm-none">(ST-I)</span>
+                    <span class="d-none d-sm-block">(ST-I)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="lpti-tab" data-bs-toggle="tab" href="#lpti" role="tab" aria-controls="lpti" aria-selected="false">
+                    <span class="d-block d-sm-none">LPT-I</span>
+                    <span class="d-none d-sm-block">LPT-I</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="lppi-tab" data-bs-toggle="tab" href="#lppi" role="tab" aria-controls="lppi" aria-selected="false">
+                    <span class="d-block d-sm-none">LPPI-I</span>
+                    <span class="d-none d-sm-block">LPPI-I</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="lkai-tab" data-bs-toggle="tab" href="#lkai" role="tab" aria-controls="lkai" aria-selected="false">
+                    <span class="d-block d-sm-none">LKAI</span>
+                    <span class="d-none d-sm-block">LKAI</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="nhi-tab" data-bs-toggle="tab" href="#nhi" role="tab" aria-controls="nhi" aria-selected="false">
+                    <span class="d-block d-sm-none">NHI/NHI-HKI/NHI-N</span>
+                    <span class="d-none d-sm-block">NHI/NHI-HKI/NHI-N</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="ni-tab" data-bs-toggle="tab" href="#ni" role="tab" aria-controls="ni" aria-selected="false">
+                    <span class="d-block d-sm-none">NI</span>
+                    <span class="d-none d-sm-block">NI</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="recommendations-tab" data-bs-toggle="tab" href="#recommendations" role="tab" aria-controls="recommendations" aria-selected="false">
+                    <span class="d-block d-sm-none">Rekomendasi Lainnya</span>
+                    <span class="d-none d-sm-block">Rekomendasi Lainnya</span>
+                </a>
+            </li>
+        </ul>
 
 
-                    <div class="tab-content p-3 text-muted">
-    <div class="tab-pane active" id="navtabs2-home" role="tabpanel">
+<div class="tab-content p-3 text-muted">
+   <div class="tab-pane fade show active" id="st1" role="tabpanel" aria-labelledby="st1-tab">
         <div class="row">
-            <!-- Left Column (Data Laporan Informasi) -->
             <div class="col-lg-6">
                 <h6><b>A. Data Laporan Informasi (LI)</b></h6>
                 <hr>
                 <div class="row">
-                    <!-- No. LI / Tgl. LI -->
                     <div class="col-md-6 mb-3">
-                        <label>No. LI</label>
-                        <input type="text" class="form-control bg-primary text-white" name="no_li" value="{{ old('no_li', $no_ref->no_li) }}" readonly>
+                        <label>No. Surat Tugas</label>
+                        <input type="text" class="form-control bg-primary text-white" name="no_st" value="" readonly>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label>Tgl. LI</label>
-                        <input type="date" class="form-control" placeholder="yyyy-mm-dd" id="tgl_li" name="tgl_li" required>
+                        <label>Tgl. Surat Tugas</label>
+                        <input type="date" class="form-control" placeholder="yyyy-mm-dd" id="tgl_st" name="tgl_st" required>
                     </div>
                     <!-- Media Informasi / Isi Informasi / Catatan -->
-                    <div class="col-md-12 mb-3">
-                        <label>Media Informasi</label>
-                        <input type="text" class="form-control" placeholder="Media Informasi" id="media_informasi" name="media_informasi" required>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label>Isi Informasi</label>
-                        <textarea class="form-control" rows="2" placeholder="Isi Informasi" id="isi_informasi" name="isi_informasi" required></textarea>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label>Catatan</label>
-                        <textarea class="form-control" rows="2" placeholder="Catatan" id="catatan" name="catatan" required></textarea>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right Column (Pejabat Selection) -->
-            <div class="col-lg-6">
-                <h6><b>B. Pilih Pejabat</b></h6>
-                <hr>
-                <!-- Select Pejabat 1 -->
-                <div class="col-lg-12 mb-3">
-                    <label for="id_pejabat_li_1">Pejabat 1</label>
-                    <select class="form-control form-select select2" id="id_pejabat_li_1" name="id_pejabat_li_1" required>
+                   <div class="col-lg-12 mb-3">
+                    <label for="pengendali_operasi">Pengendali Operasi</label>
+                    <select class="form-control form-select select2" id="pengendali_operasi" name="pengendali_operasi" required>
                         <option value="" selected disabled>- Pilih -</option>
                         @foreach ($users as $user)
                                     <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
                         @endforeach      
                     </select>
                 </div>
-                <!-- Select Pejabat 2 -->
-                <div class="col-lg-12 mb-3">
-                    <label for="id_pejabat_li_2">Pejabat 2</label>
-                    <select class="form-control form-select select2" id="id_pejabat_li_2" name="id_pejabat_li_2" required>
-                        <option value="" selected disabled>- Pilih -</option>
+                   <div class="col-lg-12 mb-3">
+                    <label for="tim_operasi">Tim Operasi</label>
+                    <select class="form-control form-select select2 " id="tim_operasi" name="tim_operasi[]" multiple required>
+                        {{-- <option value="" selected disabled>- Pilih -</option> --}}
                         @foreach ($users as $user)
-                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
-                                @endforeach
+                            <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                        @endforeach      
                     </select>
                 </div>
-                <!-- Select Pejabat 3 -->
                 <div class="col-lg-12 mb-3">
-                    <label for="id_pejabat_li_3">Pejabat 3</label>
-                    <select class="form-control form-select select2" id="id_pejabat_li_3" name="id_pejabat_li_3" required>
+                    <label for="tim_dukungan_oeprasi">Tim Dukungan Operasi</label>
+                    <select class="form-control form-select select2 " id="tim_dukungan_oeprasi" name="tim_dukungan_oeprasi[]" multiple required>
+                        {{-- <option value="" selected disabled>- Pilih -</option> --}}
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                        @endforeach      
+                    </select>
+                </div>
+                </div>
+            </div>
+            
+            <!-- Right Column (Pejabat Selection) -->
+            <div class="col-lg-6">
+                <h6><b>B. Penugasan</b></h6>
+                <hr>
+                
+                <div class="col-lg-12 mb-3">
+                    <label for="melaksanakan_tugas">Melaksanakan Tugas</label>
+                    <textarea class="form-control form-input" placeholder="Di Isi Uraian Tugas" name="Melaksanakan Tugas" rows="2"></textarea>
+                </div>
+                
+                <div class="col-lg-12 mb-3">
+                    <label for="wilayah_penugasan">Wilayah Penugasan</label>
+                    <input type="text" class="form-control form-input" placeholder="Isi Wilayah Penugasan" name="wilayah_penugasan">
+                </div>
+                <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <label for="tanggal_dimulai_tugas">Tanggal Dimulai</label>
+                    <input type="date" class="form-control form-input" placeholder="yyyy-mm-dd" name="tanggal_dimulai_tugas">
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="tanggal_berakhir_tugas">Tanggal Berakhir</label>
+                    <input type="date" class="form-control form-input" placeholder="yyyy-mm-dd" name="tanggal_berakhir_tugas">
+                </div>
+                </div>
+                <div class="col-lg-12 mb-3">
+                    <label for="nama_kantor">Nama Kantor Atau Unit</label>
+                    <input type="text" class="form-control form-input" placeholder="Nama Kantor Atau Unit" name="nama_kantor">
+                </div>
+
+                <div class="col-lg-12 mb-3">
+                    <label for="tim_operasi">Penerbit Surat Tugas</label>
+                    <select class="form-control form-select select2 " id="penerbit_surat_tugas" name="penerbit_surat_tugas" required>
                         <option value="" selected disabled>- Pilih -</option>
                         @foreach ($users as $user)
-                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
-                                @endforeach
+                            <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                        @endforeach      
                     </select>
                 </div>
             </div>
@@ -133,7 +168,7 @@
     </div>
 
 
-                        <div class="tab-pane" id="navtabs2-profile" role="tabpanel">
+                        <div class="tab-pane" id="lpti" role="tabpanel">
                            <div class="row">
             <!-- Left Column (Data Laporan Informasi) -->
             <div class="col-lg-6">
@@ -144,11 +179,11 @@
                     <div class="row">
                     <div class="col-md-6 mb-3">
                         <label>No. Urut LAP</label>
-                        <input type="text" class="form-control bg-primary text-white" name="no_urut_lap" value="{{ old('no_urut_lap', $no_ref->no_urut_lap) }}" readonly>
+                        <input type="text" class="form-control bg-primary text-white" name="no_urut_lap" value="" readonly>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>No. LAP</label>
-                        <input type="text" class="form-control bg-primary text-white" name="no_lap" value="{{ old('no_li', $no_ref->no_li) }}" readonly>
+                        <input type="text" class="form-control bg-primary text-white" name="no_lap" value="" readonly>
                     </div>
                     </div>
                     <!-- Media Informasi / Isi Informasi / Catatan -->
@@ -564,7 +599,7 @@
         </div>
                         </div><!-- end tab pane -->
 
-                        <div class="tab-pane" id="navtabs2-messages" role="tabpanel">
+                        <div class="tab-pane" id="lppi" role="tabpanel">
                            <div class="row">
             <!-- Left Column (Data Laporan Informasi) -->
             <div class="col-lg-6">
@@ -573,7 +608,7 @@
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label>No. NPI</label>
-                        <input type="text" class="form-control bg-primary text-white" name="no_npi" value="{{ old('no_npi', $no_ref->no_npi) }}" readonly>
+                        <input type="text" class="form-control bg-primary text-white" name="no_npi" value="" readonly>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label>Sumber Informasi</label>
@@ -609,7 +644,7 @@
                         </div><!-- end tab pane -->
 
 
-                        <div class="tab-pane" id="navtabs2-settings" role="tabpanel">
+        <div class="tab-pane" id="lkai" role="tabpanel">
                             <div class="row">
             <!-- Left Column (Data Laporan Informasi) -->
             <div class="col-lg-6">
@@ -721,14 +756,148 @@
             </div>
         </div>
 
-<div class="card-footer d-flex justify-content-end">
+    
+
+{{-- <div class="card-footer d-flex justify-content-end">
             
            <button type="submit" class="btn btn-success btn-sm me-2">
                 <i data-feather="save"></i> Simpan Data LI
             </button>
-        </div>
+        </div> --}}
 
                         </div><!-- end tab pane -->
+
+                         <div class="tab-pane" id="nhi" role="tabpanel">
+                           <div class="row">
+            <!-- Left Column (Data Laporan Informasi) -->
+            <div class="col-lg-6">
+                <h6><b>A. Nota Pengembalian Informasi</b></h6>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label>No. NPI</label>
+                        <input type="text" class="form-control bg-primary text-white" name="no_npi" value="" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Sumber Informasi</label>
+                        <input type="text" class="form-control" placeholder="Sumber Informasi" id="sumber_informasi_npi" name="sumber_npi" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Unit Penebit Informasi</label>
+                        <textarea class="form-control" rows="2" placeholder="Unit Penerbit Informasi" id="unit_penerbit_informasi" name="unit_penerbit_npi" required></textarea>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Alasan</label>
+                        <textarea class="form-control" rows="2" placeholder="Alasan Tidak Dapat Dilakukan Penindakan Lebih Lanjut" id="alasan_penindakan_npi" name="alasan_npi" required></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column (Pejabat Selection) -->
+            <div class="col-lg-6">
+                <h6><b>B. Pilih Pejabat</b></h6>
+                <hr>
+                <!-- Select Pejabat 1 -->
+                <div class="col-lg-12 mb-3">
+                    <label for="id_pejabat_npi">Pejabat</label>
+                    <select class="form-control form-select select2" id="id_pejabat_npi" name="id_pejabat_npi" required>
+                        <option value="" selected disabled>- Pilih -</option>
+                        @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                        @endforeach      
+                    </select>
+                </div>
+            </div>
+        </div>
+                        </div>
+
+                         <div class="tab-pane" id="ni" role="tabpanel">
+                           <div class="row">
+            <!-- Left Column (Data Laporan Informasi) -->
+            <div class="col-lg-6">
+                <h6><b>A. Nota Pengembalian Informasi</b></h6>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label>No. NPI</label>
+                        <input type="text" class="form-control bg-primary text-white" name="no_npi" value="" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Sumber Informasi</label>
+                        <input type="text" class="form-control" placeholder="Sumber Informasi" id="sumber_informasi_npi" name="sumber_npi" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Unit Penebit Informasi</label>
+                        <textarea class="form-control" rows="2" placeholder="Unit Penerbit Informasi" id="unit_penerbit_informasi" name="unit_penerbit_npi" required></textarea>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Alasan</label>
+                        <textarea class="form-control" rows="2" placeholder="Alasan Tidak Dapat Dilakukan Penindakan Lebih Lanjut" id="alasan_penindakan_npi" name="alasan_npi" required></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column (Pejabat Selection) -->
+            <div class="col-lg-6">
+                <h6><b>B. Pilih Pejabat</b></h6>
+                <hr>
+                <!-- Select Pejabat 1 -->
+                <div class="col-lg-12 mb-3">
+                    <label for="id_pejabat_npi">Pejabat</label>
+                    <select class="form-control form-select select2" id="id_pejabat_npi" name="id_pejabat_npi" required>
+                        <option value="" selected disabled>- Pilih -</option>
+                        @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                        @endforeach      
+                    </select>
+                </div>
+            </div>
+        </div>
+                        </div>
+
+                         <div class="tab-pane" id="recommendations" role="tabpanel">
+                           <div class="row">
+            <!-- Left Column (Data Laporan Informasi) -->
+            <div class="col-lg-6">
+                <h6><b>A. Nota Pengembalian Informasi</b></h6>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label>No. NPI</label>
+                        <input type="text" class="form-control bg-primary text-white" name="no_npi" value="" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Sumber Informasi</label>
+                        <input type="text" class="form-control" placeholder="Sumber Informasi" id="sumber_informasi_npi" name="sumber_npi" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Unit Penebit Informasi</label>
+                        <textarea class="form-control" rows="2" placeholder="Unit Penerbit Informasi" id="unit_penerbit_informasi" name="unit_penerbit_npi" required></textarea>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Alasan</label>
+                        <textarea class="form-control" rows="2" placeholder="Alasan Tidak Dapat Dilakukan Penindakan Lebih Lanjut" id="alasan_penindakan_npi" name="alasan_npi" required></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column (Pejabat Selection) -->
+            <div class="col-lg-6">
+                <h6><b>B. Pilih Pejabat</b></h6>
+                <hr>
+                <!-- Select Pejabat 1 -->
+                <div class="col-lg-12 mb-3">
+                    <label for="id_pejabat_npi">Pejabat</label>
+                    <select class="form-control form-select select2" id="id_pejabat_npi" name="id_pejabat_npi" required>
+                        <option value="" selected disabled>- Pilih -</option>
+                        @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                        @endforeach      
+                    </select>
+                </div>
+            </div>
+        </div>
+                        </div>
 
 
 
@@ -744,6 +913,9 @@
     </div>
     </form>
 </div>
+
+
+
 
 <script>
     feather.replace();
@@ -770,6 +942,7 @@
 </script> --}}
 
 
+
 <style>
     .form-input:disabled {
         background-color: #f0f0f0; 
@@ -786,7 +959,11 @@
     .form-group.disabled label {
         color: #888888; 
     }
+    
 </style>
+
+
+
 
 <script>
 document.querySelector('select[name="jenis_segel"]').addEventListener('change', function() {

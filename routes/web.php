@@ -10,8 +10,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
 
+use App\Http\Controllers\ResetPasswordController;
+
 use App\Http\Controllers\tools\SetNomorDokumenController;
 use App\Http\Controllers\tools\UserController;
+
+use App\Http\Controllers\Dokintelijen\LaporanPengawasanControllers;
 
 use App\Http\Controllers\Dokpenindakan\PenindakanController;
 use App\Http\Controllers\Dokpenindakan\PraPenindakanController;
@@ -82,6 +86,16 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
         ]
     ]);
 
+    // Rute untuk menampilkan halaman reset password
+Route::get('password/reset', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+
+// Rute untuk memproses reset password
+Route::post('password/reset', [ResetPasswordController::class, 'reset']);
+
+Route::post('password/update', [ResetPasswordController::class, 'updatePassword'])->name('password.update');
+
+
+
     // Pra penindakan routes
     Route::resource('Dokpenindakan/pra-penindakan', PraPenindakanController::class);
     Route::get('Dokpenindakan/pra-penindakan/search', [PraPenindakanController::class, 'search'])->name('users.search');
@@ -106,6 +120,9 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     // Lembar Monitoring Barang Routes
     Route::resource('Dokpenyidikan/lembar-monitoring-barang', LembarMonitoringBarangController::class);
 
+
+    //DokIntelijen routes
+    Route::resource('Dokintelijen/laporan-pengawasan', LaporanPengawasanControllers::class);
 
     // Dokpenindakan routes
     Route::resource('Dokpenindakan/DaftarSbp', PenindakanController::class);

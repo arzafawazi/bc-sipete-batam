@@ -65,7 +65,7 @@
         <div class="row">
             <!-- Left Column (Data Laporan Informasi) -->
             <div class="col-lg-6">
-                <h6>A. Data Laporan Informasi (LI)</h6>
+                <h6><b>A. Data Laporan Informasi (LI)</b></h6>
                 <hr>
                 <div class="row">
                     <!-- No. LI / Tgl. LI -->
@@ -96,7 +96,7 @@
             
             <!-- Right Column (Pejabat Selection) -->
             <div class="col-lg-6">
-                <h6>B. Pilih Pejabat</h6>
+                <h6><b>B. Pilih Pejabat</b></h6>
                 <hr>
                 <!-- Select Pejabat 1 -->
                 <div class="col-lg-12 mb-3">
@@ -144,7 +144,7 @@
                            <div class="row">
             <!-- Left Column (Data Laporan Informasi) -->
             <div class="col-lg-6">
-                <h6>A. Data Laporan Lembar Analisis Pra Penindakan (LAP)</h6>
+                <h6><b>A. Data Laporan Lembar Analisis Pra Penindakan (LAP)</b></h6>
                 <hr>
                 <div class="row">
                     <!-- No. LI / Tgl. LI -->
@@ -163,7 +163,7 @@
                         <label>Sumber LAP</label>
                         <input type="text" class="form-control" placeholder="Sumber LAP" id="sumber_lap" name="sumber_lap" value="{{ old('sumber_lap', $praPenindakan->sumber_lap) }}" required>
                     </div>
-                        <h6>B. Uraian Penindakan dan Kelayakan Operasional</h6>
+                        <h6><b>B. Uraian Penindakan dan Kelayakan Operasional</b></h6>
                 <hr>
                     <div class="card-body">
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -536,7 +536,7 @@
                     <label for="kesimpulan">Kesimpulan</label>
                     <textarea class="form-control form-input" name="kesimpulan_lap" placeholder="Kesimpulan" row="2" > {{ old('kesimpulan_lap', $praPenindakan->kesimpulan_lap) }}</textarea>
                 </div>
-                <h6>B. Pilih Pejabat LAP</h6>
+                <h6><b>C. Pilih Pejabat LAP</b></h6>
                 <hr>
                 <!-- Select Pejabat 1 -->
                 <div class="col-lg-12 mb-3">
@@ -585,7 +585,7 @@
                            <div class="row">
             <!-- Left Column (Data Laporan Informasi) -->
             <div class="col-lg-6">
-                <h6>A. Nota Pengembalian Informasi</h6>
+                <h6><b>A. Nota Pengembalian Informasi</b></h6>
                 <hr>
                 <div class="row">
                     <div class="col-md-12 mb-3">
@@ -609,7 +609,7 @@
             
             <!-- Right Column (Pejabat Selection) -->
             <div class="col-lg-6">
-                <h6>B. Pilih Pejabat</h6>
+                <h6><b>B. Pilih Pejabat</b></h6>
                 <hr>
                 <!-- Select Pejabat 1 -->
                 <div class="col-lg-12 mb-3">
@@ -633,7 +633,7 @@
                             <div class="row">
             <!-- Left Column (Data Laporan Informasi) -->
             <div class="col-lg-6">
-                <h6>A. Data Surat Perintah</h6>
+                <h6><b>A. Data Surat Perintah</b></h6>
                 <hr>
                 <div class="row">
                     <!-- No. LI / Tgl. LI -->
@@ -655,7 +655,7 @@
             
             <!-- Right Column (Pejabat Selection) -->
             <div class="col-lg-6">
-                <h6>B. Pilih Pejabat</h6>
+                <h6><b>B. Pilih Pejabat</b></h6>
                 <hr>
                 <!-- Select Pejabat 1 -->
                 <div class="col-lg-12 mb-3">
@@ -737,7 +737,7 @@
             
             
     <button type="submit" class="btn btn-success btn-sm d-flex align-items-center">
-        <i data-feather="save" class="me-1"></i> Simpan Data SBP
+        <i data-feather="save" class="me-1"></i> Simpan Data LI
     </button>
         </div>
 
