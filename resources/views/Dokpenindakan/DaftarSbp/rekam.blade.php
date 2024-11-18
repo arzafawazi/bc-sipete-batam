@@ -362,7 +362,7 @@
                     <textarea class="form-control form-input" placeholder="Jenis Barang" name="jenis_barang" rows="2" disabled></textarea>
                 </div>
             </div>
-            <div class="row mb-3 form-group">
+            <div class="row mb-3 form-group">Fwa
                 <label class="col-sm-4 col-form-label">Jenis/Nomor dan Tgl. Dokumen</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control form-input" name="jenis_no_tgl_dok" placeholder="-" disabled>
