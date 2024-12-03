@@ -405,18 +405,18 @@
                                       </div>
                                     </div>
 
-                                     <div class="row mb-3 form-group">
+                                    <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Dokumentasi Audio</label>
                                       <div class="col-sm-8">
-                                      <input id="rekaman-audio" name="dokumentasi_audio_lpt" value="{{old('dokumentasi_audio_lpt', $pengawasan->dokumentasi_audio_lpt)}}" class="form-control" placeholder="Masukkan Link Audio">
+                                        <input id="rekaman-audio" name="dokumentasi_audio_lpt" value="{{ old('dokumentasi_audio_lpt', $pengawasan->dokumentasi_audio_lpt) }}" class="form-control" placeholder="Masukkan Link Audio">
                                       </div>
                                     </div>
 
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Rekaman Video</label>
                                       <div class="col-sm-8">
-                                        <input id="rekaman-video" name="dokumentasi_video_lpt" value="{{old('dokumentasi_video_lpt', $pengawasan->dokumentasi_video_lpt)}}" class="form-control" placeholder="Masukkan Link Video">
-                                        </div>
+                                        <input id="rekaman-video" name="dokumentasi_video_lpt" value="{{ old('dokumentasi_video_lpt', $pengawasan->dokumentasi_video_lpt) }}" class="form-control" placeholder="Masukkan Link Video">
+                                      </div>
                                     </div>
 
                                   </div>
@@ -622,12 +622,35 @@
                             </div>
 
                           </div>
+
+                          @php
+                            $ikhtisar = json_decode($pengawasan->ikhtisar, true) ?? [];
+                          @endphp
+
                           <h6><b>C. Ikhtisar Data</b>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info" onclick="tambahIkhtisar()">+</button></h6>
                           <hr>
                           <div class="container my-4">
-                            <div id="ikhtisar-container" class="col-lg-12 ">
+                            <div id="ikhtisar-container" class="col-lg-12">
                             </div>
+
+                            @for ($i = 0; $i < count($ikhtisar); $i++)
+                              <div class="row align-items-center mb-2">
+                                <div class="col-md-12 mb-2">
+                                  <textarea name="ikhtisar[{{ $i }}][ikhtisar]" class="form-control">{{ $ikhtisar[$i]['ikhtisar'] ?? '' }}</textarea>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                  <input type="text" name="ikhtisar[{{ $i }}][sumber]" class="form-control" value="{{ $ikhtisar[$i]['sumber'] ?? '' }}">
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                  <input type="text" name="ikhtisar[{{ $i }}][validitas]" class="form-control" value="{{ $ikhtisar[$i]['validitas'] ?? '' }}">
+                                </div>
+                                <div class="col-md-12 mb-2">
+                                  <button type="button" class="btn btn-danger w-100" onclick="this.closest('.row').remove()">Hapus</button>
+                                </div>
+                              </div>
+                            @endfor
                           </div>
+
 
                         </div>
                       </div>

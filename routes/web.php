@@ -87,12 +87,12 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     ]);
 
     // Rute untuk menampilkan halaman reset password
-Route::get('password/reset', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::get('password/reset', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 
-// Rute untuk memproses reset password
-Route::post('password/reset', [ResetPasswordController::class, 'reset']);
+    // Rute untuk memproses reset password
+    Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
-Route::post('password/update', [ResetPasswordController::class, 'updatePassword'])->name('password.update');
+    Route::post('password/update', [ResetPasswordController::class, 'updatePassword'])->name('password.update');
 
 
 
@@ -123,6 +123,8 @@ Route::post('password/update', [ResetPasswordController::class, 'updatePassword'
 
     //DokIntelijen routes
     Route::resource('Dokintelijen/laporan-pengawasan', LaporanPengawasanControllers::class);
+    Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-tugas', [LaporanPengawasanControllers::class, 'print_surat_tugas'])->name('surat-tugas.print');
+    Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-lpt', [LaporanPengawasanControllers::class, 'print_surat_lpt'])->name('surat-lpt.print');
 
     // Dokpenindakan routes
     Route::resource('Dokpenindakan/DaftarSbp', PenindakanController::class);
@@ -137,7 +139,6 @@ Route::post('password/update', [ResetPasswordController::class, 'updatePassword'
     Route::resource('Pengawasanlain/ba-pengawasan-bongkar', BaPengawasanBongkarController::class);
     Route::resource('Pengawasanlain/ba-cacah-amunisi', BaCacahAmunisiController::class);
     Route::resource('Pengawasanlain/bast-senjata-api', BastSenjataApiController::class);
-
 });
 
 

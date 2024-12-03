@@ -206,11 +206,162 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-soft-danger btn-icon btn-sm rounded-pill" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                              <i data-feather="trash" class="icon-sm"></i>Hapus
+                              <i data-feather="trash" class="icon-sm"></i> Hapus
                             </button>
                           </form>
+                          <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                            <i data-feather="printer" class="icon-sm"></i> Print
+                          </button>
                         </div>
                       </td>
+
+                      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header border-bottom-0 pb-0">
+                              <h5 class="modal-title" id="printModalLabel">Print Dokumen intelijen</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="container">
+                                <div class="row g-3">
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-primary shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-primary mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">Surat Tugas</h6>
+                                        <a href="{{ route('surat-tugas.print', $laporanpengawasan->id) }}" class="btn btn-outline-primary print-btn">Print</a>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-success shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-success mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">Surat LPT</h6>
+                                        <a href="{{ route('surat-lpt.print', $laporanpengawasan->id) }}" class="btn btn-outline-success print-btn">Print</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-warning shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-warning mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">Surat LPPI</h6>
+                                        <button class="btn btn-outline-warning print-btn" onclick="window.print()">Print</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row g-3">
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-danger shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-danger mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">Surat LKAI</h6>
+                                        <button class="btn btn-outline-danger print-btn" onclick="window.print()">Print</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-info shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-info mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">Surat NHI</h6>
+                                        <button class="btn btn-outline-info print-btn" onclick="window.print()">Print</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-dark shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-dark mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">Surat HGI</h6>
+                                        <button class="btn btn-outline-dark print-btn" onclick="window.print()">Print</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row g-3">
+                                  <div class="col-md-4 offset-md-4">
+                                    <div class="card print-card border-secondary shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-secondary mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">Surat SPI</h6>
+                                        <button class="btn btn-outline-secondary print-btn" onclick="window.print()">Print</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer border-top-0">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
                     </tr>
                   @endforeach
                 </tbody>

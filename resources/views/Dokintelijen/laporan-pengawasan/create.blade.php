@@ -66,6 +66,12 @@
                         <span class="d-none d-sm-block">NI</span>
                       </a>
                     </li>
+                    <li class="nav-item" id="nota-dinas-tab-item" style="display: none;">
+                      <a class="nav-link" id="nota-dinas-tab" data-bs-toggle="tab" href="#nota-dinas-content" role="tab" aria-controls="nota-dinas-content" aria-selected="false">
+                        <span class="d-block d-sm-none">Nota Dinas</span>
+                        <span class="d-none d-sm-block">Nota Dinas</span>
+                      </a>
+                    </li>
                   </ul>
                 </div>
 
@@ -172,11 +178,11 @@
                           <div class="row">
                             <div class="col-md-6 mb-3">
                               <label>No. LPT</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_lpt" value="{{ old('no_lpt', $no_ref->no_lpt) }}" >
+                              <input type="text" class="form-control bg-primary text-white" name="no_lpt" value="{{ old('no_lpt', $no_ref->no_lpt) }}">
                             </div>
                             <div class="col-md-6 mb-3">
                               <label>Surat Tugas Nomor</label>
-                              <input type="text" class="form-control bg-primary text-white" value="{{ old('no_st', $no_ref->no_st) }}" >{{-- ngambil dari no_st --}}
+                              <input type="text" class="form-control bg-primary text-white" value="{{ old('no_st', $no_ref->no_st) }}">{{-- ngambil dari no_st --}}
                             </div>
                           </div>
                           <!-- Media Informasi / Isi Informasi / Catatan -->
@@ -367,7 +373,7 @@
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Dokumentasi Audio</label>
                                       <div class="col-sm-8">
-                                      <input id="rekaman-audio" name="dokumentasi_audio_lpt" class="form-control" placeholder="Masukkan Link Audio">
+                                        <input id="rekaman-audio" name="dokumentasi_audio_lpt" class="form-control" placeholder="Masukkan Link Audio">
                                       </div>
                                     </div>
 
@@ -375,7 +381,7 @@
                                       <label class="col-sm-4 col-form-label">Rekaman Video</label>
                                       <div class="col-sm-8">
                                         <input id="rekaman-video" name="dokumentasi_video_lpt" class="form-control" placeholder="Masukkan Link Video">
-                                        </div>
+                                      </div>
                                     </div>
 
 
@@ -457,7 +463,7 @@
                         <div class="row">
                           <div class="col-md-6 mb-3">
                             <label>No. LPPI</label>
-                            <input type="text" class="form-control bg-primary text-white" placeholder="No. LPPI" value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi" name="no_lppi" >
+                            <input type="text" class="form-control bg-primary text-white" placeholder="No. LPPI" value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi" name="no_lppi">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>Tgl. LPPI</label>
@@ -667,7 +673,7 @@
                           <!-- No. LI / Tgl. LI -->
                           <div class="col-md-6 mb-3">
                             <label>No. LKAI</label>
-                            <input type="text" name="no_lkai" value="{{ old('no_lkai', $no_ref->no_lkai) }}" class="form-control bg-primary text-white" >
+                            <input type="text" name="no_lkai" value="{{ old('no_lkai', $no_ref->no_lkai) }}" class="form-control bg-primary text-white">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>tgl. LKAI</label>
@@ -687,7 +693,7 @@
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">Sumber LPPI</label>
                                       <div class="col-sm-8">
-                                        <select class="form-select" name="sumber_lppi"  onchange="toggleInputs(this, 'sumberLppiInputs')"> 
+                                        <select class="form-select" name="sumber_lppi" onchange="toggleInputs(this, 'sumberLppiInputs')">
                                           <option value="TIDAK">TIDAK</option>
                                           <option value="YA">Ya</option>
                                         </select>
@@ -695,19 +701,19 @@
                                     </div>
 
                                     <div id="sumberLppiInputs">
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">No. LPPI </label>
-                                      <div class="col-sm-8">
-                                        <input type="text" value="" class="form-control form-input bg-primary text-white" placeholder="NO LPPI" id="no_lppi_disabled" disabled readonly>
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">No. LPPI </label>
+                                        <div class="col-sm-8">
+                                          <input type="text" value="" class="form-control form-input bg-primary text-white" placeholder="NO LPPI" id="no_lppi_disabled" disabled readonly>
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Tanggal LPPI</label>
-                                      <div class="col-sm-8">
-                                        <input type="date" id="tgl_lppi_disabled" class="form-control form-input bg-primary text-white" disabled readonly>
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Tanggal LPPI</label>
+                                        <div class="col-sm-8">
+                                          <input type="date" id="tgl_lppi_disabled" class="form-control form-input bg-primary text-white" disabled readonly>
+                                        </div>
                                       </div>
-                                    </div>
                                     </div>
 
                                   </div>
@@ -1027,14 +1033,34 @@
                         <h6><b>A. Data Nota Hasil Intelijen</b></h6>
                         <hr>
                         <div class="row">
-                          <div class="col-md-6 mb-3">
+                          <div class="col-md-12 mb-3">
+                            <label>Tipe NHI</label>
+                            <select class="form-control" id="tipe_nhi" name="tipe_nhi">
+                              <option value="">-- Pilih Tipe --</option>
+                              <option value="NHI">NHI</option>
+                              <option value="NHI-HKI">NHI-HKI</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-6 mb-3 nhi-input" style="display: none;">
                             <label>No. NHI</label>
                             <input type="text" class="form-control bg-primary text-white" value="{{ old('no_nhi', $no_ref->no_nhi) }}" placeholder="No. NHI" id="no_nhi" name="no_nhi">
                           </div>
-                          <div class="col-md-6 mb-3">
+                          <div class="col-md-6 mb-3 nhi-input" style="display: none;">
                             <label>Tanggal NHI</label>
                             <input type="date" class="form-control bg-primary text-white" id="tgl_nhi" name="tgl_nhi">
                           </div>
+
+                          <div class="col-md-6 mb-3 nhi-hki-input" style="display: none;">
+                            <label>No. NHI-HKI</label>
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_nhi_hki', $no_ref->no_nhi_hki) }}" placeholder="No. NHI-HKI" id="no_nhi_hki" name="no_nhi_hki">
+                          </div>
+                          <div class="col-md-6 mb-3 nhi-hki-input" style="display: none;">
+                            <label>Tanggal NHI-HKI</label>
+                            <input type="date" class="form-control bg-primary text-white" id="tgl_nhi_hki" name="tgl_nhi_hki">
+                          </div>
+
+
                           <div class="col-md-6 mb-3">
                             <label>Sifat NHI</label>
                             <select class="form-control" id="sifat_nhi" name="sifat_nhi">
@@ -1053,7 +1079,8 @@
                           </div>
                           <h6><b>B. Referensi</b></h6>
                           <hr>
-                          <div class="col-md-6 mb-3">
+
+                          {{-- <div class="col-md-6 mb-3">
                             <label>No. LKAI</label>
                             <input type="text" class="form-control" placeholder="No. LKAI" value="">
                           </div>
@@ -1061,7 +1088,7 @@
                           <div class="col-md-6 mb-3">
                             <label>Tgl. LKAI</label>
                             <input type="date" class="form-control" value="">
-                          </div>
+                          </div> --}}
 
                           <div class="col-md-12 mb-3">
                             <label>Jabatan Penerima NHI</label>
@@ -1400,7 +1427,7 @@
 
                           <div class="col-md-6 mb-3">
                             <label>Tgl. NI</label>
-                            <input type="date" class="form-control bg-primary text-white"  id="tgl_ni" name="tgl_ni">
+                            <input type="date" class="form-control bg-primary text-white" id="tgl_ni" name="tgl_ni">
                           </div>
 
                           <div class="col-md-6 mb-3">
@@ -1476,6 +1503,284 @@
                   </div>
 
 
+                  <div class="tab-pane" id="nota-dinas-content" role="tabpanel">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <h6><b>A. Data Nota Dinas</b></h6>
+                        <hr>
+                        <div class="row">
+
+                          <div class="col-md-6 mb-3">
+                            <label>YTH</label>
+                            <input type="text" class="form-control" placeholder="Yang Terhormat" id="yth_notdin" name="yth_notdin">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Dari</label>
+                            <input type="text" class="form-control" placeholder="Dari" id="dari_notdin" name="dari_notdin">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Sifat Nota Dinas</label>
+                            <select class="form-control" id="sifat_notdin" name="sifat_notdin">
+                              <option value="" selected disabled>- Pilih -</option>
+                              <option value="Biasa">Biasa</option>
+                              <option value="Rahasia">Rahasia</option>
+                              <option value="Sangat Rahasia">Sangat Rahasia</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Lampiran</label>
+                            <input type="text" class="form-control" placeholder="Lampiran Nota Dinas" name="lampiran_notdin">
+                          </div>
+
+                          <div class="col-md-12 mb-3">
+                            <label>Hal</label>
+                            <textarea class="form-control" rows="4" placeholder="Hal" id="hal" name="hal_notdin"></textarea>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6">
+                        <h6><b>C. Data Isi Nota Dinas</b></h6>
+                        <hr>
+
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header">
+                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse19" aria-expanded="false" aria-controls="flush-collapse19">
+                                1. Data Pengangkut Laut
+                              </button>
+                            </h2>
+                            <div id="flush-collapse19" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div class="accordion-body bg-light">
+
+                                {{-- <div class="row mb-3">
+                                  <label class="col-sm-4 col-form-label">ISI DATA</label>
+                                  <div class="col-sm-8">
+                                    <select id="internal" class="form-select" name="internal_lppi" onchange="toggleInputs(this, 'internalInputs')"> <!-- Ubah ID di sini -->
+                                      <option value="TIDAK">TIDAK</option>
+                                      <option value="YA">Ya</option>
+                                    </select>
+                                  </div>
+                                </div> --}}
+
+                                <div id="">
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Nama Sarkut
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="sarkut_notdin" placeholder="Nama Sarana Pengangkut">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      NPWP
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="npwp_notdin" placeholder="NPWP">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Alamat
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="alamat_notdin" placeholder="Alamat">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      IMO
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="imo_notdin" placeholder="IMO">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Vessel Type
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="vessel_type_notdin" placeholder="Vessel Type">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      MMSI
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="mmsi_notdin" placeholder="MMSI">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      CALL SIGN
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="call_sign_notdin" placeholder="CALL SIGN">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label for="flag_notdin" class="col-sm-4 col-form-label">
+                                      Flag
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <select class="form-select select2" name="flag_notdin" id="flag_notdin">
+                                        <option selected disabled>Pilih Flag</option>
+                                        @foreach ($nama_negara as $benua => $negaraList)
+                                          <optgroup label="{{ $benua }}">
+                                            @foreach ($negaraList as $negara)
+                                              <option value="{{ $negara->KdEdi }}">
+                                                {{ $negara->UrEdi }} - ({{ $negara->KdEdi }})
+                                              </option>
+                                            @endforeach
+                                          </optgroup>
+                                        @endforeach
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Gross Tonnage
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="gross_tonnage_notdin" placeholder="Gross Tonnage">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Lenght Overall
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="lenght_overall_notdin" placeholder="Lenght Overall">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Year Built
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="year_built_notdin" placeholder="Year Built">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Owner
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="owner_notdin" placeholder="Owner">
+                                    </div>
+                                  </div>
+
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="accordion-item">
+                            <h2 class="accordion-header">
+                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse199" aria-expanded="false" aria-controls="flush-collapse199">
+                                2. Detail
+                              </button>
+                            </h2>
+                            <div id="flush-collapse199" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div class="accordion-body bg-light">
+
+                                {{-- <div class="row mb-3">
+                                  <label for="eksternal" class="col-sm-4 col-form-label">ISI DATA</label>
+                                  <div class="col-sm-8">
+                                    <select id="eksternal" class="form-select" name="eksternal_lppi" onchange="toggleInputs(this, 'eksternalInputs')"> <!-- Ubah ID di sini -->
+                                      <option value="TIDAK">TIDAK</option>
+                                      <option value="YA">Ya</option>
+                                    </select>
+                                  </div>
+                                </div> --}}
+
+                                <!-- Form Inputs -->
+                                <div id="">
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Rentang Waktu Penelitian</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" id="date-range-picker" name="rentang_waktu_notdin" class="form-control" placeholder="Pilih Rentang Waktu Penelitian">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Pelabuhan Asal</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="pelabuhan_asal_notdin" placeholder="Pelabuhan Asal">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Pelabuhan tujuan</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="pelabuhan_tujuan_notdin" placeholder="Pelabuhan tujuan">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Titik Kordinat</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="titik_kordinat_notdin" placeholder="Titik Kordinat">
+                                    </div>
+                                  </div>
+
+
+                                  <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                      <div class="form-group">
+                                        <label class="col-form-label">Perkiraan Waktu Berangkat</label>
+                                        <input type="text" class="form-control" name="perkiraan_keberangkatan_notdin" id="datetime-datepicker" placeholder="Perkiraan Waktu Keberangkatan">
+                                      </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                      <div class="form-group">
+                                        <label class="col-form-label">Perkiraan Waktu Datang</label>
+                                        <input type="text" class="form-control" name="perkiraan_kedatangan_notdin" id="datetime-datepicker" placeholder="Perkiraan Waktu Kedatangan">
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group" align="center">
+                                    <label class="col-form-label">Waktu Penyampaian</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" id="basic-datepicker" name="waktu_penyampaian_notdin" placeholder="Waktu Penyampaian">
+                                    </div>
+                                  </div>
+
+
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
             </div> <!-- end card-->
@@ -1528,12 +1833,8 @@
           tab: "ni-tab-item"
         },
         {
-          id: "recommendations-select",
-          tab: "recommendations-tab-item"
-        },
-        {
-          id: "info-select",
-          tab: "informations-tab-item"
+          id: "rekomendasi_lainnya",
+          tab: "nota-dinas-tab-item"
         },
       ];
 
@@ -1589,7 +1890,6 @@
       const colIkhtisar = document.createElement('div');
       colIkhtisar.classList.add('col-md-12', 'mb-2');
       const inputIkhtisar = document.createElement('textarea');
-      inputIkhtisar.type = 'text';
       inputIkhtisar.classList.add('form-control');
       inputIkhtisar.placeholder = 'Ikhtisar';
       inputIkhtisar.name = 'ikhtisar[]';
@@ -1618,7 +1918,7 @@
       const btnRemove = document.createElement('button');
       btnRemove.type = 'button';
       btnRemove.classList.add('btn', 'btn-danger', 'w-100');
-      btnRemove.innerText = 'Hapus';
+      btnRemove.textContent = 'Hapus';
       btnRemove.onclick = () => row.remove();
       colRemove.appendChild(btnRemove);
 
@@ -1628,7 +1928,6 @@
       row.appendChild(colRemove);
 
       document.getElementById('ikhtisar-container').appendChild(row);
-      feather.replace();
     }
   </script>
 
@@ -1636,64 +1935,87 @@
 
 
 
- <script>
-  const inputSource = document.getElementById('no_lppi');
-  const inputSource2 = document.getElementById('tgl_lppi');
-  const inputTarget = document.getElementById('no_lppi_disabled');
-  const inputTarget2 = document.getElementById('tgl_lppi_disabled');
-  const sumberLppiSelect = document.querySelector('[name="sumber_lppi"]'); 
+  <script>
+    const inputSource = document.getElementById('no_lppi');
+    const inputSource2 = document.getElementById('tgl_lppi');
+    const inputTarget = document.getElementById('no_lppi_disabled');
+    const inputTarget2 = document.getElementById('tgl_lppi_disabled');
+    const sumberLppiSelect = document.querySelector('[name="sumber_lppi"]');
 
-  function syncValues() {
-    if (sumberLppiSelect.value === 'YA') { 
-      inputTarget.value = inputSource ? inputSource.value : '';
-      inputTarget2.value = inputSource2 ? inputSource2.value : '';
+    function syncValues() {
+      if (sumberLppiSelect.value === 'YA') {
+        inputTarget.value = inputSource ? inputSource.value : '';
+        inputTarget2.value = inputSource2 ? inputSource2.value : '';
+      }
     }
-  }
 
-  function toggleSumberLppiInputs(selectElement) {
-    const container = document.getElementById('sumberLppiInputs');
-    const inputs = container.querySelectorAll('input, textarea, select');
-    const isEnabled = selectElement.value === 'YA'; 
+    function toggleSumberLppiInputs(selectElement) {
+      const container = document.getElementById('sumberLppiInputs');
+      const inputs = container.querySelectorAll('input, textarea, select');
+      const isEnabled = selectElement.value === 'YA';
 
-    inputs.forEach(input => {
-      input.disabled = !isEnabled; 
-      if (!isEnabled) {
-        input.value = ''; 
+      inputs.forEach(input => {
+        input.disabled = !isEnabled;
+        if (!isEnabled) {
+          input.value = '';
+        }
+      });
+
+      if (isEnabled) {
+        syncValues();
+      }
+    }
+
+    sumberLppiSelect.addEventListener('change', function() {
+      toggleSumberLppiInputs(this);
+    });
+
+    toggleSumberLppiInputs(sumberLppiSelect);
+
+    function toggleInputs(selectElement, inputContainerId) {
+      if (selectElement === sumberLppiSelect) {
+        toggleSumberLppiInputs(selectElement);
+        return;
+      }
+
+      // Logika umum untuk elemen lain
+      const container = document.getElementById(inputContainerId);
+      const inputs = container.querySelectorAll('input, textarea, select');
+      const isEnabled = selectElement.value === 'YA';
+
+      inputs.forEach(input => {
+        input.disabled = !isEnabled;
+        if (!isEnabled) {
+          input.value = '';
+        }
+      });
+    }
+  </script>
+
+  <script>
+    document.getElementById('tipe_nhi').addEventListener('change', function() {
+      const tipe = this.value;
+
+      document.querySelectorAll('.nhi-input').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.nhi-hki-input').forEach(el => el.style.display = 'none');
+
+      if (tipe === 'NHI') {
+        document.querySelectorAll('.nhi-input').forEach(el => el.style.display = 'block');
+      } else if (tipe === 'NHI-HKI') {
+        document.querySelectorAll('.nhi-hki-input').forEach(el => el.style.display = 'block');
       }
     });
 
-    if (isEnabled) {
-      syncValues();
-    }
-  }
+    document.querySelector('form').addEventListener('submit', function(event) {
+      const tipe = document.getElementById('tipe_nhi').value;
 
-  sumberLppiSelect.addEventListener('change', function () {
-    toggleSumberLppiInputs(this);
-  });
-
-  toggleSumberLppiInputs(sumberLppiSelect);
-
-  function toggleInputs(selectElement, inputContainerId) {
-    if (selectElement === sumberLppiSelect) {
-      toggleSumberLppiInputs(selectElement); 
-      return;
-    }
-
-    // Logika umum untuk elemen lain
-    const container = document.getElementById(inputContainerId);
-    const inputs = container.querySelectorAll('input, textarea, select');
-    const isEnabled = selectElement.value === 'YA';
-
-    inputs.forEach(input => {
-      input.disabled = !isEnabled;
-      if (!isEnabled) {
-        input.value = ''; 
+      if (tipe === 'NHI') {
+        document.querySelectorAll('.nhi-hki-input input').forEach(input => input.value = '');
+      } else if (tipe === 'NHI-HKI') {
+        document.querySelectorAll('.nhi-input input').forEach(input => input.value = '');
       }
     });
-  }
-</script>
-
-  
+  </script>
 @endsection
 
 @section('script')

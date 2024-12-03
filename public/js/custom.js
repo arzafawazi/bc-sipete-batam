@@ -3,34 +3,49 @@ window.addEventListener("load", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    flatpickr("#date-range-picker", {
-        mode: "range",
+    flatpickr("#basic-datepicker", {
         dateFormat: "Y-m-d",
+        locale: "id",
     });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    flatpickr("#date-range-picker", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        locale: "id",
+    });
+});
 
-// Inisialisasi Tagify untuk input video
+document.addEventListener("DOMContentLoaded", function () {
+    flatpickr("#datetime-datepicker", {
+        dateFormat: "Y-m-d H:i",
+        enableTime: true,
+        time_24hr: true,
+        locale: "id",
+        onClose: function (selectedDates) {
+            console.log("Selected range:", selectedDates);
+        },
+    });
+});
+
 const videoInput = document.querySelector("#rekaman-video");
 if (videoInput) {
     const videoTagify = new Tagify(videoInput, {
-        delimiters: ",", 
+        delimiters: ",",
         maxTags: 10,
         placeholder: "Masukkan Link Video",
         dropdown: {
-            enabled: 0
-        }
+            enabled: 0,
+        },
     });
 
-    // Event listener untuk perubahan video tags
-    videoTagify.on('change', function(e) {
-        // Ambil hanya nilai 'value' dari setiap tag
-        const values = e.detail.value.map(tag => tag.value);  // Ambil URL saja
-        videoInput.value = values.length ? values.join(',') : '';  // Gabungkan sebagai string
+    videoTagify.on("change", function (e) {
+        const values = e.detail.value.map((tag) => tag.value);
+        videoInput.value = values.length ? values.join(",") : "";
     });
 }
 
-// Inisialisasi Tagify untuk input audio
 const audioInput = document.querySelector("#rekaman-audio");
 if (audioInput) {
     const audioTagify = new Tagify(audioInput, {
@@ -38,48 +53,74 @@ if (audioInput) {
         maxTags: 10,
         placeholder: "Masukkan Link Audio",
         dropdown: {
-            enabled: 0
-        }
+            enabled: 0,
+        },
     });
 
-    // Event listener untuk perubahan audio tags
-    audioTagify.on('change', function(e) {
-        // Ambil hanya nilai 'value' dari setiap tag
-        const values = e.detail.value.map(tag => tag.value);  // Ambil URL saja
-        audioInput.value = values.length ? values.join(',') : '';  // Gabungkan sebagai string
+    audioTagify.on("change", function (e) {
+        const values = e.detail.value.map((tag) => tag.value);
+        audioInput.value = values.length ? values.join(",") : "";
     });
 }
 
-// Handle form submission
 const form = document.querySelector("form");
 if (form) {
-    form.addEventListener('submit', function(e) {
+    form.addEventListener("submit", function (e) {
         try {
-            // Persiapkan data video jika ada
             const videoInput = document.querySelector("#rekaman-video");
             if (videoInput && window.videoTagify) {
-                // Ambil nilai 'value' dari tag video
-                const videoLinks = videoTagify.value.map(tag => tag.value);  
-                videoInput.value = videoLinks.length ? videoLinks.join(',') : '';  // Gabungkan sebagai string
+                const videoLinks = videoTagify.value.map((tag) => tag.value);
+                videoInput.value = videoLinks.length
+                    ? videoLinks.join(",")
+                    : "";
             }
-            
-            // Persiapkan data audio jika ada
+
             const audioInput = document.querySelector("#rekaman-audio");
             if (audioInput && window.audioTagify) {
-                // Ambil nilai 'value' dari tag audio
-                const audioLinks = audioTagify.value.map(tag => tag.value);  
-                audioInput.value = audioLinks.length ? audioLinks.join(',') : '';  // Gabungkan sebagai string
+                const audioLinks = audioTagify.value.map((tag) => tag.value);
+                audioInput.value = audioLinks.length
+                    ? audioLinks.join(",")
+                    : "";
             }
-            
-            // Log untuk debugging
-            console.log('Form submitted with:', {
-                video: videoInput ? videoInput.value : 'no video input',
-                audio: audioInput ? audioInput.value : 'no audio input'
+
+            console.log("Form submitted with:", {
+                video: videoInput ? videoInput.value : "no video input",
+                audio: audioInput ? audioInput.value : "no audio input",
             });
-            
         } catch (error) {
-            console.error('Error preparing form data:', error);
+            console.error("Error preparing form data:", error);
         }
     });
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    // Inisialisasi Quill.js
+    var quill = new Quill("#editor-container", {
+        theme: "snow",
+        modules: {
+            toolbar: [
+                ["bold", "italic", "underline"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                [{ align: [] }],
+                ["clean"],
+            ],
+        },
+    });
+
+    // Referensi ke input hidden
+    var hiddenInput = document.querySelector("#melaksanakan_tugas_st");
+
+    // Set nilai awal hidden input dari Quill.js
+    hiddenInput.value = quill.root.innerHTML;
+
+    // Sinkronisasi saat ada perubahan teks di Quill.js
+    quill.on("text-change", function () {
+        hiddenInput.value = quill.root.innerHTML;
+    });
+
+    // Tambahkan sinkronisasi ketika form dikirimkan
+    var form = document.querySelector("form");
+    form.onsubmit = function () {
+        hiddenInput.value = quill.root.innerHTML;
+    };
+});
