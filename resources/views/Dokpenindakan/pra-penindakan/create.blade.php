@@ -27,35 +27,46 @@
               <div class="card">
 
                 <div class="card-body">
-                  <ul class="nav nav-pills nav-justified flex-nowrap overflow-auto" style="white-space: nowrap;" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" id="navtabs2-home-tab" data-bs-toggle="tab" href="#navtabs2-home" role="tab" aria-controls="navtabs2-home" aria-selected="true">
-                        <span class="d-block d-sm-none">(LA)</span>
-                        <span class="d-none d-sm-block">Laporan Informasi (LA)</span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="navtabs2-profile-tab" data-bs-toggle="tab" href="#navtabs2-profile" role="tab" aria-controls="navtabs2-profile" aria-selected="false">
-                        <span class="d-block d-sm-none">LAP</i></span>
-                        <span class="d-none d-sm-block">Lembar Analisis Pra Penindakan (LAP)</span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="navtabs2-messages-tab" data-bs-toggle="tab" href="#navtabs2-messages" role="tab" aria-controls="navtabs2-messages" aria-selected="false">
-                        <span class="d-block d-sm-none">NPI</i></span>
-                        <span class="d-none d-sm-block">Nota Pengembalian Informasi (NPI)</span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="navtabs2-settings-tab" data-bs-toggle="tab" href="#navtabs2-settings" role="tab" aria-controls="navtabs2-settings" aria-selected="false">
-                        <span class="d-block d-sm-none">SP</span>
-                        <span class="d-none d-sm-block">Surat Perintah </span>
-                      </a>
-                    </li>
-                  </ul>
+                  <div class="tabs-container" id="tabs-container">
+                    <ul class="nav nav-pills nav-justified flex-nowrap overflow-auto" style="white-space: nowrap;" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="navtabs2-home-tab" data-bs-toggle="tab" href="#navtabs2-home" role="tab" aria-controls="navtabs2-home" aria-selected="true">
+                          <span class="d-block d-sm-none">(LI)</span>
+                          <span class="d-none d-sm-block">Laporan Informasi (LI)</span>
+                        </a>
+                      </li>
+                      <li class="nav-item" id="navtabs2-messages-tab-item" style="display: none;">
+                        <a class="nav-link" id="navtabs2-messages-tab" data-bs-toggle="tab" href="#navtabs2-messages" role="tab" aria-controls="navtabs2-messages" aria-selected="false">
+                          <span class="d-block d-sm-none">NPI</span>
+                          <span class="d-none d-sm-block">Nota Pengembalian Informasi (NPI)</span>
+                        </a>
+                      </li>
+                      <li class="nav-item" id="navtabs2-profile-tab-item" style="display: none;">
+                        <a class="nav-link" id="navtabs2-profile-tab" data-bs-toggle="tab" href="#navtabs2-profile" role="tab" aria-controls="navtabs2-profile" aria-selected="false">
+                          <span class="d-block d-sm-none">LAP</span>
+                          <span class="d-none d-sm-block">Lembar Analisis Pra Penindakan (LAP)</span>
+                        </a>
+                      </li>
+                      <li class="nav-item" id="navtabs2-mpp-tab-item" style="display: none;">
+                        <a class="nav-link" id="navtabs2-mpp-tab" data-bs-toggle="tab" href="#navtabs2-mpp" role="tab" aria-controls="navtabs2-mpp" aria-selected="false">
+                          <span class="d-block d-sm-none">MPP</span>
+                          <span class="d-none d-sm-block">Memo Pelimpahan Penindakan (MPP)</span>
+                        </a>
+                      </li>
+                      <li class="nav-item" id="navtabs2-settings-tab-item" style="display: none;">
+                        <a class="nav-link" id="navtabs2-settings-tab" data-bs-toggle="tab" href="#navtabs2-settings" role="tab" aria-controls="navtabs2-settings" aria-selected="false">
+                          <span class="d-block d-sm-none">SP</span>
+                          <span class="d-none d-sm-block">Surat Perintah</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
 
 
-                  <div class="tab-content p-3 text-muted">
+
+
+                  <di class="tab-content p-3 text-muted">
+
                     <div class="tab-pane active" id="navtabs2-home" role="tabpanel">
                       <div class="row">
                         <!-- Left Column (Data Laporan Informasi) -->
@@ -63,68 +74,209 @@
                           <h6><b>A. Data Laporan Informasi (LI)</b></h6>
                           <hr>
                           <div class="row">
-                            <!-- No. LI / Tgl. LI -->
                             <div class="col-md-6 mb-3">
                               <label>No. LI</label>
                               <input type="text" class="form-control bg-primary text-white" name="no_li" value="{{ old('no_li', $no_ref->no_li) }}" readonly>
                             </div>
                             <div class="col-md-6 mb-3">
                               <label>Tgl. LI</label>
-                              <input type="date" class="form-control" placeholder="yyyy-mm-dd" id="tgl_li" name="tgl_li" required>
+                              <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" id="tgl_li" name="tgl_li">
                             </div>
-                            <!-- Media Informasi / Isi Informasi / Catatan -->
-                            <div class="col-md-12 mb-3">
-                              <label>Media Informasi</label>
-                              <input type="text" class="form-control" placeholder="Media Informasi" id="media_informasi" name="media_informasi" required>
-                            </div>
+
                             <div class="col-md-12 mb-3">
                               <label>Isi Informasi</label>
-                              <textarea class="form-control" rows="2" placeholder="Isi Informasi" id="isi_informasi" name="isi_informasi" required></textarea>
+                              <textarea class="form-control" rows="3" placeholder="Isi Informasi" id="isi_informasi" name="isi_informasi"></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Catatan</label>
-                              <textarea class="form-control" rows="2" placeholder="Catatan" id="catatan" name="catatan" required></textarea>
+                              <textarea class="form-control" rows="3" placeholder="Catatan" id="catatan" name="catatan"></textarea>
                             </div>
                           </div>
                         </div>
 
-                        <!-- Right Column (Pejabat Selection) -->
                         <div class="col-lg-6">
                           <h6><b>B. Pilih Pejabat</b></h6>
                           <hr>
-                          <!-- Select Pejabat 1 -->
                           <div class="col-lg-12 mb-3">
-                            <label for="id_pejabat_li_1">Pejabat 1</label>
-                            <select class="form-control form-select select2" id="id_pejabat_li_1" name="id_pejabat_li_1" required>
+                            <label for="id_pejabat_li_1">Pejabat Pelaksana Penindakan</label>
+                            <select class="form-control form-select select2" id="id_pejabat_li_1" name="id_pejabat_li_1">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
                               @endforeach
                             </select>
                           </div>
-                          <!-- Select Pejabat 2 -->
                           <div class="col-lg-12 mb-3">
-                            <label for="id_pejabat_li_2">Pejabat 2</label>
-                            <select class="form-control form-select select2" id="id_pejabat_li_2" name="id_pejabat_li_2" required>
+                            <label for="id_pejabat_li_2">Pejabat Penerbit Laporan Informasi</label>
+                            <select class="form-control form-select select2" id="id_pejabat_li_2" name="id_pejabat_li_2">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
                               @endforeach
                             </select>
                           </div>
-                          <!-- Select Pejabat 3 -->
+
                           <div class="col-lg-12 mb-3">
-                            <label for="id_pejabat_li_3">Pejabat 3</label>
-                            <select class="form-control form-select select2" id="id_pejabat_li_3" name="id_pejabat_li_3" required>
+                            <label for="id_pejabat_li_3">Pengampu Pejabat Penerbit Lembar Informasi</label>
+                            <select class="form-control form-select select2" id="id_pejabat_li_3" name="id_pejabat_li_3">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
                               @endforeach
                             </select>
                           </div>
+
+                          <div class="col-lg-12 mb-3">
+                            <label>Tindak Lanjut Atau Tidak Ditindak Lanjut</label>
+                            <select id="tindak_lanjut_li" class="form-control form-select" name="tindak_lanjut_li">
+                              <option value="" selected disabled>- Pilih -</option>
+                              <option value="Tidak Lanjut">Tidak Bisa Ditindak Lanjut</option>
+                              <option value="Lanjut">Tindak Lanjut</option>
+                            </select>
+                          </div>
+
                         </div>
                       </div>
                     </div>
+
+
+                    <div class="tab-pane " id="navtabs2-mpp" role="tabpanel">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <h6><b>A. Memo Pelimpahan Penindakan (MPP) </b></h6>
+                          <hr>
+                          <div class="row">
+                            <div class="col-md-6 mb-3">
+                              <label>No. MPP</label>
+                              <input type="text" class="form-control bg-primary text-white" name="no_mpp" value="{{ old('no_mpp', $no_ref->no_mpp) }}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label>Tgl. MPP</label>
+                              <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" id="tgl_mpp" name="tgl_mpp">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                              <label>Yang Terhormat</label>
+                              <input type="text" class="form-control" placeholder="Kepada YTH." name="yth_mpp">
+                            </div>
+
+                            <h6><b>B. Diduga Dilakukan Oleh </b></h6>
+                            <hr>
+                            <div class="col-md-12 mb-3">
+                              <label>Nama</label>
+                              <input type="text" class="form-control" placeholder="Nama Yang Diduga Melakukan Pelanggaran" name="nama_mpp">
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                              <label>No Identitas</label>
+                              <input type="text" class="form-control" placeholder="Nomor Identitas Pelaku" name="noiden_mpp">
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                              <label>Keterangan lainnya</label>
+                              <textarea class="form-control" rows="3" placeholder="Keterangan Lainnya" name="keterangan-mpp"></textarea>
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                          <h6><b>C. Komoditi Barang</b></h6>
+                          <hr>
+                          <div class="card-body">
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                              <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                  <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsepoi" aria-expanded="false" aria-controls="flush-collapsepoi">
+                                    Komoditi Barang
+                                  </button>
+                                </h2>
+                                <div id="flush-collapsepoi" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                  <div class="accordion-body bg-light">
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Komoditi Barang
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" name="komoditi_mpp" placeholder="Uraian Komoditi Barang">
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Jumlah Komoditi Barang
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" name="jumlah_barang_mpp" placeholder="Jumlah Komoditi Barang">
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Jenis Pengangkut
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" placeholder="Jenis Pengangkut" name="jenis_pengangkut_mpp">
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        No Registrasi
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" placeholder="Jenis Pengangkut" name="jenis_pengangkut_mpp">
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Peti Kemasan
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" placeholder="Peti Kemasan/Kemasan" name="kemasan_mpp">
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Ukuran
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" placeholder="Ukuran Kontainer (Jika Ada)" name="ukuran_mpp">
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12 mb-3">
+                            <label>Dokumen Terkait</label>
+                            <textarea class="form-control" name="dokterkait_mpp" rows="3" placeholder="diisi uraian dokumen yang diduga terkait Pelanggaran (jenis dokumen, nomor, tanggal)."></textarea>
+                          </div>
+
+                          <div class="col-md-12 mb-3">
+                            <label>Uraian Instruksi</label>
+                            <textarea class="form-control" name="dokterkait_mpp" rows="3" placeholder="diisi uraian instruksi Memo Pelimpahan Penindakan (MPP) misalnya melakukan operasi penindakan berupa penghentian, pemeriksaan, Penegahan dan penyegelan."></textarea>
+                          </div>
+
+                          <div class="col-lg-12 mb-3">
+                            <label>Pejabat Penerbit MPP</label>
+                            <select class="form-control form-select select2" id="id_pejabat_mpp" name="id_pejabat_mpp">
+                              <option value="" selected disabled>- Pilih -</option>
+                              @foreach ($users as $user)
+                                <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
 
 
                     <div class="tab-pane" id="navtabs2-profile" role="tabpanel">
@@ -148,7 +300,7 @@
                             <!-- Media Informasi / Isi Informasi / Catatan -->
                             <div class="col-md-12 mb-3">
                               <label>Sumber LAP</label>
-                              <input type="text" class="form-control" placeholder="Sumber LAP" id="sumber_lap" name="sumber_lap" required>
+                              <input type="text" class="form-control" placeholder="Sumber LAP" id="sumber_lap" name="sumber_lap">
                             </div>
                             <h6><b>B. Uraian Penindakan dan Kelayakan Operasional</b></h6>
                             <hr>
@@ -527,7 +679,7 @@
                           <!-- Select Pejabat 1 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_lap_1">Pejabat LAP 1</label>
-                            <select class="form-control form-select select2 " id="id_pejabat_lap_1" name="id_pejabat_lap_1" required>
+                            <select class="form-control form-select select2 " id="id_pejabat_lap_1" name="id_pejabat_lap_1">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
@@ -537,7 +689,7 @@
                           <!-- Select Pejabat 2 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_lap_2">Pejabat LAP 2</label>
-                            <select class="form-control form-select select2" id="id_pejabat_lap_2" name="id_pejabat_lap_2" required>
+                            <select class="form-control form-select select2" id="id_pejabat_lap_2" name="id_pejabat_lap_2">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
@@ -547,7 +699,7 @@
                           <!-- Select Pejabat 3 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_lap_3">Pejabat LAP 3</label>
-                            <select class="form-control form-select select2" id="id_pejabat_lap_3" name="id_pejabat_lap_3" required>
+                            <select class="form-control form-select select2" id="id_pejabat_lap_3" name="id_pejabat_lap_3">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
@@ -571,15 +723,15 @@
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Sumber Informasi</label>
-                              <input type="text" class="form-control" placeholder="Sumber Informasi" id="sumber_informasi_npi" name="sumber_npi" required>
+                              <input type="text" class="form-control" placeholder="Sumber Informasi" id="sumber_informasi_npi" name="sumber_npi">
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Unit Penebit Informasi</label>
-                              <textarea class="form-control" rows="2" placeholder="Unit Penerbit Informasi" id="unit_penerbit_informasi" name="unit_penerbit_npi" required></textarea>
+                              <textarea class="form-control" rows="2" placeholder="Unit Penerbit Informasi" id="unit_penerbit_informasi" name="unit_penerbit_npi"></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Alasan</label>
-                              <textarea class="form-control" rows="2" placeholder="Alasan Tidak Dapat Dilakukan Penindakan Lebih Lanjut" id="alasan_penindakan_npi" name="alasan_npi" required></textarea>
+                              <textarea class="form-control" rows="2" placeholder="Alasan Tidak Dapat Dilakukan Penindakan Lebih Lanjut" id="alasan_penindakan_npi" name="alasan_npi"></textarea>
                             </div>
                           </div>
                         </div>
@@ -591,7 +743,7 @@
                           <!-- Select Pejabat 1 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_npi">Pejabat</label>
-                            <select class="form-control form-select select2" id="id_pejabat_npi" name="id_pejabat_npi" required>
+                            <select class="form-control form-select select2" id="id_pejabat_npi" name="id_pejabat_npi">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
@@ -622,11 +774,11 @@
                             <!-- Media Informasi / Isi Informasi / Catatan -->
                             <div class="col-md-12 mb-3">
                               <label>Pertimbangan Surat Perintah</label>
-                              <textarea class="form-control" row="2" placeholder="Pertimbangan Diterbitkannya Surat Perintah" id="pertimbangan_surat_perintah" name="ket_perundang" required></textarea>
+                              <textarea class="form-control" row="2" placeholder="Pertimbangan Diterbitkannya Surat Perintah" id="pertimbangan_surat_perintah" name="ket_perundang"></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Dasar Hukum </label>
-                              <textarea class="form-control" rows="2" placeholder="Dasar Hukum Yang Mendasari Diterbitkannya Surat Perintah" id="dasar_sp" name="dasar_sp" required></textarea>
+                              <textarea class="form-control" rows="2" placeholder="Dasar Hukum Yang Mendasari Diterbitkannya Surat Perintah" id="dasar_sp" name="dasar_sp"></textarea>
                             </div>
                           </div>
                         </div>
@@ -638,7 +790,7 @@
                           <!-- Select Pejabat 1 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_sp_1">Pejabat Yang Diberi Perintah</label>
-                            <select class="form-control form-select select2" id="id_pejabat_sp_1" name="id_pejabat_sp_1" required>
+                            <select class="form-control form-select select2" id="id_pejabat_sp_1" name="id_pejabat_sp_1">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
@@ -648,7 +800,7 @@
                           <!-- Select Pejabat 2 -->
                           <div class="col-md-12 mb-3">
                             <label for="perintah">Perintah</label>
-                            <textarea class="form-control" row="2" placeholder="Perintah Yang Diberikan Kepada Pejabat Bea dan Cukai" id="perintah_sp" name="perintah_sp" required></textarea>
+                            <textarea class="form-control" row="2" placeholder="Perintah Yang Diberikan Kepada Pejabat Bea dan Cukai" id="perintah_sp" name="perintah_sp"></textarea>
                           </div>
                           <!-- Select Pejabat 3 -->
                           <div class="col-md-12 mb-3">
@@ -660,11 +812,11 @@
                           <div class="row">
                             <div class="col-md-6 mb-3">
                               <label>Tanggal Mulai Berlaku</label>
-                              <input type="date" class="form-control" name="tanggal_mulai_print" required>
+                              <input type="date" class="form-control" name="tanggal_mulai_print">
                             </div>
                             <div class="col-md-6 mb-3">
                               <label>Tanggal Berakhir</label>
-                              <input type="date" class="form-control" id="tanggal_berakhir_print" name="tanggal_berakhir_print" required>
+                              <input type="date" class="form-control" id="tanggal_berakhir_print" name="tanggal_berakhir_print">
                             </div>
                           </div>
 
@@ -675,7 +827,7 @@
 
                           <div class="col-md-12 mb-3">
                             <label for="ketentuan_baju">Ketentuan</label>
-                            <select class="form-control" id="ketentuan_baju" name="ketentuan_baju" required>
+                            <select class="form-control" id="ketentuan_baju" name="ketentuan_baju">
                               <option value="" selected disabled>- Pilih -</option>
                               <option value="Berpakaian PDH">Berpakaian PDH</option>
                               <option value="Berpakaian Non PDH">Berpakaian Non PDH</option>
@@ -686,13 +838,13 @@
 
                           <div class="col-md-12 mb-3">
                             <label for="ketentuan_lain">Ketentuan Lain</label>
-                            <textarea class="form-control" row="2" placeholder="Ketentuan Lain" id="ketentuan_lain" name="ketentuan_lain" required></textarea>
+                            <textarea class="form-control" row="2" placeholder="Ketentuan Lain" id="ketentuan_lain" name="ketentuan_lain"></textarea>
                           </div>
 
 
                           {{-- <div class="col-md-12 mb-3">
                     <label for="plh">Pelaksana Harian</label>
-                    <select class="form-control" id="plh" name="plh" required>
+                    <select class="form-control" id="plh" name="plh"  >
                         <option value="" selected disabled>- Pilih -</option>
                         <option value="Plh">Pelaksana Harian</option>
                         <option value="">Tidak Ada Pelaksana Harian</option>
@@ -703,7 +855,7 @@
 
                           <div class="col-md-12 mb-3">
                             <label for="id_pejabat_sp_2">Pejabat Yang Menandatangani</label>
-                            <select class="form-control form-select select2" id="id_pejabat_sp_2" name="id_pejabat_sp_2" required>
+                            <select class="form-control form-select select2" id="id_pejabat_sp_2" name="id_pejabat_sp_2">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
@@ -726,22 +878,103 @@
 
 
 
-                  </div>
                 </div>
-              </div> <!-- end card-->
-            </div> <!-- end col -->
-          </div>
+              </div>
+            </div> <!-- end card-->
+          </div> <!-- end col -->
         </div>
-
-
-
       </div>
-    </form>
+
+
+
+  </div>
+  </form>
   </div>
 
+
   <script>
-    feather.replace();
+    document.addEventListener("DOMContentLoaded", function() {
+      const tabsConfig = [{
+        selectId: "tindak_lanjut_li",
+        tabs: [{
+            id: "navtabs2-messages-tab-item",
+            linkId: "navtabs2-messages-tab",
+            condition: (value) => value === "Tidak Lanjut"
+          },
+          {
+            id: "navtabs2-profile-tab-item",
+            linkId: "navtabs2-profile-tab",
+            condition: (value) => value === "Lanjut"
+          },
+          {
+            id: "navtabs2-mpp-tab-item",
+            linkId: "navtabs2-mpp-tab",
+            condition: (value) => value === "Lanjut"
+          },
+          {
+            id: "navtabs2-settings-tab-item",
+            linkId: "navtabs2-settings-tab",
+            condition: (value) => value === "Lanjut"
+          },
+        ]
+      }];
+
+      tabsConfig.forEach(({
+        selectId,
+        tabs
+      }) => {
+        const selectElement = document.getElementById(selectId);
+
+        selectElement.addEventListener("change", function() {
+          const selectedValue = selectElement.value;
+
+          tabs.forEach(({
+            id,
+            linkId,
+            condition
+          }) => {
+            const tabElement = document.getElementById(id);
+            const tabLinkElement = document.getElementById(linkId);
+
+            if (condition(selectedValue)) {
+              tabElement.style.display = "block";
+
+              const tabContainer = document.querySelector(".tabs-container");
+              const offsetTop = tabContainer.offsetTop;
+              window.scrollTo({
+                top: offsetTop - 70,
+                behavior: "smooth",
+              });
+
+              tabLinkElement.classList.add("highlight");
+              setTimeout(() => tabLinkElement.classList.remove("highlight"), 1000);
+            } else {
+              tabElement.style.display = "none";
+            }
+          });
+        });
+
+        tabs.forEach(({
+          id
+        }) => {
+          const tabElement = document.getElementById(id);
+          tabElement.style.display = "none";
+        });
+      });
+    });
   </script>
+
+
+
+
+  <style>
+    .nav-link.highlight {
+      color: #287F71 !important;
+      transition: background-color 0.5s ease;
+    }
+  </style>
+
+
 
   {{-- <script>
     // Convert Laravel data into a JavaScript-friendly format

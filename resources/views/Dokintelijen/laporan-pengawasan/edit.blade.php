@@ -70,6 +70,12 @@
                         <span class="d-none d-sm-block">NI</span>
                       </a>
                     </li>
+                    <li class="nav-item" id="nota-dinas-tab-item" style="display: none;">
+                      <a class="nav-link" id="nota-dinas-tab" data-bs-toggle="tab" href="#nota-dinas-content" role="tab" aria-controls="nota-dinas-content" aria-selected="false">
+                        <span class="d-block d-sm-none">Nota Dinas</span>
+                        <span class="d-none d-sm-block">Nota Dinas</span>
+                      </a>
+                    </li>
                   </ul>
                 </div>
 
@@ -84,7 +90,7 @@
                           <input type="hidden" value="PENGAWASAN" name="id_pengawasan">
                           <div class="col-md-6 mb-3">
                             <label>No. Surat Tugas</label>
-                            <input type="text" class="form-control bg-primary text-white" name="no_st" value="{{ old('no_st', $pengawasan->no_st) }}" readonly>
+                            <input type="text" class="form-control bg-primary text-white" name="no_st" value="{{ old('no_st', $pengawasan->no_st) }}">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>Tgl. Surat Tugas</label>
@@ -133,9 +139,16 @@
                         <hr>
 
                         <div class="col-lg-12 mb-3">
-                          <label for="melaksanakan_tugas">Melaksanakan Tugas</label>
+                          <label for="melaksanakan_tugas" class="d-flex align-items-center">
+                            Melaksanakan Tugas
+                            <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                              data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                              <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                            </button>
+                          </label>
                           <textarea class="form-control form-input" placeholder="Di Isi Uraian Tugas" name="melaksanakan_tugas_st" rows="2">{{ old('melaksanakan_tugas_st', $pengawasan->melaksanakan_tugas_st) }}</textarea>
                         </div>
+
 
                         <div class="col-lg-12 mb-3">
                           <label for="wilayah_penugasan">Wilayah Penugasan</label>
@@ -181,18 +194,29 @@
                           <div class="row">
                             <div class="col-md-6 mb-3">
                               <label>No. LPT</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_lpt" value="{{ old('no_lpt', $pengawasan->no_lpt) }}" readonly>
+                              <input type="text" class="form-control bg-primary text-white" name="no_lpt" value="{{ old('no_lpt', $pengawasan->no_lpt) }}">
                             </div>
                             <div class="col-md-6 mb-3">
-                              <label>Surat Tugas Nomor</label>
-                              <input type="text" class="form-control bg-primary text-white" value="{{ old('no_st', $pengawasan->no_st) }}" readonly>{{-- ngambil dari no_st --}}
+                              <label>Tgl. LPT</label>
+                              <input type="date" class="form-control bg-primary text-white" name="tgl_lpt" value="{{ old('tgl_lpt', $pengawasan->tgl_lpt) }}">
                             </div>
                           </div>
-                          <!-- Media Informasi / Isi Informasi / Catatan -->
                           <div class="col-md-12 mb-3">
-                            <label>Uraian Tugas</label>
+                            <label>Surat Tugas Nomor</label>
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_st', $pengawasan->no_st) }}">
+                          </div>
+
+                          <div class="col-md-12 mb-3">
+                            <label for="uraian_tugas" class="d-flex align-items-center">
+                              Uraian Tugas
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
                             <textarea class="form-control" name="uraian_tugas_lpt" rows="3">{{ old('uraian_tugas_lpt', $pengawasan->uraian_tugas_lpt) }}</textarea>
                           </div>
+
 
                           <div class="col-md-12 mb-3">
                             <label>Wilayah Penugasan</label>
@@ -256,13 +280,18 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">
+                                    <label class="col-sm-4 col-form-label d-flex align-items-center">
                                       d. Ikhtisar Informasi
+                                      <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                        data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                        <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                      </button>
                                     </label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" placeholder="Ikhtisar Informasi" value="{{ old('ikhtisar_informasi_lpt', $pengawasan->ikhtisar_informasi_lpt) }}" name="ikhtisar_informasi_lpt">
+                                      <textarea class="form-control" placeholder="Ikhtisar Informasi" name="ikhtisar_informasi_lpt" rows="3">{{ old('ikhtisar_informasi_lpt', $pengawasan->ikhtisar_informasi_lpt) }}</textarea>
                                     </div>
                                   </div>
+
 
                                 </div>
                               </div>
@@ -305,8 +334,9 @@
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-4 col-form-label">d. Ikhtisar Hasil Analisis Intelijen </label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" placeholder="Ikhtisar Hasil Analisis Intelijen" value="{{ old('ikhtisar_hasil_analisis_intelijen', $pengawasan->ikhtisar_hasil_analisis_intelijen) }}"
+                                      <input type="text" class="form-control" placeholder="Ikhtisar Hasil Analisis Intelijen" value="{{ old('ikhtisar_hasil_analisis_intelijen_lpt', $pengawasan->ikhtisar_hasil_analisis_intelijen_lpt) }}"
                                         name="ikhtisar_hasil_analisis_intelijen_lpt">
+
                                     </div>
                                   </div>
 
@@ -441,14 +471,27 @@
                                     </div>
 
                                     <div class="row mb-3 form-group">
-                                      <label for="Kesimpulan">Kesimpulan</label>
-                                      <textarea class="form-control" name="kesimpulan_lpt" rows="3"> {{ old('kesimpulan_lpt', $pengawasan->kesimpulan_lpt) }}</textarea>
+                                      <label for="kesimpulan" class="d-flex align-items-center">
+                                        Kesimpulan
+                                        <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                          data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                          <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                        </button>
+                                      </label>
+                                      <textarea class="form-control" name="kesimpulan_lpt" rows="3">{{ old('kesimpulan_lpt', $pengawasan->kesimpulan_lpt) }}</textarea>
                                     </div>
 
                                     <div class="row mb-3 form-group">
-                                      <label for="Rekomendasi">Rekomendasi</label>
-                                      <textarea class="form-control" name="rekomendasi_lpt" rows="3"> {{ old('rekomendasi_lpt', $pengawasan->rekomendasi_lpt) }}</textarea>
+                                      <label for="rekomendasi" class="d-flex align-items-center">
+                                        Rekomendasi
+                                        <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                          data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                          <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                        </button>
+                                      </label>
+                                      <textarea class="form-control" name="rekomendasi_lpt" rows="3">{{ old('rekomendasi_lpt', $pengawasan->rekomendasi_lpt) }}</textarea>
                                     </div>
+
 
 
                                   </div>
@@ -493,12 +536,12 @@
                         <div class="row">
                           <div class="col-md-6 mb-3">
                             <label>No. LPPI</label>
-                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_lppi', $pengawasan->no_lppi) }}" placeholder="No. LPPI" value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi" name="no_lppi"
-                              disabled>
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_lppi', $pengawasan->no_lppi) }}" placeholder="No. LPPI" value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi"
+                              name="no_lppi">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>Tgl. LPPI</label>
-                            <input type="date" class="form-control" id="tgl_lppi" value="{{ old('tgl_lpi', $pengawasan->tgl_lpi) }}" name="tgl_lppi">
+                            <input type="date" class="form-control bg-primary text-white" id="tgl_lppi" value="{{ old('tgl_lppi', $pengawasan->tgl_lppi) }}" name="tgl_lppi">
                           </div>
 
                           <h6><b>B. Sumber Data Atau Informasi</b></h6>
@@ -516,7 +559,7 @@
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">ISI DATA</label>
                                       <div class="col-sm-8">
-                                        <select id="internal" class="form-select" name="internal_lppi"> <!-- Ubah ID di sini -->
+                                        <select id="internal" class="form-select" name="internal_lppi" onchange="toggleInputs(this, 'internalInputs')"> <!-- Ubah ID di sini -->
                                           <option value="" selected disabled>- Pilih -</option>
                                           <option value="TIDAK" {{ old('internal_lppi', $pengawasan->internal_lppi) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                                           <option value="YA" {{ old('internal_lppi', $pengawasan->internal_lppi) == 'YA' ? 'selected' : '' }}>YA</option>
@@ -526,40 +569,41 @@
 
 
                                     <!-- Form Inputs -->
-
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
-                                        Media
-                                      </label>
-                                      <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" value="{{ old('media_internal_lppi'), $pengawasan->media_internal_lppi }}" name="media_internal_lppi" placeholder="Media Internal">
+                                    <div id="internalInputs">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">
+                                          Media
+                                        </label>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control form-input" value="{{ old('media_internal_lppi', $pengawasan->media_internal_lppi) }}" name="media_internal_lppi" placeholder="Media Internal">
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
-                                        Tanggal Terima
-                                      </label>
-                                      <div class="col-sm-8">
-                                        <input type="date" class="form-control" value="{{ old('tanggal_terima_internal_lppi', $pengawasan->tanggal_terima_internal_lppi) }}" name="tanggal_terima_internal_lppi">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">
+                                          Tanggal Terima
+                                        </label>
+                                        <div class="col-sm-8">
+                                          <input type="date" class="form-control form-input" value="{{ old('tanggal_terima_internal_lppi', $pengawasan->tanggal_terima_internal_lppi) }}" name="tanggal_terima_internal_lppi">
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
-                                        No. Dokumen
-                                      </label>
-                                      <div class="col-sm-8">
-                                        <input type="text" class="form-control" value="{{ old('no_dokumen_internal_lppi', $pengawasan->no_dokumen_internal_lppi) }}" placeholder="No. Dokumen" name="no_dokumen_internal_lppi">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">
+                                          No. Dokumen
+                                        </label>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control form-input" value="{{ old('no_dokumen_internal_lppi', $pengawasan->no_dokumen_internal_lppi) }}" placeholder="No. Dokumen" name="no_dokumen_internal_lppi">
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
-                                        Tanggal Dokumen
-                                      </label>
-                                      <div class="col-sm-8">
-                                        <input type="date" class="form-control" value="{{ old('tanggal_dokumen_internal_lppi', $pengawasan->tanggal_dokumen_internal_lppi) }}" name="tanggal_dokumen_internal_lppi">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">
+                                          Tanggal Dokumen
+                                        </label>
+                                        <div class="col-sm-8">
+                                          <input type="date" class="form-control form-input" value="{{ old('tanggal_dokumen_internal_lppi', $pengawasan->tanggal_dokumen_internal_lppi) }}" name="tanggal_dokumen_internal_lppi">
+                                        </div>
                                       </div>
                                     </div>
 
@@ -579,7 +623,7 @@
                                     <div class="row mb-3">
                                       <label for="eksternal" class="col-sm-4 col-form-label">ISI DATA</label>
                                       <div class="col-sm-8">
-                                        <select id="eksternal" class="form-select" name="eksternal_lppi"> <!-- Ubah ID di sini -->
+                                        <select id="eksternal" class="form-select" name="eksternal_lppi" onchange="toggleInputs(this, 'eksternalInputs')"> <!-- Ubah ID di sini -->
                                           <option value="" selected disabled>- Pilih -</option>
                                           <option value="TIDAK" {{ old('eksternal_lppi', $pengawasan->eksternal_lppi) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                                           <option value="YA" {{ old('eksternal_lppi', $pengawasan->eksternal_lppi) == 'YA' ? 'selected' : '' }}>YA</option>
@@ -588,31 +632,33 @@
                                     </div>
 
                                     <!-- Form Inputs -->
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Media</label>
-                                      <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="media_eksternal_lppi" value="{{ old('media_eksternal_lppi', $pengawasan->media_eksternal_lppi) }}" placeholder="Media Eksternal">
+                                    <div id="eksternalInputs">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Media</label>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control form-input" name="media_eksternal_lppi" value="{{ old('media_eksternal_lppi', $pengawasan->media_eksternal_lppi) }}" placeholder="Media Eksternal">
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Tanggal Terima</label>
-                                      <div class="col-sm-8">
-                                        <input type="date" class="form-control" name="tanggal_terima_eksternal_lppi" value="{{ old('tanggal_terima_eksternal_lppi', $pengawasan->tanggal_terima_eksternal_lppi) }}">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Tanggal Terima</label>
+                                        <div class="col-sm-8">
+                                          <input type="date" class="form-control form-input" name="tanggal_terima_eksternal_lppi" value="{{ old('tanggal_terima_eksternal_lppi', $pengawasan->tanggal_terima_eksternal_lppi) }}">
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">No. Dokumen </label>
-                                      <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="no_dokumen_eksternal_lppi" value="{{ old('no_dokumen_eksternal_lppi', $pengawasan->no_dokumen_eksternal_lppi) }}" placeholder="No. Dokumen">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">No. Dokumen </label>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control form-input" name="no_dokumen_eksternal_lppi" value="{{ old('no_dokumen_eksternal_lppi', $pengawasan->no_dokumen_eksternal_lppi) }}" placeholder="No. Dokumen">
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Tanggal Dokumen</label>
-                                      <div class="col-sm-8">
-                                        <input type="date" class="form-control" value="{{ old('tanggal_dokumen_eksternal_lppi', $pengawasan->tanggal_dokumen_eksternal_lppi) }}" name="tanggal_dokumen_eksternal_lppi">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Tanggal Dokumen</label>
+                                        <div class="col-sm-8">
+                                          <input type="date" class="form-control form-input" value="{{ old('tanggal_dokumen_eksternal_lppi', $pengawasan->tanggal_dokumen_eksternal_lppi) }}" name="tanggal_dokumen_eksternal_lppi">
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -657,6 +703,34 @@
 
                       <!-- Right Column (Pejabat Selection) -->
                       <div class="col-lg-6">
+                        <div class="row">
+                          <div class="col-lg-6 mb-3">
+                            <label>Penerima Informasi</label>
+                            <select class="form-control form-select select2" id="penerima_informasi_lppi" name="penerima_informasi_lppi">
+                              <option value="" selected disabled>- Pilih -</option>
+                              @foreach ($users as $user)
+                                <option value="{{ $user->id_admin }}" {{ old('penerima_informasi_lppi', $pengawasan->penerima_informasi_lppi) == $user->id_admin ? 'selected' : '' }}>
+                                  {{ $user->name }}
+                                </option>
+                              @endforeach
+                            </select>
+                          </div>
+
+
+                          <div class="col-lg-6 mb-3">
+                            <label>Penilai Informasi</label>
+                            <select class="form-control form-select select2" id="penilai_informasi_lppi" name="penilai_informasi_lppi">
+                              <option value="" selected disabled>- Pilih -</option>
+                              @foreach ($users as $user)
+                                <option value="{{ $user->id_admin }}" {{ old('penilai_informasi_lppi', $pengawasan->penilai_informasi_lppi) == $user->id_admin ? 'selected' : '' }}>
+                                  {{ $user->name }}
+                                </option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+
+
                         <h6><b>D. Kesimpulan</b></h6>
                         <hr>
 
@@ -690,14 +764,14 @@
                           <label class="col-sm-4 col-form-label">Tindak Lanjut</label>
                           <select class="form-select" name="tindak_lanjut_lppi"> <!-- Ubah ID di sini -->
                             <option value="" selected disabled>- Pilih -</option>
-                            <option value="TIDAK" {{ old('tindak_lanjut_lppi', $pengawasan->tindak_lanjut_lppi) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
-                            <option value="YA" {{ old('tindak_lanjut_lppi', $pengawasan->tindak_lanjut_lppi) == 'YA' ? 'selected' : '' }}>YA</option>
+                            <option value="Analisis" {{ old('tindak_lanjut_lppi', $pengawasan->tindak_lanjut_lppi) == 'Analisis' ? 'selected' : '' }}>Analisis</option>
+                            <option value="Arsip" {{ old('tindak_lanjut_lppi', $pengawasan->tindak_lanjut_lppi) == 'Arsip' ? 'selected' : '' }}> Arsip</option>
                           </select>
                         </div>
 
                         <div class="col-md-12 mb-3">
                           <label>Catatan</label>
-                          <textarea class="form-control" rows="3" value="{{ old('catatan_lppi', $pengawasan->catatan_lppi) }}" placeholder="Catatan Lembar Pengumpulan Dan Penilaian Informasi" id="catatan" name="catatan_lppi"></textarea>
+                          <textarea class="form-control" rows="3" placeholder="Catatan Lembar Pengumpulan Dan Penilaian Informasi" id="catatan" name="catatan_lppi">{{ old('catatan_lppi', $pengawasan->catatan_lppi) }}</textarea>
                         </div>
 
                         <div class="col-lg-12 mb-3">
@@ -730,7 +804,7 @@
                           <!-- No. LI / Tgl. LI -->
                           <div class="col-md-6 mb-3">
                             <label>No. LKAI</label>
-                            <input type="text" name="no_lkai" value="{{ old('no_lkai', $pengawasan->no_lkai) }}" class="form-control bg-primary text-white" disabled>
+                            <input type="text" name="no_lkai" value="{{ old('no_lkai', $pengawasan->no_lkai) }}" class="form-control bg-primary text-white">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>tgl. LKAI</label>
@@ -750,7 +824,7 @@
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">Sumber LPPI</label>
                                       <div class="col-sm-8">
-                                        <select class="form-select" name="sumber_lppi"> <!-- Ubah ID di sini -->
+                                        <select class="form-select" name="sumber_lppi" onchange="toggleInputs(this, 'sumberLppiInputs')">
                                           <option value="" selected disabled>- Pilih -</option>
                                           <option value="TIDAK" {{ old('sumber_lppi', $pengawasan->sumber_lppi) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                                           <option value="YA" {{ old('sumber_lppi', $pengawasan->sumber_lppi) == 'YA' ? 'selected' : '' }}>YA</option>
@@ -758,17 +832,19 @@
                                       </div>
                                     </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">No. LPPI </label>
-                                      <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input bg-primary text-white" placeholder="NO LPPI" id="no_lppi_disabled" disable>
+                                    <div id="sumberLppiInputs">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">No. LPPI </label>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control form-input bg-primary text-white" placeholder="NO LPPI" id="no_lppi_disabled" disable>
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Tanggal LPPI</label>
-                                      <div class="col-sm-8">
-                                        <input type="date" id="tgl_lppi_disabled" class="form-control bg-primary text-white" disabled>
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Tanggal LPPI</label>
+                                        <div class="col-sm-8">
+                                          <input type="date" id="tgl_lppi_disabled" class="form-control form-input bg-primary text-white" disabled>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -817,21 +893,40 @@
                           </div>
                           <h6><b>B. Ikhtisar Data Informasi</b></h6>
                           <hr>
-                          <div class="col-md-12 mb-3">
-                            <label>Ikhtisar Data Atau Informasi</label>
-                            <textarea class="form-control" row="2" placeholder="Ikhtisar Data Atau Informasi" id="ikhtisar_data_lkai" name="ikhtisar_data_lkai">{{ old('ikhtisar_data_lkai', $pengawasan->ikhtisar_data_lkai) }}</textarea>
-                          </div>
-
 
                           <div class="col-md-12 mb-3">
-                            <label>Prosedur Analisis</label>
-                            <textarea class="form-control" row="2" placeholder="Prosedur Analisis" id="prosedur_analisis_lkai" name="prosedur_analisis_lkai">{{ old('prosedur_analisis_lkai', $pengawasan->prosedur_analisis_lkai) }}</textarea>
+                            <label for="ikhtisar_data_lkai" class="d-flex align-items-center">
+                              Ikhtisar Data Atau Informasi
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" rows="2" placeholder="Ikhtisar Data Atau Informasi" id="ikhtisar_data_lkai" name="ikhtisar_data_lkai">{{ old('ikhtisar_data_lkai', $pengawasan->ikhtisar_data_lkai) }}</textarea>
                           </div>
 
                           <div class="col-md-12 mb-3">
-                            <label>Hasil Analisis</label>
-                            <textarea class="form-control" row="2" placeholder="Hasil Analisis" id="hasl_analisis" name="hasil_analisis_lkai">{{ old('hasil_analisis_lkai', $pengawasan->hasil_analisis_lkai) }}</textarea>
+                            <label for="prosedur_analisis_lkai" class="d-flex align-items-center">
+                              Prosedur Analisis
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" rows="2" placeholder="Prosedur Analisis" id="prosedur_analisis_lkai" name="prosedur_analisis_lkai">{{ old('prosedur_analisis_lkai', $pengawasan->prosedur_analisis_lkai) }}</textarea>
                           </div>
+
+                          <div class="col-md-12 mb-3">
+                            <label for="hasil_analisis_lkai" class="d-flex align-items-center">
+                              Hasil Analisis
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" rows="2" placeholder="Hasil Analisis" id="hasil_analisis_lkai" name="hasil_analisis_lkai">{{ old('hasil_analisis_lkai', $pengawasan->hasil_analisis_lkai) }}</textarea>
+                          </div>
+
 
                           <div class="col-md-12 mb-3">
                             <label>Kesimpulan</label>
@@ -847,14 +942,14 @@
                         <div class="row">
                           <div class="col-sm-6">
                             <label for="nhi-select">NHI/NHI-HKI/NHI-N</label>
-                            <select id="nhi-select" class="form-select" name="nhi">
+                            <select id="nhi-select" class="form-select section-select" name="nhi" onchange="handleSelection(this)">
                               <option value="TIDAK" {{ old('nhi', $pengawasan->nhi) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                               <option value="YA" {{ old('nhi', $pengawasan->nhi) == 'YA' ? 'selected' : '' }}>YA</option>
                             </select>
                           </div>
                           <div class="col-sm-6">
                             <label for="ni-select">NI</label>
-                            <select id="ni-select" class="form-select" name="ni">
+                            <select id="ni-select" class="form-select section-select" name="ni" onchange="handleSelection(this)">
                               <option value="TIDAK" {{ old('ni', $pengawasan->ni) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                               <option value="YA" {{ old('ni', $pengawasan->ni) == 'YA' ? 'selected' : '' }}>YA</option>
                             </select>
@@ -864,32 +959,29 @@
                             <div class="accordion accordion-flush" id="accordionFlushExample">
                               <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                  <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                  <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOO" aria-expanded="false" aria-controls="flush-collapseOO">
                                     Rekomendasi Lainnya
                                   </button>
                                 </h2>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div id="flush-collapseOO" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                   <div class="accordion-body bg-light">
 
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">ISI DATA</label>
                                       <div class="col-sm-8">
-                                        <select id="rekomendasi_lainnya" class="form-select" name="rekomendasi_lainnya"> <!-- Ubah ID di sini -->
+                                        <select id="rekomendasi_lainnya" class="form-select section-select" name="rekomendasi_lainnya" onchange="handleSelection(this)">
                                           <option value="TIDAK" {{ old('rekomendasi_lainnya', $pengawasan->rekomendasi_lainnya) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                                           <option value="YA" {{ old('rekomendasi_lainnya', $pengawasan->rekomendasi_lainnya) == 'YA' ? 'selected' : '' }}>YA</option>
                                         </select>
                                       </div>
                                     </div>
 
-
-                                    <!-- Form Inputs -->
-
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
-                                        Isi Rekomendasi Lainnya
-                                      </label>
-                                      <div class="col-sm-8">
-                                        <textarea class="form-control" row="2" placeholder="Isi Rekomendasi Lainnya" id="isi_rekomendasi_lainnya" name="isi_rekomendasi_lainnya">{{ old('isi_rekomendasi_lainnya', $pengawasan->isi_rekomendasi_lainnya) }}</textarea>
+                                    <div id="rekomendasiLainnyaInputs">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Isi Rekomendasi Lainnya</label>
+                                        <div class="col-sm-8">
+                                          <textarea class="form-control form-input" row="2" placeholder="Isi Rekomendasi Lainnya" id="isi_rekomendasi_lainnya" name="isi_rekomendasi_lainnya" disabled>{{ old('isi_rekomendasi_lainnya', $pengawasan->isi_rekomendasi_lainnya) }}</textarea>
+                                        </div>
                                       </div>
                                     </div>
 
@@ -899,30 +991,32 @@
 
                               <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                  <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                  <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTT" aria-expanded="false" aria-controls="flush-collapseTT">
                                     Informasi Lainnya
                                   </button>
                                 </h2>
-                                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div id="flush-collapseTT" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                   <div class="accordion-body bg-light">
 
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">ISI DATA</label>
                                       <div class="col-sm-8">
-                                        <select id="informasi_lainnya" class="form-select" name="informasi_lainnya"> <!-- Ubah ID di sini -->
+                                        <select id="informasi_lainnya" class="form-select section-select" name="informasi_lainnya" onchange="handleSelection(this)">
                                           <option value="TIDAK" {{ old('informasi_lainnya', $pengawasan->informasi_lainnya) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                                           <option value="YA" {{ old('informasi_lainnya', $pengawasan->informasi_lainnya) == 'YA' ? 'selected' : '' }}>YA</option>
                                         </select>
                                       </div>
                                     </div>
 
-                                    <!-- Form Inputs -->
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Isi Informasi Lainnya</label>
-                                      <div class="col-sm-8">
-                                        <textarea class="form-control" row="2" placeholder="Isi Informasi Lainnya" id="isi_informasi_lainnya" name="isi_informasi_lainnya"> {{ old('isi_informasi_lainnya', $pengawasan->isi_informasi_lainnya) }}  </textarea>
+                                    <div id="informasiLainnyaInputs">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Isi Informasi Lainnya</label>
+                                        <div class="col-sm-8">
+                                          <textarea class="form-control form-input" row="2" placeholder="Isi Informasi Lainnya" id="isi_informasi_lainnya" name="isi_informasi_lainnya" disabled>{{ old('isi_informasi_lainnya', $pengawasan->isi_informasi_lainnya) }}</textarea>
+                                        </div>
                                       </div>
                                     </div>
+
                                   </div>
                                 </div>
                               </div>
@@ -960,7 +1054,7 @@
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">Keputusan Pertama</label>
                                       <div class="col-sm-8">
-                                        <select id="keputusan_pertama" class="form-select" name="keputusan_pertama_lkai"> <!-- Ubah ID di sini -->
+                                        <select id="keputusan_pertama" class="form-select" name="keputusan_pertama_lkai" onchange="toggleInputs(this, 'keputusanPertamaInputs')"> <!-- Ubah ID di sini -->
                                           <option value="TIDAK" {{ old('keputusan_pertama', $pengawasan->keputusan_pertama_lkai) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                                           <option value="YA" {{ old('keputusan_pertama', $pengawasan->keputusan_pertama_lkai) == 'YA' ? 'selected' : '' }}>YA</option>
                                         </select>
@@ -968,36 +1062,39 @@
                                     </div>
 
                                     <!-- Form Inputs -->
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
-                                        Pejabat Pengawas
-                                      </label>
-                                      <div class="col-sm-8">
-                                        <select class="form-control form-select select2" id="id_pejabat_pengawas_lkai" name="id_pejabat_pengawas_lkai">
-                                          <option value="" selected disabled>- Pilih -</option>
-                                          @foreach ($users as $user)
-                                            <option value="{{ $user->id_admin }}" {{ old('id_pejabat_pengawas', $pengawasan->id_pejabat_pengawas_lkai) == $user->id_admin ? 'selected' : '' }}>
-                                              {{ $user->name }} | {{ $user->jabatan }}
-                                            </option>
-                                          @endforeach
-                                        </select>
+                                    <div id="keputusanPertamaInputs">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">
+                                          Pejabat Pengawas
+                                        </label>
+                                        <div class="col-sm-8">
+                                          <select class="form-control form-input form-select select2" id="id_pejabat_pengawas_lkai" name="id_pejabat_pengawas_lkai" disabled>
+                                            <option value="" selected disabled>- Pilih -</option>
+                                            @foreach ($users as $user)
+                                              <option value="{{ $user->id_admin }}" {{ old('id_pejabat_pengawas', $pengawasan->id_pejabat_pengawas_lkai) == $user->id_admin ? 'selected' : '' }}>
+                                                {{ $user->name }} | {{ $user->jabatan }}
+                                              </option>
+                                            @endforeach
+                                          </select>
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Catatan</label>
-                                      <div class="col-sm-8">
-                                        <textarea class="form-control" row="2" placeholder="Catatan" id="catatan" name="catatan_keputusan_1_lkai">{{ old('catatan_keputusan_1_lkai', $pengawasan->catatan_keputusan_1_lkai) }}</textarea>
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Catatan</label>
+                                        <div class="col-sm-8">
+                                          <textarea class="form-control form-input" row="2" placeholder="Catatan" id="catatan" name="catatan_keputusan_1_lkai" disabled>{{ old('catatan_keputusan_1_lkai', $pengawasan->catatan_keputusan_1_lkai) }}</textarea>
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Hasil Analisis Diterima Tanggal</label>
-                                      <div class="col-sm-8">
-                                        <input type="date" class="form-control" value="{{ old('hasil_analisis_diterima_tanggal_1_lkai', $pengawasan->hasil_analisis_diterima_tanggal_1_lkai) }}" name="hasil_analisis_diterima_tanggal_1_lkai">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Hasil Analisis Diterima Tanggal</label>
+                                        <div class="col-sm-8">
+                                          <input type="date" class="form-control form-input" value="{{ old('hasil_analisis_diterima_tanggal_1_lkai', $pengawasan->hasil_analisis_diterima_tanggal_1_lkai) }}"
+                                            name="hasil_analisis_diterima_tanggal_1_lkai" disabled>
+                                        </div>
                                       </div>
-                                    </div>
 
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1016,7 +1113,7 @@
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">Keputusan Kedua</label>
                                       <div class="col-sm-8">
-                                        <select id="keputusan_kedua" class="form-select" name="keputusan_kedua_lkai"> <!-- Ubah ID di sini -->
+                                        <select id="keputusan_kedua" class="form-select form-input" name="keputusan_kedua_lkai" onchange="toggleInputs(this, 'keputusanKeduaInputs')"> <!-- Ubah ID di sini -->
                                           <option value="TIDAK" {{ old('keputusan_kedua', $pengawasan->keputusan_kedua_lkai) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                                           <option value="YA" {{ old('keputusan_kedua', $pengawasan->keputusan_kedua_lkai) == 'YA' ? 'selected' : '' }}>YA</option>
                                         </select>
@@ -1024,36 +1121,39 @@
                                     </div>
 
                                     <!-- Form Inputs -->
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
-                                        Pejabat Administrator
-                                      </label>
-                                      <div class="col-sm-8">
-                                        <select class="form-control form-select select2" id="id_pejabat_administrator_lkai" name="id_pejabat_administrator_lkai">
-                                          <option value="" selected disabled>- Pilih -</option>
-                                          @foreach ($users as $user)
-                                            <option value="{{ $user->id_admin }}" {{ old('id_pejabat_administrator', $pengawasan->id_pejabat_administrator_lkai) == $user->id_admin ? 'selected' : '' }}>
-                                              {{ $user->name }} | {{ $user->jabatan }}
-                                            </option>
-                                          @endforeach
-                                        </select>
+                                    <div id="keputusanKeduaInputs">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">
+                                          Pejabat Administrator
+                                        </label>
+                                        <div class="col-sm-8">
+                                          <select class="form-control form-select form-input select2" id="id_pejabat_administrator_lkai" name="id_pejabat_administrator_lkai" disabled>
+                                            <option value="" selected disabled>- Pilih -</option>
+                                            @foreach ($users as $user)
+                                              <option value="{{ $user->id_admin }}" {{ old('id_pejabat_administrator', $pengawasan->id_pejabat_administrator_lkai) == $user->id_admin ? 'selected' : '' }}>
+                                                {{ $user->name }} | {{ $user->jabatan }}
+                                              </option>
+                                            @endforeach
+                                          </select>
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Catatan</label>
-                                      <div class="col-sm-8">
-                                        <textarea class="form-control" row="2" placeholder="Catatan" id="catatan" name="catatan_keputusan_2_lkai">{{ old('catatan_keputusan_2_lkai', $pengawasan->catatan_keputusan_2_lkai) }}</textarea>
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Catatan</label>
+                                        <div class="col-sm-8">
+                                          <textarea class="form-control form-input" row="2" placeholder="Catatan" id="catatan" name="catatan_keputusan_2_lkai" disabled>{{ old('catatan_keputusan_2_lkai', $pengawasan->catatan_keputusan_2_lkai) }}</textarea>
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Hasil Analisis Diterima Tanggal</label>
-                                      <div class="col-sm-8">
-                                        <input type="date" class="form-control" value="{{ old('hasil_analisis_diterima_tanggal_2_lkai', $pengawasan->hasil_analisis_diterima_tanggal_2_lkai) }}" name="hasil_analisis_diterima_tanggal_2_lkai">
+                                      <div class="row mb-3 form-group">
+                                        <label class="col-sm-4 col-form-label">Hasil Analisis Diterima Tanggal</label>
+                                        <div class="col-sm-8">
+                                          <input type="date" class="form-control form-input" value="{{ old('hasil_analisis_diterima_tanggal_2_lkai', $pengawasan->hasil_analisis_diterima_tanggal_2_lkai) }}"
+                                            name="hasil_analisis_diterima_tanggal_2_lkai" disabled>
+                                        </div>
                                       </div>
-                                    </div>
 
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1083,13 +1183,38 @@
                         <h6><b>A. Data Nota Hasil Intelijen</b></h6>
                         <hr>
                         <div class="row">
-                          <div class="col-md-6 mb-3">
-                            <label>No. NHI</label>
-                            <input type="text" class="form-control" value="{{ old('no_nhi', $pengawasan->no_nhi) }}" placeholder="No. NHI" id="no_nhi" name="no_nhi">
+
+                          <div class="col-md-12 mb-3">
+                            <label>Tipe NHI</label>
+                            <select id="tipe_nhi" name="tipe_nhi" class="form-control">
+                              <option value="NHI" {{ old('tipe_nhi', $pengawasan->tipe_nhi) == 'NHI' ? 'selected' : '' }}>NHI</option>
+                              <option value="NHI-HKI" {{ old('tipe_nhi', $pengawasan->tipe_nhi) == 'NHI-HKI' ? 'selected' : '' }}>NHI-HKI</option>
+                            </select>
                           </div>
-                          <div class="col-md-6 mb-3">
+
+                          <div class="col-md-12 mb-3">
+                            <select class="form-control" id="deskripsi" name="deskripsi">
+                              <option value="diperintahkan" {{ old('deskripsi', $pengawasan->deskripsi) == 'diperintahkan' ? 'selected' : '' }}>Diperintahkan</option>
+                              <option value="direkomendasikan" {{ old('direkomendasikan', $pengawasan->deskripsi) == 'direkomendasikan' ? 'selected' : '' }}>Direkomendasikan</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-6 mb-3 nhi-input" style="display: none;">
+                            <label>No. NHI</label>
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_nhi', $pengawasan->no_nhi) }}" placeholder="No. NHI" id="no_nhi" name="no_nhi">
+                          </div>
+                          <div class="col-md-6 mb-3 nhi-input" style="display: none;">
                             <label>Tanggal NHI</label>
-                            <input type="date" class="form-control" value="{{ old('tgl_nhi', $pengawasan->tgl_nhi) }}" id="tgl_nhi" name="tgl_nhi">
+                            <input type="date" class="form-control bg-primary text-white" id="tgl_nhi" value="{{ old('tgl_nhi', $pengawasan->tgl_nhi) }}" name="tgl_nhi">
+                          </div>
+
+                          <div class="col-md-6 mb-3 nhi-hki-input" style="display: none;">
+                            <label>No. NHI-HKI</label>
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_nhi_hki', $pengawasan->no_nhi_hki) }}" placeholder="No. NHI-HKI" id="no_nhi_hki" name="no_nhi_hki">
+                          </div>
+                          <div class="col-md-6 mb-3 nhi-hki-input" style="display: none;">
+                            <label>Tanggal NHI-HKI</label>
+                            <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_nhi_hki', $pengawasan->tgl_nhi_hki) }}" id="tgl_nhi_hki" name="tgl_nhi_hki">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>Sifat NHI</label>
@@ -1111,12 +1236,12 @@
                           <hr>
                           <div class="col-md-6 mb-3">
                             <label>No. LKAI</label>
-                            <input type="text" class="form-control" value="{{ old('no_lkai', $pengawasan->no_lkai) }}" placeholder="No. LKAI" value="">
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_lkai', $pengawasan->no_lkai) }}" placeholder="No. LKAI" value="">
                           </div>
 
                           <div class="col-md-6 mb-3">
                             <label>Tgl. LKAI</label>
-                            <input type="date" class="form-control" value="{{ old('tgl_lkai', $pengawasan->tgl_lkai) }}" placeholder="Tanggal LKAI" value=}}">
+                            <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_lkai', $pengawasan->tgl_lkai) }}" placeholder="Tanggal LKAI" value="">
                           </div>
 
                           <div class="col-md-12 mb-3">
@@ -1228,9 +1353,9 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">No.Polisi</label>
+                                    <label class="col-sm-4 col-form-label">Nomor voyage/Flight/Nomor Polisi</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" value="{{ old('no_polisi_nhi', $pengawasan->no_polisi_nhi) }}" name="no_polisi_nhi" placeholder="No Polisi">
+                                      <input type="text" class="form-control form-input" value="{{ old('no_polisi_nhi', $pengawasan->no_polisi_nhi) }}" name="no_polisi_nhi" placeholder="Nomor voyage/Flight/Nomor Polisi">
                                     </div>
                                   </div>
 
@@ -1331,9 +1456,9 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">No. Polisi</label>
+                                    <label class="col-sm-4 col-form-label">Nomor voyage/Flight/Nomor Polisi</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" value="{{ old('no_polisi_b', $pengawasan->no_polisi_b) }}" name="no_polisi_b" placeholder="no_polisi">
+                                      <input type="text" class="form-control form-input" value="{{ old('no_polisi_b', $pengawasan->no_polisi_b) }}" name="no_polisi_b" placeholder="Nomor voyage/Flight/Nomor Polisi">
                                     </div>
                                   </div>
 
@@ -1379,9 +1504,9 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">No. Polisi</label>
+                                    <label class="col-sm-4 col-form-label">Nomor voyage/Flight/Nomor Polisi</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" value="{{ old('no_polisi_c', $pengawasan->no_polisi_c) }}" name="no_polisi_c" placeholder="No Polisi">
+                                      <input type="text" class="form-control form-input" value="{{ old('no_polisi_c', $pengawasan->no_polisi_c) }}" name="no_polisi_c" placeholder="Nomor voyage/Flight/Nomor Polisi">
                                     </div>
                                   </div>
 
@@ -1460,12 +1585,12 @@
 
                           <div class="col-md-6 mb-3">
                             <label>No. NI</label>
-                            <input type="text" class="form-control" value="{{ old('no_ni', $pengawasan->no_ni) }}" placeholder="No. NI" id="no_ni" name="no_ni">
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ni', $pengawasan->no_ni) }}" placeholder="No. NI" id="no_ni" name="no_ni">
                           </div>
 
                           <div class="col-md-6 mb-3">
                             <label>Tgl. NI</label>
-                            <input type="date" class="form-control" value="{{ old('tgl_ni', $pengawasan->tgl_ni) }}" id="tgl_ni" name="tgl_ni">
+                            <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_ni', $pengawasan->tgl_ni) }}" id="tgl_ni" name="tgl_ni">
                           </div>
 
                           <div class="col-md-6 mb-3">
@@ -1485,20 +1610,6 @@
                               <option value="Sangat Rahasia" {{ old('klasifikasi_ni', $pengawasan->klasifikasi_ni) == 'Sangat Rahasia' ? 'selected' : '' }}>Sangat Rahasia</option>
                             </select>
                           </div>
-
-                          <h6><b>B. Referensi</b></h6>
-                          <hr>
-
-                          <div class="col-md-6 mb-3">
-                            <label>No. LKAI</label>
-                            <input type="text" class="form-control" value="{{ old('no_lkai', $pengawasan->no_lkai) }}" placeholder="No. LKAI">
-                          </div>
-
-                          <div class="col-md-6 mb-3">
-                            <label>Tgl. LKAI</label>
-                            <input type="text" class="form-control" value="{{ old('tgl_lkai', $pengawasan->tgl_lkai) }}" placeholder="Tanggal LKAI">
-                          </div>
-
                         </div>
                       </div>
 
@@ -1519,11 +1630,126 @@
                           </select>
                         </div>
 
-                        <div class="col-lg-12 mb-3">
-                          <label>Uraian Informasi</label>
-                          <textarea class="form-control" rows="3" placeholder="uraian informasi tentang indikasi Pelanggaran kepabeanan atau cukai" id="uraian_informasi_ni" name="uraian_informasi_ni">{{ old('uraian_informasi_ni', $pengawasan->uraian_informasi_ni) }}</textarea>
-                        </div>
+                        <h6><b>D. Uraian Informasi</b></h6>
+                        <hr>
+                        <div class="card-body">
+                          <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseqwe" aria-expanded="false" aria-controls="flush-collapseqwe">
+                                  1. Uraian Informasi Pertama
+                                </button>
+                              </h2>
+                              <div id="flush-collapseqwe" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Komoditi</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="komoditi_ni" value="{{ old('komoditi_ni', $pengawasan->komoditi_ni) }}" placeholder="Isi Komoditi">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Kantor Tujuan</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="kantor_ni" value="{{ old('kantor_ni', $pengawasan->kantor_ni) }}" placeholder="Isi Kantor Tujuan">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsebvc" aria-expanded="false" aria-controls="flush-collapsebvc">
+                                  2. Uraian Informasi Kedua
+                                </button>
+                              </h2>
+                              <div id="flush-collapsebvc" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nama PPJK/Ekspedisi</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="ppjk_ni" value="{{ old('ppjk_ni', $pengawasan->ppjk_ni) }}" placeholder="Isi Nama PPJK/Ekspedisi">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">No. Dokumen</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nodok_ni" value="{{ old('nodok_ni', $pengawasan->nodok_ni) }}" placeholder="Isi No. Dokumen">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nama Pengirim</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nama_pengirim_ni" value="{{ old('nama_pengirim_ni', $pengawasan->nama_pengirim_ni) }}" placeholder="Isi Nama Pengirim">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nomor Pengirim</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nomor_pengirim_ni" value="{{ old('nomor_pengirim_ni', $pengawasan->nomor_pengirim_ni) }}" placeholder="Isi Nomor Pengirim">
+                                    </div>
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">Nama Penerima</label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" name="nama_penerima_ni" value="{{ old('nama_penerima_ni', $pengawasan->nama_penerima_ni) }}" placeholder="Isi Nama Penerima">
+                                      </div>
+                                    </div>
 
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">Nomor Penerima</label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" name="nomor_penerima_ni" value="{{ old('nomor_penerima_ni', $pengawasan->nomor_penerima_ni) }}" placeholder="Isi Nomor Penerima">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Asal Barang</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="asal_barang_ni" value="{{ old('asal_barang_ni', $pengawasan->asal_barang_ni) }}" placeholder="Isi Asal Barang">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Tujuan Barang</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="tujuan_barang_ni" value="{{ old('tujuan_barang_ni', $pengawasan->tujuan_barang_ni) }}" placeholder="Isi Tujuan Barang">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Berat Barang</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="berat_barang_ni" value="{{ old('berat_barang_ni', $pengawasan->berat_barang_ni) }}" placeholder="Isi Berat Barang">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Pemberitahuan Barang</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="pemberitahuan_barang_ni" value="{{ old('pemberitahuan_barang_ni', $pengawasan->pemberitahuan_barang_ni) }}"
+                                        placeholder="Isi Pemberitahuan Barang">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Komoditi Atensi</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="komoditi_atensi_ni" value="{{ old('komoditi_atensi_ni', $pengawasan->komoditi_atensi_ni) }}" placeholder="Isi Komoditi Atensi">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nama Sarana Pengangkut</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="sarkut_ni" value="{{ old('sarkut_ni', $pengawasan->sarkut_ni) }}" placeholder="Isi Nama Sarana Pengangkut">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Estimasi Tiba</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control" name="estimasi_tiba_ni" value="{{ old('estimasi_tiba_ni', $pengawasan->estimasi_tiba_ni) }}" id="datetime-datepicker" placeholder="Isi Estimasi Tiba">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
                         <div class="col-lg-12 mb-3">
                           <label>Pejabat Penerbit NI</label>
@@ -1542,10 +1768,315 @@
                     </div>
                   </div>
 
+                  {{-- disini --}}
+                  <div class="tab-pane" id="nota-dinas-content" role="tabpanel">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <h6><b>A. Data Nota Dinas</b></h6>
+                        <hr>
+                        <div class="row">
+
+                          <div class="col-md-6 mb-3">
+                            <label>YTH</label>
+                            <input type="text" class="form-control" placeholder="Yang Terhormat" id="yth_notdin" name="yth_notdin" value="{{ old('yth_notdin', $pengawasan->yth_notdin ?? '') }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Dari</label>
+                            <input type="text" class="form-control" placeholder="Dari" id="dari_notdin" name="dari_notdin" value="{{ old('dari_notdin', $pengawasan->dari_notdin ?? '') }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Sifat Nota Dinas</label>
+                            <select class="form-control" id="sifat_notdin" name="sifat_notdin">
+                              <option value="" disabled {{ old('sifat_notdin', $pengawasan->sifat_notdin ?? '') == '' ? 'selected' : '' }}>- Pilih -</option>
+                              <option value="Biasa" {{ old('sifat_notdin', $pengawasan->sifat_notdin ?? '') == 'Biasa' ? 'selected' : '' }}>Biasa</option>
+                              <option value="Rahasia" {{ old('sifat_notdin', $pengawasan->sifat_notdin ?? '') == 'Rahasia' ? 'selected' : '' }}>Rahasia</option>
+                              <option value="Sangat Rahasia" {{ old('sifat_notdin', $pengawasan->sifat_notdin ?? '') == 'Sangat Rahasia' ? 'selected' : '' }}>Sangat Rahasia</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Lampiran</label>
+                            <input type="text" class="form-control" placeholder="Lampiran Nota Dinas" name="lampiran_notdin" value="{{ old('lampiran_notdin', $pengawasan->lampiran_notdin ?? '') }}">
+
+                          </div>
+
+                          <div class="col-md-12 mb-3">
+                            <label>Hal</label>
+                            <textarea class="form-control" rows="4" placeholder="Hal" id="hal" name="hal_notdin">{{ old('hal_notdin', $pengawasan->hal_notdin ?? '') }}</textarea>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6">
+                        <h6><b>C. Data Isi Nota Dinas</b></h6>
+                        <hr>
+
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header">
+                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse19" aria-expanded="false" aria-controls="flush-collapse19">
+                                1. Data Pengangkut Laut
+                              </button>
+                            </h2>
+                            <div id="flush-collapse19" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div class="accordion-body bg-light">
+
+                                {{-- <div class="row mb-3">
+                                  <label class="col-sm-4 col-form-label">ISI DATA</label>
+                                  <div class="col-sm-8">
+                                    <select id="internal" class="form-select" name="internal_lppi" onchange="toggleInputs(this, 'internalInputs')"> <!-- Ubah ID di sini -->
+                                      <option value="TIDAK">TIDAK</option>
+                                      <option value="YA">Ya</option>
+                                    </select>
+                                  </div>
+                                </div> --}}
+
+                                <div id="">
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Tanggal Daftar
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="date" class="form-control form-input" name="tanggal_daftar_notdin" placeholder="Tanggal Daftar" value="{{ old('tanggal_daftar_notdin', $pengawasan->tanggal_daftar_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Nomor Pendaftaran
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nodaf_notdin" placeholder="Nomor Pendafataran" value="{{ old('nodaf_notdin', $pengawasan->nodaf_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Nama Perusahaan
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nama_perusahaan_notdin" placeholder="Nama Perusahaan" value="{{ old('nama_perusahaan_notdin', $pengawasan->nama_perusahaan_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Nama Sarkut
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="sarkut_notdin" placeholder="Nama Sarana Pengangkut" value="{{ old('sarkut_notdin', $pengawasan->sarkut_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      NPWP
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="npwp_notdin" placeholder="NPWP" value="{{ old('npwp_notdin', $pengawasan->npwp_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Alamat
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="alamat_notdin" placeholder="Alamat" value="{{ old('alamat_notdin', $pengawasan->alamat_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      IMO
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="imo_notdin" placeholder="IMO" value="{{ old('imo_notdin', $pengawasan->imo_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Vessel Type
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="vessel_type_notdin" placeholder="Vessel Type" value="{{ old('vessel_type_notdin', $pengawasan->vessel_type_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      MMSI
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="mmsi_notdin" placeholder="MMSI" value="{{ old('mmsi_notdin', $pengawasan->mmsi_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      CALL SIGN
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="call_sign_notdin" placeholder="CALL SIGN" value="{{ old('call_sign_notdin', $pengawasan->call_sign_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label for="flag_notdin" class="col-sm-4 col-form-label">Flag</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control" name="flag_notdin" id="flag_notdin" placeholder="Masukkan Flag" value="{{ old('flag_notdin', $pengawasan->flag_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Gross Tonnage
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="gross_tonnage_notdin" placeholder="Gross Tonnage" value="{{ old('gross_tonnage_notdin', $pengawasan->gross_tonnage_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Lenght Overall
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="lenght_overall_notdin" placeholder="Lenght Overall" value="{{ old('lenght_overall_notdin', $pengawasan->lenght_overall_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Year Built
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="year_built_notdin" placeholder="Year Built" value="{{ old('year_built_notdin', $pengawasan->year_built_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="accordion-item">
+                            <h2 class="accordion-header">
+                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse199" aria-expanded="false" aria-controls="flush-collapse199">
+                                2. Detail
+                              </button>
+                            </h2>
+                            <div id="flush-collapse199" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div class="accordion-body bg-light">
+
+                                {{-- <div class="row mb-3">
+                                  <label for="eksternal" class="col-sm-4 col-form-label">ISI DATA</label>
+                                  <div class="col-sm-8">
+                                    <select id="eksternal" class="form-select" name="eksternal_lppi" onchange="toggleInputs(this, 'eksternalInputs')"> <!-- Ubah ID di sini -->
+                                      <option value="TIDAK">TIDAK</option>
+                                      <option value="YA">Ya</option>
+                                    </select>
+                                  </div>
+                                </div> --}}
+
+                                <!-- Form Inputs -->
+                                <div id="">
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Rentang Waktu Penelitian</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" id="date-range-picker" name="rentang_waktu_notdin" class="form-control" placeholder="Pilih Rentang Waktu Penelitian"
+                                        value="{{ old('rentang_waktu_notdin', $pengawasan->rentang_waktu_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Pelabuhan Asal</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="pelabuhan_asal_notdin" placeholder="Pelabuhan Asal" value="{{ old('pelabuhan_asal_notdin', $pengawasan->pelabuhan_asal_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Pelabuhan tujuan</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="pelabuhan_tujuan_notdin" placeholder="Pelabuhan Tujuan"
+                                        value="{{ old('pelabuhan_tujuan_notdin', $pengawasan->pelabuhan_tujuan_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Titik Kordinat</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="titik_kordinat_notdin" placeholder="Titik Kordinat" value="{{ old('titik_kordinat_notdin', $pengawasan->titik_kordinat_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+
+                                  <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                      <div class="form-group">
+                                        <label class="col-form-label">Perkiraan Waktu Berangkat</label>
+                                        <input type="text" class="form-control" name="perkiraan_keberangkatan_notdin" id="datetime-datepicker" placeholder="Perkiraan Waktu Keberangkatan"
+                                          value="{{ old('perkiraan_keberangkatan_notdin', $pengawasan->perkiraan_keberangkatan_notdin ?? '') }}">
+                                      </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                      <div class="form-group">
+                                        <label class="col-form-label">Perkiraan Waktu Datang</label>
+                                        <input type="text" class="form-control" name="perkiraan_kedatangan_notdin" id="datetime-datepicker" placeholder="Perkiraan Waktu Kedatangan"
+                                          value="{{ old('perkiraan_kedatangan_notdin', $pengawasan->perkiraan_kedatangan_notdin ?? '') }}">
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group" align="center">
+                                    <label class="col-form-label">Waktu Penyampaian</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" id="datetime-datepicker" name="waktu_penyampaian_notdin" placeholder="Waktu Penyampaian"
+                                        value="{{ old('waktu_penyampaian_notdin', $pengawasan->waktu_penyampaian_notdin ?? '') }}">
+                                    </div>
+                                  </div>
+
+
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <br>
+
+                        <div class="col-lg-12 mb-3">
+                          <label>Pejabat Nota Dinas</label>
+                          <select class="form-control form-select select2" name="id_pejabat_notdin">
+                            <option value="" selected disabled>- Pilih -</option>
+                            @foreach ($users as $user)
+                              <option value="{{ $user->id_admin }}" {{ old('id_pejabat_notdin', $pengawasan->id_pejabat_notdin) == $user->id_admin ? 'selected' : '' }}>
+                                {{ $user->name }} | {{ $user->jabatan }}
+                              </option>
+                            @endforeach
+                          </select>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+
 
                 </div>
               </div>
-            </div> <!-- end card-->
+            </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
             <button type="submit" class="btn btn-success btn-sm me-2">
@@ -1644,22 +2175,20 @@
 
 
   <script>
-    let ikhtisarCount = 0;
+    let ikhtisarCount = {{ count($ikhtisar) }};
 
     function tambahIkhtisar() {
       ikhtisarCount++;
 
       const row = document.createElement('div');
       row.classList.add('row', 'align-items-center', 'mb-2');
-      row.setAttribute('id', `ikhtisar-row-${ikhtisarCount}`);
 
       const colIkhtisar = document.createElement('div');
       colIkhtisar.classList.add('col-md-12', 'mb-2');
       const inputIkhtisar = document.createElement('textarea');
-      inputIkhtisar.type = 'text';
       inputIkhtisar.classList.add('form-control');
       inputIkhtisar.placeholder = 'Ikhtisar';
-      inputIkhtisar.name = 'ikhtisar[]';
+      inputIkhtisar.name = `ikhtisar[${ikhtisarCount}][ikhtisar]`;
       colIkhtisar.appendChild(inputIkhtisar);
 
       const colSumber = document.createElement('div');
@@ -1668,7 +2197,7 @@
       inputSumber.type = 'text';
       inputSumber.classList.add('form-control');
       inputSumber.placeholder = 'Sumber';
-      inputSumber.name = 'sumber[]';
+      inputSumber.name = `ikhtisar[${ikhtisarCount}][sumber]`;
       colSumber.appendChild(inputSumber);
 
       const colValiditas = document.createElement('div');
@@ -1677,7 +2206,7 @@
       inputValiditas.type = 'text';
       inputValiditas.classList.add('form-control');
       inputValiditas.placeholder = 'Validitas';
-      inputValiditas.name = 'validitas[]';
+      inputValiditas.name = `ikhtisar[${ikhtisarCount}][validitas]`;
       colValiditas.appendChild(inputValiditas);
 
       const colRemove = document.createElement('div');
@@ -1695,7 +2224,6 @@
       row.appendChild(colRemove);
 
       document.getElementById('ikhtisar-container').appendChild(row);
-      feather.replace();
     }
   </script>
 
@@ -1703,69 +2231,163 @@
 
 
   <script>
-    function toggleForm(selectedValue, sectionId) {
-      const section = document.getElementById(sectionId);
-      const inputs = section.querySelectorAll('.form-input');
+    document.addEventListener('DOMContentLoaded', function() {
+      const selects = document.querySelectorAll('select');
+      selects.forEach(select => {
+        const hasYAOption = Array.from(select.options).some(option => option.value === 'YA');
+        if (hasYAOption) {
+          const container = select.closest('.row').nextElementSibling;
 
-      if (selectedValue === 'YA') {
-        inputs.forEach(input => {
-          input.removeAttribute('disabled');
-          input.classList.add('enabled');
-          input.classList.remove('disabled');
-        });
-      } else {
-        inputs.forEach(input => {
-          input.setAttribute('disabled', 'disabled');
-          input.classList.remove('enabled');
-          input.classList.add('disabled');
-        });
-      }
-    }
+          function setInputState() {
+            if (!container) return;
+            const inputs = container.querySelectorAll('input, textarea, select');
+            const isEnabled = select.value === 'YA';
+            inputs.forEach(input => {
+              if (isEnabled) {
+                input.removeAttribute('disabled');
+              } else {
+                input.setAttribute('disabled', 'disabled');
+              }
+            });
+          }
+
+          setInputState();
+
+          select.addEventListener('change', setInputState);
+        }
+      });
+    });
   </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const selects = [{
+          id: "nhi-select",
+          tab: "nhi-tab-item",
+        },
+        {
+          id: "ni-select",
+          tab: "ni-tab-item",
+        },
+        {
+          id: "rekomendasi_lainnya",
+          tab: "nota-dinas-tab-item",
+        },
+      ];
+
+      selects.forEach(({
+        id,
+        tab
+      }) => {
+        const selectElement = document.getElementById(id);
+        const tabElement = document.getElementById(tab);
+
+        const handleTabVisibility = () => {
+          if (selectElement.value === "YA") {
+            tabElement.style.display = "block";
+            tabElement.classList.add("fade-in", "active");
+
+            const tabContainer = document.querySelector(".tabs-container");
+            if (tabContainer) {
+              const offsetTop = tabContainer.offsetTop;
+              window.scrollTo({
+                top: offsetTop - 70,
+                behavior: "smooth",
+              });
+            }
+
+            const tabLink = tabElement.querySelector(".nav-link");
+            if (tabLink) {
+              tabLink.classList.add("highlight");
+              setTimeout(() => tabLink.classList.remove("highlight"), 1000);
+            }
+          } else {
+            tabElement.style.display = "none";
+            tabElement.classList.remove("active");
+          }
+        };
+
+        selectElement.addEventListener("change", handleTabVisibility);
+
+        handleTabVisibility();
+      });
+    });
+  </script>
+
 
   <script>
     const inputSource = document.getElementById('no_lppi');
     const inputSource2 = document.getElementById('tgl_lppi');
     const inputTarget = document.getElementById('no_lppi_disabled');
     const inputTarget2 = document.getElementById('tgl_lppi_disabled');
+    const sumberLppiSelect = document.querySelector('[name="sumber_lppi"]');
 
-    function syncValue1() {
-      inputTarget.value = inputSource.value;
+    function syncValues() {
+      if (sumberLppiSelect.value === 'YA') {
+        inputTarget.value = inputSource ? inputSource.value : '';
+        inputTarget2.value = inputSource2 ? inputSource2.value : '';
+      }
     }
 
-    function syncValue2() {
-      inputTarget2.value = inputSource2.value;
+    function toggleSumberLppiInputs(selectElement) {
+      const container = document.getElementById('sumberLppiInputs');
+      const inputs = container.querySelectorAll('input, textarea, select');
+      const isEnabled = selectElement.value === 'YA';
+
+      inputs.forEach(input => {
+        input.disabled = !isEnabled;
+        if (!isEnabled) {
+          input.value = '';
+        }
+      });
+
+      if (isEnabled) {
+        syncValues();
+      }
     }
 
-    syncValue1();
-    syncValue2();
+    sumberLppiSelect.addEventListener('change', function() {
+      toggleSumberLppiInputs(this);
+    });
 
-    inputSource.addEventListener('input', syncValue1);
-    inputSource2.addEventListener('input', syncValue2);
+    toggleSumberLppiInputs(sumberLppiSelect);
+
+    function toggleInputs(selectElement, inputContainerId) {
+      if (selectElement === sumberLppiSelect) {
+        toggleSumberLppiInputs(selectElement);
+        return;
+      }
+
+      const container = document.getElementById(inputContainerId);
+      const inputs = container.querySelectorAll('input, textarea, select');
+      const isEnabled = selectElement.value === 'YA';
+
+      inputs.forEach(input => {
+        input.disabled = !isEnabled;
+        if (!isEnabled) {
+          input.value = '';
+        }
+      });
+    }
   </script>
 
   <script>
-    // Fungsi untuk menampilkan media dalam modal
     function setMediaModal(fileUrls, type) {
       if (type === 'foto') {
-        // Clear the modal content before appending new images
         const modalBody = document.getElementById('fotoModalBody');
-        modalBody.innerHTML = ''; // Reset modal content
+        modalBody.innerHTML = '';
 
-        // Check if fileUrls is a JSON string, then parse it
         if (typeof fileUrls === 'string') {
-          fileUrls = JSON.parse(fileUrls); // Parse the JSON string if it's a string
+          fileUrls = JSON.parse(fileUrls);
         }
 
-        // Loop through each image URL and append it to the modal
         fileUrls.forEach(function(fotoUrl) {
-          // Create a new image element for each URL
           const img = document.createElement('img');
-          img.src = `{{ asset('storage/') }}/${fotoUrl}`; // Generate the correct path
-          img.className = 'img-fluid w-100 mb-2'; // Add classes for styling
+          img.src = `{{ asset('storage/') }}/${fotoUrl}`;
+          img.className = 'img-fluid w-100 mb-2';
           img.alt = 'Foto Laporan Pengawasan';
 
-          // Append the image to the modal body
+
           modalBody.appendChild(img);
         });
       } else if (type === 'audio') {
@@ -1775,6 +2397,78 @@
       }
     }
   </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const tipe = document.getElementById('tipe_nhi').value;
+
+      document.querySelectorAll('.nhi-input').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.nhi-hki-input').forEach(el => el.style.display = 'none');
+
+      if (tipe === 'NHI') {
+        document.querySelectorAll('.nhi-input').forEach(el => el.style.display = 'block');
+      } else if (tipe === 'NHI-HKI') {
+        document.querySelectorAll('.nhi-hki-input').forEach(el => el.style.display = 'block');
+      }
+
+      document.getElementById('tipe_nhi').addEventListener('change', function() {
+        const tipe = this.value;
+
+        document.querySelectorAll('.nhi-input').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.nhi-hki-input').forEach(el => el.style.display = 'none');
+
+        if (tipe === 'NHI') {
+          document.querySelectorAll('.nhi-input').forEach(el => el.style.display = 'block');
+        } else if (tipe === 'NHI-HKI') {
+          document.querySelectorAll('.nhi-hki-input').forEach(el => el.style.display = 'block');
+        }
+      });
+
+      document.querySelector('form').addEventListener('submit', function(event) {
+        const tipe = document.getElementById('tipe_nhi').value;
+
+        if (tipe === 'NHI') {
+          document.querySelectorAll('.nhi-hki-input input').forEach(input => input.value = '');
+        } else if (tipe === 'NHI-HKI') {
+          document.querySelectorAll('.nhi-input input').forEach(input => input.value = '');
+        }
+      });
+    });
+  </script>
+
+  <script>
+    function handleSelection(selectedElement) {
+
+      const allSelects = document.querySelectorAll('.section-select');
+      allSelects.forEach(select => {
+        if (select !== selectedElement) {
+          select.disabled = selectedElement.value === 'YA';
+          if (select.disabled) {
+            select.classList.add('text-muted');
+          } else {
+            select.classList.remove('text-muted');
+          }
+        }
+      });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const allSelects = document.querySelectorAll('.section-select');
+      allSelects.forEach(select => {
+        if (select.value === 'YA') {
+          handleSelection(select);
+        }
+      });
+    });
+  </script>
+
+  <style>
+    .aa {
+      background-color: #e9ecef !important;
+      color: #6c757d !important;
+    }
+  </style>
 @endsection
 
 @section('script')

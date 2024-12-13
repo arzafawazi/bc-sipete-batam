@@ -99,7 +99,11 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     // Pra penindakan routes
     Route::resource('Dokpenindakan/pra-penindakan', PraPenindakanController::class);
     Route::get('Dokpenindakan/pra-penindakan/search', [PraPenindakanController::class, 'search'])->name('users.search');
-    Route::get('Dokpenindakan/pra-penindakan/{id}/print', [PraPenindakanController::class, 'print'])->name('pra-penindakan.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-laporan-informasi', [PraPenindakanController::class, 'print_laporan_informasi'])->name('laporan-informasi.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-npi', [PraPenindakanController::class, 'print_surat_npi'])->name('surat-npi.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-lapp', [PraPenindakanController::class, 'print_surat_lapp'])->name('surat-lapp.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-perintah', [PraPenindakanController::class, 'print_surat_perintah'])->name('surat-perintah.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-mpp', [PraPenindakanController::class, 'print_surat_mpp'])->name('surat-mpp.print');
 
     // Pra penindakan NPP routes
     Route::resource('Dokpenindakan/pra-penindakan-npp', PraPenindakanNppController::class);
@@ -125,6 +129,11 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::resource('Dokintelijen/laporan-pengawasan', LaporanPengawasanControllers::class);
     Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-tugas', [LaporanPengawasanControllers::class, 'print_surat_tugas'])->name('surat-tugas.print');
     Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-lpt', [LaporanPengawasanControllers::class, 'print_surat_lpt'])->name('surat-lpt.print');
+    Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-lpp', [LaporanPengawasanControllers::class, 'print_surat_lpp'])->name('surat-lppi.print');
+    Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-lkai', [LaporanPengawasanControllers::class, 'print_surat_lkai'])->name('surat-lkai.print');
+    Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-nhi', [LaporanPengawasanControllers::class, 'print_surat_nhi'])->name('surat-nhi.print');
+    Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-ni', [LaporanPengawasanControllers::class, 'print_surat_ni'])->name('surat-ni.print');
+    Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-rekomendasi', [LaporanPengawasanControllers::class, 'print_surat_rekomendasi'])->name('surat-rekomendasi.print');
 
     // Dokpenindakan routes
     Route::resource('Dokpenindakan/DaftarSbp', PenindakanController::class);

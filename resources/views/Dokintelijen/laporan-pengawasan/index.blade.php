@@ -136,10 +136,9 @@
                 <tbody align="center">
                   @foreach ($laporanpengawasan as $index => $laporanpengawasan)
                     <tr class="shadow-sm">
-                      <td class="text-center fw-medium">{{ $index + 1 }}</td>
-                      <td class="fw-medium">{{ $laporanpengawasan->no_st }}</td>
+                      <td class="text-center fw-medium">{{ $index + 1 }}.</td>
+                      <td class="fw-medium">Nomor ST {{ $laporanpengawasan->no_st }}</td>
                       <td>{{ $laporanpengawasan->tgl_st }}</td>
-
                       <td class="px-3 py-2">
                         <div class="d-flex flex-column align-items-center gap-2">
                           <div class="d-flex gap-2 justify-content-center flex-wrap">
@@ -273,7 +272,7 @@
                                           </svg>
                                         </div>
                                         <h6 class="card-title mb-3">Surat LPPI</h6>
-                                        <button class="btn btn-outline-warning print-btn" onclick="window.print()">Print</button>
+                                        <a href="{{ route('surat-lppi.print', $laporanpengawasan->id) }}" class="btn btn-outline-warning print-btn">Print</a>
                                       </div>
                                     </div>
                                   </div>
@@ -293,7 +292,7 @@
                                           </svg>
                                         </div>
                                         <h6 class="card-title mb-3">Surat LKAI</h6>
-                                        <button class="btn btn-outline-danger print-btn" onclick="window.print()">Print</button>
+                                        <a href="{{ route('surat-lkai.print', $laporanpengawasan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
                                       </div>
                                     </div>
                                   </div>
@@ -310,7 +309,7 @@
                                           </svg>
                                         </div>
                                         <h6 class="card-title mb-3">Surat NHI</h6>
-                                        <button class="btn btn-outline-info print-btn" onclick="window.print()">Print</button>
+                                        <a href="{{ route('surat-nhi.print', $laporanpengawasan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
                                       </div>
                                     </div>
                                   </div>
@@ -326,19 +325,20 @@
                                             <polyline points="10 9 9 9 8 9"></polyline>
                                           </svg>
                                         </div>
-                                        <h6 class="card-title mb-3">Surat HGI</h6>
-                                        <button class="btn btn-outline-dark print-btn" onclick="window.print()">Print</button>
+                                        <h6 class="card-title mb-3">Surat NI</h6>
+                                        <a href="{{ route('surat-ni.print', $laporanpengawasan->id) }}" class="btn btn-outline-dark print-btn">Print</a>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
 
                                 <div class="row g-3">
-                                  <div class="col-md-4 offset-md-4">
+                                  <div class="col-md-4 ">
                                     <div class="card print-card border-secondary shadow-lg">
                                       <div class="card-body text-center">
-                                        <div class="print-card-icon text-secondary mb-3">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <div class="print-card-icon mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="text-primary">
                                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                             <polyline points="14 2 14 8 20 8"></polyline>
                                             <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -346,11 +346,32 @@
                                             <polyline points="10 9 9 9 8 9"></polyline>
                                           </svg>
                                         </div>
-                                        <h6 class="card-title mb-3">Surat SPI</h6>
-                                        <button class="btn btn-outline-secondary print-btn" onclick="window.print()">Print</button>
+                                        <h6 class="card-title mb-3">Surat Post Seizure</h6>
+                                        <button class="btn btn-outline-primary print-btn" onclick="window.print()">Print</button>
                                       </div>
                                     </div>
                                   </div>
+
+
+                                  <div class="col-md-4 ">
+                                    <div class="card print-card border-secondary shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="text-success">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">Surat Nota Dinas</h6>
+                                        <a class="btn btn-outline-success print-btn" href="{{ route('surat-rekomendasi.print', $laporanpengawasan->id) }}">Print</a>
+                                      </div>
+                                    </div>
+                                  </div>
+
                                 </div>
                               </div>
                             </div>

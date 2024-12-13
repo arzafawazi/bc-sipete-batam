@@ -41,7 +41,9 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot();
 
-        
+
+
+
 
 
         // Route::aliasMiddleware('menu.access', \App\Http\Middleware\CheckMenuAccess::class);

@@ -85,8 +85,10 @@
                         <div class="row">
                           <input type="hidden" value="PENGAWASAN" name="id_pengawasan">
                           <div class="col-md-6 mb-3">
+                            {{-- bagian no surat tugas dan tanggal surat tugas ini dihapus dikarenakan mau diambil dari aplikasi nadin saja  --}}
+                            {{-- format untuk tanggal dibuat menjadi dd mm yyy 12 desember 2024 --}}
                             <label>No. Surat Tugas</label>
-                            <input type="text" class="form-control bg-primary text-white" name="no_st" value="{{ old('no_st', $no_ref->no_st) }}">
+                            <input type="text" class="form-control bg-primary text-white">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>Tgl. Surat Tugas</label>
@@ -131,9 +133,17 @@
                         <hr>
 
                         <div class="col-lg-12 mb-3">
-                          <label for="melaksanakan_tugas">Melaksanakan Tugas</label>
-                          <textarea class="form-control form-input" placeholder="Di Isi Uraian Tugas" name="melaksanakan_tugas_st" rows="2"></textarea>
+                          <label for="melaksanakan_tugas" class="d-flex align-items-center">
+                            Melaksanakan Tugas
+                            <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                              data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                              <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                            </button>
+                          </label>
+                          <textarea class="form-control form-input" placeholder="Di Isi Uraian Tugas" name="melaksanakan_tugas_st" rows="3"></textarea>
                         </div>
+
+
 
                         <div class="col-lg-12 mb-3">
                           <label for="wilayah_penugasan">Wilayah Penugasan</label>
@@ -178,18 +188,25 @@
                           <div class="row">
                             <div class="col-md-6 mb-3">
                               <label>No. LPT</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_lpt" value="{{ old('no_lpt', $no_ref->no_lpt) }}">
+                              <input type="text" class="form-control bg-primary text-white" name="no_lpt" value="{{ old('no_lpt', $no_ref->no_lpt) }}" disabled>
                             </div>
                             <div class="col-md-6 mb-3">
-                              <label>Surat Tugas Nomor</label>
-                              <input type="text" class="form-control bg-primary text-white" value="{{ old('no_st', $no_ref->no_st) }}">{{-- ngambil dari no_st --}}
+                              <label>Tgl. LPT</label>
+                              <input type="date" class="form-control bg-primary text-white" name="tgl_lpt">
                             </div>
                           </div>
                           <!-- Media Informasi / Isi Informasi / Catatan -->
                           <div class="col-md-12 mb-3">
-                            <label>Uraian Tugas</label>
-                            <textarea class="form-control" name="uraian_tugas_lpt" rows="3"></textarea>
+                            <label class="d-flex align-items-center">
+                              Uraian Tugas
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" name="uraian_tugas_lpt" rows="3" placeholder="Di Isi Uraian Tugas"></textarea>
                           </div>
+
 
                           <div class="col-md-12 mb-3">
                             <label>Wilayah Penugasan</label>
@@ -250,13 +267,18 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">
+                                    <label class="col-sm-4 col-form-label d-flex align-items-center">
                                       d. Ikhtisar Informasi
+                                      <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                        data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                        <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                      </button>
                                     </label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" placeholder="Ikhtisar Informasi" name="ikhtisar_informasi_lpt">
+                                      <textarea class="form-control" placeholder="Ikhtisar Informasi" name="ikhtisar_informasi_lpt" rows="3"></textarea>
                                     </div>
                                   </div>
+
 
                                 </div>
                               </div>
@@ -323,7 +345,7 @@
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">b. Modus Pelanggaran </label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="modus_pelanggaran_lpt" placeholder="Modus Pelanggaran">
+                                        <textarea class="form-control" name="modus_pelanggaran_lpt" rows="3" placeholder="Modus Pelanggaran"></textarea>
                                       </div>
                                     </div>
 
@@ -409,19 +431,34 @@
                                   <div class="accordion-body bg-light">
 
                                     <div class="row mb-3 form-group">
-                                      <label for="informasi_lainnya">Informasi Lainnya yang Berkaitan</label>
+                                      <label>
+                                        Informasi Lainnya yang Berkaitan
+                                      </label>
                                       <textarea class="form-control" name="info_lainnya_lpt" rows="3"></textarea>
                                     </div>
 
                                     <div class="row mb-3 form-group">
-                                      <label for="Kesimpulan">Kesimpulan</label>
+                                      <label for="Kesimpulan" class="d-flex align-items-center">
+                                        Kesimpulan
+                                        <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                          data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                          <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                        </button>
+                                      </label>
                                       <textarea class="form-control" name="kesimpulan_lpt" rows="3"></textarea>
                                     </div>
 
                                     <div class="row mb-3 form-group">
-                                      <label for="Rekomendasi">Rekomendasi</label>
+                                      <label for="Rekomendasi" class="d-flex align-items-center">
+                                        Rekomendasi
+                                        <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                          data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                          <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                        </button>
+                                      </label>
                                       <textarea class="form-control" name="rekomendasi_lpt" rows="3"></textarea>
                                     </div>
+
 
                                   </div>
                                 </div>
@@ -463,7 +500,7 @@
                         <div class="row">
                           <div class="col-md-6 mb-3">
                             <label>No. LPPI</label>
-                            <input type="text" class="form-control bg-primary text-white" placeholder="No. LPPI" value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi" name="no_lppi">
+                            <input type="text" class="form-control bg-primary text-white" placeholder="No. LPPI" value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi" name="no_lppi" disabled>
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>Tgl. LPPI</label>
@@ -602,6 +639,33 @@
 
                       <!-- Right Column (Pejabat Selection) -->
                       <div class="col-lg-6">
+
+                        <div class="row">
+                          <div class="col-lg-6 mb-3">
+                            <label>Penerima Informasi</label>
+                            <select class="form-control form-select select2" id="penerima_informasi_lppi" name="penerima_informasi_lppi">
+                              <option value="" selected disabled>- Pilih -</option>
+                              @foreach ($users as $user)
+                                <option value="{{ $user->id_admin }}">{{ $user->name }}
+                                </option>
+                              @endforeach
+                            </select>
+                          </div>
+
+
+                          <div class="col-lg-6 mb-3">
+                            <label>Penilai Informasi</label>
+                            <select class="form-control form-select select2" id="penilai_informasi_lppi" name="penilai_informasi_lppi">
+                              <option value="" selected disabled>- Pilih -</option>
+                              @foreach ($users as $user)
+                                <option value="{{ $user->id_admin }}">{{ $user->name }}
+                                </option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+
+
                         <h6><b>D. Kesimpulan</b></h6>
                         <hr>
 
@@ -673,7 +737,7 @@
                           <!-- No. LI / Tgl. LI -->
                           <div class="col-md-6 mb-3">
                             <label>No. LKAI</label>
-                            <input type="text" name="no_lkai" value="{{ old('no_lkai', $no_ref->no_lkai) }}" class="form-control bg-primary text-white">
+                            <input type="text" name="no_lkai" value="{{ old('no_lkai', $no_ref->no_lkai) }}" class="form-control bg-primary text-white" disabled>
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>tgl. LKAI</label>
@@ -762,21 +826,42 @@
                           </div>
                           <h6><b>B. Ikhtisar Data Informasi</b></h6>
                           <hr>
+
                           <div class="col-md-12 mb-3">
-                            <label>Ikhtisar Data Atau Informasi</label>
-                            <textarea class="form-control" row="2" placeholder="Ikhtisar Data Atau Informasi" id="ikhtisar_data_lkai" name="ikhtisar_data_lkai"></textarea>
+                            <label class="d-flex align-items-center">
+                              Ikhtisar Data Atau Informasi
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" rows="2" placeholder="Ikhtisar Data Atau Informasi" id="ikhtisar_data_lkai" name="ikhtisar_data_lkai"></textarea>
                           </div>
 
 
+
                           <div class="col-md-12 mb-3">
-                            <label>Prosedur Analisis</label>
-                            <textarea class="form-control" row="2" placeholder="Prosedur Analisis" id="prosedur_analisis_lkai" name="prosedur_analisis_lkai"></textarea>
+                            <label class="d-flex align-items-center">
+                              Prosedur Analisis
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" rows="2" placeholder="Prosedur Analisis" id="prosedur_analisis_lkai" name="prosedur_analisis_lkai"></textarea>
                           </div>
 
                           <div class="col-md-12 mb-3">
-                            <label>Hasil Analisis</label>
-                            <textarea class="form-control" row="2" placeholder="Hasil Analisis" id="hasl_analisis" name="hasil_analisis_lkai"></textarea>
+                            <label class="d-flex align-items-center">
+                              Hasil Analisis
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" rows="2" placeholder="Hasil Analisis" id="hasil_analisis_lkai" name="hasil_analisis_lkai"></textarea>
                           </div>
+
 
                           <div class="col-md-12 mb-3">
                             <label>Kesimpulan</label>
@@ -792,14 +877,14 @@
                         <div class="row">
                           <div class="col-sm-6">
                             <label for="nhi-select">NHI/NHI-HKI/NHI-N</label>
-                            <select id="nhi-select" class="form-select" name="nhi">
+                            <select id="nhi-select" class="form-select section-select" name="nhi" onchange="handleSelection(this)">
                               <option value="TIDAK">TIDAK</option>
                               <option value="YA">YA</option>
                             </select>
                           </div>
                           <div class="col-sm-6">
                             <label for="ni-select">NI</label>
-                            <select id="ni-select" class="form-select" name="ni">
+                            <select id="ni-select" class="form-select section-select" name="ni" onchange="handleSelection(this)">
                               <option value="TIDAK">TIDAK</option>
                               <option value="YA">YA</option>
                             </select>
@@ -819,20 +904,16 @@
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">ISI DATA</label>
                                       <div class="col-sm-8">
-                                        <select id="rekomendasi_lainnya" class="form-select" name="rekomendasi_lainnya" onchange="toggleInputs(this, 'rekomendasiLainnyaInputs')"> <!-- Ubah ID di sini -->
+                                        <select id="rekomendasi_lainnya" class="form-select section-select" name="rekomendasi_lainnya" onchange="handleSelection(this)">
                                           <option value="TIDAK">TIDAK</option>
-                                          <option value="YA">Ya</option>
+                                          <option value="YA">YA</option>
                                         </select>
                                       </div>
                                     </div>
 
-
-                                    <!-- Form Inputs -->
                                     <div id="rekomendasiLainnyaInputs">
                                       <div class="row mb-3 form-group">
-                                        <label class="col-sm-4 col-form-label">
-                                          Isi Rekomendasi Lainnya
-                                        </label>
+                                        <label class="col-sm-4 col-form-label">Isi Rekomendasi Lainnya</label>
                                         <div class="col-sm-8">
                                           <textarea class="form-control form-input" row="2" placeholder="Isi Rekomendasi Lainnya" id="isi_rekomendasi_lainnya" name="isi_rekomendasi_lainnya" disabled></textarea>
                                         </div>
@@ -855,14 +936,13 @@
                                     <div class="row mb-3">
                                       <label class="col-sm-4 col-form-label">ISI DATA</label>
                                       <div class="col-sm-8">
-                                        <select id="informasi_lainnya" class="form-select" name="informasi_lainnya" onchange="toggleInputs(this, 'informasiLainnyaInputs')"> <!-- Ubah ID di sini -->
+                                        <select id="informasi_lainnya" class="form-select section-select" name="informasi_lainnya" onchange="handleSelection(this)">
                                           <option value="TIDAK">TIDAK</option>
-                                          <option value="YA">Ya</option>
+                                          <option value="YA">YA</option>
                                         </select>
                                       </div>
                                     </div>
 
-                                    <!-- Form Inputs -->
                                     <div id="informasiLainnyaInputs">
                                       <div class="row mb-3 form-group">
                                         <label class="col-sm-4 col-form-label">Isi Informasi Lainnya</label>
@@ -1033,12 +1113,20 @@
                         <h6><b>A. Data Nota Hasil Intelijen</b></h6>
                         <hr>
                         <div class="row">
+
                           <div class="col-md-12 mb-3">
                             <label>Tipe NHI</label>
                             <select class="form-control" id="tipe_nhi" name="tipe_nhi">
                               <option value="">-- Pilih Tipe --</option>
                               <option value="NHI">NHI</option>
                               <option value="NHI-HKI">NHI-HKI</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-12 mb-3">
+                            <select class="form-control" id="deskripsi" name="deskripsi">
+                              <option value="diperintahkan">Diperintahkan</option>
+                              <option value="direkomendasikan">Direkomendasikan</option>
                             </select>
                           </div>
 
@@ -1196,9 +1284,9 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">No.Polisi</label>
+                                    <label class="col-sm-4 col-form-label">Nomor voyage/Flight/Nomor Polisi</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" name="no_polisi_nhi" placeholder="No Polisi">
+                                      <input type="text" class="form-control form-input" name="no_polisi_nhi" placeholder="Nomor voyage/Flight/Nomor Polisi">
                                     </div>
                                   </div>
 
@@ -1296,9 +1384,9 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">No. Polisi</label>
+                                    <label class="col-sm-4 col-form-label">Nomor voyage/Flight/Nomor Polisi</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" name="no_polisi_b" placeholder="no_polisi">
+                                      <input type="text" class="form-control form-input" name="no_polisi_b" placeholder="Nomor voyage/Flight/Nomor Polisi">
                                     </div>
                                   </div>
 
@@ -1344,9 +1432,9 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">No. Polisi</label>
+                                    <label class="col-sm-4 col-form-label">Nomor voyage/Flight/Nomor Polisi</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" name="no_polisi_c" placeholder="No Polisi">
+                                      <input type="text" class="form-control forxm-input" name="no_polisi_c" placeholder="Nomor voyage/Flight/Nomor Polisi">
                                     </div>
                                   </div>
 
@@ -1422,7 +1510,7 @@
 
                           <div class="col-md-6 mb-3">
                             <label>No. NI</label>
-                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ni', $no_ref->no_ni) }}" placeholder="No. NI" id="no_ni" name="no_ni">
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ni', $no_ref->no_ni) }}" placeholder="No. NI" id="no_ni" name="no_ni" disabled>
                           </div>
 
                           <div class="col-md-6 mb-3">
@@ -1448,18 +1536,6 @@
                             </select>
                           </div>
 
-                          <h6><b>B. Referensi</b></h6>
-                          <hr>
-
-                          <div class="col-md-6 mb-3">
-                            <label>No. LKAI</label>
-                            <input type="text" class="form-control" value="" placeholder="No. LKAI">
-                          </div>
-
-                          <div class="col-md-6 mb-3">
-                            <label>Tgl. LKAI</label>
-                            <input type="text" class="form-control" value="" placeholder="Tanggal LKAI">
-                          </div>
 
                         </div>
                       </div>
@@ -1480,9 +1556,148 @@
                           </select>
                         </div>
 
-                        <div class="col-lg-12 mb-3">
-                          <label>Uraian Informasi</label>
-                          <textarea class="form-control" rows="3" placeholder="uraian informasi tentang indikasi Pelanggaran kepabeanan atau cukai" id="uraian_informasi_ni" name="uraian_informasi_ni"></textarea>
+                        <h6><b>D. Uraian Informasi</b></h6>
+                        <hr>
+                        <div class="card-body">
+                          <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseqwe" aria-expanded="false" aria-controls="flush-collapseqwe">
+                                  1. Uraian Informasi Pertama
+                                </button>
+                              </h2>
+                              <div id="flush-collapseqwe" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Komoditi
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="komoditi_ni" placeholder="Isi Komoditi">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Kantor Tujuan
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" placeholder="Isi Kantor Tujuan" name="kantor_ni">
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsebvc" aria-expanded="false" aria-controls="flush-collapsebvc">
+                                  2. Uraian Informasi Kedua
+                                </button>
+                              </h2>
+                              <div id="flush-collapsebvc" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nama PPJK/Ekspedisi</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="ppjk_ni" placeholder="Isi Nama PPJK/Ekspedisi">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">No. Dokumen</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nodok_ni" placeholder="Isi No. Dokumen">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nama Pengirim</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nama_pengirim_ni" placeholder="Isi Nama Pengirim">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nomor Pengirim</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nomor_pengirim_ni" placeholder="Isi Nomor Pengirim">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nama Penerima</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nama_penerima_ni" placeholder="Isi Nama Penerima">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nomor Penerima</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nomor_penerima_ni" placeholder="Isi Nomor Penerima">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Asal Barang</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="asal_barang_ni" placeholder="Isi Asal Barang">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Tujuan Barang</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="tujuan_barang_ni" placeholder="Isi Tujuan Barang">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Berat Barang</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="berat_barang_ni" placeholder="Isi Berat Barang">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Pemberitahuan Barang</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="pemberitahuan_barang_ni" placeholder="Isi Pemberitahuan Barang">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Komoditi Atensi</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="komoditi_atensi_ni" placeholder="Isi Komoditi Atensi">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nama Sarana Pengangkut</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="sarkut_ni" placeholder="Isi Nama Sarana Pengangkut">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Estimasi Tiba</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control" name="estimasi_tiba_ni" id="datetime-datepicker" placeholder="Isi Estimasi Tiba">
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+
                         </div>
 
 
@@ -1568,6 +1783,34 @@
                                 </div> --}}
 
                                 <div id="">
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Tanggal Daftar
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="date" class="form-control form-input" name="tanggal_daftar_notdin" placeholder="Tanggal Daftar">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Nomor Pendaftaran
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nodaf_notdin" placeholder="Nomor Pendafataran">
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">
+                                      Nama Perusahaan
+                                    </label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nama_perusahaan_notdin" placeholder="Nama Perusahaan">
+                                    </div>
+                                  </div>
+
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-4 col-form-label">
                                       Nama Sarkut
@@ -1632,22 +1875,9 @@
                                   </div>
 
                                   <div class="row mb-3 form-group">
-                                    <label for="flag_notdin" class="col-sm-4 col-form-label">
-                                      Flag
-                                    </label>
+                                    <label class="col-sm-4 col-form-label">Flag</label>
                                     <div class="col-sm-8">
-                                      <select class="form-select select2" name="flag_notdin" id="flag_notdin">
-                                        <option selected disabled>Pilih Flag</option>
-                                        @foreach ($nama_negara as $benua => $negaraList)
-                                          <optgroup label="{{ $benua }}">
-                                            @foreach ($negaraList as $negara)
-                                              <option value="{{ $negara->KdEdi }}">
-                                                {{ $negara->UrEdi }} - ({{ $negara->KdEdi }})
-                                              </option>
-                                            @endforeach
-                                          </optgroup>
-                                        @endforeach
-                                      </select>
+                                      <input type="text" class="form-control form-input" name="flag_notdin" placeholder="Isi Flag">
                                     </div>
                                   </div>
 
@@ -1675,15 +1905,6 @@
                                     </label>
                                     <div class="col-sm-8">
                                       <input type="text" class="form-control form-input" name="year_built_notdin" placeholder="Year Built">
-                                    </div>
-                                  </div>
-
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">
-                                      Owner
-                                    </label>
-                                    <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" name="owner_notdin" placeholder="Owner">
                                     </div>
                                   </div>
 
@@ -1762,7 +1983,7 @@
                                   <div class="row mb-3 form-group" align="center">
                                     <label class="col-form-label">Waktu Penyampaian</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" id="basic-datepicker" name="waktu_penyampaian_notdin" placeholder="Waktu Penyampaian">
+                                      <input type="text" class="form-control" id="datetime-datepicker" name="waktu_penyampaian_notdin" placeholder="Waktu Penyampaian">
                                     </div>
                                   </div>
 
@@ -1773,6 +1994,18 @@
                             </div>
                           </div>
 
+                        </div>
+                        <br>
+
+                        <div class="col-lg-12 mb-3">
+                          <label>Pejabat Nota Dinas</label>
+                          <select class="form-control form-select select2" name="id_pejabat_notdin">
+                            <option value="" selected disabled>- Pilih -</option>
+                            @foreach ($users as $user)
+                              <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
+                              </option>
+                            @endforeach
+                          </select>
                         </div>
 
 
@@ -1978,7 +2211,6 @@
         return;
       }
 
-      // Logika umum untuk elemen lain
       const container = document.getElementById(inputContainerId);
       const inputs = container.querySelectorAll('input, textarea, select');
       const isEnabled = selectElement.value === 'YA';
@@ -2016,6 +2248,29 @@
       }
     });
   </script>
+
+  <script>
+    function handleSelection(selectedElement) {
+      const allSelects = document.querySelectorAll('.section-select');
+      allSelects.forEach(select => {
+        if (select !== selectedElement) {
+          select.disabled = selectedElement.value === 'YA';
+          if (select.disabled) {
+            select.classList.add('aa');
+          } else {
+            select.classList.remove('aa');
+          }
+        }
+      });
+    }
+  </script>
+
+  <style>
+    .aa {
+      background-color: #e9ecef !important;
+      color: #6c757d !important;
+    }
+  </style>
 @endsection
 
 @section('script')

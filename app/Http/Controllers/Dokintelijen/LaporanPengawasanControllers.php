@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpWord\TemplateProcessor;
 
+
 class LaporanPengawasanControllers extends Controller
 {
     public function index()
@@ -26,7 +27,17 @@ class LaporanPengawasanControllers extends Controller
             $laporan->status_lppi = empty($laporan->pejabat_lppi) ? 'LPP-I belum diisi' : 'LPP-I lengkap';
 
             $laporan->status_lkai = empty($laporan->hasil_analisis_diterima_tanggal_2_lkai) ? 'LKA-I belum diisi' : 'LKA-I lengkap';
+
+            $laporanData = $laporan->toArray();
+            $laporanFormatted = $this->formatDates($laporanData);
+
+
+            $laporan->tgl_st = $laporanFormatted['tgl_st'];
         }
+
+        // dd($laporanpengawasan);
+
+
 
         return view('Dokintelijen.laporan-pengawasan.index', compact('laporanpengawasan'));
     }
@@ -86,6 +97,8 @@ class LaporanPengawasanControllers extends Controller
 
             $data['ikhtisar'] = json_encode($ikhtisarData);
 
+            unset($data['sumber'], $data['validitas']);
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan saat mengonversi data ikhtisar ke format JSON');
             }
@@ -103,6 +116,8 @@ class LaporanPengawasanControllers extends Controller
             $no_ref->no_lkai += 1;
             $no_ref->no_ni += 1;
             $no_ref->save();
+
+            // dd($data);
 
             // Create the record
             TblLaporanPengawasan::create($data);
@@ -163,8 +178,20 @@ class LaporanPengawasanControllers extends Controller
         $pengawasan = TblLaporanPengawasan::findOrFail($id);
         $users = User::all();
         $no_ref = TblNoRef::first();
-        return view('Dokintelijen.laporan-pengawasan.edit', compact('pengawasan', 'users', 'no_ref'));
+        $nama_negara = TblNegara::all()->groupBy('benua');
+
+        $audioDataRaw = $pengawasan->dokumentasi_audio_lpt;
+        $videoDataRaw = $pengawasan->dokumentasi_video_lpt;
+
+        $audioDataRaw = stripslashes($audioDataRaw);
+        $videoDataRaw = stripslashes($videoDataRaw);
+
+        // dd($audioDataRaw, $videoDataRaw);
+
+        return view('Dokintelijen.laporan-pengawasan.edit', compact('pengawasan', 'users', 'no_ref', 'audioDataRaw', 'videoDataRaw', 'nama_negara'));
     }
+
+
 
     public function update(Request $request, $id)
     {
@@ -239,6 +266,25 @@ class LaporanPengawasanControllers extends Controller
             $data['tim_operasi_st'] = json_encode($request->input('tim_operasi_st', []));
             $data['tim_dukungan_operasi_st'] = json_encode($request->input('tim_dukungan_operasi_st', []));
 
+            $ikhtisarArray = $request->input('ikhtisar', []);
+
+            $ikhtisarData = [];
+            foreach ($ikhtisarArray as $ikhtisar) {
+                $ikhtisarData[] = [
+                    'ikhtisar' => $ikhtisar['ikhtisar'] ?? '',
+                    'sumber' => $ikhtisar['sumber'] ?? '',
+                    'validitas' => $ikhtisar['validitas'] ?? '',
+                ];
+            }
+
+            $data['ikhtisar'] = json_encode($ikhtisarData);
+
+            unset($data['sumber'], $data['validitas']);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return redirect()->back()->withInput()->with('error', 'Error encoding JSON: ' . json_last_error_msg());
+            }
+
             \Log::info('melaksanakan_tugas_st value:', ['value' => $request->input('melaksanakan_tugas_st')]);
 
 
@@ -247,6 +293,8 @@ class LaporanPengawasanControllers extends Controller
                 'video' => $data['dokumentasi_video_lpt'],
                 'audio' => $data['dokumentasi_audio_lpt'],
             ]);
+
+            // dd($data);
 
             $pengawasan->update($data);
 
@@ -335,6 +383,7 @@ class LaporanPengawasanControllers extends Controller
         $data = $this->formatDates($data);
 
 
+
         $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
 
 
@@ -388,16 +437,16 @@ class LaporanPengawasanControllers extends Controller
 
         $melaksanakan_tugas_st_raw = $pengawasan->melaksanakan_tugas_st;
         $melaksanakan_tugas_st_raw = preg_replace('/\s+/', ' ', trim($melaksanakan_tugas_st_raw));
-        preg_match_all('/\*(.*?)\*/', $melaksanakan_tugas_st_raw, $matches);
+        preg_match_all('/\#(.*?)\#/', $melaksanakan_tugas_st_raw, $matches);
         $templateData = [];
         foreach (array_unique($matches[1]) as $index => $task) {
             $templateData[] = [
-                'no' => $index + 1,
+                'i' => $index + 1 . '.',
                 'tugas_st' => trim($task),
             ];
         }
 
-        $templateProcessor->cloneRowAndSetValues('no', $templateData);
+        $templateProcessor->cloneRowAndSetValues('i', $templateData);
 
 
 
@@ -449,6 +498,108 @@ class LaporanPengawasanControllers extends Controller
             }
         }
 
+        $uraian_tugas_lpt_raw = $pengawasan->uraian_tugas_lpt;
+        $uraian_tugas_lpt_raw = preg_replace('/\s+/', ' ', trim($uraian_tugas_lpt_raw));
+        preg_match_all('/\#(.*?)\#/', $uraian_tugas_lpt_raw, $matches);
+
+        $templateData = [];
+        foreach (array_unique($matches[1]) as $index => $task) {
+            $templateData[] = [
+                'no_uraian' => ($index + 1) . '.',
+                'uraian_tugas' => trim($task),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('no_uraian', $templateData);
+
+        $ikhtisar_informasi_lpt_raw = $pengawasan->ikhtisar_informasi_lpt;
+        $ikhtisar_informasi_lpt_raw = preg_replace('/\s+/', ' ', trim($ikhtisar_informasi_lpt_raw));
+        preg_match_all('/\#(.*?)\#/', $ikhtisar_informasi_lpt_raw, $matches);
+
+        $templateData = [];
+        foreach (array_unique($matches[1]) as $index => $task) {
+            $templateData[] = [
+                'no_ikhtisar' => $index + 1,
+                'ikhtisar_informasi' => trim($task),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('no_ikhtisar', $templateData);
+
+        $dokumentasi = [
+            'dokumentasi_foto' => !empty($pengawasan->dokumentasi_foto_lpt) ? 'Terlampir' : '-',
+            'dokumentasi_audio' => !empty($pengawasan->dokumentasi_audio_lpt) ? 'Terlampir' : '-',
+            'dokumentasi_video' => !empty($pengawasan->dokumentasi_video_lpt) ? 'Terlampir' : '-',
+            'info_lainnya' => !empty($pengawasan->info_lainnya_lpt) ? $pengawasan->info_lainnya_lpt : '-',
+        ];
+
+        $templateProcessor->setValues($dokumentasi);
+
+        $fotoPaths = json_decode($pengawasan->dokumentasi_foto_lpt, true);
+
+        // dd($fotoPaths);
+
+        if (!empty($fotoPaths)) {
+            $templateProcessor->cloneBlock('foto_section', count($fotoPaths), true, true);
+
+            foreach ($fotoPaths as $index => $fotoPath) {
+                $realIndex = $index + 1;
+                $imagePath = public_path('storage/' . $fotoPath);
+
+                if (file_exists($imagePath)) {
+                    list($width, $height) = getimagesize($imagePath);
+
+                    $maxWidth = 400;
+                    $maxHeight = 400;
+
+                    $ratio = min($maxWidth / $width, $maxHeight / $height);
+
+                    $newWidth = round($width * $ratio);
+                    $newHeight = round($height * $ratio);
+
+                    $widthCm = round($newWidth * 0.0264583, 2);
+                    $heightCm = round($newHeight * 0.0264583, 2);
+
+                    $templateProcessor->setImageValue("foto#$realIndex", [
+                        'path' => $imagePath,
+                        'width' => $widthCm . 'cm',
+                        'height' => $heightCm . 'cm'
+                    ]);
+                } else {
+                    $templateProcessor->setValue("foto#$realIndex", '-');
+                }
+            }
+        } else {
+            $templateProcessor->deleteBlock('foto_section');
+        }
+
+        $kesimpulan_lpt_raw = $pengawasan->kesimpulan_lpt;
+        $kesimpulan_lpt_raw = preg_replace('/\s+/', ' ', trim($kesimpulan_lpt_raw));
+        preg_match_all('/\#(.*?)\#/', $kesimpulan_lpt_raw, $matches);
+
+        $templateData = [];
+        foreach (array_unique($matches[1]) as $index => $task) {
+            $templateData[] = [
+                'k' => $index + 1,
+                'kesimpulan' => trim($task),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('k', $templateData);
+
+        $rekomendasi_lpt_raw = $pengawasan->rekomendasi_lpt;
+        $rekomendasi_lpt_raw = preg_replace('/\s+/', ' ', trim($rekomendasi_lpt_raw));
+        preg_match_all('/\#(.*?)\#/', $rekomendasi_lpt_raw, $matches);
+
+        $templateData = [];
+        foreach (array_unique($matches[1]) as $index => $task) {
+            $templateData[] = [
+                'r' => $index + 1,
+                'rekomendasi' => trim($task),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('r', $templateData);
 
 
 
@@ -461,24 +612,588 @@ class LaporanPengawasanControllers extends Controller
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
 
+    public function print_surat_lpp($id)
+    {
+        $pengawasan = TblLaporanPengawasan::findOrFail($id);
+        $data = $pengawasan->toArray();
+
+        $pejabatKeys = [
+            'penerima_informasi_lppi',
+            'penilai_informasi_lppi',
+            'pegawai_lppi',
+            'pejabat_lppi',
+        ];
+
+
+        foreach ($pejabatKeys as $key) {
+            if ($pengawasan->$key) {
+                $pejabat = $pengawasan->getPejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        if ($pengawasan->internal_lppi === 'YA') {
+            $data['i_l'] = '✔';
+        } else {
+            $data['i_l'] = '';
+        }
+
+        if ($pengawasan->eksternal_lppi === 'YA') {
+            $data['e_l'] = '✔';
+        } else {
+            $data['e_l'] = '';
+        }
+
+        if ($pengawasan->tindak_lanjut_lppi === 'Analisis') {
+            $data['a_l'] = '✔';
+        } else {
+            $data['a_l'] = '';
+        }
+
+        if ($pengawasan->tindak_lanjut_lppi === 'Arsip') {
+            $data['a_r'] = '✔';
+        } else {
+            $data['a_r'] = '';
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $data = $this->formatDates($data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-lpp.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        $tglLppi = $pengawasan->tgl_lppi;
+
+        if (!empty($tglLppi)) {
+            $tahunSuratLppi = date('Y', strtotime($tglLppi));
+        } else {
+            $tahunSuratLppi = '-';
+        }
+
+        $templateProcessor->setValue('tahun_surat_lppi', $tahunSuratLppi);
+
+
+        $rawIkhtisar = $pengawasan->ikhtisar;
+        $data = json_decode($rawIkhtisar, true);
+        // dd($data);
+
+        if (!empty($data)) {
+            $templateProcessor->cloneBlock('ikhtisar_section', count($data), true, true);
+
+            foreach ($data as $index => $item) {
+                $realIndex = $index + 1;
+                $templateProcessor->setValue("s#$realIndex", $item['sumber']);
+                $templateProcessor->setValue("i#$realIndex", $item['ikhtisar']);
+                $templateProcessor->setValue("v#$realIndex", $item['validitas']);
+            }
+        } else {
+            $templateProcessor->deleteBlock('ikhtisar_section');
+        }
+
+
+
+        $fileName = 'Dokumen_Intelijen_Nomor_Surat_LPPI_' . $pengawasan->no_lppi . '.docx';
+
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+
+    public function print_surat_lkai($id)
+    {
+        $pengawasan = TblLaporanPengawasan::findOrFail($id);
+        $data = $pengawasan->toArray();
+
+        $pejabatKeys = [
+            'id_pegawai_analisis_lkai',
+            'id_pejabat_pengawas_lkai',
+            'id_pejabat_administrator_lkai',
+        ];
+
+
+        foreach ($pejabatKeys as $key) {
+            if ($pengawasan->$key) {
+                $pejabat = $pengawasan->getPejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        if ($pengawasan->nhi === 'YA') {
+            $data['nh'] = '✔';
+        } else {
+            $data['nh'] = '✘';
+        }
+
+        if ($pengawasan->ni === 'YA') {
+            $data['ni'] = '✔';
+        } else {
+            $data['ni'] = '✘';
+        }
+
+        if ($pengawasan->rekomendasi_lainnya === 'YA') {
+            $data['r'] = '✔';
+        } else {
+            $data['r'] = '✘';
+        }
+
+        if ($pengawasan->informasi_lainnya === 'YA') {
+            $data['i'] = '✔';
+        } else {
+            $data['i'] = '✘';
+        }
+
+        if ($pengawasan->keputusan_pertama_lkai === 'YA') {
+            $data['p'] = '✔';
+            $data['pt'] = '✘';
+        } else {
+            $data['p'] = '✘';
+            $data['pt'] = '✔';
+        }
+
+        if ($pengawasan->keputusan_kedua_lkai === 'YA') {
+            $data['k'] = '✔';
+            $data['kt'] = '✘';
+        } else {
+            $data['k'] = '✘';
+            $data['kt'] = '✔';
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $data = $this->formatDates($data);
+
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-lkai.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+
+        $tglLkai = $pengawasan->tgl_lkai;
+
+        if (!empty($tglLkai)) {
+            $tahunSuratLkai = date('Y', strtotime($tglLkai));
+        } else {
+            $tahunSuratLkai = '-';
+        }
+
+        $templateProcessor->setValue('tahun_surat_lkai', $tahunSuratLkai);
+
+
+        $ikhtisar_data_lkai_raw = $pengawasan->ikhtisar_data_lkai;
+        $ikhtisar_data_lkai_raw = preg_replace('/\s+/', ' ', trim($ikhtisar_data_lkai_raw));
+        preg_match_all('/\#(.*?)\#/', $ikhtisar_data_lkai_raw, $matches);
+
+        $templateData = [];
+        foreach (array_unique($matches[1]) as $index => $task) {
+            $templateData[] = [
+                'nok' => '-',
+                'ikhtisar_data' => trim($task),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('nok', $templateData);
+
+        $prosedur_analisis_lkai_raw = $pengawasan->prosedur_analisis_lkai;
+        $prosedur_analisis_lkai_raw = preg_replace('/\s+/', ' ', trim($prosedur_analisis_lkai_raw));
+        preg_match_all('/\#(.*?)\#/', $prosedur_analisis_lkai_raw, $matches);
+
+        $templateData = [];
+        foreach (array_unique($matches[1]) as $index => $task) {
+            $templateData[] = [
+                'nop' => '-',
+                'prosedur_data' => trim($task),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('nop', $templateData);
+
+
+        $hasil_analisis_lkai_raw = $pengawasan->hasil_analisis_lkai;
+        $hasil_analisis_lkai_raw = preg_replace('/\s+/', ' ', trim($hasil_analisis_lkai_raw));
+        preg_match_all('/\#(.*?)\#/', $hasil_analisis_lkai_raw, $matches);
+
+        $templateData = [];
+        foreach (array_unique($matches[1]) as $index => $task) {
+            $templateData[] = [
+                'noh' => '-',
+                'hasil_data' => trim($task),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('noh', $templateData);
+
+
+        $fileName = 'Dokumen_Intelijen_Nomor_Surat_LKAI_' . $pengawasan->no_lkai . '.docx';
+
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+
+    public function print_surat_nhi($id)
+    {
+        $pengawasan = TblLaporanPengawasan::findOrFail($id);
+        $data = $pengawasan->toArray();
+
+        $pejabatKeys = [
+            'id_penerima_nhi',
+            'id_pejabat_penerbit_nhi',
+        ];
+
+
+        foreach ($pejabatKeys as $key) {
+            if ($pengawasan->$key) {
+                $pejabat = $pengawasan->getPejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $data = $this->formatDates($data);
+
+
+
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-nhi.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+
+        if ($pengawasan->tipe_nhi === 'NHI') {
+            $tglNhi = $pengawasan->tgl_nhi;
+        } elseif ($pengawasan->tipe_nhi === 'NHI-HKI') {
+            $tglNhi = $pengawasan->tgl_nhi_hki;
+        } else {
+            $tglNhi = null;
+        }
+
+        $tahunSuratNhi = !empty($tglNhi) ? date('Y', strtotime($tglNhi)) : '-';
+
+
+
+        if ($pengawasan->tipe_nhi === 'NHI') {
+            $data['tipe_nhi'] = $pengawasan->no_nhi
+                ? 'NHI–' . $pengawasan->no_nhi . '/KPU.206/' . $tahunSuratNhi
+                : '-';
+            $data['tanggal_surat'] = $pengawasan->tgl_nhi ?: '-';
+        } elseif ($pengawasan->tipe_nhi === 'NHI-HKI') {
+            $data['tipe_nhi'] = $pengawasan->no_nhi_hki
+                ? 'NHI–HKI-' . $pengawasan->no_nhi_hki . '/KPU.206/' . $tahunSuratNhi
+                : '-';
+            $data['tanggal_surat'] = $pengawasan->tgl_nhi_hki ?: '-';
+        } else {
+            $data['tipe_nhi'] = '-';
+            $data['tanggal_surat'] = '-';
+        }
+        $data = $this->formatDates($data);
+
+        $templateProcessor->setValue('type', $data['tipe_nhi']);
+        $templateProcessor->setValue('tanggal_surat', $data['tanggal_surat']);
+        $templateProcessor->setValue('tahun', $tahunSuratNhi);
+
+
+
+        // dd($data);
+
+        $fileName = 'Dokumen_Intelijen_Nomor_Surat_NHI_' . $pengawasan->no_nhi . '.docx';
+
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function print_surat_ni($id)
+    {
+        $pengawasan = TblLaporanPengawasan::findOrFail($id);
+        $data = $pengawasan->toArray();
+
+        $pejabatKeys = [
+            'id_pejabat_penerima_ni',
+            'id_pejabat_penerbit_ni',
+        ];
+
+
+        foreach ($pejabatKeys as $key) {
+            if ($pengawasan->$key) {
+                $pejabat = $pengawasan->getPejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $tglNi = $pengawasan->tgl_ni;
+
+        if (!empty($tglNi)) {
+            $data['tgl_ni_hari'] = \Carbon\Carbon::parse($tglNi)->locale('id')->isoFormat('dddd, D MMMM YYYY');
+        } else {
+            $data['tgl_ni_hari'] = '-';
+        }
+
+
+        $data = $this->formatDates($data);
+
+
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-ni.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+
+        $tglNi = $pengawasan->tgl_ni;
+
+        if (!empty($tglNi)) {
+            $tahunSuratNi = date('Y', strtotime($tglNi));
+        } else {
+            $tahunSuratNi = '-';
+        }
+
+        $templateProcessor->setValue('th', $tahunSuratNi);
+
+        $fileName = 'Dokumen_Intelijen_Nomor_Surat_NI_' . $pengawasan->no_ni . '.docx';
+
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function print_surat_rekomendasi($id)
+    {
+        $pengawasan = TblLaporanPengawasan::findOrFail($id);
+        $data = $pengawasan->toArray();
+
+        $pejabatKeys = [
+            'id_pejabat_notdin',
+        ];
+
+
+        foreach ($pejabatKeys as $key) {
+            if ($pengawasan->$key) {
+                $pejabat = $pengawasan->getPejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $data['perkiraan_waktu_tempuh'] = $this->calculateDuration($data['perkiraan_keberangkatan_notdin'], $data['perkiraan_kedatangan_notdin']);
+        $data['selisih_waktu_penyampaian'] = $this->calculateDuration($data['perkiraan_kedatangan_notdin'], $data['waktu_penyampaian_notdin']);
+
+
+        $data = $this->formatDates($data);
+
+
+        // dd($data);
+
+
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-rekomendasi.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        $tglLkai = $pengawasan->tgl_lkai;
+
+        if (!empty($tglLKAI)) {
+            $tahunSuratLKAI = date('Y', strtotime($tglLKAI));
+        } else {
+            $tahunSuratLKAI = '-';
+        }
+
+        $templateProcessor->setValue('tahun_lkai', $tahunSuratLKAI);
+
+
+
+        $fileName = 'Dokumen_Intelijen_Surat_Nota_Dinas_' . '.docx';
+
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
 
 
     private function formatDates($data)
     {
+        $bulanIndo = [
+            'January' => 'Januari',
+            'February' => 'Februari',
+            'March' => 'Maret',
+            'April' => 'April',
+            'May' => 'Mei',
+            'June' => 'Juni',
+            'July' => 'Juli',
+            'August' => 'Agustus',
+            'September' => 'September',
+            'October' => 'Oktober',
+            'November' => 'November',
+            'December' => 'Desember'
+        ];
+
+        $dateFields = [
+            'perkiraan_keberangkatan_notdin',
+            'perkiraan_kedatangan_notdin',
+            'waktu_penyampaian_notdin',
+        ];
+
+        foreach ($dateFields as $field) {
+            if (!empty($data[$field])) {
+                $data[$field] = date('d/m/Y H:i', strtotime($data[$field]));
+            }
+        }
+
         foreach ($data as $key => $value) {
             if (is_string($value) && $this->isValidDate($value)) {
                 $date = \DateTime::createFromFormat('Y-m-d', $value);
                 if ($date) {
-                    $data[$key] = $date->format('d F Y');
+                    $formattedDate = $date->format('d F Y');
+
+                    foreach ($bulanIndo as $englishMonth => $indonesianMonth) {
+                        if (strpos($formattedDate, $englishMonth) !== false) {
+                            $formattedDate = str_replace($englishMonth, $indonesianMonth, $formattedDate);
+                            break;
+                        }
+                    }
+
+                    $data[$key] = $formattedDate;
                 }
             }
         }
+
+        if (!empty($data['rentang_waktu_notdin'])) {
+            $dates = explode(' - ', $data['rentang_waktu_notdin']);
+            if (count($dates) === 2) {
+                $startDate = strtotime($dates[0]);
+                $endDate = strtotime($dates[1]);
+
+                if ($startDate && $endDate) {
+                    $formattedStartDate = date('j', $startDate);
+                    $formattedEndDate = date('j', $endDate);
+                    $formattedMonthYear = date('F Y', $endDate);
+
+                    $formattedMonthYear = str_replace(array_keys($bulanIndo), array_values($bulanIndo), $formattedMonthYear);
+
+                    $data['rentang_waktu_notdin'] = "$formattedStartDate s.d. $formattedEndDate $formattedMonthYear";
+                }
+            }
+        }
+
         return $data;
     }
 
+    private function calculateDuration($start, $end): string
+    {
+        if (empty($start) || empty($end)) {
+            return '-';
+        }
+
+        $startTime = strtotime($start);
+        $endTime = strtotime($end);
+
+        if (!$startTime || !$endTime || $endTime < $startTime) {
+            return '-';
+        }
+
+        $interval = $endTime - $startTime;
+
+        $days = floor($interval / 86400);
+        $hours = floor(($interval % 86400) / 3600);
+        $minutes = floor(($interval % 3600) / 60);
+
+        $result = [];
+
+        if ($days > 0) {
+            $result[] = "$days hari";
+        }
+        if ($hours > 0) {
+            $result[] = "$hours jam";
+        }
+        if ($minutes > 0) {
+            $result[] = "$minutes menit";
+        }
+
+        return implode(' ', $result);
+    }
 
     private function isValidDate($date)
     {
+        if (!is_string($date)) {
+            return false;
+        }
+
         $d = \DateTime::createFromFormat('Y-m-d', $date);
         return $d && $d->format('Y-m-d') === $date;
     }

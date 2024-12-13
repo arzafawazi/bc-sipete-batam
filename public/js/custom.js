@@ -124,3 +124,9 @@ document.addEventListener("DOMContentLoaded", function () {
         hiddenInput.value = quill.root.innerHTML;
     };
 });
+
+const textarea = document.querySelector("textarea.auto-expand");
+textarea.addEventListener("input", function () {
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
+});
