@@ -22,4 +22,9 @@ class TblLaporanPengawasan extends Model
     {
         return $this->belongsTo(User::class, $key, 'id_admin');
     }
+
+    public function laporanPengawasan()
+    {
+        return $this->belongsTo(TblLaporanPengawasan::class, 'id_pengawasan_ref', 'id_pengawasan');
+    }
 }

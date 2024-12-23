@@ -8,6 +8,10 @@ use App\Models\User;
 use App\Models\TblNoRef;
 use App\Models\TblNegara;
 use App\Models\TblLaporanPengawasan;
+use App\Models\TblJenisPelanggaran;
+use App\Models\TblUraianModus;
+use App\Models\TblJenisDok;
+use App\Models\TblLocus;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -47,7 +51,12 @@ class LaporanPengawasanControllers extends Controller
         $users = User::all();
         $no_ref = TblNoRef::first();
         $nama_negara = TblNegara::all()->groupBy('benua');
-        return view('Dokintelijen.laporan-pengawasan.create', compact('users', 'no_ref', 'nama_negara'));
+        $jenis_dok = TblJenisDok::all();
+        $jenis_pelanggaran = TblJenisPelanggaran::all();
+        $uraian_modus = TblUraianModus::all();
+        $tempat = TblLocus::all();
+
+        return view('Dokintelijen.laporan-pengawasan.create', compact('users', 'jenis_dok', 'tempat', 'uraian_modus', 'jenis_pelanggaran', 'no_ref', 'nama_negara'));
     }
 
     public function store(Request $request)
@@ -119,7 +128,7 @@ class LaporanPengawasanControllers extends Controller
 
             // dd($data);
 
-            // Create the record
+
             TblLaporanPengawasan::create($data);
 
             \Log::info('Data successfully saved.');
@@ -179,6 +188,10 @@ class LaporanPengawasanControllers extends Controller
         $users = User::all();
         $no_ref = TblNoRef::first();
         $nama_negara = TblNegara::all()->groupBy('benua');
+        $jenis_dok = TblJenisDok::all();
+        $jenis_pelanggaran = TblJenisPelanggaran::all();
+        $uraian_modus = TblUraianModus::all();
+        $tempat = TblLocus::all();
 
         $audioDataRaw = $pengawasan->dokumentasi_audio_lpt;
         $videoDataRaw = $pengawasan->dokumentasi_video_lpt;
@@ -188,7 +201,7 @@ class LaporanPengawasanControllers extends Controller
 
         // dd($audioDataRaw, $videoDataRaw);
 
-        return view('Dokintelijen.laporan-pengawasan.edit', compact('pengawasan', 'users', 'no_ref', 'audioDataRaw', 'videoDataRaw', 'nama_negara'));
+        return view('Dokintelijen.laporan-pengawasan.edit', compact('pengawasan', 'tempat', 'jenis_dok', 'jenis_pelanggaran', 'uraian_modus', 'users', 'no_ref', 'audioDataRaw', 'videoDataRaw', 'nama_negara'));
     }
 
 
@@ -519,12 +532,12 @@ class LaporanPengawasanControllers extends Controller
         $templateData = [];
         foreach (array_unique($matches[1]) as $index => $task) {
             $templateData[] = [
-                'no_ikhtisar' => $index + 1,
+                'n' => ($index + 1) . ".",
                 'ikhtisar_informasi' => trim($task),
             ];
         }
 
-        $templateProcessor->cloneRowAndSetValues('no_ikhtisar', $templateData);
+        $templateProcessor->cloneRowAndSetValues('n', $templateData);
 
         $dokumentasi = [
             'dokumentasi_foto' => !empty($pengawasan->dokumentasi_foto_lpt) ? 'Terlampir' : '-',
@@ -580,7 +593,7 @@ class LaporanPengawasanControllers extends Controller
         $templateData = [];
         foreach (array_unique($matches[1]) as $index => $task) {
             $templateData[] = [
-                'k' => $index + 1,
+                'k' => ($index + 1) . ".",
                 'kesimpulan' => trim($task),
             ];
         }
@@ -594,7 +607,7 @@ class LaporanPengawasanControllers extends Controller
         $templateData = [];
         foreach (array_unique($matches[1]) as $index => $task) {
             $templateData[] = [
-                'r' => $index + 1,
+                'r' => ($index + 1) . ".",
                 'rekomendasi' => trim($task),
             ];
         }

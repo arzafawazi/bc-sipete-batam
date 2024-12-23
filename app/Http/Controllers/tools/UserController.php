@@ -72,7 +72,7 @@ class UserController extends Controller
     }
 
 
-    
+
 
 
 
@@ -234,10 +234,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            // Log request data for debugging
             Log::info('Request received', $request->all());
 
-            // Validasi input dari request
             $validated = $request->validate([
                 'nama_admin' => 'required|string|max:255',
                 'nip' => 'required|string|max:255',
@@ -249,11 +247,9 @@ class UserController extends Controller
                 'akses' => 'required|array',
             ]);
 
-            // Generate unique ID Admin (sesuaikan dengan kebutuhan)
             $idAdmin = 'BCKNO-' . rand(100, 999);
             $status = 'AKTIF';
 
-            // Buat user baru
             $user = User::create([
                 'id_admin' => $idAdmin,
                 'name' => $validated['name'],

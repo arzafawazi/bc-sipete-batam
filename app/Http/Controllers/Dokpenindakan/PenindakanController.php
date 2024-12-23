@@ -14,43 +14,87 @@ use App\Models\TblSbp;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 
 class PenindakanController extends Controller
 {
     public function index()
     {
-        $penindakans = TblSbp::all();
-        $laporanInformasi = TblLaporanInformasi::select('no_print', 'tanggal_mulai_print', 'no_li', 'tgl_li')->get();
-        return view('Dokpenindakan.DaftarSbp.index', compact('laporanInformasi', 'penindakans'));
+        $penindakans = TblSbp::select('id', 'tgl_sbp', 'no_sbp')->get();
+
+        $penindakans = $penindakans->map(function ($item) {
+            $item->tgl_sbp = $this->formatDates(['tgl_sbp' => $item->tgl_sbp])['tgl_sbp'];
+            return $item;
+        });
+
+        $laporanInformasi = TblLaporanInformasi::select('no_print', 'tanggal_mulai_print', 'no_li', 'tgl_li', 'id_pra_penindakan')
+            ->get()
+            ->map(function ($item) {
+                $item->tanggal_mulai_print = $this->formatDates(['tanggal_mulai_print' => $item->tanggal_mulai_print])['tanggal_mulai_print'];
+                $item->tgl_li = $this->formatDates(['tgl_li' => $item->tgl_li])['tgl_li'];
+                return $item;
+            });
+
+
+        return view('Dokpenindakan.penindakan.index', compact('laporanInformasi', 'penindakans'));
     }
 
 
     public function create(Request $request)
     {
-        // Ambil nomor laporan dari parameter query
-        $nomor_laporan = $request->query('nomor_laporan');
+        $id_pra_penindakan = $request->query('id_pra_penindakan'); // ini ngambil id_pra_penindakan di tbl_li
 
-        // Cari laporan berdasarkan nomor_laporan
-        $laporan = TblLaporanInformasi::where('no_print', $nomor_laporan)->first();  // Pastikan ini mengembalikan data yang benar
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $id_pra_penindakan)->first();
 
-        // Ambil data lain yang diperlukan untuk form
         $users = User::all();
         $segels = TblSegel::all();
         $kemasans = TblKemasan::all();
         $no_ref = TblNoRef::first();
         $jenisPelanggaran = TblJenisPelanggaran::all();
 
-        // Kirim data ke view
-        return view('Dokpenindakan.DaftarSbp.rekam', compact('users', 'segels', 'kemasans', 'jenisPelanggaran', 'no_ref', 'laporan', 'nomor_laporan'));
+        return view('Dokpenindakan.penindakan.create', compact('users', 'segels', 'kemasans', 'jenisPelanggaran', 'no_ref', 'laporan', 'id_pra_penindakan'));
     }
 
     public function store(Request $request)
     {
-        // Ambil data dari form
         TblSbp::create($request->all());
+        $no_ref = TblNoRef::first();
+        $no_ref->no_sbp += 1;
+        $no_ref->no_mpp += 1;
+        $no_ref->no_lap += 1;
+        $no_ref->no_npi += 1;
+        $no_ref->no_print += 1;
+        $no_ref->save();
 
-        return redirect()->route('DaftarSbp.index')->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
+        return redirect()->route('penindakan.index')->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
+    }
+
+
+    public function edit($id)
+    {
+        $penindakans = TblSbp::findOrFail($id);
+        $users = User::all();
+        $segels = TblSegel::all();
+        $kemasans = TblKemasan::all();
+        $no_ref = TblNoRef::first();
+        $jenisPelanggaran = TblJenisPelanggaran::all();
+
+        return view('Dokpenindakan.penindakan.edit', compact('penindakans', 'users', 'segels', 'kemasans', 'jenisPelanggaran', 'no_ref'));
+    }
+
+
+    public function update($id)
+    {
+        $data = request()->all();
+
+        $item = TblSbp::find($id);
+        if ($item) {
+            $item->update($data);
+            return redirect()->route('penindakan.index')->with('success', 'Data berhasil diperbarui.');
+        }
+
+        return redirect()->route('penindakan.index')->with('error', 'Data tidak ditemukan.');
     }
 
     public function destroy($id)
@@ -58,9 +102,9 @@ class PenindakanController extends Controller
         $penindakan = TblSbp::find($id);
         if ($penindakan) {
             $penindakan->delete();
-            return redirect()->route('DaftarSbp.index')->with('success', 'Data berhasil dihapus.');
+            return redirect()->route('penindakan.index')->with('success', 'Data berhasil dihapus.');
         }
-        return redirect()->route('DaftarSbp.index')->with('error', 'Data tidak ditemukan.');
+        return redirect()->route('penindakan.index')->with('error', 'Data tidak ditemukan.');
     }
 
 
@@ -72,36 +116,29 @@ class PenindakanController extends Controller
     }
 
 
-    public function print($id)
+    public function print_surat_sbp($id)
     {
-        // Ambil data laporan dengan relasi dinamis
         $penindakan = TblSbp::findOrFail($id);
 
-        // Konversi model menjadi array associative
         $data = $penindakan->toArray();
 
-        // Daftar kolom pejabat yang perlu diambil datanya
         $pejabatKeys = [
             'id_petugas_1_sbp',
             'id_petugas_2_sbp',
         ];
 
-        // Loop untuk mendapatkan data pejabat secara dinamis
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
-                // Ambil data relasi pejabat sesuai key
                 $pejabat = $penindakan->getPejabat($key)->first();
 
 
 
-                // Jika data pejabat ditemukan, masukkan ke array data
                 if ($pejabat) {
                     $data[$key . '_nama'] = $pejabat->nama_admin;
                     $data[$key . '_pangkat'] = $pejabat->pangkat;
                     $data[$key . '_jabatan'] = $pejabat->jabatan;
                     $data[$key . '_nip'] = $pejabat->nip;
                 } else {
-                    // Jika pejabat tidak ditemukan, kosongkan data
                     $data[$key . '_nama'] = '';
                     $data[$key . '_pangkat'] = '';
                     $data[$key . '_jabatan'] = '';
@@ -133,60 +170,96 @@ class PenindakanController extends Controller
         $data['tindakan_lain'] = $tindakan_lain;
 
 
+        $data['tahun_sekarang'] = date('Y');
 
-
-
-
-
-
-        // Tambahkan tahun sekarang ke dalam array data
-        $data['tahun_sekarang'] = date('Y');  // Mendapatkan tahun saat ini
-
-        // Format tanggal jika ada dalam array
         $data = $this->formatDates($data);
 
-        // Convert all null values to empty string
         $data = array_map(function ($value) {
             return is_null($value) ? '' : $value;
         }, $data);
 
-        // Load template .docx
-        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/template-penindakan.docx'));
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/surat-bukti-penindakan.docx'));
 
-        // Replace placeholder dengan data dari array
         $templateProcessor->setValues($data);
 
-        // Tentukan nama file yang akan diunduh
-        // $fileName = 'Laporan_' . $penindakan->nama_laporan . '.docx';
         $fileName = 'Dokumen_Surat_Bukti_Penindakan' . $penindakan->no_sbp . '.docx';
 
-        // Simpan file sementara
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-        // Unduh file setelah selesai
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
 
-    // Fungsi untuk format tanggal
+
+
     private function formatDates($data)
     {
-        foreach ($data as $key => $value) {
-            // Cek apakah data berupa string dengan format tanggal (yyyy-mm-dd)
-            if ($this->isValidDate($value)) {
-                // Format ulang tanggal
-                $date = \DateTime::createFromFormat('Y-m-d', $value);  // Gunakan \DateTime untuk mengakses kelas PHP built-in
-                $data[$key] = $date->format('d F Y');  // Mengubah ke format 'dd MMMM yyyy'
+        $bulanIndo = [
+            'January' => 'Januari',
+            'February' => 'Februari',
+            'March' => 'Maret',
+            'April' => 'April',
+            'May' => 'Mei',
+            'June' => 'Juni',
+            'July' => 'Juli',
+            'August' => 'Agustus',
+            'September' => 'September',
+            'October' => 'Oktober',
+            'November' => 'November',
+            'December' => 'Desember'
+        ];
+
+        Carbon::setLocale('id');
+
+        $dateFields = [
+            'tempus_pelanggaran_mpp'
+        ];
+
+        foreach ($dateFields as $field) {
+            if (!empty($data[$field])) {
+                if ($field == 'tempus_pelanggaran_mpp') {
+                    $tempusPelanggaran = $data[$field];
+
+                    if ($tempusPelanggaran) {
+                        $date = Carbon::parse($tempusPelanggaran);
+                        $formattedDate = $date->isoFormat('dddd, D MMMM YYYY');
+                        $data['tempus_pelanggaran'] = $formattedDate;
+                        $data['pukul'] = $date->format('H:i');
+                    } else {
+                        $data['tempus_pelanggaran'] = '';
+                        $data['pukul'] = '';
+                    }
+                } else {
+                    $data[$field] = date('d/m/Y H:i', strtotime($data[$field]));
+                }
             }
         }
+
+        foreach ($data as $key => $value) {
+            if (is_string($value) && $this->isValidDate($value)) {
+                $date = \DateTime::createFromFormat('Y-m-d', $value);
+                if ($date) {
+                    $formattedDate = $date->format('d F Y');
+
+                    foreach ($bulanIndo as $englishMonth => $indonesianMonth) {
+                        if (strpos($formattedDate, $englishMonth) !== false) {
+                            $formattedDate = str_replace($englishMonth, $indonesianMonth, $formattedDate);
+                            break;
+                        }
+                    }
+
+                    $data[$key] = $formattedDate;
+                }
+            }
+        }
+
         return $data;
     }
 
 
-    // Fungsi untuk cek apakah string adalah tanggal valid dengan format yyyy-mm-dd
+
     private function isValidDate($date)
     {
-        // Gunakan \DateTime untuk memastikan merujuk ke kelas PHP built-in
         $d = \DateTime::createFromFormat('Y-m-d', $date);
         return $d && $d->format('Y-m-d') === $date;
     }

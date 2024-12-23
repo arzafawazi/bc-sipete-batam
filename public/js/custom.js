@@ -1,5 +1,24 @@
-window.addEventListener("load", function () {
-    document.body.style.opacity = "1";
+document.documentElement.classList.remove("no-js");
+window.addEventListener("load", () => {
+    const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    );
+
+    if (!prefersReducedMotion.matches) {
+        Promise.all([
+            document.fonts.ready,
+            new Promise((resolve) => setTimeout(resolve, 100)),
+        ]).then(() => {
+            requestAnimationFrame(() => {
+                document.body.style.visibility = "visible";
+                document.body.offsetHeight;
+                document.body.classList.add("is-loaded");
+            });
+        });
+    } else {
+        document.body.style.visibility = "visible";
+        document.body.style.opacity = "1";
+    }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -107,18 +126,14 @@ document.addEventListener("DOMContentLoaded", function () {
         },
     });
 
-    // Referensi ke input hidden
     var hiddenInput = document.querySelector("#melaksanakan_tugas_st");
 
-    // Set nilai awal hidden input dari Quill.js
     hiddenInput.value = quill.root.innerHTML;
 
-    // Sinkronisasi saat ada perubahan teks di Quill.js
     quill.on("text-change", function () {
         hiddenInput.value = quill.root.innerHTML;
     });
 
-    // Tambahkan sinkronisasi ketika form dikirimkan
     var form = document.querySelector("form");
     form.onsubmit = function () {
         hiddenInput.value = quill.root.innerHTML;

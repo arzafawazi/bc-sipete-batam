@@ -67,30 +67,26 @@
                       <div class="row">
                         <!-- Left Column (Data Laporan Informasi) -->
                         <div class="col-lg-6">
+                          {{-- <input type="hidden" id="id_pra_penindakan" name="id_pra_penindakan" value="">
+                          <input type="hidden" class="form-control bg-primary text-white" name="id_pengawasan_ref" value="{{ $no_laporan }}" readonly> --}}
                           <h6><b>A. Data Laporan Informasi (LI)</b></h6>
                           <hr>
                           <div class="row">
-                            <!-- No. LI / Tgl. LI -->
                             <div class="col-md-6 mb-3">
                               <label>No. LI</label>
                               <input type="text" class="form-control bg-primary text-white" name="no_li" value="{{ old('no_li', $praPenindakan->no_li) }}" readonly>
                             </div>
                             <div class="col-md-6 mb-3">
                               <label>Tgl. LI</label>
-                              <input type="date" class="form-control" placeholder="yyyy-mm-dd" id="tgl_li" name="tgl_li" value="{{ old('tgl_li', $praPenindakan->tgl_li) }}" required>
-                            </div>
-                            <!-- Media Informasi / Isi Informasi / Catatan -->
-                            <div class="col-md-12 mb-3">
-                              <label>Media Informasi</label>
-                              <input type="text" class="form-control" placeholder="Media Informasi" id="media_informasi" name="media_informasi" value="{{ old('media_informasi', $praPenindakan->media_informasi) }}" required>
+                              <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" id="tgl_li" name="tgl_li" value="{{ old('tgl_li', $praPenindakan->tgl_li) }}">
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Isi Informasi</label>
-                              <textarea class="form-control" rows="2" placeholder="Isi Informasi" id="isi_informasi" name="isi_informasi" required>{{ old('isi_informasi', $praPenindakan->isi_informasi) }}</textarea>
+                              <textarea class="form-control" rows="3" placeholder="Isi Informasi" id="isi_informasi" name="isi_informasi">{{ old('isi_informasi', $praPenindakan->isi_informasi) }}</textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Catatan</label>
-                              <textarea class="form-control" rows="2" placeholder="Catatan" id="catatan" name="catatan" required>{{ old('catatan', $praPenindakan->catatan) }}</textarea>
+                              <textarea class="form-control" rows="3" placeholder="Catatan" id="catatan" name="catatan">{{ old('catatan', $praPenindakan->catatan) }}</textarea>
                             </div>
 
                           </div>
@@ -100,10 +96,9 @@
                         <div class="col-lg-6">
                           <h6><b>B. Pilih Pejabat</b></h6>
                           <hr>
-                          <!-- Select Pejabat 1 -->
                           <div class="col-lg-12 mb-3">
-                            <label for="id_pejabat_li_1">Pejabat 1</label>
-                            <select class="form-control" id="id_pejabat_li_1" name="id_pejabat_li_1" required>
+                            <label for="id_pejabat_li_1">Pejabat Pelaksana Penindakan</label>
+                            <select class="form-control form-select select2" id="id_pejabat_li_1" name="id_pejabat_li_1">
                               <option value="" disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}" {{ old('id_pejabat_li_1', $praPenindakan->id_pejabat_li_1) == $user->id_admin ? 'selected' : '' }}>
@@ -114,8 +109,8 @@
                           </div>
                           <!-- Select Pejabat 2 -->
                           <div class="col-lg-12 mb-3">
-                            <label for="id_pejabat_li_2">Pejabat 2</label>
-                            <select class="form-control" id="id_pejabat_li_2" name="id_pejabat_li_2" required>
+                            <label for="id_pejabat_li_2">Pejabat Penerbit Laporan Informasi</label>
+                            <select class="form-control form-select select2" id="id_pejabat_li_2" name="id_pejabat_li_2">
                               <option value="" disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}" {{ old('id_pejabat_li_2', $praPenindakan->id_pejabat_li_2) == $user->id_admin ? 'selected' : '' }}>
@@ -126,8 +121,8 @@
                           </div>
                           <!-- Select Pejabat 3 -->
                           <div class="col-lg-12 mb-3">
-                            <label for="id_pejabat_li_3">Pejabat 3</label>
-                            <select class="form-control" id="id_pejabat_li_3" name="id_pejabat_li_3" required>
+                            <label for="id_pejabat_li_3">Pengampu Pejabat Penerbit Lembar Informasi</label>
+                            <select class="form-control form-select select2" id="id_pejabat_li_3" name="id_pejabat_li_3">
                               <option value="" disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}" {{ old('id_pejabat_li_3', $praPenindakan->id_pejabat_li_3) == $user->id_admin ? 'selected' : '' }}>
@@ -183,16 +178,93 @@
 
                             <div class="col-md-12 mb-3">
                               <label>Keterangan lainnya</label>
-                              <textarea class="form-control" rows="3" placeholder="Keterangan Lainnya" name="keterangan-mpp">{{ old('keterangan-mpp', $praPenindakan->keterangan_mpp) }}</textarea>
+                              <textarea class="form-control" rows="3" placeholder="Keterangan Lainnya" name="keterangan_mpp"> {{ old('keterangan_mpp', $praPenindakan->keterangan_mpp) }}</textarea>
                             </div>
 
                           </div>
                         </div>
 
                         <div class="col-lg-6">
-                          <h6><b>C. Komoditi Barang</b></h6>
+                          <h6><b>C. Proses Penindakan</b></h6>
                           <hr>
                           <div class="card-body">
+
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                              <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                  <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsebgh" aria-expanded="false" aria-controls="flush-collapsebgh">
+                                    Proses Penindakan
+                                  </button>
+                                </h2>
+                                <div id="flush-collapsebgh" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                  <div class="accordion-body bg-light">
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Dugaan Pelanggaran
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <select class="form-control form-select select2" name="dugaan_pelanggaran_mpp">
+                                          <option value="" selected disabled>- Pilih -</option>
+                                          @foreach ($jenis_pelanggaran as $pelanggaran)
+                                            <option value="{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})"
+                                              {{ ($praPenindakan->dugaan_pelanggaran_mpp ?? $laporan->jenis_pelanggaran_lpt . ' (' . $laporan->jenis_pelanggaran . ')') == $pelanggaran->alasan_penindakan . ' (' . $pelanggaran->jenis_pelanggaran . ')' ? 'selected' : '' }}>
+                                              {{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})
+                                            </option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Modus Pelanggaran
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <select class="form-control form-select select2" name="modus_pelanggaran_mpp">
+                                          <option value="" selected disabled>- Pilih -</option>
+                                          @foreach ($uraian_modus as $modus)
+                                            <option value="{{ $modus->uraian_modus }}" {{ ($praPenindakan->modus_pelanggaran_mpp ?? $laporan->modus_pelanggaran_lpt) == $modus->uraian_modus ? 'selected' : '' }}>
+                                              {{ $modus->uraian_modus }}
+                                            </option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Locus Pelanggaran
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <select class="form-control form-select select2" name="locus_pelanggaran_mpp">
+                                          <option value="" selected disabled>- Pilih -</option>
+                                          @foreach ($tempat as $locus)
+                                            <option value="{{ $locus->locus }}" {{ ($praPenindakan->locus_pelanggaran_mpp ?? $laporan->perkiraan_tempat_pelanggaran_lpt) == $locus->locus ? 'selected' : '' }}>
+                                              {{ $locus->locus }}
+                                            </option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">
+                                        Tempus Pelanggaran
+                                      </label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="tempus_pelanggaran_mpp" id="datetime-datepicker" placeholder="Tempus Pelanggaran"
+                                          value="{{ $praPenindakan->tempus_pelanggaran_mpp ?? $laporan->perkiraan_waktu_pelanggaran_lpt }}">
+                                      </div>
+                                    </div>
+
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
                             <div class="accordion accordion-flush" id="accordionFlushExample">
                               <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -299,18 +371,13 @@
                             <!-- No. LI / Tgl. LI -->
                             <div class="row">
                               <div class="col-md-6 mb-3">
-                                <label>No. Urut LAP</label>
-                                <input type="text" class="form-control bg-primary text-white" name="no_urut_lap" value="{{ old('no_urut_lap', $praPenindakan->no_urut_lap) }}" readonly>
-                              </div>
-                              <div class="col-md-6 mb-3">
                                 <label>No. LAP</label>
                                 <input type="text" class="form-control bg-primary text-white" name="no_lap" value="{{ old('no_lap', $praPenindakan->no_lap) }}" readonly>
                               </div>
-                            </div>
-                            <!-- Media Informasi / Isi Informasi / Catatan -->
-                            <div class="col-md-12 mb-3">
-                              <label>Sumber LAP</label>
-                              <input type="text" class="form-control" placeholder="Sumber LAP" id="sumber_lap" name="sumber_lap" value="{{ old('sumber_lap', $praPenindakan->sumber_lap) }}" required>
+                              <div class="col-md-6 mb-3">
+                                <label>Tgl. LAP</label>
+                                <input type="date" class="form-control bg-primary text-white" name="tgl_lap" value="{{ old('tgl_lap', $praPenindakan->tgl_lap) }}">
+                              </div>
                             </div>
                             <h6><b>B. Uraian Penindakan dan Kelayakan Operasional</b></h6>
                             <hr>
@@ -327,7 +394,7 @@
                                       <div class="row mb-3">
                                         <label for="saranaSelect" class="col-sm-4 col-form-label">ISI DATA</label>
                                         <div class="col-sm-8">
-                                          <select id="pelaku" class="form-select" name="pelaku" required>
+                                          <select id="pelaku" class="form-select" name="pelaku">
                                             <option value="" disabled>- Pilih -</option>
                                             <option value="TIDAK" {{ old('pelaku', $praPenindakan->pelaku) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
                                             <option value="YA" {{ old('pelaku', $praPenindakan->pelaku) == 'YA' ? 'selected' : '' }}>YA</option>
@@ -339,7 +406,7 @@
                                       <div class="row mb-3 form-group">
                                         <label class="col-sm-4 col-form-label">Keterangan Pelaku</label>
                                         <div class="col-sm-8">
-                                          <textarea class="form-control form-input" name="keterangan_pelaku" placeholder="Keterangan pelaku" rows="2" required>{{ old('keterangan_pelaku', $praPenindakan->keterangan_pelaku) }}</textarea>
+                                          <textarea class="form-control form-input" name="keterangan_pelaku" placeholder="Keterangan pelaku" rows="2">{{ old('keterangan_pelaku', $praPenindakan->keterangan_pelaku) }}</textarea>
                                         </div>
                                       </div>
                                     </div>
@@ -368,9 +435,20 @@
                                       <div class="row mb-3 form-group">
                                         <label class="col-sm-4 col-form-label">Keterangan Dugaan Pelanggaran</label>
                                         <div class="col-sm-8">
-                                          <textarea class="form-control form-input" name="keterangan_dugaan_pelanggaran" placeholder="Keterangan Dugaan Pelanggaran" row="2"> {{ old('keterangan_dugaan_pelanggaran', $praPenindakan->keterangan_dugaan_pelanggaran) }}</textarea>
+                                          <select class="form-control form-select select2" name="keterangan_dugaan_pelanggaran">
+                                            <option value="" selected disabled>- Pilih -</option>
+                                            @foreach ($jenis_pelanggaran as $pelanggaran)
+                                              <option value="{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})"
+                                                {{ $praPenindakan->keterangan_dugaan_pelanggaran == $pelanggaran->alasan_penindakan . ' (' . $pelanggaran->jenis_pelanggaran . ')' ? 'selected' : '' }}>
+                                                {{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})
+                                              </option>
+                                            @endforeach
+                                          </select>
                                         </div>
                                       </div>
+
+
+
                                     </div>
                                   </div>
                                 </div>
@@ -397,9 +475,17 @@
                                       <div class="row mb-3 form-group">
                                         <label class="col-sm-4 col-form-label">Keterangan Locus</label>
                                         <div class="col-sm-8">
-                                          <textarea class="form-control form-input" name="keterangan_locus" placeholder="Keterangan Locus" row="2"> {{ old('keterangan_locus', $praPenindakan->keterangan_locus) }}</textarea>
+                                          <select class="form-control form-select select2" name="keterangan_locus">
+                                            <option value="" selected disabled>- Pilih -</option>
+                                            @foreach ($tempat as $locus)
+                                              <option value="{{ $locus->locus }}" {{ ($praPenindakan->keterangan_locus ?? $laporan->perkiraan_tempat_pelanggaran_lpt) == $locus->locus ? 'selected' : '' }}>
+                                                {{ $locus->locus }}
+                                              </option>
+                                            @endforeach
+                                          </select>
                                         </div>
                                       </div>
+
                                     </div>
                                   </div>
                                 </div>
@@ -690,7 +776,7 @@
                           <!-- Select Pejabat 1 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_lap_1">Pejabat LAP 1</label>
-                            <select class="form-control" id="id_pejabat_lap_1" name="id_pejabat_lap_1" required>
+                            <select class="form-control" id="id_pejabat_lap_1" name="id_pejabat_lap_1">
                               <option value="" disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}" {{ old('id_pejabat_lap_1', $praPenindakan->id_pejabat_lap_1) == $user->id_admin ? 'selected' : '' }}>
@@ -703,7 +789,7 @@
                           <!-- Select Pejabat 2 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_lap_2">Pejabat LAP 2</label>
-                            <select class="form-control" id="id_pejabat_lap_2" name="id_pejabat_lap_2" required>
+                            <select class="form-control" id="id_pejabat_lap_2" name="id_pejabat_lap_2">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}" {{ old('id_pejabat_lap_2', $praPenindakan->id_pejabat_lap_2) == $user->id_admin ? 'selected' : '' }}>
@@ -716,7 +802,7 @@
                           <!-- Select Pejabat 3 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_lap_3">Pejabat LAP 3</label>
-                            <select class="form-control" id="id_pejabat_lap_3" name="id_pejabat_lap_3" required>
+                            <select class="form-control" id="id_pejabat_lap_3" name="id_pejabat_lap_3">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}" {{ old('id_pejabat_lap_3', $praPenindakan->id_pejabat_lap_3) == $user->id_admin ? 'selected' : '' }}>
@@ -732,26 +818,43 @@
 
                     <div class="tab-pane" id="navtabs2-messages" role="tabpanel">
                       <div class="row">
-                        <!-- Left Column (Data Laporan Informasi) -->
                         <div class="col-lg-6">
                           <h6><b>A. Nota Pengembalian Informasi</b></h6>
                           <hr>
                           <div class="row">
-                            <div class="col-md-12 mb-3">
-                              <label>No. NPI</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_npi" value="{{ old('no_npi', $praPenindakan->no_npi) }}" readonly>
+                            <div class="row">
+                              <div class="col-md-6 mb-3">
+                                <label>No. NPI</label>
+                                <input type="text" class="form-control bg-primary text-white" name="no_npi" value="{{ old('no_npi', $praPenindakan->no_npi) }}" readonly>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <label>Tgl. NPI</label>
+                                <input type="date" class="form-control bg-primary text-white" name="tgl_npi" value="{{ old('tgl_npi', $praPenindakan->tgl_npi) }}">
+                              </div>
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Sumber Informasi</label>
-                              <input type="text" class="form-control" placeholder="Sumber Informasi" id="sumber_informasi_npi" name="sumber_npi" value="{{ old('sumber_npi', $praPenindakan->sumber_npi) }}" required>
+                              <input type="text" class="form-control" placeholder="Sumber Informasi" id="sumber_informasi_npi" name="sumber_npi" value="{{ old('sumber_npi', $praPenindakan->sumber_npi) }}">
                             </div>
                             <div class="col-md-12 mb-3">
+                              <label>Kategori Penindakan</label>
+                              <select class="form-control form-select select2" name="kategori_npi" required>
+                                <option value="" disabled>- Pilih -</option>
+                                @foreach ($kapen as $kategori)
+                                  <option value="{{ $kategori->jenis_penindakan }}" {{ old('kategori_npi', $praPenindakan->kategori_npi) == $kategori->jenis_penindakan ? 'selected' : '' }}>
+                                    {{ $kategori->jenis_penindakan }}
+                                  </option>
+                                @endforeach
+                              </select>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
                               <label>Unit Penebit Informasi</label>
-                              <textarea class="form-control" rows="2" placeholder="Unit Penerbit Informasi" id="unit_penerbit_informasi" name="unit_penerbit_npi" required> {{ old('unit_penerbit_npi', $praPenindakan->unit_penerbit_npi) }}</textarea>
+                              <textarea class="form-control" rows="2" placeholder="Unit Penerbit Informasi" id="unit_penerbit_informasi" name="unit_penerbit_npi"> {{ old('unit_penerbit_npi', $praPenindakan->unit_penerbit_npi) }}</textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                               <label>Alasan</label>
-                              <textarea class="form-control" rows="2" placeholder="Alasan Tidak Dapat Dilakukan Penindakan Lebih Lanjut" id="alasan_penindakan_npi" name="alasan_npi" required> {{ old('alasan_npi', $praPenindakan->alasan_npi) }}</textarea>
+                              <textarea class="form-control" rows="2" placeholder="Alasan Tidak Dapat Dilakukan Penindakan Lebih Lanjut" id="alasan_penindakan_npi" name="alasan_npi"> {{ old('alasan_npi', $praPenindakan->alasan_npi) }}</textarea>
                             </div>
                           </div>
                         </div>
@@ -763,7 +866,7 @@
                           <!-- Select Pejabat 1 -->
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_npi">Pejabat</label>
-                            <select class="form-control" id="id_pejabat_npi" name="id_pejabat_npi" required>
+                            <select class="form-control form-select select2" id="id_pejabat_npi" name="id_pejabat_npi">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}" {{ old('id_pejabat_npi', $praPenindakan->id_pejabat_npi) == $user->id_admin ? 'selected' : '' }}>
@@ -785,60 +888,110 @@
                           <h6><b>A. Data Surat Perintah</b></h6>
                           <hr>
                           <div class="row">
-                            <!-- No. LI / Tgl. LI -->
-                            <div class="col-md-12 mb-3">
-                              <label>No. Print</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_print" value="{{ old('no_print', $praPenindakan->no_print) }}" readonly>
+
+                            <div class="row">
+                              <div class="col-md-6 mb-3">
+                                <label>No. Print</label>
+                                <input type="text" class="form-control bg-primary text-white" name="no_print" value="{{ old('no_print', $praPenindakan->no_print) }}" readonly>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                <label>Tgl. Print</label>
+                                <input type="date" class="form-control bg-primary text-white" name="tgl_print" value="{{ old('tgl_print', $praPenindakan->tgl_print) }}">
+                              </div>
                             </div>
-                            <!-- Media Informasi / Isi Informasi / Catatan -->
-                            <div class="col-md-12 mb-3">
-                              <label>Pertimbangan Surat Perintah</label>
-                              <textarea class="form-control" row="2" placeholder="Pertimbangan Diterbitkannya Surat Perintah" id="pertimbangan_surat_perintah" name="ket_perundang" required> {{ old('ket_perundang', $praPenindakan->ket_perundang) }}</textarea>
+
+                            <div class="col-lg-12 mb-3">
+                              <label>Penentuan Skema Penindakan</label>
+                              <select class="form-control form-select select2" name="skema_penindakan_perintah">
+                                <option value="" disabled>- Pilih -</option>
+                                <option value="MANDIRI" {{ old('skema_penindakan_perintah', $praPenindakan->skema_penindakan_perintah) == 'MANDIRI' ? 'selected' : '' }}>Mandiri</option>
+                                <option value="Perbantuan" {{ old('skema_penindakan_perintah', $praPenindakan->skema_penindakan_perintah) == 'Perbantuan' ? 'selected' : '' }}>Perbantuan</option>
+                                <option value="Perbantuan/Bersama Instansi Lain" {{ old('skema_penindakan_perintah', $praPenindakan->skema_penindakan_perintah) == 'Perbantuan/Bersama Instansi Lain' ? 'selected' : '' }}>
+                                  Perbantuan/Bersama Instansi Lain
+                                </option>
+                              </select>
                             </div>
-                            <div class="col-md-12 mb-3">
-                              <label>Dasar Hukum </label>
-                              <textarea class="form-control" rows="2" placeholder="Dasar Hukum Yang Mendasari Diterbitkannya Surat Perintah" id="dasar_sp" name="dasar_sp" required> {{ old('dasar_sp', $praPenindakan->dasar_sp) }}</textarea>
+
+                            <div class="col-lg-12 mb-3">
+                              <label>Dilakukannya Patroli</label>
+                              <select class="form-control form-select select2" name="dilakukannya_patroli">
+                                <option value="" disabled>- Pilih -</option>
+                                <option value="YA" {{ old('dilakukannya_patroli', $praPenindakan->dilakukannya_patroli) == 'YA' ? 'selected' : '' }}>YA</option>
+                                <option value="TIDAK" {{ old('dilakukannya_patroli', $praPenindakan->dilakukannya_patroli) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
+                              </select>
                             </div>
+
+
+                            <div class="col-md-12 mb-3">
+                              <label class="d-flex align-items-center">
+                                Pertimbangan Surat Perintah
+                                <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button>
+                              </label>
+                              <textarea class="form-control" rows="2" placeholder="Pertimbangan Diterbitkannya Surat Perintah" id="pertimbangan_surat_perintah" name="ket_perundang">{{ old('ket_perundang', $praPenindakan->ket_perundang) }}</textarea>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                              <label class="d-flex align-items-center">
+                                Dasar Hukum
+                                <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button>
+                              </label>
+                              <textarea class="form-control" rows="2" placeholder="Dasar Hukum Yang Mendasari Diterbitkannya Surat Perintah" id="dasar_sp" name="dasar_sp">{{ old('dasar_sp', $praPenindakan->dasar_sp) }}</textarea>
+                            </div>
+
+
                           </div>
                         </div>
 
-                        <!-- Right Column (Pejabat Selection) -->
                         <div class="col-lg-6">
                           <h6><b>B. Pilih Pejabat</b></h6>
                           <hr>
-                          <!-- Select Pejabat 1 -->
+
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_sp_1">Pejabat Yang Diberi Perintah</label>
-                            <select class="form-control" id="id_pejabat_sp_1" name="id_pejabat_sp_1" required>
-                              <option value="" selected disabled>- Pilih -</option>
+                            <select class="form-control form-select select2" id="id_pejabat_sp_1" name="id_pejabat_sp_1[]" multiple>
                               @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}" {{ old('id_pejabat_sp_1', $praPenindakan->id_pejabat_sp_1) == $user->id_admin ? 'selected' : '' }}>
+                                <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, json_decode($praPenindakan->id_pejabat_sp_1)) ? 'selected' : '' }}>
                                   {{ $user->name }}
                                 </option>
                               @endforeach
                             </select>
+                          </div>
 
-                          </div>
-                          <!-- Select Pejabat 2 -->
+
                           <div class="col-md-12 mb-3">
-                            <label for="perintah">Perintah</label>
-                            <textarea class="form-control" row="2" placeholder="Perintah Yang Diberikan Kepada Pejabat Bea dan Cukai" id="perintah_sp" name="perintah_sp" required> {{ old('perintah_sp', $praPenindakan->perintah_sp) }}</textarea>
+                            <label class="d-flex align-items-center" for="perintah">
+                              Perintah
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" rows="2" placeholder="Perintah Yang Diberikan Kepada Pejabat Bea dan Cukai" id="perintah_sp" name="perintah_sp">{{ old('perintah_sp', $praPenindakan->perintah_sp) }}</textarea>
                           </div>
-                          <!-- Select Pejabat 3 -->
+
+
                           <div class="col-md-12 mb-3">
                             <label for="wilayah">Wilayah</label>
-                            <input type="text" class="form-control" value="{{ old('wilayah', $praPenindakan->wilayah) }}" name="wilayah">
+                            <input type="text" placeholder="Wilayah" class="form-control" value="{{ old('wilayah', $praPenindakan->wilayah) }}" name="wilayah">
                           </div>
 
 
                           <div class="row">
                             <div class="col-md-6 mb-3">
                               <label>Tanggal Mulai Berlaku</label>
-                              <input type="date" class="form-control" name="tanggal_mulai_print" value="{{ old('tanggal_mulai_print', $praPenindakan->tanggal_mulai_print) }}" required>
+                              <input type="date" class="form-control" name="tanggal_mulai_print" value="{{ old('tanggal_mulai_print', $praPenindakan->tanggal_mulai_print) }}">
                             </div>
+
                             <div class="col-md-6 mb-3">
                               <label>Tanggal Berakhir</label>
-                              <input type="date" class="form-control" id="tanggal_berakhir_print" value="{{ old('tanggal_berakhir_print', $praPenindakan->tanggal_berakhir_print) }}" name="tanggal_berakhir_print" required>
+                              <input type="date" class="form-control" id="tanggal_berakhir_print" value="{{ old('tanggal_berakhir_print', $praPenindakan->tanggal_berakhir_print) }}" name="tanggal_berakhir_print">
                             </div>
                           </div>
 
@@ -849,7 +1002,7 @@
 
                           <div class="col-md-12 mb-3">
                             <label for="ketentuan_baju">Ketentuan</label>
-                            <select class="form-control" id="ketentuan_baju" name="ketentuan_baju" required>
+                            <select class="form-control" id="ketentuan_baju" name="ketentuan_baju">
                               <option value="" selected disabled>- Pilih -</option>
                               <option value="Berpakaian PDH" {{ old('ketentuan_baju', $praPenindakan->ketentuan_baju) == 'Berpakaian PDH' ? 'selected' : '' }}>Berpakaian PDH</option>
                               <option value="Berpakaian Non PDH" {{ old('ketentuan_baju', $praPenindakan->ketentuan_baju) == 'Berpakaian Non PDH' ? 'selected' : '' }}>Berpakaian Non PDH</option>
@@ -860,14 +1013,32 @@
 
 
                           <div class="col-md-12 mb-3">
-                            <label for="ketentuan_lain">Ketentuan Lain</label>
-                            <textarea class="form-control" row="2" placeholder="Ketentuan Lain" id="ketentuan_lain" name="ketentuan_lain" required> {{ old('ketentuan_lain', $praPenindakan->ketentuan_lain) }}</textarea>
+                            <label class="d-flex align-items-center" for="ketentuan_lain">
+                              Ketentuan Lain
+                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                              </button>
+                            </label>
+                            <textarea class="form-control" rows="2" placeholder="Ketentuan Lain" id="ketentuan_lain" name="ketentuan_lain">{{ old('ketentuan_lain', $praPenindakan->ketentuan_lain) }}</textarea>
                           </div>
 
 
                           <div class="col-md-12 mb-3">
+                            <label for="plh">Pelaksana Harian</label>
+                            <select class="form-control form-select select2" id="plh" name="plh">
+                              <option value="" disabled>- Pilih -</option>
+                              <option value="Plh" {{ old('plh', $praPenindakan->plh) == 'Plh' ? 'selected' : '' }}>Pelaksana Harian</option>
+                              <option value="" {{ old('plh', $praPenindakan->plh) == '' ? 'selected' : '' }}>Tidak Ada Pelaksana Harian</option>
+                            </select>
+                          </div>
+
+
+
+
+                          <div class="col-md-12 mb-3">
                             <label for="id_pejabat_sp_2">Pejabat Yang Menandatangani</label>
-                            <select class="form-control" id="id_pejabat_sp_2" name="id_pejabat_sp_2" required>
+                            <select class="form-control form-select select2" id="id_pejabat_sp_2" name="id_pejabat_sp_2">
                               <option value="" selected disabled>- Pilih -</option>
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}" {{ old('id_pejabat_sp_2', $praPenindakan->id_pejabat_sp_2) == $user->id_admin ? 'selected' : '' }}>
@@ -890,8 +1061,6 @@
                         <i data-feather="save" class="me-1"></i> Simpan Data LI
                       </button>
                     </div>
-
-
 
                   </div>
                 </div>
@@ -943,7 +1112,6 @@
       }) => {
         const selectElement = document.getElementById(selectId);
 
-        // Function to handle tab visibility based on the selected value
         const updateTabs = (selectedValue) => {
           tabs.forEach(({
             id,
@@ -972,17 +1140,14 @@
           });
         };
 
-        // Load initial state based on the current value of the select element
         const initialValue = selectElement.value;
         tabs.forEach(({
           id
         }) => {
           const tabElement = document.getElementById(id);
-          tabElement.style.display = "none"; // Hide all tabs initially
+          tabElement.style.display = "none";
         });
-        updateTabs(initialValue); // Update tabs based on the initial value
-
-        // Add event listener for changes to the select element
+        updateTabs(initialValue);
         selectElement.addEventListener("change", function() {
           const selectedValue = selectElement.value;
           updateTabs(selectedValue);

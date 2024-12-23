@@ -136,8 +136,8 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('Dokintelijen/laporan-pengawasan/{id}/print-surat-rekomendasi', [LaporanPengawasanControllers::class, 'print_surat_rekomendasi'])->name('surat-rekomendasi.print');
 
     // Dokpenindakan routes
-    Route::resource('Dokpenindakan/DaftarSbp', PenindakanController::class);
-    Route::get('Dokpenindakan/DaftarSbp/{id}/print', [PenindakanController::class, 'print'])->name('DaftarSbp.print');
+    Route::resource('Dokpenindakan/penindakan', PenindakanController::class);
+    Route::get('Dokpenindakan/penindakan/{id}/print', [PenindakanController::class, 'print_surat_sbp'])->name('surat-bukti-penindakan.print');
     Route::get('/getNomorSegel/{id}', [PenindakanController::class, 'getNomorSegel']);
 
 

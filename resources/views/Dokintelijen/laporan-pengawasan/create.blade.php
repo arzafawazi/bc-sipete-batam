@@ -83,16 +83,16 @@
                         <h6><b>A. Data Laporan Surat Tugas(ST-1)</b></h6>
                         <hr>
                         <div class="row">
-                          <input type="hidden" value="PENGAWASAN" name="id_pengawasan">
+                          <input type="hidden" id="id_pengawasan" name="id_pengawasan" value="">
                           <div class="col-md-6 mb-3">
                             {{-- bagian no surat tugas dan tanggal surat tugas ini dihapus dikarenakan mau diambil dari aplikasi nadin saja  --}}
                             {{-- format untuk tanggal dibuat menjadi dd mm yyy 12 desember 2024 --}}
-                            <label>No. Surat Tugas</label>
-                            <input type="text" class="form-control bg-primary text-white">
+                            {{-- <label>No. Surat Tugas</label> --}}
+                            <input type="hidden" name="no_st" class="form-control bg-primary text-white">
                           </div>
                           <div class="col-md-6 mb-3">
-                            <label>Tgl. Surat Tugas</label>
-                            <input type="date" class="form-control" placeholder="yyyy-mm-dd" id="tgl_st" name="tgl_st">
+                            {{-- <label>Tgl. Surat Tugas</label> --}}
+                            <input type="hidden" class="form-control" placeholder="yyyy-mm-dd" id="tgl_st" name="tgl_st">
                           </div>
                           <div class="col-lg-12 mb-3">
                             <label for="pengendali_operasi">Pengendali Operasi</label>
@@ -188,7 +188,7 @@
                           <div class="row">
                             <div class="col-md-6 mb-3">
                               <label>No. LPT</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_lpt" value="{{ old('no_lpt', $no_ref->no_lpt) }}" disabled>
+                              <input type="text" class="form-control bg-primary text-white" name="no_lpt" value="{{ old('no_lpt', $no_ref->no_lpt) }}" readonly>
                             </div>
                             <div class="col-md-6 mb-3">
                               <label>Tgl. LPT</label>
@@ -293,11 +293,16 @@
                               <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body bg-light">
 
-                                  <!-- Form Inputs -->
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-4 col-form-label">a. Jenis Dokumen Kepabeanan </label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" name="jenis_dok_kepabeanan_lpt" placeholder="Jenis Dokumen Kepabeanan">
+                                      <select class="form-control form-select select2 " name="jenis_dok_kepabeanan_lpt">
+                                        <option value="" selected disabled>- Pilih -</option>
+                                        @foreach ($jenis_dok as $dok)
+                                          <option value="{{ $dok->jenis_dok }}">{{ $dok->jenis_dok }}
+                                          </option>
+                                        @endforeach
+                                      </select>
                                     </div>
                                   </div>
 
@@ -336,30 +341,48 @@
 
                                     <!-- Form Inputs -->
                                     <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">a. Jenis Pelanggaran </label>
+                                      <label class="col-sm-4 col-form-label">a. Jenis Pelanggaran</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="jenis_pelanggaran_lpt" placeholder="Jenis Pelanggaran">
+                                        <select class="form-control form-select select2 " name="jenis_pelanggaran_lpt">
+                                          <option value="" selected disabled>- Pilih -</option>
+                                          @foreach ($jenis_pelanggaran as $pelanggaran)
+                                            <option value="{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})">{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})
+                                            </option>
+                                          @endforeach
+                                        </select>
                                       </div>
                                     </div>
 
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">b. Modus Pelanggaran </label>
                                       <div class="col-sm-8">
-                                        <textarea class="form-control" name="modus_pelanggaran_lpt" rows="3" placeholder="Modus Pelanggaran"></textarea>
+                                        <select class="form-control form-select select2 " name="modus_pelanggaran_lpt">
+                                          <option value="" selected disabled>- Pilih -</option>
+                                          @foreach ($uraian_modus as $modus)
+                                            <option value="{{ $modus->uraian_modus }}">{{ $modus->uraian_modus }}
+                                            </option>
+                                          @endforeach
+                                        </select>
                                       </div>
                                     </div>
 
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">c. Perkiraan Tempat Pelanggaran </label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="perkiraan_tempat_pelanggaran_lpt" placeholder="Perkiraan Tempat Pelanggaran">
+                                        <select class="form-control form-select select2 " name="perkiraan_tempat_pelanggaran_lpt">
+                                          <option value="" selected disabled>- Pilih -</option>
+                                          @foreach ($tempat as $locus)
+                                            <option value="{{ $locus->locus }}">{{ $locus->locus }}
+                                            </option>
+                                          @endforeach
+                                        </select>
                                       </div>
                                     </div>
 
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">d. Perkiraan Waktu Pelanggaran</label>
                                       <div class="col-sm-8">
-                                        <input type="time" class="form-control form-input" name="perkiraan_waktu_pelanggaran_lpt" placeholder="Perkiraan Waktu Pelanggaran">
+                                        <input type="text" class="form-control" name="perkiraan_waktu_pelanggaran_lpt" id="datetime-datepicker" placeholder="Perkiraan Waktu Pelanggaran">
                                       </div>
                                     </div>
 
@@ -500,7 +523,7 @@
                         <div class="row">
                           <div class="col-md-6 mb-3">
                             <label>No. LPPI</label>
-                            <input type="text" class="form-control bg-primary text-white" placeholder="No. LPPI" value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi" name="no_lppi" disabled>
+                            <input type="text" class="form-control bg-primary text-white" placeholder="No. LPPI" value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi" name="no_lppi" readonly>
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>Tgl. LPPI</label>
@@ -737,7 +760,7 @@
                           <!-- No. LI / Tgl. LI -->
                           <div class="col-md-6 mb-3">
                             <label>No. LKAI</label>
-                            <input type="text" name="no_lkai" value="{{ old('no_lkai', $no_ref->no_lkai) }}" class="form-control bg-primary text-white" disabled>
+                            <input type="text" name="no_lkai" value="{{ old('no_lkai', $no_ref->no_lkai) }}" class="form-control bg-primary text-white" readonly>
                           </div>
                           <div class="col-md-6 mb-3">
                             <label>tgl. LKAI</label>
@@ -1117,7 +1140,6 @@
                           <div class="col-md-12 mb-3">
                             <label>Tipe NHI</label>
                             <select class="form-control" id="tipe_nhi" name="tipe_nhi">
-                              <option value="">-- Pilih Tipe --</option>
                               <option value="NHI">NHI</option>
                               <option value="NHI-HKI">NHI-HKI</option>
                             </select>
@@ -1510,7 +1532,7 @@
 
                           <div class="col-md-6 mb-3">
                             <label>No. NI</label>
-                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ni', $no_ref->no_ni) }}" placeholder="No. NI" id="no_ni" name="no_ni" disabled>
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ni', $no_ref->no_ni) }}" placeholder="No. NI" id="no_ni" name="no_ni" readonly>
                           </div>
 
                           <div class="col-md-6 mb-3">
@@ -1724,7 +1746,8 @@
                         <h6><b>A. Data Nota Dinas</b></h6>
                         <hr>
                         <div class="row">
-
+                          <input type="hidden" class="form-control" name="no_notdin">
+                          <input type="hidden" class="form-control" name="tgl_notdin">
                           <div class="col-md-6 mb-3">
                             <label>YTH</label>
                             <input type="text" class="form-control" placeholder="Yang Terhormat" id="yth_notdin" name="yth_notdin">
@@ -2036,25 +2059,6 @@
   </form>
   </div>
 
-
-  <style>
-    .form-input:disabled {
-      background-color: #f0f0f0;
-      color: #888888;
-      cursor: not-allowed;
-    }
-
-    .form-input.enabled {
-      background-color: #ffffff;
-      color: #000000;
-    }
-
-
-    .form-group.disabled label {
-      color: #888888;
-    }
-  </style>
-
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const selects = [{
@@ -2066,8 +2070,12 @@
           tab: "ni-tab-item"
         },
         {
-          id: "rekomendasi_lainnya",
-          tab: "nota-dinas-tab-item"
+          id: "recommendations-select",
+          tab: "recommendations-tab-item"
+        },
+        {
+          id: "info-select",
+          tab: "informations-tab-item"
         },
       ];
 
@@ -2098,6 +2106,109 @@
             tabElement.classList.remove("active");
           }
         });
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const selects = document.querySelectorAll('select');
+      selects.forEach(select => {
+        const hasYAOption = Array.from(select.options).some(option => option.value === 'YA');
+        if (hasYAOption) {
+          const container = select.closest('.row').nextElementSibling;
+
+          function setInputState() {
+            if (!container) return;
+            const inputs = container.querySelectorAll('input, textarea, select');
+            const isEnabled = select.value === 'YA';
+            inputs.forEach(input => {
+              if (isEnabled) {
+                input.removeAttribute('disabled');
+              } else {
+                input.setAttribute('disabled', 'disabled');
+              }
+            });
+          }
+
+          setInputState();
+
+          select.addEventListener('change', setInputState);
+        }
+      });
+    });
+  </script>
+
+
+  <style>
+    .form-input:disabled {
+      background-color: #f0f0f0;
+      color: #888888;
+      cursor: not-allowed;
+    }
+
+    .form-input.enabled {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+
+    .form-group.disabled label {
+      color: #888888;
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const selects = [{
+          id: "nhi-select",
+          tab: "nhi-tab-item",
+        },
+        {
+          id: "ni-select",
+          tab: "ni-tab-item",
+        },
+        {
+          id: "rekomendasi_lainnya",
+          tab: "nota-dinas-tab-item",
+        },
+      ];
+
+      selects.forEach(({
+        id,
+        tab
+      }) => {
+        const selectElement = document.getElementById(id);
+        const tabElement = document.getElementById(tab);
+
+        const handleTabVisibility = () => {
+          if (selectElement.value === "YA") {
+            tabElement.style.display = "block";
+            tabElement.classList.add("fade-in", "active");
+
+            const tabContainer = document.querySelector(".tabs-container");
+            if (tabContainer) {
+              const offsetTop = tabContainer.offsetTop;
+              window.scrollTo({
+                top: offsetTop - 70,
+                behavior: "smooth",
+              });
+            }
+
+            const tabLink = tabElement.querySelector(".nav-link");
+            if (tabLink) {
+              tabLink.classList.add("highlight");
+              setTimeout(() => tabLink.classList.remove("highlight"), 1000);
+            }
+          } else {
+            tabElement.style.display = "none";
+            tabElement.classList.remove("active");
+          }
+        };
+
+        selectElement.addEventListener("change", handleTabVisibility);
+
+        handleTabVisibility();
       });
     });
   </script>
@@ -2250,19 +2361,40 @@
   </script>
 
   <script>
+    function generateUniqueID() {
+      const timestamp = Date.now();
+      const randomNum = Math.floor(Math.random() * 1000000);
+      return `id_pengawasan_${timestamp}_${randomNum}`;
+    }
+
+    document.getElementById('id_pengawasan').value = generateUniqueID();
+  </script>
+
+  <script>
     function handleSelection(selectedElement) {
+
       const allSelects = document.querySelectorAll('.section-select');
       allSelects.forEach(select => {
         if (select !== selectedElement) {
           select.disabled = selectedElement.value === 'YA';
           if (select.disabled) {
-            select.classList.add('aa');
+            select.classList.add('text-muted');
           } else {
-            select.classList.remove('aa');
+            select.classList.remove('text-muted');
           }
         }
       });
     }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const allSelects = document.querySelectorAll('.section-select');
+      allSelects.forEach(select => {
+        if (select.value === 'YA') {
+          handleSelection(select);
+        }
+      });
+    });
   </script>
 
   <style>

@@ -87,7 +87,7 @@
                         <h6><b>A. Data Laporan Surat Tugas(ST-1)</b></h6>
                         <hr>
                         <div class="row">
-                          <input type="hidden" value="PENGAWASAN" name="id_pengawasan">
+                          <input type="hidden" value="{{ old('id_pengawasan', $pengawasan->id_pengawasan) }}" name="id_pengawasan">
                           <div class="col-md-6 mb-3">
                             <label>No. Surat Tugas</label>
                             <input type="text" class="form-control bg-primary text-white" name="no_st" value="{{ old('no_st', $pengawasan->no_st) }}">
@@ -308,12 +308,19 @@
 
                                   <!-- Form Inputs -->
                                   <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">a. Jenis Dokumen Kepabeanan </label>
+                                    <label class="col-sm-4 col-form-label">a. Jenis Dokumen Kepabeanan</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control form-input" value="{{ old('jenis_dok_kepabeanan_lpt', $pengawasan->jenis_dok_kepabeanan_lpt) }}" name="jenis_dok_kepabeanan_lpt"
-                                        placeholder="Jenis Dokumen Kepabeanan">
+                                      <select class="form-control form-select select2" name="jenis_dok_kepabeanan_lpt">
+                                        <option value="" disabled>- Pilih -</option>
+                                        @foreach ($jenis_dok as $dok)
+                                          <option value="{{ $dok->jenis_dok }}" {{ old('jenis_dok_kepabeanan_lpt', $pengawasan->jenis_dok_kepabeanan_lpt) == $dok->jenis_dok ? 'selected' : '' }}>
+                                            {{ $dok->jenis_dok }}
+                                          </option>
+                                        @endforeach
+                                      </select>
                                     </div>
                                   </div>
+
 
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-4 col-form-label">b. Nomor dan Tanggal Dokumen Kepabeanan </label>
@@ -354,34 +361,56 @@
 
                                     <!-- Form Inputs -->
                                     <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">a. Jenis Pelanggaran </label>
+                                      <label class="col-sm-4 col-form-label">a. Jenis Pelanggaran</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" value="{{ old('jenis_pelanggaran_lpt', $pengawasan->jenis_pelanggaran_lpt) }}" name="jenis_pelanggaran_lpt" placeholder="Jenis Pelanggaran">
+                                        <select class="form-control form-select select2" name="jenis_pelanggaran_lpt" required>
+                                          <option value="" disabled>- Pilih -</option>
+                                          @foreach ($jenis_pelanggaran as $pelanggaran)
+                                            <option value="{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})"
+                                              {{ old('jenis_pelanggaran_lpt', $pengawasan->jenis_pelanggaran_lpt) == $pelanggaran->alasan_penindakan ? 'selected' : '' }}>
+                                              {{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})
+                                            </option>
+                                          @endforeach
+                                        </select>
                                       </div>
                                     </div>
 
                                     <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">b. Modus Pelanggaran </label>
+                                      <label class="col-sm-4 col-form-label">b. Modus Pelanggaran</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="modus_pelanggaran_lpt" value="{{ old('modus_pelanggaran_lpt', $pengawasan->modus_pelanggaran_lpt) }}" placeholder="Modus Pelanggaran">
+                                        <select class="form-control form-select select2" name="modus_pelanggaran_lpt" required>
+                                          <option value="" disabled>- Pilih -</option>
+                                          @foreach ($uraian_modus as $modus)
+                                            <option value="{{ $modus->uraian_modus }}" {{ old('modus_pelanggaran_lpt', $pengawasan->modus_pelanggaran_lpt) == $modus->uraian_modus ? 'selected' : '' }}>
+                                              {{ $modus->uraian_modus }}
+                                            </option>
+                                          @endforeach
+                                        </select>
                                       </div>
                                     </div>
 
                                     <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">c. Perkiraan Tempat Pelanggaran </label>
+                                      <label class="col-sm-4 col-form-label">c. Perkiraan Tempat Pelanggaran</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="perkiraan_tempat_pelanggaran_lpt" value="{{ old('perkiraan_tempat_pelanggaran_lpt', $pengawasan->perkiraan_tempat_pelanggaran_lpt) }}"
-                                          placeholder="Perkiraan Tempat Pelanggaran">
+                                        <select class="form-control form-select select2" name="perkiraan_tempat_pelanggaran_lpt" required>
+                                          <option value="" disabled>- Pilih -</option>
+                                          @foreach ($tempat as $locus)
+                                            <option value="{{ $locus->locus }}" {{ old('perkiraan_tempat_pelanggaran_lpt', $pengawasan->perkiraan_tempat_pelanggaran_lpt) == $locus->locus ? 'selected' : '' }}>
+                                              {{ $locus->locus }}
+                                            </option>
+                                          @endforeach
+                                        </select>
                                       </div>
                                     </div>
 
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">d. Perkiraan Waktu Pelanggaran</label>
                                       <div class="col-sm-8">
-                                        <input type="time" class="form-control form-input" name="perkiraan_waktu_pelanggaran_lpt" value="{{ old('perkiraan_waktu_pelanggaran_lpt', $pengawasan->perkiraan_waktu_pelanggaran_lpt) }}"
-                                          placeholder="Perkiraan Waktu Pelanggaran">
+                                        <input type="text" class="form-control" name="perkiraan_waktu_pelanggaran_lpt" id="datetime-datepicker" value="{{ old('perkiraan_waktu_pelanggaran_lpt', $pengawasan->perkiraan_waktu_pelanggaran_lpt) }}"
+                                          placeholder="Perkiraan Waktu Pelanggaran" required>
                                       </div>
                                     </div>
+
 
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">e. Perkiraan Pelaku Pelanggaran </label>
@@ -1193,6 +1222,7 @@
                           </div>
 
                           <div class="col-md-12 mb-3">
+                            <label>Deskripsi NHI</label>
                             <select class="form-control" id="deskripsi" name="deskripsi">
                               <option value="diperintahkan" {{ old('deskripsi', $pengawasan->deskripsi) == 'diperintahkan' ? 'selected' : '' }}>Diperintahkan</option>
                               <option value="direkomendasikan" {{ old('direkomendasikan', $pengawasan->deskripsi) == 'direkomendasikan' ? 'selected' : '' }}>Direkomendasikan</option>
@@ -1201,7 +1231,7 @@
 
                           <div class="col-md-6 mb-3 nhi-input" style="display: none;">
                             <label>No. NHI</label>
-                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_nhi', $pengawasan->no_nhi) }}" placeholder="No. NHI" id="no_nhi" name="no_nhi">
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_nhi', $pengawasan->no_nhi) }}" placeholder="No. NHI" id="no_nhi" name="no_nhi" readonly>
                           </div>
                           <div class="col-md-6 mb-3 nhi-input" style="display: none;">
                             <label>Tanggal NHI</label>
@@ -1210,7 +1240,7 @@
 
                           <div class="col-md-6 mb-3 nhi-hki-input" style="display: none;">
                             <label>No. NHI-HKI</label>
-                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_nhi_hki', $pengawasan->no_nhi_hki) }}" placeholder="No. NHI-HKI" id="no_nhi_hki" name="no_nhi_hki">
+                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_nhi_hki', $pengawasan->no_nhi_hki) }}" placeholder="No. NHI-HKI" id="no_nhi_hki" name="no_nhi_hki" readonly>
                           </div>
                           <div class="col-md-6 mb-3 nhi-hki-input" style="display: none;">
                             <label>Tanggal NHI-HKI</label>
@@ -1231,17 +1261,6 @@
                               <option value="Biasa" {{ old('klasifikasi_nhi', $pengawasan->klasifikasi_nhi) == 'Biasa' ? 'selected' : '' }}>Biasa</option>
                               <option value="Rahasia" {{ old('klasifikasi_nhi', $pengawasan->klasifikasi_nhi) == 'Rahasia' ? 'selected' : '' }}>Rahasia</option>
                             </select>
-                          </div>
-                          <h6><b>B. Referensi</b></h6>
-                          <hr>
-                          <div class="col-md-6 mb-3">
-                            <label>No. LKAI</label>
-                            <input type="text" class="form-control bg-primary text-white" value="{{ old('no_lkai', $pengawasan->no_lkai) }}" placeholder="No. LKAI" value="">
-                          </div>
-
-                          <div class="col-md-6 mb-3">
-                            <label>Tgl. LKAI</label>
-                            <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_lkai', $pengawasan->tgl_lkai) }}" placeholder="Tanggal LKAI" value="">
                           </div>
 
                           <div class="col-md-12 mb-3">
@@ -1677,37 +1696,43 @@
                                       <input type="text" class="form-control form-input" name="nodok_ni" value="{{ old('nodok_ni', $pengawasan->nodok_ni) }}" placeholder="Isi No. Dokumen">
                                     </div>
                                   </div>
+
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-4 col-form-label">Nama Pengirim</label>
                                     <div class="col-sm-8">
                                       <input type="text" class="form-control form-input" name="nama_pengirim_ni" value="{{ old('nama_pengirim_ni', $pengawasan->nama_pengirim_ni) }}" placeholder="Isi Nama Pengirim">
                                     </div>
                                   </div>
+
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-4 col-form-label">Nomor Pengirim</label>
                                     <div class="col-sm-8">
                                       <input type="text" class="form-control form-input" name="nomor_pengirim_ni" value="{{ old('nomor_pengirim_ni', $pengawasan->nomor_pengirim_ni) }}" placeholder="Isi Nomor Pengirim">
                                     </div>
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Nama Penerima</label>
-                                      <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="nama_penerima_ni" value="{{ old('nama_penerima_ni', $pengawasan->nama_penerima_ni) }}" placeholder="Isi Nama Penerima">
-                                      </div>
-                                    </div>
+                                  </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Nomor Penerima</label>
-                                      <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="nomor_penerima_ni" value="{{ old('nomor_penerima_ni', $pengawasan->nomor_penerima_ni) }}" placeholder="Isi Nomor Penerima">
-                                      </div>
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nama Penerima</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nama_penerima_ni" value="{{ old('nama_penerima_ni', $pengawasan->nama_penerima_ni) }}" placeholder="Isi Nama Penerima">
                                     </div>
                                   </div>
+
+                                  <div class="row mb-3 form-group">
+                                    <label class="col-sm-4 col-form-label">Nomor Penerima</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control form-input" name="nomor_penerima_ni" value="{{ old('nomor_penerima_ni', $pengawasan->nomor_penerima_ni) }}" placeholder="Isi Nomor Penerima">
+                                    </div>
+                                  </div>
+
+
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-4 col-form-label">Asal Barang</label>
                                     <div class="col-sm-8">
                                       <input type="text" class="form-control form-input" name="asal_barang_ni" value="{{ old('asal_barang_ni', $pengawasan->asal_barang_ni) }}" placeholder="Isi Asal Barang">
                                     </div>
                                   </div>
+
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-4 col-form-label">Tujuan Barang</label>
                                     <div class="col-sm-8">
@@ -1775,6 +1800,17 @@
                         <h6><b>A. Data Nota Dinas</b></h6>
                         <hr>
                         <div class="row">
+
+                          <div class="row">
+                            <div class="col-md-6 mb-3">
+                              <label>NO. Notdin</label>
+                              <input type="text" class="form-control bg-primary text-white" name="no_notdin" value="{{ old('no_notdin', $pengawasan->no_notdin ?? '') }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label>Tgl. Notdin</label>
+                              <input type="date" class="form-control bg-primary text-white" name="tgl_notdin" value="{{ old('tgl_notdin', $pengawasan->tgl_notdin ?? '') }}">
+                            </div>
+                          </div>
 
                           <div class="col-md-6 mb-3">
                             <label>YTH</label>
@@ -2436,7 +2472,7 @@
     });
   </script>
 
-  <script>
+  {{-- <script>
     function handleSelection(selectedElement) {
 
       const allSelects = document.querySelectorAll('.section-select');
@@ -2461,7 +2497,7 @@
         }
       });
     });
-  </script>
+  </script> --}}
 
   <style>
     .aa {

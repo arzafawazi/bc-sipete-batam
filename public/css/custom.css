@@ -1,6 +1,30 @@
+/* Pengaturan default untuk progressive enhancement */
+.no-js body {
+    opacity: 1;
+}
+
+/* State awal body - tersembunyi */
 body {
     opacity: 0;
-    transition: opacity 0.1s ease;
+    visibility: hidden;
+}
+
+/* Class yang ditambahkan setelah load selesai */
+body.is-loaded {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.8s ease-out;
+    -webkit-transition: opacity 0.8s ease-out;
+    -moz-transition: opacity 0.8s ease-out;
+    -ms-transition: opacity 0.8s ease-out;
+    -o-transition: opacity 0.8s ease-out;
+}
+
+/* Pastikan animasi tidak berjalan jika user memilih reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    body {
+        transition: none;
+    }
 }
 
 /* Menyesuaikan Select2 dengan bootstrap */
