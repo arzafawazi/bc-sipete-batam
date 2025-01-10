@@ -112,12 +112,16 @@
                     <td>{{ $laporan->no_print }}</td>
                     <td>{{ $laporan->tanggal_mulai_print }}</td>
                     <td>
-                      <button type="button" class="btn btn-primary pilih-laporan" data-nomor="{{ $laporan->id_pra_penindakan }}">
-                        Pilih
+                      <button type="button" class="btn btn-primary pilih-laporan" data-nomor="{{ $laporan->id_pra_penindakan }}" data-kategori="SBP">
+                        SBP
+                      </button>
+                      <button type="button" class="btn btn-secondary pilih-laporan" data-nomor="{{ $laporan->id_pra_penindakan }}" data-kategori="NON-SBP">
+                        NON-SBP
                       </button>
                     </td>
                   </tr>
                 @endforeach
+
               </tbody>
             </table>
           </div>
@@ -189,16 +193,20 @@
                         <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
                           <i data-feather="printer" class="icon-sm"></i> Print
                         </button>
+
+
                       </div>
                     </td>
+
+
                     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
-                          <div class="modal-header border-bottom-0 pb-0">
+                          <div class="modal-header border-bottom-0 pb-0" style="position: sticky; top: 0; z-index: 1055; background: #fff; height: 70px;">
                             <h5 class="modal-title" id="printModalLabel">Print Dokumen Penindakan</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
-                          <div class="modal-body">
+                          <div class="modal-body" style="max-height: 65vh; overflow-y: auto;">
                             <div class="container">
                               <div class="row g-3">
                                 <div class="col-md-4">
@@ -213,8 +221,8 @@
                                           <polyline points="10 9 9 9 8 9"></polyline>
                                         </svg>
                                       </div>
-                                      <h6 class="card-title mb-3">Surat Bukti Penindakan</h6>
-                                      <a href="{{ route('surat-bukti-penindakan.print', $penindakan->id) }}" class="btn btn-outline-primary print-btn">Print</a>
+                                      <h6 class="card-title mb-3">B.A Riksa</h6>
+                                      <a href="{{ route('ba-riksa.print', $penindakan->id) }}" class="btn btn-outline-primary print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>
@@ -231,11 +239,12 @@
                                           <polyline points="10 9 9 9 8 9"></polyline>
                                         </svg>
                                       </div>
-                                      <h6 class="card-title mb-3">B.A Riksa</h6>
-                                      <a href="" class="btn btn-outline-success print-btn">Print</a>
+                                      <h6 class="card-title mb-3">B.A Riksa Badan</h6>
+                                      <a href="{{ route('ba-riksa-badan.print', $penindakan->id) }}" class="btn btn-outline-success print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>
+
                                 <div class="col-md-4">
                                   <div class="card print-card border-warning shadow-lg">
                                     <div class="card-body text-center">
@@ -248,8 +257,8 @@
                                           <polyline points="10 9 9 9 8 9"></polyline>
                                         </svg>
                                       </div>
-                                      <h6 class="card-title mb-3"></h6>
-                                      <a href="" class="btn btn-outline-warning print-btn">Print</a>
+                                      <h6 class="card-title mb-3">B.A Sarkut</h6>
+                                      <a href="{{ route('ba-sarkut.print', $penindakan->id) }}" class="btn btn-outline-warning print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>
@@ -268,8 +277,8 @@
                                           <polyline points="10 9 9 9 8 9"></polyline>
                                         </svg>
                                       </div>
-                                      <h6 class="card-title mb-3"></h6>
-                                      <a href="" class="btn btn-outline-danger print-btn">Print</a>
+                                      <h6 class="card-title mb-3">B.A Contoh</h6>
+                                      <a href="{{ route('ba-contoh.print', $penindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>
@@ -285,11 +294,110 @@
                                           <polyline points="10 9 9 9 8 9"></polyline>
                                         </svg>
                                       </div>
-                                      <h6 class="card-title mb-3"></h6>
-                                      <a href="" class="btn btn-outline-danger print-btn">Print</a>
+                                      <h6 class="card-title mb-3">B.A Dokumentasi</h6>
+                                      <a href="{{ route('ba-dokumentasi.print', $penindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                  <div class="card print-card border-dark shadow-lg">
+                                    <div class="card-body text-center">
+                                      <div class="print-card-icon text-dark mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                          <polyline points="14 2 14 8 20 8"></polyline>
+                                          <line x1="16" y1="13" x2="8" y2="13"></line>
+                                          <line x1="16" y1="17" x2="8" y2="17"></line>
+                                          <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                      </div>
+                                      <h6 class="card-title mb-3">B.A Segel</h6>
+                                      <a href="{{ route('ba-segel.print', $penindakan->id) }}" class="btn btn-outline-dark print-btn">Print</a>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row g-3">
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-danger shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-danger mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">B.A Titip</h6>
+                                        <a href="{{ route('ba-titip.print', $penindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-4 ">
+                                    <div class="card print-card border-secondary shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="text-primary">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">SBP</h6>
+                                        <a href="{{ route('sbp.print', $penindakan->id) }}" class="btn btn-outline-primary print-btn">Print</a>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-danger shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-danger mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">B.A Tolak Pertama</h6>
+                                        <a href="{{ route('ba-tolak1.print', $penindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+
+                                <div class="row g-3 justify-content-center">
+                                  <div class="col-md-4">
+                                    <div class="card print-card border-danger shadow-lg">
+                                      <div class="card-body text-center">
+                                        <div class="print-card-icon text-danger mb-3">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                          </svg>
+                                        </div>
+                                        <h6 class="card-title mb-3">B.A Tolak Kedua</h6>
+                                        <a href="{{ route('ba-tolak2.print', $penindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+
                               </div>
                             </div>
                           </div>
@@ -318,7 +426,18 @@
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('pilih-laporan')) {
           let nomorLaporan = event.target.getAttribute('data-nomor');
-          let url = `/Dokpenindakan/penindakan/create?id_pra_penindakan=${encodeURIComponent(nomorLaporan)}`;
+          let kategori = event.target.getAttribute('data-kategori');
+          let url;
+
+          if (kategori === 'SBP') {
+            url = `/Dokpenindakan/penindakan/create?id_pra_penindakan_SBP=${encodeURIComponent(nomorLaporan)}`;
+          } else if (kategori === 'NON-SBP') {
+            url = `/Dokpenindakan/penindakan/create?id_pra_penindakan_NON_SBP=${encodeURIComponent(nomorLaporan)}`;
+          } else {
+            alert('Kategori tidak valid!');
+            return;
+          }
+
           window.location.href = url;
         }
       });

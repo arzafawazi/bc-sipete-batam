@@ -107,7 +107,6 @@
                           <div class="col-lg-12 mb-3">
                             <label for="tim_operasi">Tim Operasi</label>
                             <select class="form-control form-select select2 " id="tim_operasi" name="tim_operasi_st[]" multiple>
-                              {{-- <option value="" selected disabled>- Pilih -</option> --}}
                               @foreach ($users as $user)
                                 <option value="{{ $user->id_admin }}">{{ $user->name }}
                                 </option>
@@ -195,7 +194,7 @@
                               <input type="date" class="form-control bg-primary text-white" name="tgl_lpt">
                             </div>
                           </div>
-                          <!-- Media Informasi / Isi Informasi / Catatan -->
+
                           <div class="col-md-12 mb-3">
                             <label class="d-flex align-items-center">
                               Uraian Tugas
@@ -217,6 +216,7 @@
                             <label>Uraian Periode Penugasan</label>
                             <input type="text" id="date-range-picker" name="uraian_periode_penugasan_lpt" class="form-control" placeholder="Pilih Uraian Periode Penugasan">
                           </div>
+
                         </div>
                       </div>
 
@@ -2039,7 +2039,7 @@
 
                 </div>
               </div>
-            </div> <!-- end card-->
+            </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
             <button type="submit" class="btn btn-success btn-sm me-2">
@@ -2048,67 +2048,11 @@
           </div>
         </div>
       </div>
-
-
-
-
-
-
-
   </div>
   </form>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const selects = [{
-          id: "nhi-select",
-          tab: "nhi-tab-item"
-        },
-        {
-          id: "ni-select",
-          tab: "ni-tab-item"
-        },
-        {
-          id: "recommendations-select",
-          tab: "recommendations-tab-item"
-        },
-        {
-          id: "info-select",
-          tab: "informations-tab-item"
-        },
-      ];
 
-      selects.forEach(({
-        id,
-        tab
-      }) => {
-        const selectElement = document.getElementById(id);
-        const tabElement = document.getElementById(tab);
-
-        selectElement.addEventListener("change", function() {
-          if (selectElement.value === "YA") {
-            tabElement.style.display = "block";
-            tabElement.classList.add("fade-in", "active");
-
-            const tabContainer = document.querySelector(".tabs-container");
-            const offsetTop = tabContainer.offsetTop;
-            window.scrollTo({
-              top: offsetTop - 70,
-              behavior: "smooth",
-            });
-
-            const tabLink = tabElement.querySelector(".nav-link");
-            tabLink.classList.add("highlight");
-            setTimeout(() => tabLink.classList.remove("highlight"), 1000);
-          } else {
-            tabElement.style.display = "none";
-            tabElement.classList.remove("active");
-          }
-        });
-      });
-    });
-  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -2157,6 +2101,9 @@
       color: #888888;
     }
   </style>
+
+
+
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {

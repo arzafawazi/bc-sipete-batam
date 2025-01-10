@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TblSbp extends Model
+class TblPascaPenindakan extends Model
 {
     use HasFactory;
-    protected $table = 'tbl_sbp';
+
+    protected $table = 'tbl_pasca_penindakan';
 
     // protected $primaryKey = 'id';
 
     // public $incrementing = false;
-
-    protected $guarded = [];
 
 
     public function getPejabat($key)
@@ -27,8 +26,13 @@ class TblSbp extends Model
         return $this->belongsTo(User::class, $key, 'id_admin');
     }
 
-    public function laporanInformasi()
+    public function sbp()
     {
-        return $this->belongsTo(TblLaporanInformasi::class, 'id_pra_penindakan_ref', 'id_pra_penindakan');
+        return $this->belongsTo(TblSbp::class, 'id_penindakan_ref', 'id_penindakan');
+    }
+
+    public function penindakans()
+    {
+        return $this->hasMany(TblSbp::class, 'id_penindakan', 'id_penindakan_ref');
     }
 }

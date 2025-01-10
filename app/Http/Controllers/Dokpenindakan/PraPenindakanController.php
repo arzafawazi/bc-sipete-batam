@@ -345,7 +345,7 @@ class PraPenindakanController extends Controller
 
         $laporanPengawasan = $praPenindakan->laporanPengawasan;
 
-        dd($laporanPengawasan);
+        // dd($laporanPengawasan);
 
         // dd($laporanPengawasan);
 

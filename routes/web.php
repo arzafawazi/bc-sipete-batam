@@ -113,6 +113,11 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 
     // Pasca Penindakan Routes
     Route::resource('Dokpenindakan/pasca-penindakan', PascaPenindakanController::class);
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-lphp', [PascaPenindakanController::class, 'print_surat_lphp'])->name('surat-lphp.print');
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-np', [PascaPenindakanController::class, 'print_surat_np'])->name('surat-np.print');
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-pemilik', [PascaPenindakanController::class, 'print_surat_bast_pemilik'])->name('surat-bast-pemilik.print');
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-instansi-lain', [PascaPenindakanController::class, 'print_surat_bast_instansi_lain'])->name('surat-bast-instansi-lain.print');
+
 
     // Pasca Penindakan NPP routes
     Route::resource('Dokpenindakan/pasca-penindakan-npp', PascaPenindakanNppController::class);
@@ -137,7 +142,16 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 
     // Dokpenindakan routes
     Route::resource('Dokpenindakan/penindakan', PenindakanController::class);
-    Route::get('Dokpenindakan/penindakan/{id}/print', [PenindakanController::class, 'print_surat_sbp'])->name('surat-bukti-penindakan.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-riksa', [PenindakanController::class, 'print_ba_riksa'])->name('ba-riksa.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-riksa-badan', [PenindakanController::class, 'print_ba_riksa_badan'])->name('ba-riksa-badan.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-sarkut', [PenindakanController::class, 'print_ba_sarkut'])->name('ba-sarkut.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-contoh', [PenindakanController::class, 'print_ba_contoh'])->name('ba-contoh.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-dokumentasi', [PenindakanController::class, 'print_ba_dokumentasi'])->name('ba-dokumentasi.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-segel', [PenindakanController::class, 'print_ba_segel'])->name('ba-segel.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-titip', [PenindakanController::class, 'print_ba_titip'])->name('ba-titip.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-surat-bukti-penindakan', [PenindakanController::class, 'print_surat_sbp'])->name('sbp.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-tolak-pertama', [PenindakanController::class, 'print_ba_tolak1'])->name('ba-tolak1.print');
+    Route::get('Dokpenindakan/penindakan/{id}/print-ba-tolak-kedua', [PenindakanController::class, 'print_ba_tolak2'])->name('ba-tolak2.print');
     Route::get('/getNomorSegel/{id}', [PenindakanController::class, 'getNomorSegel']);
 
 

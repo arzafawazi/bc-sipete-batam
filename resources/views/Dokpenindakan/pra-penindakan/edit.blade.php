@@ -956,12 +956,16 @@
                           <div class="col-lg-12 mb-3">
                             <label for="id_pejabat_sp_1">Pejabat Yang Diberi Perintah</label>
                             <select class="form-control form-select select2" id="id_pejabat_sp_1" name="id_pejabat_sp_1[]" multiple>
+                              @php
+                                $selectedPejabat = json_decode($praPenindakan->id_pejabat_sp_1, true) ?? [];
+                              @endphp
                               @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, json_decode($praPenindakan->id_pejabat_sp_1)) ? 'selected' : '' }}>
+                                <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, $selectedPejabat) ? 'selected' : '' }}>
                                   {{ $user->name }}
                                 </option>
                               @endforeach
                             </select>
+
                           </div>
 
 
