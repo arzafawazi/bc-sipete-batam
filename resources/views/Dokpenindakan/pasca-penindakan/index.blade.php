@@ -173,10 +173,10 @@
                     <td class="fw-medium">{{ $pascapenindakan->tgl_lphp }}</td>
                     <td>
                       <div class="d-flex gap-1 justify-content-center">
-                        <a href="" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
+                        <a href="{{ route('pasca-penindakan.edit', ['pasca_penindakan' => $pascapenindakan->id]) }}" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
                           <i data-feather="edit" class="icon-sm"></i> Edit
                         </a>
-                        <form action="" method="POST" class="d-inline delete-form">
+                        <form action="{{ route('pasca-penindakan.destroy', $pascapenindakan->id) }}" method="POST" class="d-inline delete-form">
                           @csrf
                           @method('DELETE')
                           <button type="submit" class="btn btn-soft-danger btn-icon btn-sm rounded-pill" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
@@ -202,23 +202,7 @@
                           <div class="modal-body" style="max-height: 65vh; overflow-y: auto;">
                             <div class="container">
                               <div class="row g-3">
-                                <div class="col-md-4">
-                                  <div class="card print-card border-primary shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-primary mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">NP</h6>
-                                      <a href="{{ route('surat-np.print', $pascapenindakan->id) }}" class="btn btn-outline-primary print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
+
 
                                 <div class="col-md-4">
                                   <div class="card print-card border-success shadow-lg">
@@ -238,26 +222,7 @@
                                   </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                  <div class="card print-card border-warning shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-warning mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">BAST</h6>
-                                      <a href="" class="btn btn-outline-warning print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
 
-                              <div class="row g-3">
                                 <div class="col-md-4">
                                   <div class="card print-card border-info shadow-lg">
                                     <div class="card-body text-center">
@@ -271,10 +236,87 @@
                                         </svg>
                                       </div>
                                       <h6 class="card-title mb-3">LP</h6>
-                                      <a href="" class="btn btn-outline-danger print-btn">Print</a>
+                                      <a href="{{ route('surat-lp.print', $pascapenindakan->id) }}" class="btn btn-outline-success print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                  <div class="card print-card border-primary shadow-lg">
+                                    <div class="card-body text-center">
+                                      <div class="print-card-icon text-primary mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                          <polyline points="14 2 14 8 20 8"></polyline>
+                                          <line x1="16" y1="13" x2="8" y2="13"></line>
+                                          <line x1="16" y1="17" x2="8" y2="17"></line>
+                                          <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                      </div>
+                                      <h6 class="card-title mb-3">NP</h6>
+                                      <a href="{{ route('surat-np.print', $pascapenindakan->id) }}" class="btn btn-outline-primary print-btn">Print</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row g-3">
+                                <div class="col-md-4">
+                                  <div class="card print-card border-warning shadow-lg">
+                                    <div class="card-body text-center">
+                                      <div class="print-card-icon text-info mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                          <polyline points="14 2 14 8 20 8"></polyline>
+                                          <line x1="16" y1="13" x2="8" y2="13"></line>
+                                          <line x1="16" y1="17" x2="8" y2="17"></line>
+                                          <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                      </div>
+                                      <h6 class="card-title mb-3">BAST PEMILIK</h6>
+                                      <a href="{{ route('surat-bast-pemilik.print', $pascapenindakan->id) }}" class="btn btn-outline-success print-btn">Print</a>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                  <div class="card print-card border-warning shadow-lg">
+                                    <div class="card-body text-center">
+                                      <div class="print-card-icon text-warning mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                          <polyline points="14 2 14 8 20 8"></polyline>
+                                          <line x1="16" y1="13" x2="8" y2="13"></line>
+                                          <line x1="16" y1="17" x2="8" y2="17"></line>
+                                          <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                      </div>
+                                      <h6 class="card-title mb-3">BAST INSTANSI</h6>
+                                      <a href="{{ route('surat-bast-instansi.print', $pascapenindakan->id) }}" class="btn btn-outline-warning print-btn">Print</a>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                  <div class="card print-card border-warning shadow-lg">
+                                    <div class="card-body text-center">
+                                      <div class="print-card-icon text-info mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                          <polyline points="14 2 14 8 20 8"></polyline>
+                                          <line x1="16" y1="13" x2="8" y2="13"></line>
+                                          <line x1="16" y1="17" x2="8" y2="17"></line>
+                                          <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                      </div>
+                                      <h6 class="card-title mb-3">BAST PENYIDIK</h6>
+                                      <a href="{{ route('surat-bast-penyidik.print', $pascapenindakan->id) }}" class="btn btn-outline-success print-btn">Print</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row g-3">
                                 <div class="col-md-4">
                                   <div class="card print-card border-danger shadow-lg">
                                     <div class="card-body text-center">
@@ -288,7 +330,7 @@
                                         </svg>
                                       </div>
                                       <h6 class="card-title mb-3">LPT</h6>
-                                      <a href="" class="btn btn-outline-danger print-btn">Print</a>
+                                      <a href="{{ route('surat-lpt.print', $pascapenindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>

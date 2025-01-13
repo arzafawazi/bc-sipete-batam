@@ -19,9 +19,9 @@
       </div>
 
       <div class="card-body">
-        <form action="{{ route('pasca-penindakan.update') }}" method="POST">
+        <form action="{{ route('pasca-penindakan.update', ['pasca_penindakan' => $pascapenindakan->id]) }}" method="POST">
           @csrf
-
+          @method('PUT')
           <div class="card">
 
             <div class="row">
@@ -97,7 +97,7 @@
                               </div>
                               <div class="col-md-6 mb-3">
                                 <label>Tgl. LPHP</label>
-                                <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" id="tgl_lphp" name="tgl_lphp" value="{{ old('tgl_lphp', $pascapenindakan->tgl_lphp) }}">
+                                <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lphp" value="{{ old('tgl_lphp', $pascapenindakan->tgl_lphp) }}">
                               </div>
                             </div>
                           </div>
@@ -108,10 +108,6 @@
                             <div class="col-md-12 mb-3">
                               <label class="d-flex align-items-center">
                                 Catatan
-                                <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
-                                </button>
                               </label>
                               <textarea class="form-control" rows="7" placeholder="Catatan" name="catatan_lphp">{{ old('catatan_lphp', $pascapenindakan->catatan_lphp) }}</textarea>
                             </div>
@@ -416,7 +412,7 @@
 
                             <div class="col-md-12 mb-3">
                               <label>Barang Lain Yang Terkait</label>
-                              <textarea class="form-control" rows="3" placeholder="Barang Lain Yang Terkait" name="catatan_lphp">{{ old('catatan_lphp', $pascapenindakan->catatan_lphp) }}</textarea>
+                              <textarea class="form-control" rows="3" placeholder="Barang Lain Yang Terkait" name="barang_lain_lp">{{ old('barang_lain_lp', $pascapenindakan->barang_lain_lp) }}</textarea>
                             </div>
 
                             <div class="col-lg-12 mb-3">

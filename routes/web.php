@@ -114,9 +114,12 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     // Pasca Penindakan Routes
     Route::resource('Dokpenindakan/pasca-penindakan', PascaPenindakanController::class);
     Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-lphp', [PascaPenindakanController::class, 'print_surat_lphp'])->name('surat-lphp.print');
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-lp', [PascaPenindakanController::class, 'print_surat_lp'])->name('surat-lp.print');
     Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-np', [PascaPenindakanController::class, 'print_surat_np'])->name('surat-np.print');
     Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-pemilik', [PascaPenindakanController::class, 'print_surat_bast_pemilik'])->name('surat-bast-pemilik.print');
-    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-instansi-lain', [PascaPenindakanController::class, 'print_surat_bast_instansi_lain'])->name('surat-bast-instansi-lain.print');
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-instansi', [PascaPenindakanController::class, 'print_surat_bast_instansi'])->name('surat-bast-instansi.print');
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-penyidik', [PascaPenindakanController::class, 'print_surat_bast_penyidik'])->name('surat-bast-penyidik.print');
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-lpt', [PascaPenindakanController::class, 'print_surat_lpt'])->name('surat-lpt.print');
 
 
     // Pasca Penindakan NPP routes

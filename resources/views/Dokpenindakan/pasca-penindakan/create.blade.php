@@ -1,4 +1,4 @@
-@extends('layouts.vertical', ['title' => 'Rekam Form Penindakan'])
+@extends('layouts.vertical', ['title' => 'Rekam Form Pasca Penindakan'])
 
 @section('css')
   @vite(['node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css', 'node_modules/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css', 'node_modules/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css', 'node_modules/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css', 'node_modules/datatables.net-select-bs5/css/select.bootstrap5.min.css'])
@@ -112,7 +112,31 @@
                               </div>
                               <div class="col-md-6 mb-3">
                                 <label>Tgl. LPHP</label>
-                                <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" id="tgl_lphp" name="tgl_lphp">
+                                <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lphp">
+                              </div>
+
+                              <div class="col-lg-12 mb-3">
+                                <label>Kepala Bidang Penindakan</label>
+                                <select class="form-control form-select select2" name="kepala_bidang_penindakan_display" id="kepala_bidang_penindakan" disabled>
+                                  @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}" {{ $user->jabatan == 'Kepala Bidang Penindakan dan Penyidikan' ? 'selected' : '' }}>
+                                      {{ $user->name }} | {{ $user->jabatan }}
+                                    </option>
+                                  @endforeach
+                                </select>
+                                <input type="hidden" name="kepala_bidang_penindakan"
+                                  value="{{ old('kepala_bidang_penindakan', $pascapenindakan->kepala_bidang_penindakan ?? ($user->jabatan == 'Kepala Bidang Penindakan dan Penyidikan' ? $user->id_admin : '')) }}">
+                              </div>
+
+                              <div class="col-lg-12 mb-3">
+                                <label>Kepala Seksi Penindakan</label>
+                                <select class="form-control form-select select2" name="id_kepala_seksi_penindakan">
+                                  <option value="" selected disabled>- Pilih -</option>
+                                  @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
+                                    </option>
+                                  @endforeach
+                                </select>
                               </div>
 
                             </div>
@@ -126,12 +150,12 @@
                             <div class="col-md-12 mb-3">
                               <label class="d-flex align-items-center">
                                 Catatan
-                                <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                   data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
                                   <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
-                                </button>
+                                </button> --}}
                               </label>
-                              <textarea class="form-control" rows="7" placeholder="Catatan" name="catatan_lphp"></textarea>
+                              <textarea class="form-control" rows="14" placeholder="Catatan" name="catatan_lphp"></textarea>
                             </div>
                           </div>
 
@@ -442,7 +466,7 @@
                               <label class="d-flex align-items-center">
                                 Barang Lain Yang Terkait
                               </label>
-                              <textarea class="form-control" rows="3" placeholder="Barang Lain Yang Terkait" name="catatan_lphp"></textarea>
+                              <textarea class="form-control" rows="3" placeholder="Barang Lain Yang Terkait" name="barang_lain_lp"></textarea>
                             </div>
 
                             <div class="col-lg-12 mb-3">
@@ -643,42 +667,6 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const switches = document.querySelectorAll('.status-toggle');
-
-      switches.forEach(switchElement => {
-        switchElement.addEventListener('change', function() {
-          const accordionId = this.getAttribute('data-id');
-          const accordionContent = document.getElementById(accordionId);
-
-          this.value = this.checked ? 'YA' : 'TIDAK';
-
-          if (accordionContent) {
-            if (this.checked) {
-              accordionContent.classList.add('show');
-            } else {
-              accordionContent.classList.remove('show');
-            }
-          } else {
-            console.warn(`Accordion dengan ID "${accordionId}" tidak ditemukan.`);
-          }
-        });
-      });
-    });
-  </script>
-
-  <script>
-    const switches = document.querySelectorAll('.status-toggle');
-
-    switches.forEach((switchElement, index) => {
-      const label = switchElement.nextElementSibling;
-
-      switchElement.addEventListener('change', function() {
-        label.textContent = this.checked ? 'YA' : 'TIDAK';
-      });
-    });
-  </script>
 
   <script>
     function generateUniqueID() {
@@ -690,38 +678,6 @@
     document.getElementById('id_pasca_penindakan').value = generateUniqueID();
   </script>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      $('#alasan_penindakan').select2();
-
-      $('#alasan_penindakan').on('select2:select', function(e) {
-        const selectedOption = e.params.data.element;
-        const jenisPelanggaran = selectedOption.getAttribute("data-jenis");
-
-        console.log("Jenis Pelanggaran Terpilih:", jenisPelanggaran);
-
-        document.getElementById("jenis_pelanggaran").value = jenisPelanggaran || "Jenis pelanggaran tidak tersedia";
-      });
-    });
-  </script>
-
-  <script>
-    document.querySelector('select[name="jenis_segel"]').addEventListener('change', function() {
-      const idSegel = this.value;
-      if (idSegel) {
-        fetch(`/getNomorSegel/${idSegel}`)
-          .then(response => response.json())
-          .then(data => {
-            document.querySelector('input[name="nomor_segel"]').value = data.nomor_segel;
-            document.querySelector('input[name="nomor_segel"]').disabled = false;
-          })
-          .catch(error => console.error('Error:', error));
-      } else {
-        document.querySelector('input[name="nomor_segel"]').value = '';
-        document.querySelector('input[name="nomor_segel"]').disabled = true;
-      }
-    });
-  </script>
 
   <script>
     function toggleForm(selectedValue, sectionId) {

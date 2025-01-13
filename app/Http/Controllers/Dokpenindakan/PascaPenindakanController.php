@@ -100,18 +100,30 @@ class PascaPenindakanController extends Controller
             'kemasans',
             'jenisPelanggaran',
             'no_ref',
-            'id_penindakan',
+            // 'id_penindakan',
             'nama_negara',
-            'penindakan',
+            // 'penindakan',
             'locus',
             'pascapenindakan'
         ));
     }
 
-    public function update(Request $request) {}
+    public function update($id)
+    {
+        $data = request()->all();
+
+        $item = TblPascaPenindakan::find($id);
+        if ($item) {
+            $item->update($data);
+            return redirect()->route('pasca-penindakan.index')->with('success', 'Data berhasil diperbarui.');
+        }
+
+        return redirect()->route('pasca-penindakan.index')->with('error', 'Data tidak ditemukan.');
+    }
 
     public function store(Request $request)
     {
+        // dd($request->all());
         TblPascaPenindakan::create($request->all());
         $no_ref = TblNoRef::first();
         $no_ref->no_lphp += 1;
@@ -220,7 +232,7 @@ class PascaPenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_lphp', $tahunLphp);
 
-        dd($data);
+        // dd($data);
 
         $fileName = "Dokumen_Pasca_Penindakan_Laporan_Penentuan_Hasil_Penindakan_Nomor_{$pascapenindakan->no_lphp}.docx";
         $filePath = storage_path('app/public/' . $fileName);
@@ -320,19 +332,53 @@ class PascaPenindakanController extends Controller
             }
         }
 
+        $tglsbp = $data['tgl_sbp'] ?? null;
+        if ($tglsbp) {
+            $formattedTglSbp = $this->formatDates(['tgl_sbp' => $tglsbp])['tgl_sbp'] ?? '-';
+            $data['tg_sbp'] = $formattedTglSbp;
+        } else {
+            $data['tg_sbp'] = '-';
+        }
+
+        $templateProcessor->setValue('tg_sbp', $data['tg_sbp']);
+
         $tglLphp = $pascapenindakan->tgl_lphp;
         $tahunLphp = !empty($tglLphp) ? date('Y', strtotime($tglLphp)) : '-';
         $data['tahun_lphp'] = $tahunLphp;
 
         $templateProcessor->setValue('tahun_lphp', $tahunLphp);
 
-        dd($data);
+        $analisis_hasil_penindakan_raw = $pascapenindakan->analisis_hasil_penindakan_lphp;
+        $analisis_hasil_penindakan_raw = preg_replace('/\s+/', ' ', trim($analisis_hasil_penindakan_raw));
+        preg_match_all('/\#(.*?)\#/', $analisis_hasil_penindakan_raw, $matches);
+        $templateData = [];
+        foreach (array_unique($matches[1]) as $index => $task) {
+            $templateData[] = [
+                'i' => '-',
+                'hasil_tindak' => trim($task),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('i', $templateData);
+
+        // dd($data);
 
         $fileName = "Dokumen_Pasca_Penindakan_Laporan_Penentuan_Hasil_Penindakan_Nomor_{$pascapenindakan->no_lphp}.docx";
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
         return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+
+    public function destroy($id)
+    {
+        $pascapenindakan = TblPascaPenindakan::find($id);
+        if ($pascapenindakan) {
+            $pascapenindakan->delete();
+            return redirect()->route('pasca-penindakan.index')->with('success', 'Data berhasil dihapus.');
+        }
+        return redirect()->route('pasca-penindakan.index')->with('error', 'Data tidak ditemukan.');
     }
 
 

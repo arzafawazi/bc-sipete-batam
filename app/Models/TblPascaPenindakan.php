@@ -15,6 +15,7 @@ class TblPascaPenindakan extends Model
 
     // public $incrementing = false;
 
+    protected $guarded = [];
 
     public function getPejabat($key)
     {
