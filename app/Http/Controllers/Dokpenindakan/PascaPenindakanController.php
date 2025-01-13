@@ -138,110 +138,16 @@ class PascaPenindakanController extends Controller
     }
 
 
-    public function print_surat_np($id)
+
+    public function destroy($id)
     {
-        $pascapenindakan = TblPascaPenindakan::with('penindakans')->findOrFail($id);
-
-        Carbon::setLocale('id');
-
-        $data = $this->formatDates($pascapenindakan->toArray());
-
-        $penindakans = $pascapenindakan->penindakans;
-        $formattedPenindakans = [];
-
-        foreach ($penindakans as $penindakan) {
-            $penindakanArray = $penindakan->toArray();
-            $formattedPenindakan = $this->formatDates($penindakanArray);
-
-            $tglsbp = $penindakanArray['tgl_sbp'] ?? null;
-            $formattedPenindakan['tgl_sbp'] = $tglsbp;
-
-            $pejabatKeys = [
-                'id_petugas_1_sbp',
-                'id_petugas_2_sbp',
-                'id_pejabat_sp_2',
-            ];
-
-            foreach ($pejabatKeys as $key) {
-                if ($penindakan->$key) {
-                    $pejabat = $penindakan->pejabat($key)->first();
-                    $formattedPenindakan[$key . '_nama'] = $pejabat->nama_admin ?? '';
-                    $formattedPenindakan[$key . '_pangkat'] = $pejabat->pangkat ?? '';
-                    $formattedPenindakan[$key . '_jabatan'] = $pejabat->jabatan ?? '';
-                    $formattedPenindakan[$key . '_nip'] = $pejabat->nip ?? '';
-                } else {
-
-                    $formattedPenindakan[$key . '_nama'] = '';
-                    $formattedPenindakan[$key . '_pangkat'] = '';
-                    $formattedPenindakan[$key . '_jabatan'] = '';
-                    $formattedPenindakan[$key . '_nip'] = '';
-                }
-            }
-
-            $formattedPenindakans[] = $formattedPenindakan;
+        $pascapenindakan = TblPascaPenindakan::find($id);
+        if ($pascapenindakan) {
+            $pascapenindakan->delete();
+            return redirect()->route('pasca-penindakan.index')->with('success', 'Data berhasil dihapus.');
         }
-
-        foreach ($formattedPenindakans as $penindakan) {
-            foreach ($penindakan as $key => $value) {
-                $data[$key] = $value ?? '-';
-            }
-        }
-
-        $data['penindakans'] = $formattedPenindakans;
-
-        $tglsbp = $data['tgl_sbp'] ?? null;
-        $tahunsbp = !empty($tglsbp) ? date('Y', strtotime($tglsbp)) : '-';
-        $data['tahun_sbp'] = $tahunsbp;
-
-        $laporan = $pascapenindakan->penindakans->first()->laporanInformasi ?? null;
-        if (!empty($laporan->skema_penindakan_perintah)) {
-            $tipePenindakan = strtoupper($laporan->skema_penindakan_perintah);
-            $nosbp = $data['no_sbp'];
-            $tahunsbp = $data['tahun_sbp'];
-
-            switch ($tipePenindakan) {
-                case 'MANDIRI':
-                    $data['formatSbp'] = "Nomor SBP-{$nosbp}/MANDIRI/KPU.206/{$tahunsbp}";
-                    break;
-                case 'PERBANTUAN':
-                    $data['formatSbp'] = "Nomor SBP-{$nosbp}/PERBANTUAN/KPU.206/{$tahunsbp}";
-                    break;
-                case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
-                    $data['formatSbp'] = "Nomor SBP-{$nosbp}/PERBANTUAN/BERSAMA INSTANSI LAIN/KPU.206/{$tahunsbp}";
-                    break;
-                default:
-                    $data['formatSbp'] = "Nomor SBP-{$nosbp}/UNKNOWN/KPU.206/{$tahunsbp}";
-                    break;
-            }
-        } else {
-            $data['formatSbp'] = "Nomor SBP-{$data['no_sbp']}/UNKNOWN/KPU.206/{$data['tahun_sbp']}";
-        }
-
-        $data = array_map(fn($value) => $value ?? '-', $data);
-
-        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/pasca-penindakan/surat-lphp.docx'));
-        foreach ($data as $key => $value) {
-            if (!is_array($value)) {
-                $templateProcessor->setValue($key, $value);
-            }
-        }
-
-        $tglLphp = $pascapenindakan->tgl_lphp;
-        $tahunLphp = !empty($tglLphp) ? date('Y', strtotime($tglLphp)) : '-';
-        $data['tahun_lphp'] = $tahunLphp;
-
-        $templateProcessor->setValue('tahun_lphp', $tahunLphp);
-
-        // dd($data);
-
-        $fileName = "Dokumen_Pasca_Penindakan_Laporan_Penentuan_Hasil_Penindakan_Nomor_{$pascapenindakan->no_lphp}.docx";
-        $filePath = storage_path('app/public/' . $fileName);
-        $templateProcessor->saveAs($filePath);
-
-        return response()->download($filePath)->deleteFileAfterSend(true);
+        return redirect()->route('pasca-penindakan.index')->with('error', 'Data tidak ditemukan.');
     }
-
-
 
 
     public function print_surat_lphp($id)
@@ -371,15 +277,219 @@ class PascaPenindakanController extends Controller
     }
 
 
-    public function destroy($id)
+
+    public function print_surat_lp($id)
     {
-        $pascapenindakan = TblPascaPenindakan::find($id);
-        if ($pascapenindakan) {
-            $pascapenindakan->delete();
-            return redirect()->route('pasca-penindakan.index')->with('success', 'Data berhasil dihapus.');
+        $pascapenindakan = TblPascaPenindakan::with('penindakans')->findOrFail($id);
+
+        Carbon::setLocale('id');
+
+        $data = $this->formatDates($pascapenindakan->toArray());
+
+        $penindakans = $pascapenindakan->penindakans;
+        $formattedPenindakans = [];
+
+        foreach ($penindakans as $penindakan) {
+            $penindakanArray = $penindakan->toArray();
+            $formattedPenindakan = $this->formatDates($penindakanArray);
+
+            $tglsbp = $penindakanArray['tgl_sbp'] ?? null;
+            $formattedPenindakan['tgl_sbp'] = $tglsbp;
+
+            $pejabatKeys = [
+                'kepala_bidang_penindakan',
+            ];
+
+            foreach ($pejabatKeys as $key) {
+                if ($pascapenindakan->$key) {
+                    $pejabat = $pascapenindakan->pejabat($key)->first();
+                    $formattedPenindakan[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                    $formattedPenindakan[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                    $formattedPenindakan[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                    $formattedPenindakan[$key . '_nip'] = $pejabat->nip ?? '';
+                } else {
+                    $formattedPenindakan[$key . '_nama'] = '';
+                    $formattedPenindakan[$key . '_pangkat'] = '';
+                    $formattedPenindakan[$key . '_jabatan'] = '';
+                    $formattedPenindakan[$key . '_nip'] = '';
+                }
+            }
+
+            $formattedPenindakans[] = $formattedPenindakan;
         }
-        return redirect()->route('pasca-penindakan.index')->with('error', 'Data tidak ditemukan.');
+
+        foreach ($formattedPenindakans as $penindakan) {
+            foreach ($penindakan as $key => $value) {
+                $data[$key] = $value ?? '-';
+            }
+        }
+
+        $data['penindakans'] = $formattedPenindakans;
+
+        $tglsbp = $data['tgl_sbp'] ?? null;
+        $tahunsbp = !empty($tglsbp) ? date('Y', strtotime($tglsbp)) : '-';
+        $data['tahun_sbp'] = $tahunsbp;
+
+        $laporan = $pascapenindakan->penindakans->first()->laporanInformasi ?? null;
+        if (!empty($laporan->skema_penindakan_perintah)) {
+            $tipePenindakan = strtoupper($laporan->skema_penindakan_perintah);
+            $nosbp = $data['no_sbp'];
+            $tahunsbp = $data['tahun_sbp'];
+
+            switch ($tipePenindakan) {
+                case 'MANDIRI':
+                    $data['formatSbp'] = "Nomor SBP-{$nosbp}/MANDIRI/KPU.206/{$tahunsbp}";
+                    break;
+                case 'PERBANTUAN':
+                    $data['formatSbp'] = "Nomor SBP-{$nosbp}/PERBANTUAN/KPU.206/{$tahunsbp}";
+                    break;
+                case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
+                    $data['formatSbp'] = "Nomor SBP-{$nosbp}/PERBANTUAN/BERSAMA INSTANSI LAIN/KPU.206/{$tahunsbp}";
+                    break;
+                default:
+                    $data['formatSbp'] = "Nomor SBP-{$nosbp}/UNKNOWN/KPU.206/{$tahunsbp}";
+                    break;
+            }
+        } else {
+            $data['formatSbp'] = "Nomor SBP-{$data['no_sbp']}/UNKNOWN/KPU.206/{$data['tahun_sbp']}";
+        }
+
+        $tglLphp = $pascapenindakan->tgl_lphp;
+        $tahunLphp = !empty($tglLphp) ? date('Y', strtotime($tglLphp)) : '-';
+        $data['tahun_lphp'] = $tahunLphp;
+
+        $nolphp = $data['no_lphp'] ?? '-';
+        $tahunlphp = $data['tahun_lphp'];
+
+        $data['formatLphp'] = "LPHP-{$nolphp}/KPU.206/{$tahunlphp}";
+
+
+
+        $data = array_map(fn($value) => $value ?? '-', $data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/pasca-penindakan/surat-lp.docx'));
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        $tglsbp = $data['tgl_sbp'] ?? null;
+        if ($tglsbp) {
+            $formattedTglSbp = $this->formatDates(['tgl_sbp' => $tglsbp])['tgl_sbp'] ?? '-';
+            $data['tg_sbp'] = $formattedTglSbp;
+        } else {
+            $data['tg_sbp'] = '-';
+        }
+
+        $templateProcessor->setValue('tg_sbp', $data['tg_sbp']);
+
+        $tgllp = $pascapenindakan->tgl_lp;
+        $tahunlp = !empty($tglLphp) ? date('Y', strtotime($tgllp)) : '-';
+        $data['tahun_lp'] = $tahunlp;
+
+        $templateProcessor->setValue('tahun_lp', $tahunlp);
+
+
+        // dd($data);
+
+        $fileName = "Dokumen_Pasca_Penindakan_Laporan_Pelanggaran_Nomor_{$pascapenindakan->no_lp}.docx";
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
     }
+
+
+    public function print_surat_np($id)
+    {
+        $pascapenindakan = TblPascaPenindakan::with('penindakans')->findOrFail($id);
+
+        Carbon::setLocale('id');
+
+        $data = $this->formatDates($pascapenindakan->toArray());
+
+        $penindakans = $pascapenindakan->penindakans;
+        $formattedPenindakans = [];
+
+        foreach ($penindakans as $penindakan) {
+            $penindakanArray = $penindakan->toArray();
+            $formattedPenindakan = $this->formatDates($penindakanArray);
+
+            $tglsbp = $penindakanArray['tgl_sbp'] ?? null;
+            $formattedPenindakan['tgl_sbp'] = $tglsbp;
+
+            $pejabatKeys = [
+                'id_kepala_seksi_penindakan',
+            ];
+
+            foreach ($pejabatKeys as $key) {
+                if ($pascapenindakan->$key) {
+                    $pejabat = $pascapenindakan->pejabat($key)->first();
+                    $formattedPenindakan[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                    $formattedPenindakan[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                    $formattedPenindakan[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                    $formattedPenindakan[$key . '_nip'] = $pejabat->nip ?? '';
+                } else {
+
+                    $formattedPenindakan[$key . '_nama'] = '';
+                    $formattedPenindakan[$key . '_pangkat'] = '';
+                    $formattedPenindakan[$key . '_jabatan'] = '';
+                    $formattedPenindakan[$key . '_nip'] = '';
+                }
+            }
+
+            $formattedPenindakans[] = $formattedPenindakan;
+        }
+
+        $tgllp = $pascapenindakan->tgl_lp;
+        $tahunlp = !empty($tgllp) ? date('Y', strtotime($tgllp)) : '-';
+        $data['tahun_lp'] = $tahunlp;
+
+        $nolp = $data['no_lp'] ?? '-';
+        $tahunlp = $data['tahun_lp'];
+
+        $data['formatlp'] = "LPHP-{$nolp}/KPU.206/{$tahunlp}";
+
+        foreach ($formattedPenindakans as $penindakan) {
+            foreach ($penindakan as $key => $value) {
+                $data[$key] = $value ?? '-';
+            }
+        }
+
+        $data['penindakans'] = $formattedPenindakans;
+
+        $tglsbp = $data['tgl_sbp'] ?? null;
+        $tahunsbp = !empty($tglsbp) ? date('Y', strtotime($tglsbp)) : '-';
+        $data['tahun_sbp'] = $tahunsbp;
+
+
+        $data = array_map(fn($value) => $value ?? '-', $data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/pasca-penindakan/surat-np.docx'));
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        $tgllp = $pascapenindakan->tgl_lp;
+        $tahunlp = !empty($tgllp) ? date('Y', strtotime($tgllp)) : '-';
+        $data['tahun_np'] = $tahunlp;
+
+        $templateProcessor->setValue('tahun_np', $tahunlp);
+
+        // dd($data);
+
+        $fileName = "Dokumen_Pasca_Penindakan_Nota_Pendapat_Nomor_{$pascapenindakan->no_lp}.docx";
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+
+
 
 
 
