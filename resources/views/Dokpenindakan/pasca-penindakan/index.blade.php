@@ -330,7 +330,7 @@
                                         </svg>
                                       </div>
                                       <h6 class="card-title mb-3">LPT</h6>
-                                      <a href="{{ route('surat-lpt.print', $pascapenindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
+                                      <a href="{{ route('surat-lpt-pasca-penindakan.print', $pascapenindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>

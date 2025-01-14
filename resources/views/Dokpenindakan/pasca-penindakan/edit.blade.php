@@ -99,6 +99,32 @@
                                 <label>Tgl. LPHP</label>
                                 <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lphp" value="{{ old('tgl_lphp', $pascapenindakan->tgl_lphp) }}">
                               </div>
+
+                              <div class="col-lg-12 mb-3">
+                                <label>Kepala Bidang Penindakan</label>
+                                <select class="form-control form-select select2" name="kepala_bidang_penindakan_display" id="kepala_bidang_penindakan" disabled>
+                                  @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}" {{ old('kepala_bidang_penindakan', $pascapenindakan->kepala_bidang_penindakan) == $user->id_admin ? 'selected' : '' }}>
+                                      {{ $user->name }} | {{ $user->jabatan }}
+                                    </option>
+                                  @endforeach
+                                </select>
+                                <input type="hidden" name="kepala_bidang_penindakan" value="{{ old('kepala_bidang_penindakan', $pascapenindakan->kepala_bidang_penindakan) }}">
+                              </div>
+
+                              <div class="col-lg-12 mb-3">
+                                <label>Kepala Seksi Penindakan</label>
+                                <select class="form-control form-select select2" name="id_kepala_seksi_penindakan">
+                                  <option value="" selected disabled>- Pilih -</option>
+                                  @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}" @if ($user->id_admin == $pascapenindakan->id_kepala_seksi_penindakan) selected @endif>
+                                      {{ $user->name }} | {{ $user->jabatan }}
+                                    </option>
+                                  @endforeach
+                                </select>
+                              </div>
+
+
                             </div>
                           </div>
 
@@ -109,7 +135,7 @@
                               <label class="d-flex align-items-center">
                                 Catatan
                               </label>
-                              <textarea class="form-control" rows="7" placeholder="Catatan" name="catatan_lphp">{{ old('catatan_lphp', $pascapenindakan->catatan_lphp) }}</textarea>
+                              <textarea class="form-control" rows="8" placeholder="Catatan" name="catatan_lphp">{{ old('catatan_lphp', $pascapenindakan->catatan_lphp) }}</textarea>
                             </div>
                           </div>
 
@@ -180,18 +206,13 @@
                               <label>No. BAST Pemilik</label>
                               <input type="text" class="form-control bg-primary text-white" name="no_bast_pemilik" value="{{ old('no_bast_pemilik', $pascapenindakan->no_bast_pemilik) }}" readonly>
                             </div>
+
                             <div class="col-md-6 mb-3">
                               <label>Tgl. BAST Pemilik</label>
                               <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_bast_pemilik" value="{{ old('tgl_bast_pemilik', $pascapenindakan->tgl_bast_pemilik) }}">
                             </div>
                           </div>
 
-                        </div>
-
-                        <!-- Right Column (Sections C, D, and E) -->
-                        <div class="col-lg-6">
-                          <h6><b>B. Data Lainnya</b></h6>
-                          <hr>
 
                           <div class="col-lg-12 mb-3">
                             <label>Pejabat Yang Menyerahkan</label>
@@ -204,6 +225,13 @@
                               @endforeach
                             </select>
                           </div>
+
+                        </div>
+
+                        <!-- Right Column (Sections C, D, and E) -->
+                        <div class="col-lg-6">
+                          <h6><b>B. Data Lainnya</b></h6>
+                          <hr>
 
                           <div class="col-lg-12 mb-3">
                             <label>Pejabat 1 Yang Menyaksikan</label>
@@ -230,6 +258,14 @@
                           </div>
 
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Keterangan Berita Acara Serah Terima
+                          </label>
+                          <textarea class="form-control" rows="7" placeholder="Keterangan Berita Acara Serah Terima Pemilik" name="ket_ba_pemilik">{{ old('ket_ba_pemilik', $pascapenindakan->ket_ba_pemilik) }}</textarea>
+                        </div>
+
                       </div>
                     </div>
 
@@ -263,49 +299,7 @@
                               </select>
                             </div>
 
-                            <div class="card-body">
-                              <div class="accordion accordion-flush" id="accordionFlushExample">
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header">
-                                    <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnet" aria-expanded="false" aria-controls="flush-collapseOnet">
-                                      A. Diserahkan Kepada
-                                    </button>
-                                  </h2>
-                                  <div id="flush-collapseOnet" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body bg-light">
 
-                                      <!-- Form Inputs -->
-                                      <div class="col-md-12 mb-3">
-                                        <label>Nama Penerima</label>
-                                        <input type="text" class="form-control form-input" placeholder="Nama Penerima" name="nama_penerima_bast_instansi"
-                                          value="{{ old('nama_penerima_bast_instansi', $pascapenindakan->nama_penerima_bast_instansi) }}">
-                                      </div>
-
-                                      <div class="col-lg-12 mb-3">
-                                        <label>Jenis Identitas Penerima</label>
-                                        <input type="text" class="form-control form-input" placeholder="Jenis Identitas" name="jenis_iden_bast_instansi" value="{{ old('jenis_iden_bast_instansi', $pascapenindakan->jenis_iden_bast_instansi) }}">
-                                      </div>
-
-                                      <div class="col-md-12 mb-3">
-                                        <label>NRP/Identitas</label>
-                                        <input type="text" class="form-control form-input" placeholder="NRP/Identitas" name="identitas_bast_instansi" value="{{ old('identitas_bast_instansi', $pascapenindakan->identitas_bast_instansi) }}">
-                                      </div>
-
-                                      <div class="col-md-12 mb-3">
-                                        <label>Menerima penyerahan untuk/atas nama</label>
-                                        <input type="text" class="form-control form-input" value="{{ old('atas_nama_bast_instansi', 'Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam') }}" name="atas_nama_bast_instansi">
-                                      </div>
-
-                                      <div class="col-md-12 mb-3">
-                                        <label>Penyerahan dilaksanakan dalam rangka</label>
-                                        <textarea class="form-control" rows="4" placeholder="Penyerahan dilaksanakan dalam rangka" name="penyerahan_bast_instansi">{{ old('penyerahan_bast_instansi', $pascapenindakan->penyerahan_bast_instansi) }}</textarea>
-                                      </div>
-
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
 
                           </div>
 
@@ -340,6 +334,50 @@
                             </select>
                           </div>
 
+                        </div>
+
+                        <div class="card-body">
+                          <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnet" aria-expanded="false" aria-controls="flush-collapseOnet">
+                                  A. Diserahkan Kepada
+                                </button>
+                              </h2>
+                              <div id="flush-collapseOnet" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+
+                                  <!-- Form Inputs -->
+                                  <div class="col-md-12 mb-3">
+                                    <label>Nama Penerima</label>
+                                    <input type="text" class="form-control form-input" placeholder="Nama Penerima" name="nama_penerima_bast_instansi"
+                                      value="{{ old('nama_penerima_bast_instansi', $pascapenindakan->nama_penerima_bast_instansi) }}">
+                                  </div>
+
+                                  <div class="col-lg-12 mb-3">
+                                    <label>Jenis Identitas Penerima</label>
+                                    <input type="text" class="form-control form-input" placeholder="Jenis Identitas" name="jenis_iden_bast_instansi" value="{{ old('jenis_iden_bast_instansi', $pascapenindakan->jenis_iden_bast_instansi) }}">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>NRP/Identitas</label>
+                                    <input type="text" class="form-control form-input" placeholder="NRP/Identitas" name="identitas_bast_instansi" value="{{ old('identitas_bast_instansi', $pascapenindakan->identitas_bast_instansi) }}">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Menerima penyerahan untuk/atas nama</label>
+                                    <input type="text" class="form-control form-input" value="{{ old('atas_nama_bast_instansi', 'Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam') }}" name="atas_nama_bast_instansi">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Penyerahan dilaksanakan dalam rangka</label>
+                                    <textarea class="form-control" rows="4" placeholder="Penyerahan dilaksanakan dalam rangka" name="penyerahan_bast_instansi">{{ old('penyerahan_bast_instansi', $pascapenindakan->penyerahan_bast_instansi) }}</textarea>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -415,17 +453,7 @@
                               <textarea class="form-control" rows="3" placeholder="Barang Lain Yang Terkait" name="barang_lain_lp">{{ old('barang_lain_lp', $pascapenindakan->barang_lain_lp) }}</textarea>
                             </div>
 
-                            <div class="col-lg-12 mb-3">
-                              <label>Kepala Bidang Penindakan</label>
-                              <select class="form-control form-select select2" name="kepala_bidang_penindakan_display" id="kepala_bidang_penindakan" disabled>
-                                @foreach ($users as $user)
-                                  <option value="{{ $user->id_admin }}" {{ old('kepala_bidang_penindakan', $pascapenindakan->kepala_bidang_penindakan) == $user->id_admin ? 'selected' : '' }}>
-                                    {{ $user->name }} | {{ $user->jabatan }}
-                                  </option>
-                                @endforeach
-                              </select>
-                              <input type="hidden" name="kepala_bidang_penindakan" value="{{ old('kepala_bidang_penindakan', $pascapenindakan->kepala_bidang_penindakan) }}">
-                            </div>
+
                           </div>
                         </div>
                       </div>
@@ -446,6 +474,19 @@
                               <label>Tgl. BAST Penyidik</label>
                               <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_bast_penyidik" value="{{ old('tgl_bast_penyidik', $pascapenindakan->tgl_bast_penyidik) }}">
                             </div>
+
+                            <div class="col-lg-12 mb-3">
+                              <label>Pejabat Yang Menyerahkan</label>
+                              <select class="form-control form-select select2" name="id_pejabat_1_bast_penyidik">
+                                <option value="" disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}" {{ old('id_pejabat_1_bast_penyidik', $pascapenindakan->id_pejabat_1_bast_penyidik) == $user->id_admin ? 'selected' : '' }}>
+                                    {{ $user->name }} | {{ $user->jabatan }}
+                                  </option>
+                                @endforeach
+                              </select>
+                            </div>
+
                           </div>
                         </div>
 
@@ -453,17 +494,6 @@
                         <div class="col-lg-6">
                           <h6><b>B. Data Lainnya</b></h6>
                           <hr>
-                          <div class="col-lg-12 mb-3">
-                            <label>Pejabat Yang Menyerahkan</label>
-                            <select class="form-control form-select select2" name="id_pejabat_1_bast_penyidik">
-                              <option value="" disabled>- Pilih -</option>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}" {{ old('id_pejabat_1_bast_penyidik', $pascapenindakan->id_pejabat_1_bast_penyidik) == $user->id_admin ? 'selected' : '' }}>
-                                  {{ $user->name }} | {{ $user->jabatan }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
 
                           <div class="col-lg-12 mb-3">
                             <label>Pejabat Yang Menerima</label>
@@ -481,12 +511,44 @@
                     </div>
 
 
-                    <div class="tab-pane fade" id="lpt" role="tabpanel" aria-labelledby="lpt-tab">
-                      <div class="tab-pane" id="lpt" role="tabpanel">
+                    <div class="tab-pane fade" id="ba-dok" role="tabpanel" aria-labelledby="ba-dok-tab">
+                      <div class="tab-pane" id="ba-dok" role="tabpanel">
                         <div class="row">
                           <div class="col-lg-6">
+                            <h6><b>Data Referensi</b></h6>
+                            <hr>
+
+                            <div class="row">
+                              <div class="col-md-12 mb-3">
+                                <label>Kategori Penindakan</label>
+                                <input type="text" class="form-control bg-primary text-white" value="{{ old('opsi_penindakan', $penindakan->opsi_penindakan) }}" readonly>
+                              </div>
+
+                              <div class="col-md-12 mb-3">
+                                <label>Referensi Free Entry</label>
+                                <select class="form-control form-select select2" name="data_free_entry" id="data_free_entry">
+                                  <option value="" disabled {{ old('data_free_entry', $pascapenindakan->data_free_entry) == '' ? 'selected' : '' }}>- Pilih -</option>
+                                  <option value="YA" {{ old('data_free_entry', $pascapenindakan->data_free_entry) == 'YA' ? 'selected' : '' }}>Free Entry</option>
+                                  <option value="Tidak" {{ old('data_free_entry', $pascapenindakan->data_free_entry) == 'Tidak' ? 'selected' : '' }}>Bukan Free Entry</option>
+                                </select>
+                              </div>
+
+
+                              <div class="col-md-12 mb-3" id="no_free_entry" style="{{ old('data_free_entry', $pascapenindakan->data_free_entry) == 'YA' ? 'display: block;' : 'display: none;' }}">
+                                <label>Format Free Entry</label>
+                                <input type="text" class="form-control bg-primary text-white" name="format_free_entry" value="{{ old('format_free_entry', $pascapenindakan->format_free_entry) }}">
+                              </div>
+
+                              <div class="col-md-12 mb-3" id="tgl_free_entry" style="{{ old('data_free_entry', $pascapenindakan->data_free_entry) == 'YA' ? 'display: block;' : 'display: none;' }}">
+                                <label>Tgl. Surat Referensi LPT</label>
+                                <input type="date" class="form-control bg-primary text-white" name="tgl_free_entry" placeholder="yyyy-mm-dd" value="{{ old('tgl_free_entry', $pascapenindakan->tgl_free_entry) }}">
+                              </div>
+                            </div>
+
+
                             <h6><b>A. Data Awal</b></h6>
                             <hr>
+
                             <div class="row">
                               <div class="col-md-6 mb-3">
                                 <label>No. LPT</label>
@@ -501,7 +563,7 @@
                             <div class="row">
                               <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                  <label class="col-form-label">Waktu Pelaksanaan Tugas</label>
+                                  <label class="col-form-label">Waktu Mulai Tugas</label>
                                   <input type="text" class="form-control" name="waktu_pelaksanaan_tugas_lpt" id="datetime-datepicker" placeholder="Waktu Pelaksanaan Tugas"
                                     value="{{ old('waktu_pelaksanaan_tugas_lpt', $pascapenindakan->waktu_pelaksanaan_tugas_lpt) }}">
                                 </div>
@@ -523,7 +585,7 @@
                               <textarea class="form-control" rows="4" placeholder="Uraian Pelaksanaan Tugas" name="uraian_lpt">{{ old('uraian_lpt', $pascapenindakan->uraian_lpt) }}</textarea>
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                               <label>Wilayah Tugas</label>
                               <input type="text" class="form-control" placeholder="Wilayah Tugas" name="wilayah_tugas_lpt" value="{{ old('wilayah_tugas_lpt', $pascapenindakan->wilayah_tugas_lpt) }}">
                             </div>
@@ -704,6 +766,30 @@
       color: #888888;
     }
   </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var selectElement = $('#data_free_entry');
+      var noFreeEntry = document.getElementById('no_free_entry');
+      var tglFreeEntry = document.getElementById('tgl_free_entry');
+
+      selectElement.select2();
+
+      function toggleFreeEntryFields() {
+        if (selectElement.val() === 'YA') {
+          noFreeEntry.style.display = 'block';
+          tglFreeEntry.style.display = 'block';
+        } else {
+          noFreeEntry.style.display = 'none';
+          tglFreeEntry.style.display = 'none';
+        }
+      }
+
+      toggleFreeEntryFields();
+
+      selectElement.on('change', toggleFreeEntryFields);
+    });
+  </script>
 @endsection
 @section('script')
   @vite(['resources/js/pages/datatable.init.js'])

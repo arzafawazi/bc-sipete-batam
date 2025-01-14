@@ -119,7 +119,7 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-pemilik', [PascaPenindakanController::class, 'print_surat_bast_pemilik'])->name('surat-bast-pemilik.print');
     Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-instansi', [PascaPenindakanController::class, 'print_surat_bast_instansi'])->name('surat-bast-instansi.print');
     Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-bast-penyidik', [PascaPenindakanController::class, 'print_surat_bast_penyidik'])->name('surat-bast-penyidik.print');
-    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-lpt', [PascaPenindakanController::class, 'print_surat_lpt'])->name('surat-lpt.print');
+    Route::get('Dokpenindakan/pasca-penindakan/{id}/print-surat-lpt', [PascaPenindakanController::class, 'print_surat_lpt'])->name('surat-lpt-pasca-penindakan.print');
 
 
     // Pasca Penindakan NPP routes

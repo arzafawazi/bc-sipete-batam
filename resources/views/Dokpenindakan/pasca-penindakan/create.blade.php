@@ -235,32 +235,31 @@
                               <label>No. BAST Pemilik</label>
                               <input type="text" class="form-control bg-primary text-white" name="no_bast_pemilik" value="{{ old('no_bast_pemilik', $no_ref->no_bast_pemilik) }}" readonly>
                             </div>
+
                             <div class="col-md-6 mb-3">
                               <label>Tgl. BAST Pemilik</label>
                               <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_bast_pemilik">
+                            </div>
+
+                            <div class="col-lg-12 mb-3">
+                              <label>Pejabat Yang Menyerahkan</label>
+                              <select class="form-control form-select select2" name="id_pejabat_1_bast_pemilik">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
+                                  </option>
+                                @endforeach
+                              </select>
                             </div>
 
                           </div>
 
                         </div>
 
-
-
                         <!-- Right Column (Sections C, D, and E) -->
                         <div class="col-lg-6">
                           <h6><b>B. Data Lainnya</b></h6>
                           <hr>
-
-                          <div class="col-lg-12 mb-3">
-                            <label>Pejabat Yang Menyerahkan</label>
-                            <select class="form-control form-select select2" name="id_pejabat_1_bast_pemilik">
-                              <option value="" selected disabled>- Pilih -</option>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
 
                           <div class="col-lg-12 mb-3">
                             <label>Pejabat 1 Yang Menyaksikan </label>
@@ -285,6 +284,15 @@
                           </div>
 
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Keterangan Berita Acara Serah Terima
+                          </label>
+                          <textarea class="form-control" rows="7" placeholder="Keterangan Berita Acara Serah Terima Pemilik" name="ket_ba_pemilik">{{ old('ket_ba_pemilik', $defaultKeterangan) }}</textarea>
+                        </div>
+
+
                       </div>
                     </div>
 
@@ -574,28 +582,6 @@
 
                             </div>
 
-                            <script>
-                              document.addEventListener('DOMContentLoaded', function() {
-                                var selectElement = $('#data_free_entry'); // Select element using jQuery for select2
-                                var noFreeEntry = document.getElementById('no_free_entry');
-                                var tglFreeEntry = document.getElementById('tgl_free_entry');
-
-                                // Initialize select2 on the select element
-                                selectElement.select2();
-
-                                // Use on change for select2 instead of the standard event
-                                selectElement.on('change', function() {
-                                  if (selectElement.val() === 'YA') {
-                                    noFreeEntry.style.display = 'block';
-                                    tglFreeEntry.style.display = 'block';
-                                  } else {
-                                    noFreeEntry.style.display = 'none';
-                                    tglFreeEntry.style.display = 'none';
-                                  }
-                                });
-                              });
-                            </script>
-
                             <h6><b>A. Data Awal</b></h6>
                             <hr>
                             <div class="row">
@@ -668,11 +654,12 @@
                             <div class="col-lg-12 mb-3">
                               <label>Pelaksana Harian</label>
                               <select class="form-control form-select select2" name="plh">
-                                <option value="" selected disabled>- Pilih -</option>
-                                <option value="Plh">Pelaksana Harian</option>
-                                <option value="">Tidak Pelaksana Harian</option>
+                                <option value="" disabled {{ empty($pascapenindakan->plh) ? 'selected' : '' }}>- Pilih -</option>
+                                <option value="Plh." {{ $pascapenindakan->plh === 'Plh.' ? 'selected' : '' }}>Pelaksana Harian</option>
+                                <option value="" {{ $pascapenindakan->plh === '' ? 'selected' : '' }}>Tidak Pelaksana Harian</option>
                               </select>
                             </div>
+
 
 
                           </div>
@@ -797,6 +784,26 @@
       color: #888888;
     }
   </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var selectElement = $('#data_free_entry');
+      var noFreeEntry = document.getElementById('no_free_entry');
+      var tglFreeEntry = document.getElementById('tgl_free_entry');
+
+      selectElement.select2();
+
+      selectElement.on('change', function() {
+        if (selectElement.val() === 'YA') {
+          noFreeEntry.style.display = 'block';
+          tglFreeEntry.style.display = 'block';
+        } else {
+          noFreeEntry.style.display = 'none';
+          tglFreeEntry.style.display = 'none';
+        }
+      });
+    });
+  </script>
 @endsection
 @section('script')
   @vite(['resources/js/pages/datatable.init.js'])
