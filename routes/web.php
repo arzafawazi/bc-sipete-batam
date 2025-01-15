@@ -127,10 +127,12 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 
     // Dokpenyidikan routes
     Route::resource('Dokpenyidikan/daftar-dok-lpp', DaftarDokLppController::class);
-    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print', [DaftarDokLppController::class, 'print'])->name('daftar-dok-lpp.print');
+    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-lpp', [DaftarDokLppController::class, 'print_surat_lpp'])->name('surat-lpp.print');
+
 
     // Lembar Monitoring Barang Routes
     Route::resource('Dokpenyidikan/lembar-monitoring-barang', LembarMonitoringBarangController::class);
+
 
 
     //DokIntelijen routes

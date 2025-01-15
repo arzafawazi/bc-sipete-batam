@@ -818,8 +818,6 @@ class PascaPenindakanController extends Controller
     public function print_surat_lpt($id)
     {
         $pascapenindakan = TblPascaPenindakan::with('penindakans')->findOrFail($id);
-
-
         Carbon::setLocale('id');
 
 
@@ -950,15 +948,6 @@ class PascaPenindakanController extends Controller
         }
 
 
-        $tglLphp = $pascapenindakan->tgl_lphp;
-        $tahunLphp = !empty($tglLphp) ? date('Y', strtotime($tglLphp)) : '-';
-        $data['tahun_lphp'] = $tahunLphp;
-
-        $nolphp = $data['no_lphp'] ?? '-';
-        $tahunlphp = $data['tahun_lphp'];
-
-        $data['formatLphp'] = "LPHP-{$nolphp}/KPU.206/{$tahunlphp}";
-
 
 
         $data = array_map(fn($value) => $value ?? '', $data);
@@ -970,17 +959,6 @@ class PascaPenindakanController extends Controller
             }
         }
 
-
-
-        $tglsbp = $data['tgl_sbp'] ?? null;
-        if ($tglsbp) {
-            $formattedTglSbp = $this->formatDates(['tgl_sbp' => $tglsbp])['tgl_sbp'] ?? '-';
-            $data['tg_sbp'] = $formattedTglSbp;
-        } else {
-            $data['tg_sbp'] = '-';
-        }
-
-        $templateProcessor->setValue('tg_sbp', $data['tg_sbp']);
 
         $tgllpt = $pascapenindakan->tgl_lpt;
         $tahunlpt = !empty($tgllpt) ? date('Y', strtotime($tgllpt)) : '-';
@@ -995,10 +973,6 @@ class PascaPenindakanController extends Controller
 
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
-
-
-
 
 
     private function formatDates($data)
