@@ -41,34 +41,9 @@
                   </a>
                   <a class="nav-link mb-2" id="lhp-tab" data-bs-toggle="pill" href="#lhp" role="tab" aria-controls="lhp" aria-selected="false">
                     <span class="d-block d-sm-none">LHP</span>
-                    <span class="d-none d-sm-block">LAPORAN HASIL PEMERIKSAAN (LHP)</span>
+                    <span class="d-none d-sm-block">Lembar Hasil Penelitian (LHP)</span>
                   </a>
-                  {{-- <a class="nav-link" id="ba-tegah-tab" data-bs-toggle="pill" href="#ba-tegah" role="tab" aria-controls="ba-tegah" aria-selected="false">
-                    <span class="d-block d-sm-none">(B.A Tegah)</span>
-                    <span class="d-none d-sm-block">B.A Tegah</span>
-                  </a>
-                  <a class="nav-link" id="ba-segel-tab" data-bs-toggle="pill" href="#ba-segel" role="tab" aria-controls="ba-segel" aria-selected="false">
-                    <span class="d-block d-sm-none">(B.A Segel)</span>
-                    <span class="d-none d-sm-block">B.A Segel</span>
-                  </a>
-                  <a class="nav-link" id="ba-titip-tab" data-bs-toggle="pill" href="#ba-titip" role="tab" aria-controls="ba-titip" aria-selected="false">
-                    <span class="d-block d-sm-none">(B.A Titip)</span>
-                    <span class="d-none d-sm-block">B.A Titip</span>
-                  </a>
-                  <a class="nav-link" id="bpc-tab-content" data-bs-toggle="pill" href="#bpc" role="tab" aria-controls="bpc" aria-selected="false">
-                    <span class="d-block d-sm-none">(BPC)</span>
-                    <span class="d-none d-sm-block">Blokir Pita Cukai</span>
-                  </a>
-                  <a class="nav-link" id="tolak1-tab-content" data-bs-toggle="pill" href="#tolak1" role="tab" aria-controls="tolak1" aria-selected="false">
-                    <span class="d-block d-sm-none">(B.A Tolak 1)</span>
-                    <span class="d-none d-sm-block">B.A Tolak Pertama</span>
-                  </a>
-                  <a class="nav-link" id="tolak2-tab-content" data-bs-toggle="pill" href="#tolak2" role="tab" aria-controls="tolak2" aria-selected="false">
-                    <span class="d-block d-sm-none">(B.A Tolak 2)</span>
-                    <span class="d-none d-sm-block">B.A Tolak Kedua</span>
-                  </a> --}}
                 </div>
-
               </div>
 
               <div class="col-md-9">
@@ -77,606 +52,565 @@
 
 
                     <div class="tab-pane fade show active" id="lpp" role="tabpanel" aria-labelledby="lpp-tab">
-                      <div class="tab-pane" id="lpp" role="tabpanel">
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <h6><b>Data Referensi</b></h6>
-                            <hr>
-                            <div class="row">
-                              <input type="hidden" id="id_penyidikan" name="id_penyidikan" value="">
-                              <input type="hidden" name="id_pasca_penindakan_ref" value="{{ old('id_pasca_penindakan_ref', $pascapenindakan->id_pasca_penindakan_ref) }}">
-
-                              <div class="col-md-12 mb-3">
-                                <label>Tipe Penyidikan</label>
-                                <input type="text" class="form-control bg-primary text-white" value="{{ $tipe_penyidikan }}" readonly>
-                              </div>
-
-                              <div class="col-md-6 mb-3">
-                                <label>No. SBP</label>
-                                <input type="text" class="form-control bg-primary text-white" value="{{ old('no_sbp', $sbpData->no_sbp) }}" readonly>
-                              </div>
-
-                              <div class="col-md-6 mb-3">
-                                <label>Tgl. SBP</label>
-                                <input type="text" class="form-control bg-prima bg-primary text-white" value="{{ old('tgl_sbp', $sbpData->tgl_sbp) }}" readonly>
-                              </div>
-
-                              <div class="col-md-6 mb-3">
-                                <label>No. LP</label>
-                                <input type="text" class="form-control bg-primary text-white" value="{{ old('no_lp', $pascapenindakan->no_lp) }}" readonly>
-                              </div>
-
-                              <div class="col-md-6 mb-3">
-                                <label>Tgl. LP</label>
-                                <input type="text" class="form-control bg-prima bg-primary text-white" value="{{ old('tgl_lp', $pascapenindakan->tgl_lp) }}" readonly>
-                              </div>
-
-                              <h6><b>A. Data Awal</b></h6>
-                              <hr>
-
-                              <div class="col-md-6 mb-3">
-                                <label>No. LPP</label>
-                                <input type="text" class="form-control bg-primary text-white" name="no_lphp" value="{{ old('no_lpp', $no_ref->no_lpp) }}" readonly>
-                              </div>
-                              <div class="col-md-6 mb-3">
-                                <label>Tgl. LPP</label>
-                                <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lphp">
-                              </div>
-
-
-                              <div class="col-lg-12 mb-3">
-                                <label>Pejabat 1 Penyidikan</label>
-                                <select class="form-control form-select select2" name="id_1_pejabat_penyidik">
-                                  <option value="" selected disabled>- Pilih -</option>
-                                  @foreach ($users as $user)
-                                    <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                    </option>
-                                  @endforeach
-                                </select>
-                              </div>
-
-                              <div class="col-lg-12 mb-3">
-                                <label>Pejabat 2 Penyidikan</label>
-                                <select class="form-control form-select select2" name="id_2_pejabat_penyidik">
-                                  <option value="" selected disabled>- Pilih -</option>
-                                  @foreach ($users as $user)
-                                    <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                    </option>
-                                  @endforeach
-                                </select>
-                              </div>
-
-                              <div class="col-lg-12 mb-3">
-                                <label>Mengetahui,
-                                  Kepala Bidang Penindakan dan Penyidikan
-                                </label>
-                                <select class="form-control form-select select2" name="id_3_pejabat_penyidik">
-                                  <option value="" selected disabled>- Pilih -</option>
-                                  @foreach ($users as $user)
-                                    <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                    </option>
-                                  @endforeach
-                                </select>
-                              </div>
-
-                            </div>
-
-                          </div>
-
-                          <div class="col-lg-6">
-                            <h6><b>B. Data Lainnya</b></h6>
-                            <hr>
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <h6><b>Data Referensi</b></h6>
+                          <hr>
+                          <div class="row">
+                            <input type="hidden" id="id_penyidikan" name="id_penyidikan" value="">
+                            <input type="hidden" name="id_pasca_penindakan_ref" value="{{ old('id_pasca_penindakan_ref', $pascapenindakan->id_pasca_penindakan_ref) }}">
 
                             <div class="col-md-12 mb-3">
-                              <label class="d-flex align-items-center">
-                                Catatan
-                                {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
-                                </button> --}}
-                              </label>
-                              <textarea class="form-control" rows="14" placeholder="Catatan" name="catatan_lphp"></textarea>
+                              <label>Tipe Penyidikan</label>
+                              <input type="text" class="form-control bg-primary text-white" value="{{ $tipe_penyidikan }}" readonly>
                             </div>
+
+                            <div class="col-md-6 mb-3">
+                              <label>No. SBP</label>
+                              <input type="text" class="form-control bg-primary text-white" value="{{ old('no_sbp', $sbpData->no_sbp) }}" readonly>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                              <label>Tgl. SBP</label>
+                              <input type="text" class="form-control bg-primary text-white" value="{{ old('tgl_sbp', $sbpData->tgl_sbp) }}" readonly>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                              <label>No. LP</label>
+                              <input type="text" class="form-control bg-primary text-white" value="{{ old('no_lp', $pascapenindakan->no_lp) }}" readonly>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                              <label>Tgl. LP</label>
+                              <input type="text" class="form-control bg-primary text-white" value="{{ old('tgl_lp', $pascapenindakan->tgl_lp) }}" readonly>
+                            </div>
+
+                            <h6><b>A. Data Awal</b></h6>
+                            <hr>
+
+                            <div class="col-md-6 mb-3">
+                              <label>No. LPP</label>
+                              <input type="text" class="form-control bg-primary text-white" name="no_lpp" value="{{ old('no_lpp', $no_ref->no_lpp) }}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label>Tgl. LPP</label>
+                              <input type="date" class="form-control bg-primary text-white" name="tgl_lpp">
+                            </div>
+
+                            <div class="col-lg-12 mb-3">
+                              <label>Pejabat 1 Penyidikan</label>
+                              <select class="form-control form-select select2" name="id_1_pejabat_penyidik">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                @endforeach
+                              </select>
+                            </div>
+
+                            <div class="col-lg-12 mb-3">
+                              <label>Kepala Seksi Penyidikan</label>
+                              <select class="form-control form-select select2" name="id_2_pejabat_penyidik">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                          <h6><b>B. Data Lainnya</b></h6>
+                          <hr>
+
+                          <div class="col-md-12 mb-3">
+                            <label>Asal Perkara</label>
+                            <textarea class="form-control" rows="3" placeholder="Diisi asal perkara (nama unit/instansi yang menyerahkan perkara)" name="asal_perkara_lpp"></textarea>
                           </div>
 
                           <div class="col-md-12 mb-3">
-                            <label class="d-flex align-items-center">
-                              Analisis Hasil Penindakan
-                              <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
-                              </button>
-                            </label>
-                            <textarea class="form-control" rows="5" placeholder="Analisis Hasil Penindakan" name="analisis_hasil_penindakan_lphp"></textarea>
+                            <label>Jenis Penindakan</label>
+                            <textarea class="form-control" rows="3" placeholder="Diisi jenis penindakan (penghentian sarana pengangkut/ pemeriksaan barang/penyegelan/Penegahan/penangkapan)." name="jenis_penindakan_lpp"></textarea>
                           </div>
 
-                          <div class="card-body">
-                            <div class="accordion accordion-flush" id="accordionFlushExample">
-                              <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                  <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                    A. Terjadinya Dugaan Pelanggaran ?
-                                  </button>
-                                </h2>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                  <div class="accordion-body bg-light">
+                          <div class="col-md-12 mb-3">
+                            <label>Jenis Perkara</label>
+                            <textarea class="form-control" rows="3" placeholder="Diisi jenis perkara (impor umum/impor fasilitas/impor BKC/ cukai HT/cukai EA/cukai MMEA/ekspor/pengangkutan barang tertentu/ barang penumpang)." name="jenis_perkara_lpp"></textarea>
+                          </div>
 
-                                    <div class="row mb-3">
-                                      <label for="data_sarkut" class="col-sm-4 col-form-label">ISI DATA</label>
-                                      <div class="col-sm-8">
-                                        <select id="dugaan_pelanggaran" name="dugaan_pelanggaran" class="form-control form-select select2" onchange="toggleForm(this.value, 'flush-collapseOne'); toggleTabs(this.value);">
-                                          <option value="" selected disabled>- Pilih -</option>
-                                          <option value="TIDAK">TIDAK</option>
-                                          <option value="YA">YA</option>
-                                        </select>
-                                      </div>
-                                    </div>
+                          <div class="col-md-12 mb-3">
+                            <label>Status Penangkapan</label>
+                            <select name="status_pelanggaran_lpp" class="form-control form-select select2">
+                              <option value="" selected disabled>- Pilih -</option>
+                              <option value="Tertangkap Tangan">Tertangkap Tangan</option>
+                              <option value="Tidak Tertangkap Tangan">Tidak Tertangkap Tangan</option>
+                            </select>
+                          </div>
 
-                                    <!-- Form Inputs -->
-                                    <div class="col-lg-12 mb-3">
-                                      <label class="col-sm-10 col-form-label">Dugaan Pelanggaran</label>
-                                      <select class="form-control form-input form-select select2" name="dugaan_pelanggaran_lphp" disabled>
-                                        <option value="" selected disabled>- Pilih -</option>
-                                        @foreach ($jenisPelanggaran as $pelanggaran)
-                                          <option value="{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})">{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})
-                                          </option>
-                                        @endforeach
-                                      </select>
-                                    </div>
+                          <div class="col-lg-12 mb-3">
+                            <label>Kepala Bidang Penindakan</label>
+                            <select class="form-control form-select select2" name="kepala_bidang_penindakan_display" id="kepala_bidang_penindakan" disabled>
+                              @foreach ($users as $user)
+                                @if ($user->jabatan == 'Kepala Bidang Penindakan dan Penyidikan' && $user->status == 'AKTIF')
+                                  <option value="{{ $user->id_admin }}" selected>{{ $user->name }} | {{ $user->jabatan }}</option>
+                                @else
+                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                @endif
+                              @endforeach
+                            </select>
+                            <input type="hidden" name="kepala_bidang_penindakan_lpp"
+                              value="{{ old('kepala_bidang_penindakan', $pascapenindakan->kepala_bidang_penindakan ?? ($users->where('jabatan', 'Kepala Bidang Penindakan dan Penyidikan')->where('status', 'AKTIF')->first()->id_admin ?? '')) }}">
+                          </div>
+                        </div>
+                      </div>
 
-                                  </div>
+                      <div class="col-md-12 mb-3">
+                        <label>Modus Operandi</label>
+                        <textarea class="form-control" rows="3" placeholder="Modus Operandi" name="modus_operandi_lpp"></textarea>
+                      </div>
+
+                      <div class="card-body">
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header">
+                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                A. Barang Hasil Penindakan
+                              </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div class="accordion-body bg-light">
+                                <div class="col-md-12 mb-3">
+                                  <label>Jumlah Koli / jenis koli</label>
+                                  <input type="text" class="form-control" placeholder="Jumlah Koli / jenis koli" name="jumlah_koli_lpp">
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                  <label>No Container / ukuran</label>
+                                  <input type="text" class="form-control" placeholder="No Container / ukuran" name="no_container_lpp">
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                  <label>Keterangan Uraian Barang</label>
+                                  <input type="text" class="form-control" placeholder="Keterangan Uraian" name="ket_uraian_bar_lpp">
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                  <label>Detail Uraian Barang</label>
+                                  <textarea class="form-control" rows="3" placeholder="Detail Uraian Barang" name="detail_uraian_barang_lpp"></textarea>
                                 </div>
                               </div>
-
                             </div>
                           </div>
-
                         </div>
+                      </div>
+
+                      <div class="col-md-12 mb-3">
+                        <label>Catatan Atasan Pembuat LPP</label>
+                        <textarea class="form-control" rows="3" placeholder="Catatan atasan pembuat LPP" name="catatan_lpp"></textarea>
                       </div>
                     </div>
 
 
-                    <div class="tab-pane fade" id="bast-pemilik" role="tabpanel" aria-labelledby="bast-pemilik-tab">
+
+
+                    <div class="tab-pane fade" id="lpf" role="tabpanel" aria-labelledby="lpf-tab">
                       <div class="row">
-                        <div class="col-lg-6">
 
-                          <h6><b>A. Data Awal</b></h6>
-                          <hr>
+                        <h6><b>A. Data Awal</b></h6>
+                        <hr>
 
-                          <div class="row">
-                            <div class="col-md-6 mb-3">
-                              <label>No. BAST Pemilik</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_bast_pemilik" value="{{ old('no_bast_pemilik', $no_ref->no_bast_pemilik) }}" readonly>
-                            </div>
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label>No. LPF</label>
+                            <input type="text" class="form-control bg-primary text-white" name="no_lpf" value="{{ old('no_lpf', $no_ref->no_lpf) }}" readonly>
+                          </div>
 
-                            <div class="col-md-6 mb-3">
-                              <label>Tgl. BAST Pemilik</label>
-                              <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_bast_pemilik">
-                            </div>
-
-                            <div class="col-lg-12 mb-3">
-                              <label>Pejabat Yang Menyerahkan</label>
-                              <select class="form-control form-select select2" name="id_pejabat_1_bast_pemilik">
-                                <option value="" selected disabled>- Pilih -</option>
-                                @foreach ($users as $user)
-                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                  </option>
-                                @endforeach
-                              </select>
-                            </div>
-
+                          <div class="col-md-6 mb-3">
+                            <label>Tgl. LPF</label>
+                            <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lpf">
                           </div>
 
                         </div>
 
                         <!-- Right Column (Sections C, D, and E) -->
-                        <div class="col-lg-6">
-                          <h6><b>B. Data Lainnya</b></h6>
-                          <hr>
 
-                          <div class="col-lg-12 mb-3">
-                            <label>Pejabat 1 Yang Menyaksikan </label>
-                            <select class="form-control form-select select2" name="id_pejabat_2_bast_pemilik">
-                              <option value="" selected disabled>- Pilih -</option>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
-
-                          <div class="col-lg-12 mb-3">
-                            <label>Pejabat 2 Yang Menyaksikan </label>
-                            <select class="form-control form-select select2" name="id_pejabat_3_bast_pemilik">
-                              <option value="" selected disabled>- Pilih -</option>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
-
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                          <label class="d-flex align-items-center">
-                            Keterangan Berita Acara Serah Terima
-                          </label>
-                          {{-- <textarea class="form-control" rows="7" placeholder="Keterangan Berita Acara Serah Terima Pemilik" name="ket_ba_pemilik">{{ old('ket_ba_pemilik', $defaultKeterangan) }}</textarea> --}}
-                        </div>
-
-
-                      </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="bast-instansi" role="tabpanel" aria-labelledby="bast-instansi-tab">
-                      <div class="row">
-                        <div class="col-lg-6">
-
-                          <h6><b>A. Data Awal</b></h6>
-                          <hr>
-
-                          <div class="row">
-                            <div class="col-md-6 mb-3">
-                              <label>No. BAST Instansi</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_bast_instansi" value="{{ old('no_bast_instansi', $no_ref->no_bast_instansi) }}" readonly>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label>Tgl. BAST Instansi</label>
-                              <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_bast_instansi">
-                            </div>
-
-                            <div class="col-lg-12 mb-3">
-                              <label>Pejabat Yang Menyerahkan</label>
-                              <select class="form-control form-select select2" name="id_pejabat_1_bast_instansi">
-                                <option value="" selected disabled>- Pilih -</option>
-                                @foreach ($users as $user)
-                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                  </option>
-                                @endforeach
-                              </select>
-                            </div>
-
-
-
-                          </div>
-
-                        </div>
-
-
-
-                        <!-- Right Column (Sections C, D, and E) -->
-                        <div class="col-lg-6">
-                          <h6><b>B. Data Lainnya</b></h6>
-                          <hr>
-
-
-                          <div class="col-lg-12 mb-3">
-                            <label>Pejabat 1 Yang Menyaksikan </label>
-                            <select class="form-control form-select select2" name="id_pejabat_2_bast_instansi">
-                              <option value="" selected disabled>- Pilih -</option>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
-
-                          <div class="col-lg-12 mb-3">
-                            <label>Pejabat 2 Yang Menyaksikan </label>
-                            <select class="form-control form-select select2" name="id_pejabat_3_bast_instansi">
-                              <option value="" selected disabled>- Pilih -</option>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
-
-                        </div>
+                        <h6><b>B. Data Lainnya</b></h6>
+                        <hr>
 
                         <div class="card-body">
                           <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
                               <h2 class="accordion-header">
-                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnet" aria-expanded="false" aria-controls="flush-collapseOnet">
-                                  A. Diserahkan Kepada
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnes" aria-expanded="false" aria-controls="flush-collapseOnes">
+                                  A. Barang Hasil Penindakan
                                 </button>
                               </h2>
-                              <div id="flush-collapseOnet" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div id="flush-collapseOnes" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body bg-light">
-
 
                                   <!-- Form Inputs -->
                                   <div class="col-md-12 mb-3">
-                                    <label>Nama Penerima</label>
-                                    <input type="text" class="form-control form-input" placeholder="Nama Penerima" name="nama_penerima_bast_instansi">
+                                    <label>Merk Barang</label>
+                                    <input type="text" class="form-control" placeholder="Merek Barang" name="merek_barang_lpf">
                                   </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Kondisi Barang</label>
+                                    <input type="text" class="form-control" placeholder="Kondisi Barang" name="kondisi_barang_lpf">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Tipe Barang</label>
+                                    <input type="text" class="form-control" placeholder="Tipe Barang" name="tipe_barang_lpf">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label class="d-flex align-items-center">
+                                      Spesifikasi Lain
+                                      {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                                    </label>
+                                    <textarea class="form-control" rows="3" placeholder="Spesifikasi Lain" name="spesifikasi_barang_lpf"></textarea>
+                                  </div>
+
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Kantor Pendaftaran Dokumen</label>
+                                    <input type="text" class="form-control" placeholder="Kantor Pendaftaran Dokumen" name="kantor_pendaftaran_lpf">
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Kesimpulan
+                            {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                          </label>
+                          <textarea class="form-control" rows="3" placeholder="Kesimpulan LPF" name="kesimpulan_lpf"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Usulan
+                            {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                          </label>
+                          <textarea class="form-control" rows="3" placeholder="Usulan LPF" name="usulan_lpf"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Catatan/disposisi atasan
+                            {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                          </label>
+                          <textarea class="form-control" rows="3" placeholder="Catatan/disposisi atasan" name="catatan_lpf"></textarea>
+                        </div>
+
+
+                      </div>
+                    </div>
+
+
+
+
+
+                    <div class="tab-pane fade" id="pdp" role="tabpanel" aria-labelledby="pdp-tab">
+                      <div class="row">
+
+                        <div class="card-body">
+                          <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnets" aria-expanded="false" aria-controls="flush-collapseOnets">
+                                  A. Surat Perintah Penelitian (SPLIT)
+                                </button>
+                              </h2>
+                              <div id="flush-collapseOnets" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+
+                                  <h6><b>A. Data Awal</b></h6>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                      <label>No. SPLIT</label>
+                                      <input type="text" class="form-control bg-primary text-white" name="no_split" value="{{ old('no_split', $no_ref->no_split) }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                      <label>Tgl. SPLIT</label>
+                                      <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_split">
+                                    </div>
+                                  </div>
+
+                                  <h3 class="text-center text-uppercase fw-bold border-bottom border-dark border-3 pb-2 mb-4 mx-auto" style="letter-spacing: 4px; max-width: 600px;">
+                                    <span class="d-inline-block py-2">D I P E R I N T A H K A N</span>
+                                  </h3>
+                                  <div class="col-lg-12 mb-3">
+                                    <label>Pejabat Yang Melakukan Penelitian</label>
+                                    <select class="form-control form-select select2" name="pejabat_penelitian[]" multiple>
+                                      @foreach ($users as $user)
+                                        <option value="{{ $user->id_admin }}">{{ $user->name }}
+                                        </option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header">
+                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnetsa" aria-expanded="false" aria-controls="flush-collapseOnetsa">
+                                B. Berita Acara Wawancara (BAW)
+                              </button>
+                            </h2>
+                            <div id="flush-collapseOnetsa" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div class="accordion-body bg-light">
+
+
+                                <!-- Form Inputs -->
+                                <div class="col-md-12 mb-3">
+                                  <label>Nama Penerima</label>
+                                  <input type="text" class="form-control form-input" placeholder="Nama Penerima" name="nama_penerima_bast_instansi">
+                                </div>
+
+                                <div class="col-lg-12 mb-3">
+                                  <label>Jenis Identitas Penerima</label>
+                                  <input type="text" class="form-control form-input" placeholder="Jenis Identitas" name="jenis_iden_bast_instansi">
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                  <label>NRP/Identitas</label>
+                                  <input type="text" class="form-control form-input" placeholder="NRP/Identitas" name="identitas_bast_instansi">
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                  <label>Menerima penyerahan untuk/atas nama</label>
+                                  <input type="text" class="form-control form-input" value="Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam" name="atas_nama_bast_instansi">
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                  <label>Penyerahan dilaksanakan dalam rangka</label>
+                                  <textarea class="form-control" rows="4" placeholder="Penyerahan dilaksanakan dalam rangka" name="penyerahan_bast_instansi"></textarea>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="card-body">
+                          <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnetsv" aria-expanded="false" aria-controls="flush-collapseOnetsv">
+                                  C. SURAT PERINTAH PENCACAHAN BARANG HASIL PENINDAKAN
+                                </button>
+                              </h2>
+                              <div id="flush-collapseOnetsv" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+
+                                  <h6><b>A. Data Awal</b></h6>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                      <label>No. Print Cacah</label>
+                                      <input type="text" class="form-control bg-primary text-white" name="no_print_cacah" value="{{ old('no_print_cacah', $no_ref->no_print_cacah) }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                      <label>Tgl. Print Cacah</label>
+                                      <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_print_cacah">
+                                    </div>
+                                  </div>
+
+                                  <h3 class="text-center text-uppercase fw-bold border-bottom border-dark border-3 pb-2 mb-4 mx-auto" style="letter-spacing: 4px; max-width: 600px;">
+                                    <span class="d-inline-block py-2">D I P E R I N T A H K A N</span>
+                                  </h3>
 
                                   <div class="col-lg-12 mb-3">
-                                    <label>Jenis Identitas Penerima</label>
-                                    <input type="text" class="form-control form-input" placeholder="Jenis Identitas" name="jenis_iden_bast_instansi">
-                                  </div>
-
-                                  <div class="col-md-12 mb-3">
-                                    <label>NRP/Identitas</label>
-                                    <input type="text" class="form-control form-input" placeholder="NRP/Identitas" name="identitas_bast_instansi">
-                                  </div>
-
-                                  <div class="col-md-12 mb-3">
-                                    <label>Menerima penyerahan untuk/atas nama</label>
-                                    <input type="text" class="form-control form-input" value="Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam" name="atas_nama_bast_instansi">
-                                  </div>
-
-                                  <div class="col-md-12 mb-3">
-                                    <label>Penyerahan dilaksanakan dalam rangka</label>
-                                    <textarea class="form-control" rows="4" placeholder="Penyerahan dilaksanakan dalam rangka" name="penyerahan_bast_instansi"></textarea>
+                                    <label>Pejabat Yang Melakukan Pencacahan</label>
+                                    <select class="form-control form-select select2" name="pejabat_print_cacah[]" multiple>
+                                      @foreach ($users as $user)
+                                        <option value="{{ $user->id_admin }}">{{ $user->name }}
+                                        </option>
+                                      @endforeach
+                                    </select>
                                   </div>
 
 
                                 </div>
                               </div>
                             </div>
-
                           </div>
                         </div>
+
+
+
+
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header">
+                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnetsaz" aria-expanded="false" aria-controls="flush-collapseOnetsaz">
+                                D. Berita Acara Cacah (B.A Cacah)
+                              </button>
+                            </h2>
+                            <div id="flush-collapseOnetsaz" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div class="accordion-body bg-light">
+
+                                <h6><b>A. Data Awal</b></h6>
+                                <hr>
+                                <div class="row">
+                                  <div class="col-md-6 mb-3">
+                                    <label>No. B.A Cacah</label>
+                                    <input type="text" class="form-control bg-primary text-white" name="no_ba_cacah" value="{{ old('no_ba_cacah', $no_ref->no_ba_cacah) }}" readonly>
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label>Tgl. B.A Cacah</label>
+                                    <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_ba_cacah">
+                                  </div>
+                                </div>
+
+
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
                       </div>
                     </div>
 
-
-                    <div class="tab-pane fade" id="lp" role="tabpanel" aria-labelledby="lp-tab">
-                      <div class="tab-pane" id="lp" role="tabpanel">
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <h6><b>A. Data Awal</b></h6>
-                            <hr>
-                            <div class="row">
-                              <div class="col-md-6 mb-3">
-                                <label>No. LP</label>
-                                <input type="text" class="form-control bg-primary text-white" name="no_lp" value="{{ old('no_lp', $no_ref->no_lp) }}" readonly>
-                              </div>
-                              <div class="col-md-6 mb-3">
-                                <label>Tgl. LP</label>
-                                <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lp">
-                              </div>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                              <label class="d-flex align-items-center">
-                                Uraian Penindakan
-                                <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
-                                </button>
-                              </label>
-                              <textarea class="form-control" rows="3" placeholder="Uraian Penindakan" name="uraian_penindakan_lp"></textarea>
-                            </div>
-
-                            <div class="row">
-
-                              <div class="col-lg-12 mb-3">
-                                <label>Locus</label>
-                                <select class="form-control form-select select2" name="locus_lp">
-                                  <option value="" selected disabled>- Pilih -</option>
-                                  @foreach ($locus as $tempat)
-                                    <option value="{{ $tempat->locus }}">{{ $tempat->locus }}
-                                    </option>
-                                  @endforeach
-                                </select>
-                              </div>
-
-                              <div class="col-md-12 mb-3">
-                                <label>Tempus</label>
-                                <input type="text" class="form-control" name="tempus_lp" id="datetime-datepicker" placeholder="Tempus">
-                              </div>
-                            </div>
-
-                          </div>
-
-
-
-                          <!-- Right Column (Sections C, D, and E) -->
-                          <div class="col-lg-6">
-                            <!-- C. Informasi Pelapor dan Hasil Penindakan -->
-                            <h6><b>B. Data Lainnya</b></h6>
-                            <hr>
-
-                            <div class="col-md-12 mb-3">
-                              <label class="d-flex align-items-center">
-                                Uraian Modus
-                                <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
-                                </button>
-                              </label>
-                              <textarea class="form-control" rows="3" placeholder="Uraian Modus" name="uraian_modus_lp"></textarea>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                              <label class="d-flex align-items-center">
-                                Barang Lain Yang Terkait
-                              </label>
-                              <textarea class="form-control" rows="3" placeholder="Barang Lain Yang Terkait" name="barang_lain_lp"></textarea>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="bast-penyidik" role="tabpanel" aria-labelledby="bast-penyidik-tab">
+                    <div class="tab-pane fade" id="lhp" role="tabpanel" aria-labelledby="lhp-tab">
                       <div class="row">
-                        <div class="col-lg-6">
 
-                          <h6><b>A. Data Awal</b></h6>
-                          <hr>
+                        <h6><b>A. Data Awal</b></h6>
+                        <hr>
 
-                          <div class="row">
-                            <div class="col-md-6 mb-3">
-                              <label>No. BAST Penyidik</label>
-                              <input type="text" class="form-control bg-primary text-white" name="no_bast_penyidik" value="{{ old('no_bast_penyidik', $no_ref->no_bast_penyidik) }}" readonly>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label>Tgl. BAST Penyidik</label>
-                              <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_bast_penyidik">
-                            </div>
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label>No. LHP</label>
+                            <input type="text" class="form-control bg-primary text-white" name="no_lhp_penyidikan" value="{{ old('no_lhp_penyidikan', $no_ref->no_lhp_penyidikan) }}" readonly>
+                          </div>
 
-                            <div class="col-lg-12 mb-3">
-                              <label>Pejabat Yang Menyerahkan</label>
-                              <select class="form-control form-select select2" name="id_pejabat_1_bast_penyidik">
-                                <option value="" selected disabled>- Pilih -</option>
-                                @foreach ($users as $user)
-                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                  </option>
-                                @endforeach
-                              </select>
-                            </div>
-
+                          <div class="col-md-6 mb-3">
+                            <label>Tgl. LHP</label>
+                            <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lhp_penyidikan">
                           </div>
 
                         </div>
-
-
 
                         <!-- Right Column (Sections C, D, and E) -->
-                        <div class="col-lg-6">
-                          <h6><b>B. Data Lainnya</b></h6>
-                          <hr>
+                        <h6><b>B. Data Lainnya</b></h6>
+                        <hr>
+
+                        <div class="card-body">
+                          <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnes" aria-expanded="false" aria-controls="flush-collapseOnes">
+                                  A. Barang Hasil Penindakan
+                                </button>
+                              </h2>
+                              <div id="flush-collapseOnes" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+
+                                  <!-- Form Inputs -->
+                                  <div class="col-md-12 mb-3">
+                                    <label>Merk Barang</label>
+                                    <input type="text" class="form-control" placeholder="Merek Barang" name="merek_barang_lpf">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Kondisi Barang</label>
+                                    <input type="text" class="form-control" placeholder="Kondisi Barang" name="kondisi_barang_lpf">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Tipe Barang</label>
+                                    <input type="text" class="form-control" placeholder="Tipe Barang" name="tipe_barang_lpf">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label class="d-flex align-items-center">
+                                      Spesifikasi Lain
+                                      {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                                    </label>
+                                    <textarea class="form-control" rows="3" placeholder="Spesifikasi Lain" name="spesifikasi_barang_lpf"></textarea>
+                                  </div>
 
 
-                          <div class="col-lg-12 mb-3">
-                            <label>Pejabat Yang Menerima</label>
-                            <select class="form-control form-select select2" name="id_pejabat_2_bast_penyidik">
-                              <option value="" selected disabled>- Pilih -</option>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
+                                  <div class="col-md-12 mb-3">
+                                    <label>Kantor Pendaftaran Dokumen</label>
+                                    <input type="text" class="form-control" placeholder="Kantor Pendaftaran Dokumen" name="kantor_pendaftaran_lpf">
+                                  </div>
 
-
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="ba-dok" role="tabpanel" aria-labelledby="ba-dok-tab">
-                      <div class="tab-pane" id="ba-dok" role="tabpanel">
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <h6><b>Data Referensi</b></h6>
-                            <hr>
-                            <div class="row">
-                              <div class="col-md-12 mb-3">
-                                <label>Kategori Penindakan</label>
-                                {{-- <input type="text" class="form-control bg-primary text-white" value="{{ old('opsi_penindakan', $penindakan->opsi_penindakan) }}" readonly> --}}
-                              </div>
-
-                              <div class="col-md-12 mb-3">
-                                <label>Referensi Free Entry</label>
-                                <select class="form-control form-select select2" name="data_free_entry" id="data_free_entry">
-                                  <option value="" selected disabled>- Pilih -</option>
-                                  <option value="YA">Free Entry</option>
-                                  <option value="Tidak">Bukan Free Entry</option>
-                                </select>
-                              </div>
-
-                              <div class="col-md-12 mb-3" id="no_free_entry" style="display: none;">
-                                <label>Format Free Entry</label>
-                                <input type="text" class="form-control bg-primary text-white" name="format_free_entry">
-                              </div>
-
-                              <div class="col-md-12 mb-3" id="tgl_free_entry" style="display: none;">
-                                <label>Tgl. Surat Referensi LPT</label>
-                                <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_free_entry">
-                              </div>
-
-
-
-                            </div>
-
-                            <h6><b>A. Data Awal</b></h6>
-                            <hr>
-                            <div class="row">
-                              <div class="col-md-6 mb-3">
-                                <label>No. LPT</label>
-                                <input type="text" class="form-control bg-primary text-white" name="no_lpt_penindakan" value="{{ old('no_lpt_penindakan', $no_ref->no_lpt_penindakan) }}" readonly>
-                              </div>
-                              <div class="col-md-6 mb-3">
-                                <label>Tgl. LPT</label>
-                                <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lpt">
-                              </div>
-                            </div>
-
-                            <div class="row">
-                              <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                  <label class="col-form-label">Waktu Mulai Tugas</label>
-                                  <input type="text" class="form-control" name="waktu_pelaksanaan_tugas_lpt" id="datetime-datepicker" placeholder="Waktu Pelaksanaan Tugas">
-                                </div>
-                              </div>
-
-                              <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                  <label class="col-form-label">Waktu Selesai Tugas</label>
-                                  <input type="text" class="form-control" name="waktu_selesai_tugas_lpt" id="datetime-datepicker" placeholder="Waktu Selesai Tugas">
                                 </div>
                               </div>
                             </div>
 
-                            <div class="col-md-12 mb-3">
-                              <label class="d-flex align-items-center">Uraian Pelaksanaan Tugas</label>
-                              <textarea class="form-control" rows="4" placeholder="Uraian Pelaksanaan Tugas" name="uraian_lpt"></textarea>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                              <label>Wilayah Tugas</label>
-                              <input type="text" class="form-control" placeholder="Wilayah Tugas" name="wilayah_tugas_lpt">
-                            </div>
-                          </div>
-
-
-
-                          <!-- Right Column (Sections C, D, and E) -->
-                          <div class="col-lg-6">
-                            <!-- C. Informasi Pelapor dan Hasil Penindakan -->
-                            <h6><b>B. Data Lainnya</b></h6>
-                            <hr>
-
-                            <div class="col-md-12 mb-3">
-                              <label class="d-flex align-items-center">
-                                Tindak Lanjut
-                              </label>
-                              <textarea class="form-control" rows="4" placeholder="Tindak Lanjut" name="tindak_lanjut_lpt"></textarea>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                              <label class="d-flex align-items-center">
-                                Kesimpulan
-                              </label>
-                              <textarea class="form-control" rows="4" placeholder="Kesimpulan Laporan Pelaksana Tugas" name="kesimpulan_lpt"></textarea>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                              <label class="d-flex align-items-center">
-                                Catatan
-                              </label>
-                              <textarea class="form-control" rows="4" placeholder="Catatan" name="catatan_lpt"></textarea>
-                            </div>
-
-                            <div class="col-lg-12 mb-3">
-                              <label>Pelaksana Harian</label>
-                              <select class="form-control form-select select2" name="plh">
-                                <option value="" disabled {{ empty($pascapenindakan->plh) ? 'selected' : '' }}>- Pilih -</option>
-                                <option value="Plh." {{ $pascapenindakan->plh === 'Plh.' ? 'selected' : '' }}>Pelaksana Harian</option>
-                                <option value="" {{ $pascapenindakan->plh === '' ? 'selected' : '' }}>Tidak Pelaksana Harian</option>
-                              </select>
-                            </div>
-
-
-
                           </div>
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Kesimpulan
+                            {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                          </label>
+                          <textarea class="form-control" rows="3" placeholder="Kesimpulan LPF" name="kesimpulan_lpf"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Usulan
+                            {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                          </label>
+                          <textarea class="form-control" rows="3" placeholder="Usulan LPF" name="usulan_lpf"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Catatan/disposisi atasan
+                            {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                          </label>
+                          <textarea class="form-control" rows="3" placeholder="Catatan/disposisi atasan" name="catatan_lpf"></textarea>
+                        </div>
+
+
                       </div>
                     </div>
 
