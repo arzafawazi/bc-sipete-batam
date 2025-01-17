@@ -35,16 +35,16 @@
                           <span class="d-none d-sm-block">Laporan Informasi (LI)</span>
                         </a>
                       </li>
+                      <li class="nav-item" id="navtabs2-profile-tab-item">
+                        <a class="nav-link" id="navtabs2-profile-tab" data-bs-toggle="tab" href="#navtabs2-profile" role="tab" aria-controls="navtabs2-profile" aria-selected="false">
+                          <span class="d-block d-sm-none">LAP</span>
+                          <span class="d-none d-sm-block">Lembar Analisis Pra Penindakan (LAP)</span>
+                        </a>
+                      </li>
                       <li class="nav-item" id="navtabs2-messages-tab-item" style="display: none;">
                         <a class="nav-link" id="navtabs2-messages-tab" data-bs-toggle="tab" href="#navtabs2-messages" role="tab" aria-controls="navtabs2-messages" aria-selected="false">
                           <span class="d-block d-sm-none">NPI</span>
                           <span class="d-none d-sm-block">Nota Pengembalian Informasi (NPI)</span>
-                        </a>
-                      </li>
-                      <li class="nav-item" id="navtabs2-profile-tab-item" style="display: none;">
-                        <a class="nav-link" id="navtabs2-profile-tab" data-bs-toggle="tab" href="#navtabs2-profile" role="tab" aria-controls="navtabs2-profile" aria-selected="false">
-                          <span class="d-block d-sm-none">LAP</span>
-                          <span class="d-none d-sm-block">Lembar Analisis Pra Penindakan (LAP)</span>
                         </a>
                       </li>
                       <li class="nav-item" id="navtabs2-mpp-tab-item" style="display: none;">
@@ -129,15 +129,6 @@
                                   {{ $user->name }}
                                 </option>
                               @endforeach
-                            </select>
-                          </div>
-
-                          <div class="col-lg-12 mb-3">
-                            <label>Tindak Lanjut Atau Tidak Ditindak Lanjut</label>
-                            <select id="tindak_lanjut_li" class="form-control form-select" name="tindak_lanjut_li">
-                              <option value="" disabled>- Pilih -</option>
-                              <option value="Tidak Lanjut" {{ old('tindak_lanjut_li', $praPenindakan->tindak_lanjut_li) == 'Tidak Lanjut' ? 'selected' : '' }}>Tidak Bisa Ditindak Lanjut</option>
-                              <option value="Lanjut" {{ old('tindak_lanjut_li', $praPenindakan->tindak_lanjut_li) == 'Lanjut' ? 'selected' : '' }}>Tindak Lanjut</option>
                             </select>
                           </div>
 
@@ -396,8 +387,8 @@
                                         <div class="col-sm-8">
                                           <select id="pelaku" class="form-select" name="pelaku">
                                             <option value="" disabled>- Pilih -</option>
-                                            <option value="TIDAK" {{ old('pelaku', $praPenindakan->pelaku) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
-                                            <option value="YA" {{ old('pelaku', $praPenindakan->pelaku) == 'YA' ? 'selected' : '' }}>YA</option>
+                                            <option value="TIDAK" {{ old('pelaku', $praPenindakan->pelaku) == 'TIDAK' ? 'selected' : '' }}>TIDAK DIKETAHUI</option>
+                                            <option value="YA" {{ old('pelaku', $praPenindakan->pelaku) == 'YA' ? 'selected' : '' }}>DIKETAHUI</option>
                                           </select>
                                         </div>
                                       </div>
@@ -425,8 +416,8 @@
                                         <label for="dugaan_pelanggaran" class="col-sm-4 col-form-label">ISI DATA</label>
                                         <div class="col-sm-8">
                                           <select id="dugaan_pelanggaran" class="form-select" name="dugaan_pelanggaran"> <!-- Ubah ID di sini -->
-                                            <option value="TIDAK" {{ old('dugaan_pelanggaran', $praPenindakan->dugaan_pelanggaran) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
-                                            <option value="YA" {{ old('dugaan_pelanggaran', $praPenindakan->dugaan_pelanggaran) == 'YA' ? 'selected' : '' }}>YA</option>
+                                            <option value="TIDAK" {{ old('dugaan_pelanggaran', $praPenindakan->dugaan_pelanggaran) == 'TIDAK' ? 'selected' : '' }}>TIDAK DIKETAHUI</option>
+                                            <option value="YA" {{ old('dugaan_pelanggaran', $praPenindakan->dugaan_pelanggaran) == 'YA' ? 'selected' : '' }}>DIKETAHUI</option>
                                           </select>
                                         </div>
                                       </div>
@@ -465,8 +456,8 @@
                                         <label for="locus" class="col-sm-4 col-form-label">ISI DATA</label>
                                         <div class="col-sm-8">
                                           <select id="locus" class="form-select" name="locus"> <!-- Ubah ID di sini -->
-                                            <option value="TIDAK" {{ old('locus', $praPenindakan->locus) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
-                                            <option value="YA" {{ old('locus', $praPenindakan->locus) == 'YA' ? 'selected' : '' }}>YA</option>
+                                            <option value="TIDAK" {{ old('locus', $praPenindakan->locus) == 'TIDAK' ? 'selected' : '' }}>TIDAK DIKETAHUI</option>
+                                            <option value="YA" {{ old('locus', $praPenindakan->locus) == 'YA' ? 'selected' : '' }}>DIKETAHUI</option>
                                           </select>
                                         </div>
                                       </div>
@@ -500,22 +491,28 @@
                                       <div class="row mb-3">
                                         <label for="tempus" class="col-sm-4 col-form-label">ISI DATA</label>
                                         <div class="col-sm-8">
-                                          <select id="tempus" class="form-select" name="tempus"> <!-- Ubah ID di sini -->
-                                            <option value="TIDAK" {{ old('tempus', $praPenindakan->tempus) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
-                                            <option value="YA" {{ old('tempus', $praPenindakan->tempus) == 'YA' ? 'selected' : '' }}>YA</option>
+                                          <select id="tempus" class="form-select" name="tempus">
+                                            <option value="TIDAK" {{ old('tempus', $praPenindakan->tempus) == 'TIDAK' ? 'selected' : '' }}>TIDAK DIKETAHUI</option>
+                                            <option value="YA" {{ old('tempus', $praPenindakan->tempus) == 'YA' ? 'selected' : '' }}>DIKETAHUI</option>
                                           </select>
                                         </div>
                                       </div>
 
-
                                       <div class="row mb-3 form-group">
-                                        <label class="col-sm-4 col-form-label">Keterangan Tempus</label>
-                                        <div class="col-sm-8">
-                                          <textarea class="form-control form-input" name="keterangan_tempus" placeholder="Keterangan Tempus" row="2"> {{ old('keterangan_tempus', $praPenindakan->keterangan_tempus) }}</textarea>
+                                        <div class="col-sm-6">
+                                          <label class="col-form-label">Keterangan Tempus</label>
+                                          <input type="text" class="form-control" name="keterangan_tempus" id="datetime-datepicker" placeholder="Mulainya Pra Penindakan"
+                                            value="{{ old('keterangan_tempus', $praPenindakan->keterangan_tempus) }}">
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <label class="col-form-label">Berakhirnya Tempus</label>
+                                          <input type="text" class="form-control" name="berakhirnya_tempus" id="datetime-datepicker" placeholder="Berakhirnya Pra Penindakan"
+                                            value="{{ old('berakhirnya_tempus', $praPenindakan->berakhirnya_tempus) }}">
                                         </div>
                                       </div>
                                     </div>
                                   </div>
+
                                 </div>
 
                                 <div class="accordion-item">
@@ -634,130 +631,6 @@
                                   </div>
                                 </div>
 
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header">
-                                    <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
-                                      I. Layak Dilakukan Operasi Penindakan
-                                    </button>
-                                  </h2>
-                                  <div id="flush-collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body bg-light">
-                                      <div class="row mb-3">
-                                        <label for="layak_dilakukan_operasi_penindakan" class="col-sm-4 col-form-label">ISI DATA</label>
-                                        <div class="col-sm-8">
-                                          <select id="layak_dilakukan_operasi_penindakan" class="form-select" name="layak_penindakan"> <!-- Ubah ID di sini -->
-                                            <option value="TIDAK" {{ old('layak_penindakan', $praPenindakan->layak_penindakan) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
-                                            <option value="YA" {{ old('layak_penindakan', $praPenindakan->layak_penindakan) == 'YA' ? 'selected' : '' }}>YA</option>
-                                          </select>
-                                        </div>
-                                      </div>
-
-                                      <div class="row mb-3 form-group">
-                                        <label class="col-sm-4 col-form-label">Skema Penindakan</label>
-                                        <div class="col-sm-8">
-                                          <select id="skema_penindakan" class="form-select" name="skem_layak_penindakan"> <!-- Ubah ID di sini -->
-                                            <option value="MANDIRI" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'MANDIRI' ? 'selected' : '' }}>MANDIRI</option>
-                                            <option value="PELIMPAHAN" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'PELIMPAHAN' ? 'selected' : '' }}>PELIMPAHAN</option>
-                                            <option value="BERSAMA" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'BERSAMA' ? 'selected' : '' }}>BERSAMA</option>
-                                            <option value="DENGAN INSTANSI LAIN" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'DENGAN INSTANSI LAIN' ? 'selected' : '' }}>DENGAN INSTANSI LAIN</option>
-                                            <option value="LAINNYA" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'LAINNYA' ? 'selected' : '' }}>LAINNYA</option>
-                                          </select>
-
-                                        </div>
-                                      </div>
-
-
-                                      <div class="row mb-3 form-group">
-                                        <label class="col-sm-4 col-form-label">Keterangan Skema Penindakan </label>
-                                        <div class="col-sm-8">
-                                          <textarea class="form-control form-input" name="ket_layak_penindakan" placeholder="Keterangan Skema Penindakan " row="2"> {{ old('ket_layak_penindakan', $praPenindakan->ket_layak_penindakan) }}</textarea>
-                                        </div>
-                                      </div>
-
-
-
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header">
-                                    <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTen" aria-expanded="false" aria-controls="flush-collapseTen">
-                                      J. Layak Dilakukan Patroli
-                                    </button>
-                                  </h2>
-                                  <div id="flush-collapseTen" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body bg-light">
-                                      <div class="row mb-3">
-                                        <label for="layak_dilakukan_patroli" class="col-sm-4 col-form-label">ISI DATA</label>
-                                        <div class="col-sm-8">
-                                          <select id="layak_dilakukan_patroli" class="form-select" name="layak_patroli"> <!-- Ubah ID di sini -->
-                                            <option value="TIDAK" {{ old('layak_patroli', $praPenindakan->layak_patroli) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
-                                            <option value="YA" {{ old('layak_patroli', $praPenindakan->layak_patroli) == 'YA' ? 'selected' : '' }}>YA</option>
-                                          </select>
-                                        </div>
-                                      </div>
-
-                                      <div class="row mb-3 form-group">
-                                        <label class="col-sm-4 col-form-label">Skema Penindakan Patroli</label>
-                                        <div class="col-sm-8">
-                                          <select id="skema_penindakan-patroli" class="form-select" name="skem_layak_patroli"> <!-- Ubah ID di sini -->
-                                            <option value="MANDIRI" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'MANDIRI' ? 'selected' : '' }}>MANDIRI</option>
-                                            <option value="PELIMPAHAN" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'PELIMPAHAN' ? 'selected' : '' }}>PELIMPAHAN</option>
-                                            <option value="BERSAMA" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'BERSAMA' ? 'selected' : '' }}>BERSAMA</option>
-                                            <option value="DENGAN INSTANSI LAIN" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'DENGAN INSTANSI LAIN' ? 'selected' : '' }}>DENGAN INSTANSI LAIN</option>
-                                            <option value="LAINNYA" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'LAINNYA' ? 'selected' : '' }}>LAINNYA</option>
-                                          </select>
-
-                                        </div>
-                                      </div>
-
-
-                                      <div class="row mb-3 form-group">
-                                        <label class="col-sm-4 col-form-label">Keterangan Skema Patroli </label>
-                                        <div class="col-sm-8">
-                                          <textarea class="form-control form-input" name="ket_layak_patroli" placeholder="Keterangan Skema Patroli" row="2"> {{ old('ket_layak_patroli', $praPenindakan->ket_layak_patroli) }}</textarea>
-                                        </div>
-                                      </div>
-
-
-
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header">
-                                    <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEleven" aria-expanded="false" aria-controls="flush-collapseEleven">
-                                      K. Tidak Layak Dilakukan Operasi Penindakan atau Patroli
-                                    </button>
-                                  </h2>
-                                  <div id="flush-collapseEleven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body bg-light">
-                                      <div class="row mb-3">
-                                        <label for="tidak_layak_dilakukan" class="col-sm-4 col-form-label">ISI DATA</label>
-                                        <div class="col-sm-8">
-                                          <select id="tidak_layak_dilakukan" class="form-select" name="tidak_layak"> <!-- Ubah ID di sini -->
-                                            <option value="TIDAK" {{ old('tidak_layak', $praPenindakan->tidak_layak) == 'TIDAK' ? 'selected' : '' }}>TIDAK</option>
-                                            <option value="YA" {{ old('tidak_layak', $praPenindakan->tidak_layak) == 'YA' ? 'selected' : '' }}>YA</option>
-                                          </select>
-                                        </div>
-                                      </div>
-
-
-
-                                      <div class="row mb-3 form-group">
-                                        <label class="col-sm-4 col-form-label">Keterangan Tidak Layak Melakukan Operasi Penindakan atau Patroli </label>
-                                        <div class="col-sm-8">
-                                          <textarea class="form-control form-input" name="ket_tidak_layak" placeholder="Keterangan Tidak Layak" row="2"> {{ old('ket_tidak_layak', $praPenindakan->ket_tidak_layak) }}</textarea>
-                                        </div>
-                                      </div>
-
-
-
-                                    </div>
-                                  </div>
-                                </div>
 
                               </div>
                             </div>
@@ -812,7 +685,91 @@
                             </select>
                           </div>
 
+                          <div class="card-body">
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                              <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                  <button class="accordion-button btn bg-light fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseUnified" aria-expanded="true" aria-controls="flush-collapseUnified">
+                                    Pilihan Operasi atau Patroli
+                                  </button>
+                                </h2>
+                                <div id="flush-collapseUnified" class="accordion-collapse collapse show" data-bs-parent="#accordionFlushExample">
+                                  <div class="accordion-body bg-light">
+                                    <div class="row mb-3">
+                                      <label for="pilihan_kegiatan" class="col-sm-4 col-form-label">Pilih Kegiatan</label>
+                                      <div class="col-sm-8">
+                                        <select id="pilihan_kegiatan" class="form-select" name="pilihan_kegiatan">
+                                          <option value="">-- Pilih Kegiatan --</option>
+                                          <option value="penindakan" {{ old('pilihan_kegiatan', $praPenindakan->pilihan_kegiatan) == 'penindakan' ? 'selected' : '' }}>Layak Dilakukan Operasi Penindakan</option>
+                                          <option value="patroli" {{ old('pilihan_kegiatan', $praPenindakan->pilihan_kegiatan) == 'patroli' ? 'selected' : '' }}>Layak Dilakukan Patroli</option>
+                                          <option value="tidak_layak" {{ old('pilihan_kegiatan', $praPenindakan->pilihan_kegiatan) == 'tidak_layak' ? 'selected' : '' }}>Tidak Layak Dilakukan Operasi atau Patroli</option>
+                                        </select>
+                                      </div>
+                                    </div>
+
+                                    <!-- Bagian Layak Dilakukan Operasi Penindakan -->
+                                    <div id="penindakan_section" class="{{ old('pilihan_kegiatan', $praPenindakan->pilihan_kegiatan) == 'penindakan' ? '' : 'd-none' }}">
+                                      <div class="row mb-3">
+                                        <label class="col-sm-4 col-form-label">Skema Penindakan</label>
+                                        <div class="col-sm-8">
+                                          <select id="skema_penindakan" class="form-select" name="skem_layak_penindakan">
+                                            <option value="MANDIRI" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'MANDIRI' ? 'selected' : '' }}>MANDIRI</option>
+                                            <option value="PELIMPAHAN" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'PELIMPAHAN' ? 'selected' : '' }}>PELIMPAHAN</option>
+                                            <option value="BERSAMA" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'BERSAMA' ? 'selected' : '' }}>BERSAMA</option>
+                                            <option value="DENGAN INSTANSI LAIN" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'DENGAN INSTANSI LAIN' ? 'selected' : '' }}>DENGAN INSTANSI LAIN</option>
+                                            <option value="LAINNYA" {{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) == 'LAINNYA' ? 'selected' : '' }}>LAINNYA</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="row mb-3">
+                                        <label class="col-sm-4 col-form-label">Keterangan Skema Penindakan</label>
+                                        <div class="col-sm-8">
+                                          <textarea class="form-control" name="ket_layak_penindakan" placeholder="Keterangan Skema Penindakan" rows="2">{{ old('ket_layak_penindakan', $praPenindakan->ket_layak_penindakan) }}</textarea>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <!-- Bagian Layak Dilakukan Patroli -->
+                                    <div id="patroli_section" class="{{ old('pilihan_kegiatan', $praPenindakan->pilihan_kegiatan) == 'patroli' ? '' : 'd-none' }}">
+                                      <div class="row mb-3">
+                                        <label class="col-sm-4 col-form-label">Skema Patroli</label>
+                                        <div class="col-sm-8">
+                                          <select id="skema_patroli" class="form-select" name="skem_layak_patroli">
+                                            <option value="MANDIRI" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'MANDIRI' ? 'selected' : '' }}>MANDIRI</option>
+                                            <option value="PELIMPAHAN" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'PELIMPAHAN' ? 'selected' : '' }}>PELIMPAHAN</option>
+                                            <option value="BERSAMA" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'BERSAMA' ? 'selected' : '' }}>BERSAMA</option>
+                                            <option value="DENGAN INSTANSI LAIN" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'DENGAN INSTANSI LAIN' ? 'selected' : '' }}>DENGAN INSTANSI LAIN</option>
+                                            <option value="LAINNYA" {{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli) == 'LAINNYA' ? 'selected' : '' }}>LAINNYA</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="row mb-3">
+                                        <label class="col-sm-4 col-form-label">Keterangan Skema Patroli</label>
+                                        <div class="col-sm-8">
+                                          <textarea class="form-control" name="ket_layak_patroli" placeholder="Keterangan Skema Patroli" rows="2">{{ old('ket_layak_patroli', $praPenindakan->ket_layak_patroli) }}</textarea>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <!-- Bagian Tidak Layak -->
+                                    <div id="tidak_layak_section" class="{{ old('pilihan_kegiatan', $praPenindakan->pilihan_kegiatan) == 'tidak_layak' ? '' : 'd-none' }}">
+                                      <div class="row mb-3">
+                                        <label class="col-sm-4 col-form-label">Keterangan Tidak Layak</label>
+                                        <div class="col-sm-8">
+                                          <textarea class="form-control" name="ket_tidak_layak" placeholder="Keterangan Tidak Layak" rows="2">{{ old('ket_tidak_layak', $praPenindakan->ket_tidak_layak) }}</textarea>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+
                         </div>
+
                       </div>
                     </div><!-- end tab pane -->
 
@@ -1085,80 +1042,91 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      const tabsConfig = [{
-        selectId: "tindak_lanjut_li",
-        tabs: [{
+      const selectElement = document.getElementById("pilihan_kegiatan");
+      const skemaPenindakanElement = document.getElementById("skema_penindakan");
+
+      function updateSectionsAndTabs() {
+        const selectedValue = selectElement.value;
+        const skemaPenindakanValue = skemaPenindakanElement ? skemaPenindakanElement.value : null;
+
+        document.getElementById("penindakan_section").classList.add("d-none");
+        document.getElementById("patroli_section").classList.add("d-none");
+        document.getElementById("tidak_layak_section").classList.add("d-none");
+
+        if (selectedValue === "penindakan") {
+          document.getElementById("penindakan_section").classList.remove("d-none");
+        } else if (selectedValue === "patroli") {
+          document.getElementById("patroli_section").classList.remove("d-none");
+        } else if (selectedValue === "tidak_layak") {
+          document.getElementById("tidak_layak_section").classList.remove("d-none");
+        }
+
+        const tabsConfig = [{
             id: "navtabs2-messages-tab-item",
             linkId: "navtabs2-messages-tab",
-            condition: (value) => value === "Tidak Lanjut"
-          },
-          {
-            id: "navtabs2-profile-tab-item",
-            linkId: "navtabs2-profile-tab",
-            condition: (value) => value === "Lanjut"
+            condition: selectedValue === "tidak_layak",
           },
           {
             id: "navtabs2-mpp-tab-item",
             linkId: "navtabs2-mpp-tab",
-            condition: (value) => value === "Lanjut"
+            condition: selectedValue === "penindakan" && skemaPenindakanValue === "PELIMPAHAN",
           },
           {
             id: "navtabs2-settings-tab-item",
             linkId: "navtabs2-settings-tab",
-            condition: (value) => value === "Lanjut"
+            condition: selectedValue === "penindakan" || selectedValue === "patroli",
           },
-        ]
-      }];
+        ];
 
-      tabsConfig.forEach(({
-        selectId,
-        tabs
-      }) => {
-        const selectElement = document.getElementById(selectId);
-
-        const updateTabs = (selectedValue) => {
-          tabs.forEach(({
-            id,
-            linkId,
-            condition
-          }) => {
-            const tabElement = document.getElementById(id);
-            const tabLinkElement = document.getElementById(linkId);
-
-            if (condition(selectedValue)) {
-              tabElement.style.display = "block";
-              const tabContainer = document.querySelector(".tabs-container");
-              if (tabContainer) {
-                const offsetTop = tabContainer.offsetTop;
-                window.scrollTo({
-                  top: offsetTop - 70,
-                  behavior: "smooth",
-                });
-              }
-
-              tabLinkElement.classList.add("highlight");
-              setTimeout(() => tabLinkElement.classList.remove("highlight"), 1000);
-            } else {
-              tabElement.style.display = "none";
-            }
-          });
-        };
-
-        const initialValue = selectElement.value;
-        tabs.forEach(({
-          id
+        tabsConfig.forEach(({
+          id,
+          linkId,
+          condition
         }) => {
           const tabElement = document.getElementById(id);
-          tabElement.style.display = "none";
+          const tabLinkElement = document.getElementById(linkId);
+
+          if (condition) {
+            tabElement.style.display = "block";
+
+            if (tabLinkElement) {
+              tabLinkElement.classList.add("highlight");
+              setTimeout(() => tabLinkElement.classList.remove("highlight"), 1000);
+            }
+          } else {
+            tabElement.style.display = "none";
+          }
         });
-        updateTabs(initialValue);
-        selectElement.addEventListener("change", function() {
-          const selectedValue = selectElement.value;
-          updateTabs(selectedValue);
-        });
+      }
+
+      setTimeout(() => {
+        const selectedValue = selectElement.value || '{{ old('pilihan_kegiatan', $praPenindakan->pilihan_kegiatan) }}';
+        const skemaPenindakanValue = skemaPenindakanElement ?
+          skemaPenindakanElement.value || '{{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan) }}' :
+          null;
+
+        selectElement.value = selectedValue;
+        if (skemaPenindakanElement) {
+          skemaPenindakanElement.value = skemaPenindakanValue;
+        }
+
+        updateSectionsAndTabs();
+      }, 100);
+
+      selectElement.addEventListener("change", function() {
+        updateSectionsAndTabs();
       });
+
+      if (skemaPenindakanElement) {
+        skemaPenindakanElement.addEventListener("change", function() {
+          updateSectionsAndTabs();
+        });
+      }
     });
   </script>
+
+
+
 
   <style>
     .nav-link.highlight {

@@ -82,7 +82,12 @@ class PraPenindakanController extends Controller
 
     public function store(Request $request)
     {
-        TblLaporanInformasi::create($request->all());
+        $data = $request->all();
+        if ($request->has('id_pejabat_sp_1')) {
+            $data['id_pejabat_sp_1'] = json_encode($request->input('id_pejabat_sp_1'));
+        }
+
+        TblLaporanInformasi::create($data);
 
         $no_ref = TblNoRef::first();
         $no_ref->no_li += 1;
@@ -94,6 +99,7 @@ class PraPenindakanController extends Controller
 
         return redirect()->route('pra-penindakan.index')->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
     }
+
 
     public function edit($id)
     {
@@ -347,8 +353,6 @@ class PraPenindakanController extends Controller
 
         // dd($laporanPengawasan);
 
-        // dd($laporanPengawasan);
-
         if ($laporanPengawasan) {
             if ($laporanPengawasan->nhi === 'YA') {
                 $prefix = '';
@@ -450,22 +454,42 @@ class PraPenindakanController extends Controller
             $data['t_t'] = '✔';
         }
 
-        if ($praPenindakan->layak_penindakan === 'YA') {
+        if ($praPenindakan->pilihan_kegiatan === 'penindakan') {
             $data['lp'] = '✔';
+            $data['lpt'] = '✘';
+            $data['tl'] = '✘';
+            $data['skem_layak_penindakan'] = $praPenindakan->skem_layak_penindakan;
+            $data['ket_layak_penindakan'] = $praPenindakan->ket_layak_penindakan;
+            $data['skem_layak_patroli'] = '-';
+            $data['ket_layak_patroli'] = '-';
+            $data['ket_tidak_layak'] = '-';
+        } elseif ($praPenindakan->pilihan_kegiatan === 'patroli') {
+            $data['lp'] = '✘';
+            $data['lpt'] = '✔';
+            $data['tl'] = '✘';
+            $data['skem_layak_patroli'] = $praPenindakan->skem_layak_patroli;
+            $data['ket_layak_patroli'] = $praPenindakan->ket_layak_patroli;
+            $data['skem_layak_penindakan'] = '-';
+            $data['ket_layak_penindakan'] = '-';
+            $data['ket_tidak_layak'] = '-';
+        } elseif ($praPenindakan->pilihan_kegiatan === 'tidak_layak') {
+            $data['lp'] = '✘';
+            $data['lpt'] = '✘';
+            $data['tl'] = '✔';
+            $data['ket_tidak_layak'] = $praPenindakan->ket_tidak_layak;
+            $data['skem_layak_penindakan'] = '-';
+            $data['ket_layak_penindakan'] = '-';
+            $data['skem_layak_patroli'] = '-';
+            $data['ket_layak_patroli'] = '-';
         } else {
             $data['lp'] = '✘';
-        }
-
-        if ($praPenindakan->layak_patroli === 'YA') {
-            $data['lpt'] = '✔';
-        } else {
             $data['lpt'] = '✘';
-        }
-
-        if ($praPenindakan->tidak_layak === 'YA') {
-            $data['tl'] = '✔';
-        } else {
             $data['tl'] = '✘';
+            $data['skem_layak_penindakan'] = '-';
+            $data['ket_layak_penindakan'] = '-';
+            $data['skem_layak_patroli'] = '-';
+            $data['ket_layak_patroli'] = '-';
+            $data['ket_tidak_layak'] = '-';
         }
 
         $data['tahun_sekarang'] = date('Y');
@@ -490,6 +514,8 @@ class PraPenindakanController extends Controller
         } else {
             $tahunSuratLap = '-';
         }
+
+        // dd($data);
 
         $templateProcessor->setValue('tahun_lap', $tahunSuratLap);
 
@@ -657,20 +683,20 @@ class PraPenindakanController extends Controller
 
             switch ($tipePenindakan) {
                 case 'MANDIRI':
-                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/MANDIRI/KPU.206/{$tahunPrint}";
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/MANDIRI/KPU.2/KPU.206/{$tahunPrint}";
                     break;
                 case 'PERBANTUAN':
-                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.206/{$tahunPrint}";
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/KPU.206/{$tahunPrint}";
                     break;
                 case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
-                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/BERSAMA INSTANSI LAIN/KPU.206/{$tahunPrint}";
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/BERSAMA INSTANSI LAIN/KPU.206/{$tahunPrint}";
                     break;
                 default:
-                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/UNKNOWN/KPU.206/{$tahunPrint}";
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/UNKNOWN/KPU.2/KPU.206/{$tahunPrint}";
                     break;
             }
         } else {
-            $data['format_nomor'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
+            $data['format_nomor'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.2/KPU.206/{$data['tahun_print']}";
         }
 
         $templateProcessor->setValue('format_nomor', $data['format_nomor']);
@@ -782,25 +808,19 @@ class PraPenindakanController extends Controller
         Carbon::setLocale('id');
 
         $dateFields = [
-            'tempus_pelanggaran_mpp'
+            'keterangan_tempus',
+            'berakhirnya_tempus'
         ];
 
         foreach ($dateFields as $field) {
             if (!empty($data[$field])) {
-                if ($field == 'tempus_pelanggaran_mpp') {
-                    $tempusPelanggaran = $data[$field];
-
-                    if ($tempusPelanggaran) {
-                        $date = Carbon::parse($tempusPelanggaran);
-                        $formattedDate = $date->isoFormat('dddd, D MMMM YYYY');
-                        $data['tempus_pelanggaran'] = $formattedDate;
-                        $data['pukul'] = $date->format('H:i');
-                    } else {
-                        $data['tempus_pelanggaran'] = '';
-                        $data['pukul'] = '';
-                    }
+                $dateValue = $data[$field];
+                if ($dateValue) {
+                    $date = Carbon::parse($dateValue);
+                    $formattedDate = 'Tanggal ' . $date->isoFormat('D MMMM YYYY') . ' Pukul ' . $date->format('H.i');
+                    $data[$field] = $formattedDate;
                 } else {
-                    $data[$field] = date('d/m/Y H:i', strtotime($data[$field]));
+                    $data[$field] = '';
                 }
             }
         }

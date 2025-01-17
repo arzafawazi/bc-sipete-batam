@@ -208,13 +208,13 @@
                               <i data-feather="trash" class="icon-sm"></i> Hapus
                             </button>
                           </form>
-                          <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                          <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modalPrint{{ $laporanpengawasan->id }}">
                             <i data-feather="printer" class="icon-sm"></i> Print
                           </button>
                         </div>
                       </td>
 
-                      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                      <div class="modal fade" id="modalPrint{{ $laporanpengawasan->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                           <div class="modal-content">
                             <div class="modal-header border-bottom-0 pb-0">
@@ -313,6 +313,7 @@
                                       </div>
                                     </div>
                                   </div>
+
                                   <div class="col-md-4">
                                     <div class="card print-card border-dark shadow-lg">
                                       <div class="card-body text-center">
@@ -326,7 +327,7 @@
                                           </svg>
                                         </div>
                                         <h6 class="card-title mb-3">Surat NI</h6>
-                                        <a href="{{ route('surat-ni.print', $laporanpengawasan->id) }}" class="btn btn-outline-dark print-btn">Print</a>
+                                        <a href=" " class="btn btn-outline-dark print-btn">Print</a>
                                       </div>
                                     </div>
                                   </div>

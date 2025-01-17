@@ -194,13 +194,14 @@
                             <i data-feather="trash" class="icon-sm"></i> Delete
                           </button>
                         </form>
-                        <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                        <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modalPrint{{ $praPenindakan->id }}">
                           <i data-feather="printer" class="icon-sm"></i> Print
                         </button>
+
                       </div>
                     </td>
 
-                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="modalPrint{{ $praPenindakan->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
                           <div class="modal-header border-bottom-0 pb-0">

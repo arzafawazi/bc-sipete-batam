@@ -433,10 +433,11 @@
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Jumlah/Jenis/Ukuran/Nomor</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" placeholder="Jumlah/Jenis/Ukuran/Nomor" name="jumlah_jenis_ukuran_no" value="{{ old('jumlah_jenis_ukuran_no', $penindakans->jumlah_jenis_ukuran_no) }}"
-                                          {{ $penindakans->data_barang == 'YA' ? '' : 'disabled' }}>
+                                        <textarea class="form-control form-input" placeholder="Jumlah/Jenis/Ukuran/Nomor" name="jumlah_jenis_ukuran_no" rows="3" {{ $penindakans->data_barang == 'YA' ? '' : 'disabled' }}>{{ old('jumlah_jenis_ukuran_no', $penindakans->jumlah_jenis_ukuran_no) }}</textarea>
                                       </div>
                                     </div>
+
+
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Peti Kemasan / Kemasan</label>
                                       <div class="col-sm-8">
@@ -457,9 +458,9 @@
                                       </div>
                                     </div>
                                     <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Jenis Barang</label>
+                                      <label class="col-sm-4 col-form-label">Uraian Barang</label>
                                       <div class="col-sm-8">
-                                        <textarea class="form-control form-input" placeholder="Jenis Barang" name="jenis_barang" rows="2" {{ $penindakans->data_barang == 'YA' ? '' : 'disabled' }}>{{ old('jenis_barang', $penindakans->jenis_barang) }}</textarea>
+                                        <textarea class="form-control form-input" placeholder="Uraian Barang" name="jenis_barang" rows="2" {{ $penindakans->data_barang == 'YA' ? '' : 'disabled' }}>{{ old('jenis_barang', $penindakans->jenis_barang) }}</textarea>
                                       </div>
                                     </div>
 
@@ -1641,59 +1642,7 @@
 
                           </div>
                           <hr class="my-0">
-                          <div id="flush-collapse1022" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body bg-light">
-                              <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                {{-- <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Tegah</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Tegah</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_tegah', $penindakans->no_ba_tegah) }}" placeholder="No. B.A Tegah" name="no_ba_tegah" readonly>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Tegah</label>
-                                      <input type="date" class="form-control bg-primary text-white" name="tgl_ba_tegah">
-                                    </div>
-
-                                    
-                                  </div>
-                                </div> --}}
-
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  {{-- <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div> --}}
-
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                         </div>
-
 
                       </div>
                     </div>

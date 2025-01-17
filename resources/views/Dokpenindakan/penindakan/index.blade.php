@@ -179,6 +179,7 @@
                     <td class="fw-medium">{{ $penindakan->no_sbp }}</td>
                     <td class="fw-medium">{{ $penindakan->tgl_sbp }}</td>
                     <td>
+
                       <div class="d-flex gap-1 justify-content-center">
                         <a href="{{ route('penindakan.edit', ['penindakan' => $penindakan->id]) }}" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
                           <i data-feather="edit" class="icon-sm"></i> Edit
@@ -190,7 +191,7 @@
                             <i data-feather="trash" class="icon-sm"></i> Delete
                           </button>
                         </form>
-                        <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                        <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modalPrint{{ $penindakan->id }}">
                           <i data-feather="printer" class="icon-sm"></i> Print
                         </button>
 
@@ -199,7 +200,7 @@
                     </td>
 
 
-                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="modalPrint{{ $penindakan->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
                           <div class="modal-header border-bottom-0 pb-0" style="position: sticky; top: 0; z-index: 1055; background: #fff; height: 70px;">
