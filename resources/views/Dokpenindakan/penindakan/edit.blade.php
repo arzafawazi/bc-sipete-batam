@@ -90,9 +90,9 @@
                       <div class="tab-pane" id="sbp" role="tabpanel">
                         <div class="row">
                           <div class="col-lg-6">
+                            <h6><b>Data Referensi</b></h6>
+                            <hr>
                             <div class="row">
-                              <h6><b>Data Referensi</b></h6>
-                              <hr>
                               <div class="col-md-12 mb-3">
                                 <label>Opsi Penindakan</label>
                                 <input type="text" class="form-control bg-primary text-white" value="{{ old('opsi_penindakan', $penindakans->opsi_penindakan) }}" readonly>
@@ -136,26 +136,44 @@
 
                               <div class="col-md-6 mb-3">
                                 <label>Pejabat 1 Penindakan</label>
-                                <select class="form-select select2" name="id_petugas_1_sbp">
-                                  <option value="" disabled>- Pilih -</option>
+                                <select class="form-select select2" name="id_petugas_1_sbp" disabled>
+                                  <option value="" disabled {{ old('id_petugas_1_sbp', $penindakans->id_petugas_1_sbp) == '' ? 'selected' : '' }}>- Pilih -</option>
                                   @foreach ($users as $user)
-                                    <option value="{{ $user->id_admin }}" {{ $penindakans->id_petugas_1_sbp == $user->id_admin ? 'selected' : '' }}>
-                                      {{ $user->name }}
-                                    </option>
+                                    <option value="{{ $user->id_admin }}" {{ old('id_petugas_1_sbp', $penindakans->id_petugas_1_sbp) == $user->id_admin ? 'selected' : '' }}>{{ $user->name }}</option>
                                   @endforeach
                                 </select>
                               </div>
-
 
                               <div class="col-md-6 mb-3">
                                 <label>Pejabat 2 Penindakan</label>
                                 <select class="form-select select2" name="id_petugas_2_sbp">
-                                  <option value="" disabled selected>- Pilih -</option>
+                                  <option value="" disabled {{ old('id_petugas_2_sbp', $penindakans->id_petugas_2_sbp) == '' ? 'selected' : '' }}>- Pilih -</option>
                                   @foreach ($users as $user)
-                                    <option value="{{ $user->id_admin }}" {{ $penindakans->id_petugas_2_sbp == $user->id_admin ? 'selected' : '' }}>{{ $user->name }}</option>
+                                    <option value="{{ $user->id_admin }}" {{ old('id_petugas_2_sbp', $penindakans->id_petugas_2_sbp) == $user->id_admin ? 'selected' : '' }}>{{ $user->name }}</option>
                                   @endforeach
                                 </select>
                               </div>
+
+                              <div class="col-md-6 mb-3">
+                                <label>Pejabat 3 Penindakan</label>
+                                <select class="form-select select2" name="id_petugas_3_sbp">
+                                  <option value="" disabled {{ old('id_petugas_3_sbp', $penindakans->id_petugas_3_sbp) == '' ? 'selected' : '' }}>- Pilih -</option>
+                                  @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}" {{ old('id_petugas_3_sbp', $penindakans->id_petugas_3_sbp) == $user->id_admin ? 'selected' : '' }}>{{ $user->name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                <label>Pejabat 4 Penindakan</label>
+                                <select class="form-select select2" name="id_petugas_4_sbp">
+                                  <option value="" disabled {{ old('id_petugas_4_sbp', $penindakans->id_petugas_4_sbp) == '' ? 'selected' : '' }}>- Pilih -</option>
+                                  @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}" {{ old('id_petugas_4_sbp', $penindakans->id_petugas_4_sbp) == $user->id_admin ? 'selected' : '' }}>{{ $user->name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+
 
                               <h6><b>C. Data Saksi</b></h6>
                               <hr>
@@ -164,26 +182,69 @@
                                 <label>Nama Saksi</label>
                                 <input type="text" class="form-control" placeholder="Nama Saksi" name="nama_saksi" value="{{ old('nama_saksi', $penindakans->nama_saksi) }}">
                               </div>
-
                               <div class="col-md-6 mb-3">
                                 <label>Pekerjaan Saksi</label>
                                 <input type="text" class="form-control" placeholder="Pekerjaan Saksi" name="pekerjaan_saksi" value="{{ old('pekerjaan_saksi', $penindakans->pekerjaan_saksi) }}">
                               </div>
-
                               <div class="col-md-6 mb-3">
                                 <label>Kontak Saksi (NO.HP)</label>
                                 <input type="text" class="form-control" placeholder="Kontak Saksi (NO.HP)" name="kontak_saksi" value="{{ old('kontak_saksi', $penindakans->kontak_saksi) }}">
                               </div>
-
                               <div class="col-md-6 mb-3">
                                 <label>No. Identitas Saksi</label>
                                 <input type="text" class="form-control" placeholder="No. Identitas Saksi" name="no_identitas_saksi" value="{{ old('no_identitas_saksi', $penindakans->no_identitas_saksi) }}">
                               </div>
-
+                              <div class="col-md-12 mb-3">
+                                <label>Jenis Identitas Saksi</label>
+                                <input type="text" class="form-control" placeholder="KTP/SIM/DLL" name="jenis_iden_saksi" value="{{ old('jenis_iden_saksi', $penindakans->jenis_iden_saksi) }}">
+                              </div>
                               <div class="col-md-12 mb-3">
                                 <label>Alamat Saksi</label>
                                 <input type="text" class="form-control" placeholder="Alamat Saksi" name="alamat_saksi" value="{{ old('alamat_saksi', $penindakans->alamat_saksi) }}">
                               </div>
+                              <div class="col-md-6 mb-3">
+                                <label>Jenis Kelamin</label>
+                                <select class="form-control form-input select2" name="jk_saksi">
+                                  <option value="" disabled {{ old('jk_saksi', $penindakans->jk_saksi) == '' ? 'selected' : '' }}>Pilih Jenis Kelamin</option>
+                                  <option value="Laki-laki" {{ old('jk_saksi', $penindakans->jk_saksi) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                  <option value="Perempuan" {{ old('jk_saksi', $penindakans->jk_saksi) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                </select>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <label>Tempat Tanggal Lahir</label>
+                                <input type="text" class="form-control" placeholder="Tempat Tanggal Lahir" name="ttl_saksi" value="{{ old('ttl_saksi', $penindakans->ttl_saksi) }}">
+                              </div>
+                              <div class="mb-3 form-group">
+                                <label>Kewarganegaraan</label>
+                                <div class="col-sm-12">
+                                  <select class="form-control form-input select2" name="kewarganegaraan_saksi">
+                                    <option value="" disabled {{ old('kewarganegaraan_saksi', $penindakans->kewarganegaraan_saksi) == '' ? 'selected' : '' }}>- Pilih Kewarganegaraan -</option>
+                                    @foreach ($nama_negara as $benua => $negara)
+                                      <optgroup label="{{ $benua }}">
+                                        @foreach ($negara as $item)
+                                          <option value="{{ $item->UrEdi }}" {{ old('kewarganegaraan_saksi', $penindakans->kewarganegaraan_saksi) == $item->UrEdi ? 'selected' : '' }}>
+                                            {{ $item->UrEdi }}
+                                          </option>
+                                        @endforeach
+                                      </optgroup>
+                                    @endforeach
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                <label>Umur</label>
+                                <input type="number" class="form-control" placeholder="Umur" name="umur_saksi" value="{{ old('umur_saksi', $penindakans->umur_saksi) }}">
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <label>NPWP</label>
+                                <input type="text" class="form-control" placeholder="NPWP" name="npwp_saksi" value="{{ old('npwp_saksi', $penindakans->npwp_saksi) }}">
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                <label>Nomor Rekening</label>
+                                <input type="text" class="form-control" placeholder="Nomor Rekening" name="norek_saksi" value="{{ old('norek_saksi', $penindakans->norek_saksi) }}">
+                              </div>
+
 
                               <!-- Perintah Yang Dilaksanakan (Switch Checkboxes) -->
                               {{-- <div class="col-md-12 mb-3">
@@ -294,16 +355,16 @@
 
                               <div class="col-md-12 mb-3">
                                 <label>Uraian Penindakan</label>
-                                <textarea class="form-control" placeholder="Uraian Penindakan" name="uraian_penindakan" rows="2">{{ old('uraian_penindakan', $penindakans->uraian_penindakan) }}</textarea>
+                                <textarea class="form-control" placeholder="Uraian Penindakan" name="uraian_penindakan" rows="8">{{ old('uraian_penindakan', $penindakans->uraian_penindakan) }}</textarea>
                               </div>
 
                               <div class="col-md-12 mb-3">
                                 <label>Alasan Penindakan</label>
                                 <select class="form-control select2" name="alasan_penindakan" id="alasan_penindakan">
-                                  <option value="" disabled selected>-Pilih Alasan Penindakan-</option>
+                                  <option value="" disabled>-Pilih Alasan Penindakan-</option>
                                   @foreach ($jenisPelanggaran->unique('alasan_penindakan') as $jenis)
                                     <option value="{{ $jenis->alasan_penindakan }} ({{ $jenis->jenis_pelanggaran }})" data-jenis="{{ $jenis->jenis_pelanggaran }}"
-                                      {{ old('alasan_penindakan', $penindakans->alasan_penindakan) == $jenis->alasan_penindakan ? 'selected' : '' }}>
+                                      {{ old('alasan_penindakan', $penindakans->alasan_penindakan) == $jenis->alasan_penindakan . ' (' . $jenis->jenis_pelanggaran . ')' ? 'selected' : '' }}>
                                       {{ $jenis->alasan_penindakan }}
                                     </option>
                                   @endforeach
@@ -312,8 +373,9 @@
 
                               <div class="col-md-12 mb-3">
                                 <label>Jenis Pelanggaran</label>
-                                <textarea class="form-control form-input bg-primary text-white" id="jenis_pelanggaran" disabled>{{ old('jenis_pelanggaran', $penindakans->jenis_pelanggaran) }}</textarea>
+                                <textarea class="form-control form-input bg-primary text-white" id="jenis_pelanggaran" rows="8" disabled>{{ old('jenis_pelanggaran', $penindakans->jenis_pelanggaran) }}</textarea>
                               </div>
+
 
                               <div class="col-md-12 mb-3">
                                 <label>Tanggal Mulai & Waktu Mulai</label>
@@ -327,7 +389,7 @@
 
                               <div class="col-md-12 mb-3">
                                 <label>Hal Yang Terjadi</label>
-                                <textarea class="form-control" placeholder="Hal Yang Terjadi" name="hal_yang_terjadi" rows="5">{{ old('hal_yang_terjadi', $penindakans->hal_yang_terjadi) }}</textarea>
+                                <textarea class="form-control" placeholder="Hal Yang Terjadi" name="hal_yang_terjadi" rows="11">{{ old('hal_yang_terjadi', $penindakans->hal_yang_terjadi) }}</textarea>
                               </div>
                             </div>
 
@@ -673,17 +735,10 @@
                                     <h6><b>B. Data Pemeriksaan</b></h6>
                                     <hr>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Lokasi Pemeriksaan</label>
-                                      <div class="col-sm-8">
+                                    <div class="mb-3 form-group">
+                                      <label>Lokasi Pemeriksaan</label>
+                                      <div class="col-sm-12">
                                         <textarea class="form-control form-input" placeholder="Lokasi Pemeriksaan" name="lokasi_pemeriksaan" rows="3">{{ old('lokasi_pemeriksaan', $penindakans->lokasi_pemeriksaan) }}</textarea>
-                                      </div>
-                                    </div>
-
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Rincian Hasil Pemeriksaan</label>
-                                      <div class="col-sm-8">
-                                        <textarea class="form-control form-input" placeholder="Rincian Hasil Pemeriksaan" name="rincian_hasil_pemeriksaan" rows="3">{{ old('rincian_hasil_pemeriksaan', $penindakans->rincian_hasil_pemeriksaan) }}</textarea>
                                       </div>
                                     </div>
 
@@ -692,32 +747,16 @@
 
                                 <!-- Right Column (Pejabat Selection) -->
                                 <div class="col-lg-6">
-                                  <h6><b>C. Data Pejabat</b></h6>
+                                  <h6><b>C. Data Lainnya</b></h6>
                                   <hr>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Melakukan Pemeriksaan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_riksa">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_1_ba_riksa', $penindakans->id_pejabat_1_ba_riksa) == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
+                                  <div class="mb-3 form-group">
+                                    <label>Rincian Hasil Pemeriksaan</label>
+                                    <div class="col-sm-12">
+                                      <textarea class="form-control form-input" placeholder="Rincian Hasil Pemeriksaan" name="rincian_hasil_pemeriksaan" rows="9">{{ old('rincian_hasil_pemeriksaan', $penindakans->rincian_hasil_pemeriksaan) }}</textarea>
+                                    </div>
                                   </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Melakukan Pemeriksaan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_riksa">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_2_ba_riksa', $penindakans->id_pejabat_2_ba_riksa) == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
                                 </div>
                               </div>
 
@@ -742,7 +781,8 @@
                               <div class="row">
                                 <!-- Left Column (Data Laporan Informasi) -->
                                 <div class="col-lg-6">
-
+                                  <h6><b>A. Data B.A Riksa Badan</b></h6>
+                                  <hr>
                                   <div class="row">
                                     <div class="col-md-6 mb-3">
                                       <label>No. B.A Riksa Badan</label>
@@ -755,24 +795,23 @@
                                     </div>
                                   </div>
 
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">
+                                  <div class="mb-3 form-group">
+                                    <label>
                                       Lokasi pemeriksaan Badan
                                     </label>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-12">
                                       <input type="text" class="form-control" placeholder="Lokasi pemeriksaan Badan" name="lokasi_pemeriksaan_badan" value="{{ old('lokasi_pemeriksaan_badan', $penindakans->lokasi_pemeriksaan_badan ?? '') }}">
                                     </div>
                                   </div>
 
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">
+                                  <div class="mb-3 form-group">
+                                    <label>
                                       Uraian pakaian yang dibuka/pemeriksaan medis
                                     </label>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-12">
                                       <textarea class="form-control form-input" placeholder="Uraian pakaian yang dibuka/pemeriksaan medis" name="rincian_pemeriksaan_badan" rows="3">{{ old('rincian_pemeriksaan_badan', $penindakans->rincian_pemeriksaan_badan ?? '') }}</textarea>
                                     </div>
                                   </div>
-
                                 </div>
 
 
@@ -781,13 +820,12 @@
                                 <!-- Right Column (Pejabat Selection) -->
                                 <div class="col-lg-6">
 
-
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">
+                                  <div class="mb-3 form-group">
+                                    <label>
                                       Hasil pemeriksaan kedapatan
                                     </label>
-                                    <div class="col-sm-8">
-                                      <textarea class="form-control form-input" placeholder="Hasil pemeriksaan kedapatan" name="hasil_pemeriksaan_badan" rows="3">{{ old('hasil_pemeriksaan_badan', $penindakans->hasil_pemeriksaan_badan ?? '') }}</textarea>
+                                    <div class="col-sm-12">
+                                      <textarea class="form-control form-input" placeholder="Hasil pemeriksaan kedapatan" name="hasil_pemeriksaan_badan" rows="13">{{ old('hasil_pemeriksaan_badan', $penindakans->hasil_pemeriksaan_badan ?? '') }}</textarea>
                                     </div>
                                   </div>
 
@@ -800,29 +838,7 @@
                                     </div>
                                   </div> --}}
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Melakukan Pemeriksaan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_riksa_badan">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_1_ba_riksa_badan', $penindakans->id_pejabat_1_ba_riksa_badan ?? '') == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Melakukan Pemeriksaan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_riksa_badan">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_2_ba_riksa_badan', $penindakans->id_pejabat_2_ba_riksa_badan ?? '') == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
                                 </div>
 
                                 <h6><b>B. Data Pemeriksaan Badan</b></h6>
@@ -1045,26 +1061,29 @@
 
                                     <h6><b>B. Data Pembawaan</b></h6>
                                     <hr>
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Dari</label>
-                                      <div class="col-sm-8">
+
+                                    <div class="mb-3 form-group">
+                                      <label>Dari</label>
+                                      <div class="col-sm-12">
                                         <input type="text" class="form-control form-input" name="dibawa_dari" placeholder="Tempat sarkut mulai dibawa" value="{{ old('dibawa_dari', $penindakans->dibawa_dari ?? '') }}">
                                       </div>
                                     </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Tujuan</label>
-                                      <div class="col-sm-8">
+                                    <div class="mb-3 form-group">
+                                      <label>Tujuan</label>
+                                      <div class="col-sm-12">
                                         <input type="text" class="form-control form-input" name="tujuan" placeholder="Tempat tujuan sarkut" value="{{ old('tujuan', $penindakans->tujuan ?? '') }}">
                                       </div>
                                     </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Alasan</label>
-                                      <div class="col-sm-8">
+                                    <div class="mb-3 form-group">
+                                      <label>Alasan</label>
+                                      <div class="col-sm-12">
                                         <textarea class="form-control form-input" placeholder="Diisi pertimbangan dan alasan sarana pengangkut/barang dibawa" name="alasan" rows="3">{{ old('alasan', $penindakans->alasan ?? '') }}</textarea>
                                       </div>
                                     </div>
+
+
                                   </div>
                                 </div>
 
@@ -1073,43 +1092,23 @@
                                   <h6><b>C. Data Lainnya</b></h6>
                                   <hr>
 
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">Waktu Berangkat</label>
-                                    <div class="col-sm-8">
+                                  <div class="mb-3 form-group">
+                                    <label>Waktu Berangkat</label>
+                                    <div class="col-sm-12">
                                       <input type="text" class="form-control" name="waktu_berangkat" id="datetime-datepicker" placeholder="Waktu Keberangkatan" value="{{ old('waktu_berangkat', $penindakans->waktu_berangkat ?? '') }}">
                                     </div>
                                   </div>
 
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">Waktu Tiba</label>
-                                    <div class="col-sm-8">
+                                  <div class="mb-3 form-group">
+                                    <label>Waktu Tiba</label>
+                                    <div class="col-sm-12">
                                       <input type="text" class="form-control" name="waktu_tiba" id="datetime-datepicker" placeholder="Waktu Tiba" value="{{ old('waktu_tiba', $penindakans->waktu_tiba ?? '') }}">
                                     </div>
                                   </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Membawa Sarkut</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_sarkut">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_1_ba_sarkut', $penindakans->id_pejabat_1_ba_sarkut ?? '') == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Membawa Sarkut</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_sarkut">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_2_ba_sarkut', $penindakans->id_pejabat_2_ba_sarkut ?? '') == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
+
+
                                 </div>
                               </div>
 
@@ -1142,54 +1141,49 @@
                           <hr class="my-0">
                           <div id="flush-collapse101" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+                              <!-- Left Column (Data Laporan Informasi) -->
+
+                              <h6><b>A. Data B.A Contoh</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Contoh</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Contoh</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_contoh', $penindakans->no_ba_contoh) }}" placeholder="No. B.A Contoh" name="no_ba_contoh" readonly>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Contoh</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_contoh', $penindakans->no_ba_contoh) }}" placeholder="No. B.A Contoh" name="no_ba_contoh" readonly>
+                                </div>
 
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Contoh</label>
-                                      <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_ba_contoh', $penindakans->tgl_ba_contoh) }}" name="tgl_ba_contoh">
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Contoh</label>
+                                  <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_ba_contoh', $penindakans->tgl_ba_contoh) }}" name="tgl_ba_contoh">
+                                </div>
+                              </div>
 
-                                    <h6><b>B. Data Pengambilan Barang Contoh</b></h6>
-                                    <hr>
+                              <h6><b>B. Data Pengambilan Barang Contoh</b></h6>
+                              <hr>
 
-                                    <div class="card-body">
-                                      <div class="accordion accordion-flush" id="accordionFlushExample">
+                              <div class="card-body">
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
 
 
-                                        <div class="accordion-item">
-                                          <h2 class="accordion-header">
-                                            <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapserrte">
-                                              Barang
-                                            </button>
-                                          </h2>
-                                          <div id="flush-collapserrte" class="accordion-collapse collapse">
-                                            <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
+                                  <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                      <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapserrte">
+                                        Barang
+                                      </button>
+                                    </h2>
+                                    <div id="flush-collapserrte" class="accordion-collapse collapse">
+                                      <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
 
-                                              <div class="row mb-3 form-group">
-                                                <label class="col-sm-4 col-form-label">Jumlah dan Jenis Barang</label>
-                                                <div class="col-sm-8">
-                                                  <textarea class="form-control form-input" placeholder="Jumlah dan Jenis Barang Contoh" name="jumlah_jenis_barang_contoh" rows="3">{{ old('jumlah_jenis_barang_contoh', $penindakans->jumlah_jenis_barang_contoh) }}</textarea>
-                                                </div>
-                                              </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Jumlah dan Jenis Barang</label>
+                                          <div class="col-sm-8">
+                                            <textarea class="form-control form-input" placeholder="Jumlah dan Jenis Barang Contoh" name="jumlah_jenis_barang_contoh" rows="3">{{ old('jumlah_jenis_barang_contoh', $penindakans->jumlah_jenis_barang_contoh) }}</textarea>
+                                          </div>
+                                        </div>
 
-                                              <div class="row mb-3 form-group">
-                                                <label class="col-sm-4 col-form-label">Lokasi</label>
-                                                <div class="col-sm-8">
-                                                  <input type="text" class="form-control form-input" value="{{ old('lokasi_barcon', $penindakans->lokasi_barcon) }}" placeholder="Lokasi Pengambilan Barang Contoh" name="lokasi_barcon">
-                                                </div>
-                                              </div>
-
-
-                                            </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Lokasi</label>
+                                          <div class="col-sm-8">
+                                            <input type="text" class="form-control form-input" value="{{ old('lokasi_barcon', $penindakans->lokasi_barcon) }}" placeholder="Lokasi Pengambilan Barang Contoh" name="lokasi_barcon">
                                           </div>
                                         </div>
 
@@ -1197,38 +1191,15 @@
                                       </div>
                                     </div>
                                   </div>
-                                </div>
 
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_1_ba_contoh', $penindakans->id_pejabat_1_ba_contoh) == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_2_ba_contoh', $penindakans->id_pejabat_2_ba_contoh) == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
                                 </div>
-
                               </div>
+
+
+
+
+
                             </div>
                           </div>
                         </div>
@@ -1246,80 +1217,42 @@
                           <div class="d-flex justify-content-between align-items-center p-3 bg-light">
                             <span class="fw-bold">B.A Dokumentasi</span>
                             <div class="form-check form-switch mb-0">
-                              <input class="form-check-input status-toggle" type="checkbox" role="switch" id="flexSwitchCheck102" data-id="flush-collapse102" name="ba_dok" value="{{ old('ba_dok', $penindakans->ba_dok) }}"
-                                {{ old('ba_dok', $penindakans->ba_dok ?? '') == 'YA' ? 'checked' : '' }} aria-expanded="false" aria-controls="flush-collapse102">
-                              <label class="form-check-label" for="flexSwitchCheck102" id="switch-label-102">
+                              <input class="form-check-input status-toggle" type="checkbox" role="switch" id="flexSwitchCheck102n" data-id="flush-collapse102n" name="ba_dok" value="{{ old('ba_dok', $penindakans->ba_dok) }}"
+                                {{ old('ba_dok', $penindakans->ba_dok ?? '') == 'YA' ? 'checked' : '' }} aria-expanded="false" aria-controls="flush-collapse102n">
+                              <label class="form-check-label" for="flexSwitchCheck102n" id="switch-label-102n">
                                 {{ old('ba_dok', $penindakans->ba_dok ?? '') == 'YA' ? 'YA' : 'TIDAK' }}
                               </label>
                             </div>
 
                           </div>
                           <hr class="my-0">
-                          <div id="flush-collapse102" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                          <div id="flush-collapse102n" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+
+                              <h6><b>A. Data B.A Dokumentasi</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Dokumentasi</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Dokumentasi</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_dok', $penindakans->no_ba_dok) }}" placeholder="No. B.A Dokumentasi" name="no_ba_dok" readonly>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Dokumentasi</label>
-                                      <input type="date" class="form-control bg-primary text-white" name="tgl_ba_dok" value="{{ old('tgl_ba_dok', $penindakans->tgl_ba_dok) }}">
-                                    </div>
-
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Lokasi</label>
-                                      <div class="col-sm-8">
-                                        <textarea class="form-control form-input" placeholder="Lokasi Dokumentasi Barang" name="lokasi_ba_dok" rows="3">{{ old('lokasi_ba_dok', $penindakans->lokasi_ba_dok) }}</textarea>
-                                      </div>
-                                    </div>
-
-                                  </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Dokumentasi</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_dok', $penindakans->no_ba_dok) }}" placeholder="No. B.A Dokumentasi" name="no_ba_dok" readonly>
                                 </div>
 
-
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Mengambil Dokumentasi</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_dokumentasi">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_1_ba_dokumentasi', $penindakans->id_pejabat_1_ba_dokumentasi) == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Mengambil Dokumentasi</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_dokumentasi">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_2_ba_dokumentasi', $penindakans->id_pejabat_2_ba_dokumentasi) == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Dokumentasi</label>
+                                  <input type="date" class="form-control bg-primary text-white" name="tgl_ba_dok" value="{{ old('tgl_ba_dok', $penindakans->tgl_ba_dok) }}">
                                 </div>
-
-
                               </div>
+
+                              <div class="mb-3 form-group">
+                                <label>Lokasi</label>
+                                <div class="col-sm-12">
+                                  <textarea class="form-control form-input" placeholder="Lokasi Dokumentasi Barang" name="lokasi_ba_dok" rows="3">{{ old('lokasi_ba_dok', $penindakans->lokasi_ba_dok) }}</textarea>
+                                </div>
+                              </div>
+
                             </div>
                           </div>
                         </div>
-
-
                       </div>
                     </div>
 
@@ -1342,57 +1275,23 @@
                           <hr class="my-0">
                           <div id="flush-collapse1059" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
-                              <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Tegah</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Tegah</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_tegah', $penindakans->no_ba_tegah) }}" placeholder="No. B.A Tegah" name="no_ba_tegah" readonly>
-                                    </div>
 
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Tegah</label>
-                                      <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_ba_tegah', $penindakans->tgl_ba_tegah) }}" name="tgl_ba_tegah">
-                                    </div>
-                                  </div>
+                              <h6><b>A. Data B.A Tegah</b></h6>
+                              <hr>
+                              <div class="row">
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Tegah</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_tegah', $penindakans->no_ba_tegah) }}" placeholder="No. B.A Tegah" name="no_ba_tegah" readonly>
                                 </div>
 
-
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  {{-- <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div> --}}
-
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Tegah</label>
+                                  <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_ba_tegah', $penindakans->tgl_ba_tegah) }}" name="tgl_ba_tegah">
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-
-
                       </div>
                     </div>
 
@@ -1415,81 +1314,47 @@
                           <hr class="my-0">
                           <div id="flush-collapse1032" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+                              <h6><b>A. Data B.A Segel</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Segel</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Segel</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_segel', $penindakans->no_ba_segel) }}" placeholder="No. B.A Segel" name="no_ba_segel" readonly>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Segel</label>
-                                      <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_ba_segel', $penindakans->tgl_ba_segel) }}" name="tgl_ba_segel">
-                                    </div>
-
-                                    <div class="col-lg-12 mb-3">
-                                      <label>Jenis Segel</label>
-                                      <select class="form-control form-select select2" name="jenis_segel_ba_segel">
-                                        <option value="" selected disabled>- Pilih -</option>
-                                        @foreach ($segels as $segel)
-                                          <option value="{{ $segel->jenis_segel }}" {{ old('jenis_segel_ba_segel', $penindakans->jenis_segel_ba_segel) == $segel->jenis_segel ? 'selected' : '' }}>
-                                            {{ $segel->jenis_segel }}
-                                          </option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Jumlah Segel</label>
-                                      <input type="text" class="form-control" value="{{ old('jumlah_segel_ba_segel', $penindakans->jumlah_segel_ba_segel) }}" placeholder="Jumlah Segel" name="jumlah_segel_ba_segel">
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Nomor Segel</label>
-                                      <input type="text" class="form-control" value="{{ old('nomor_segel_ba_segel', $penindakans->nomor_segel_ba_segel) }}" placeholder="Nomor Segel" name="nomor_segel_ba_segel">
-                                    </div>
-
-                                    <div class="col-md-12 mb-3">
-                                      <label>Peletakan Segel</label>
-                                      <textarea class="form-control form-input" placeholder="Peletakan Segel" name="peletakan_segel_ba_segel" rows="3">{{ old('peletakan_segel_ba_segel', $penindakans->peletakan_segel_ba_segel) }}</textarea>
-                                    </div>
-                                  </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Segel</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_segel', $penindakans->no_ba_segel) }}" placeholder="No. B.A Segel" name="no_ba_segel" readonly>
                                 </div>
 
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Segel</label>
+                                  <input type="date" class="form-control bg-primary text-white" value="{{ old('tgl_ba_segel', $penindakans->tgl_ba_segel) }}" name="tgl_ba_segel">
+                                </div>
+                              </div>
 
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
+                              <div class="col-lg-12 mb-3">
+                                <label>Jenis Segel</label>
+                                <select class="form-control form-select select2" name="jenis_segel_ba_segel">
+                                  <option value="" selected disabled>- Pilih -</option>
+                                  @foreach ($segels as $segel)
+                                    <option value="{{ $segel->jenis_segel }}" {{ old('jenis_segel_ba_segel', $penindakans->jenis_segel_ba_segel) == $segel->jenis_segel ? 'selected' : '' }}>
+                                      {{ $segel->jenis_segel }}
+                                    </option>
+                                  @endforeach
+                                </select>
+                              </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Melakukan Penyegelan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_segel">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_1_ba_segel', $penindakans->id_pejabat_1_ba_segel) == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Melakukan Penyegelan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_segel">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ old('id_pejabat_2_ba_segel', $penindakans->id_pejabat_2_ba_segel) == $user->id_admin ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
+                              <div class="row">
+                                <div class="col-md-6 mb-3">
+                                  <label>Jumlah Segel</label>
+                                  <input type="text" class="form-control" value="{{ old('jumlah_segel_ba_segel', $penindakans->jumlah_segel_ba_segel) }}" placeholder="Jumlah Segel" name="jumlah_segel_ba_segel">
                                 </div>
 
+                                <div class="col-md-6 mb-3">
+                                  <label>Nomor Segel</label>
+                                  <input type="text" class="form-control" value="{{ old('nomor_segel_ba_segel', $penindakans->nomor_segel_ba_segel) }}" placeholder="Nomor Segel" name="nomor_segel_ba_segel">
+                                </div>
+                              </div>
+
+                              <div class="col-md-12 mb-3">
+                                <label>Peletakan Segel</label>
+                                <textarea class="form-control form-input" placeholder="Peletakan Segel" name="peletakan_segel_ba_segel" rows="3">{{ old('peletakan_segel_ba_segel', $penindakans->peletakan_segel_ba_segel) }}</textarea>
                               </div>
                             </div>
                           </div>
@@ -1519,111 +1384,77 @@
                           <hr class="my-0">
                           <div id="flush-collapse1011" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+
+                              <h6><b>A. Data B.A Titip</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Titip</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Titip</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_titip', $penindakans->no_ba_titip) }}" placeholder="No. B.A Titip" name="no_ba_titip" readonly>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Titip</label>
-                                      <input type="date" class="form-control bg-primary text-white" name="tgl_ba_titip" value="{{ old('tgl_ba_titip', $penindakans->tgl_ba_titip) }}">
-                                    </div>
-
-
-                                  </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Titip</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_titip', $penindakans->no_ba_titip) }}" placeholder="No. B.A Titip" name="no_ba_titip" readonly>
                                 </div>
 
-
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Melakukan Penitipan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_titip">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ $user->id_admin == old('id_pejabat_1_ba_titip', $penindakans->id_pejabat_1_ba_titip) ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Melakukan Penitipan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_titip">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ $user->id_admin == old('id_pejabat_2_ba_titip', $penindakans->id_pejabat_2_ba_titip) ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Titip</label>
+                                  <input type="date" class="form-control bg-primary text-white" name="tgl_ba_titip" value="{{ old('tgl_ba_titip', $penindakans->tgl_ba_titip) }}">
                                 </div>
+                              </div>
 
-                                <h6><b>B. Data Penitipan</b></h6>
-                                <hr>
+                              <h6><b>B. Data Penitipan</b></h6>
+                              <hr>
 
-                                <div class="card-body">
-                                  <div class="accordion accordion-flush" id="accordionFlushExample">
-                                    <div class="accordion-item">
-                                      <h2 class="accordion-header">
-                                        <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse"
-                                          data-bs-target="#flush-collapserrtez">
-                                          Penitipan
-                                        </button>
-                                      </h2>
-                                      <div id="flush-collapserrtez" class="accordion-collapse collapse">
-                                        <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
+                              <div class="card-body">
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
+                                  <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                      <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapserrtez">
+                                        Penitipan
+                                      </button>
+                                    </h2>
+                                    <div id="flush-collapserrtez" class="accordion-collapse collapse">
+                                      <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
 
-                                          <div class="row mb-3 form-group">
-                                            <label class="col-sm-4 col-form-label">Lokasi Penitipan</label>
-                                            <div class="col-sm-8">
-                                              <textarea class="form-control form-input" placeholder="Lokasi Penitipan" name="lokasi_penitipan_ba_titip" rows="3">{{ old('lokasi_penitipan_ba_titip', $penindakans->lokasi_penitipan_ba_titip) }}</textarea>
-                                            </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Lokasi Penitipan</label>
+                                          <div class="col-sm-8">
+                                            <textarea class="form-control form-input" placeholder="Lokasi Penitipan" name="lokasi_penitipan_ba_titip" rows="3">{{ old('lokasi_penitipan_ba_titip', $penindakans->lokasi_penitipan_ba_titip) }}</textarea>
                                           </div>
-
-                                          <div class="row mb-3 form-group">
-                                            <label class="col-sm-4 col-form-label">Nama Yang Dititipkan</label>
-                                            <div class="col-sm-8">
-                                              <input type="text" class="form-control form-input" placeholder="Nama Yang Dititipkan" name="nama_ba_titip" value="{{ old('nama_ba_titip', $penindakans->nama_ba_titip) }}">
-                                            </div>
-                                          </div>
-
-                                          <div class="row mb-3 form-group">
-                                            <label class="col-sm-4 col-form-label">Alamat yang dtitipkan</label>
-                                            <div class="col-sm-8">
-                                              <textarea class="form-control form-input" placeholder="Alamat yang dtitipkan" name="alamat_ba_titip" rows="3">{{ old('alamat_ba_titip', $penindakans->alamat_ba_titip) }}</textarea>
-                                            </div>
-                                          </div>
-
-                                          <div class="row mb-3 form-group">
-                                            <label class="col-sm-4 col-form-label">Jabatan yang dtitipkan</label>
-                                            <div class="col-sm-8">
-                                              <input type="text" class="form-control form-input" placeholder="Jabatan yang dtitipkan" name="jabatan_ba_titip" value="{{ old('jabatan_ba_titip', $penindakans->jabatan_ba_titip) }}">
-                                            </div>
-                                          </div>
-
                                         </div>
+
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Nama Yang Dititipkan</label>
+                                          <div class="col-sm-8">
+                                            <input type="text" class="form-control form-input" placeholder="Nama Yang Dititipkan" name="nama_ba_titip" value="{{ old('nama_ba_titip', $penindakans->nama_ba_titip) }}">
+                                          </div>
+                                        </div>
+
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Alamat yang dtitipkan</label>
+                                          <div class="col-sm-8">
+                                            <textarea class="form-control form-input" placeholder="Alamat yang dtitipkan" name="alamat_ba_titip" rows="3">{{ old('alamat_ba_titip', $penindakans->alamat_ba_titip) }}</textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Jabatan yang dtitipkan</label>
+                                          <div class="col-sm-8">
+                                            <input type="text" class="form-control form-input" placeholder="Jabatan yang dtitipkan" name="jabatan_ba_titip" value="{{ old('jabatan_ba_titip', $penindakans->jabatan_ba_titip) }}">
+                                          </div>
+                                        </div>
+
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-
                               </div>
+
                             </div>
                           </div>
                         </div>
-
-
                       </div>
+
+
                     </div>
+
 
                     <div class="tab-pane fade" id="bpc" role="tabpanel" aria-labelledby="bpc-tab">
                       <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -1741,29 +1572,8 @@
 
                                 <!-- Right Column (Pejabat Selection) -->
                                 <div class="col-lg-6">
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Menandatangani</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_tolak1">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ $user->id_admin == old('id_pejabat_1_ba_tolak1', $penindakans->id_pejabat_1_ba_tolak1) ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Menandatangani</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_tolak1">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ $user->id_admin == old('id_pejabat_2_ba_tolak1', $penindakans->id_pejabat_2_ba_tolak1) ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
+
 
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-3 col-form-label">Alasan Tolak Pertama</label>
@@ -1834,29 +1644,8 @@
 
                                 <!-- Right Column (Pejabat Selection) -->
                                 <div class="col-lg-6">
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Menandatangani</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_tolak2">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ $user->id_admin == old('id_pejabat_1_ba_tolak2', $penindakans->id_pejabat_1_ba_tolak2) ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Menandatangani</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_tolak2">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" {{ $user->id_admin == old('id_pejabat_2_ba_tolak2', $penindakans->id_pejabat_2_ba_tolak2) ? 'selected' : '' }}>
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
+
 
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-3 col-form-label">Alasan Tolak Kedua</label>
@@ -1877,94 +1666,75 @@
                       </div>
                     </div>
 
-                    {{-- <div class="tab-pane fade" id="sbp" role="tabpanel" aria-labelledby="sbp-tab">
-                      <div class="row align-items-center mb-3">
-                        <div class="col-sm-8">
-
-                        </div>
-                      </div>
-                    </div> --}}
-
                   </div>
 
-                </div><!-- end col -->
-              </div>
-            </div><!-- end row -->
+                </div>
 
-
-          </div>
-          <div class="card-footer d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary btn-sm me-2">
-              <i data-feather="save"></i> Simpan Data
-            </button>
-          </div>
+              </div><!-- end col -->
+            </div>
+          </div><!-- end row -->
       </div>
-      </form>
+
+      <div class="card-footer d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary btn-sm me-2">
+          <i data-feather="save"></i> Simpan Data
+        </button>
+      </div>
     </div>
+    </form>
+  </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const switches = document.querySelectorAll('.status-toggle');
 
-      switches.forEach(switchElement => {
-        switchElement.addEventListener('change', function() {
-          const accordionId = this.getAttribute('data-id');
-          const accordionContent = document.getElementById(accordionId);
-
-          this.value = this.checked ? 'YA' : 'TIDAK';
-
-          if (accordionContent) {
-            if (this.checked) {
-              accordionContent.classList.add('show');
-            } else {
-              accordionContent.classList.remove('show');
-            }
-          } else {
-            console.warn(`Accordion dengan ID "${accordionId}" tidak ditemukan.`);
-          }
-        });
-      });
-    });
-  </script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const switches = document.querySelectorAll('.status-toggle');
-
-      switches.forEach((switchElement, index) => {
+      switches.forEach((switchElement) => {
         const label = switchElement.nextElementSibling;
         const targetAccordion = document.getElementById(switchElement.dataset.id);
 
-        // Set initial label text based on checkbox state
-        label.textContent = switchElement.checked ? 'YA' : 'TIDAK';
+        const isChecked = switchElement.value === 'YA';
+        switchElement.checked = isChecked;
+        label.textContent = isChecked ? 'YA' : 'TIDAK';
 
-        // Toggle the visibility of the accordion based on the checkbox status
-        if (switchElement.checked) {
-          targetAccordion.classList.add('show');
-        } else {
-          targetAccordion.classList.remove('show');
-        }
-
-        switchElement.addEventListener('change', function() {
-          label.textContent = this.checked ? 'YA' : 'TIDAK';
-
-          // Toggle the visibility of the accordion based on the checkbox state
-          if (this.checked) {
+        if (targetAccordion) {
+          if (isChecked) {
             targetAccordion.classList.add('show');
           } else {
             targetAccordion.classList.remove('show');
           }
+        }
+
+        switchElement.addEventListener('change', function() {
+          const isNowChecked = this.checked;
+          this.value = isNowChecked ? 'YA' : 'TIDAK';
+          label.textContent = isNowChecked ? 'YA' : 'TIDAK';
+
+          if (targetAccordion) {
+            if (isNowChecked) {
+              targetAccordion.classList.add('show');
+            } else {
+              targetAccordion.classList.remove('show');
+            }
+          } else {
+            console.warn(`Accordion dengan ID "${switchElement.dataset.id}" tidak ditemukan.`);
+          }
         });
       });
     });
   </script>
+
 
 
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       $('#alasan_penindakan').select2();
+
+      const existingJenisPelanggaran = document.querySelector('#alasan_penindakan option:checked')?.getAttribute('data-jenis');
+      if (existingJenisPelanggaran) {
+        document.getElementById("jenis_pelanggaran").value = existingJenisPelanggaran;
+      }
 
       $('#alasan_penindakan').on('select2:select', function(e) {
         const selectedOption = e.params.data.element;

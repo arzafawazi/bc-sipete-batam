@@ -90,11 +90,11 @@
                       <div class="tab-pane" id="sbp" role="tabpanel">
                         <div class="row">
                           <div class="col-lg-6">
+                            <h6><b>Data Referensi</b></h6>
+                            <hr>
                             <div class="row">
                               <input type="hidden" id="id_penindakan" name="id_penindakan" value="">
                               <input type="hidden" name="id_pra_penindakan_ref" value="{{ $laporan->id_pra_penindakan }}">
-                              <h6><b>Data Referensi</b></h6>
-                              <hr>
                               <div class="col-md-12 mb-3">
                                 <label>Opsi Penindakan</label>
                                 <input type="text" class="form-control bg-primary text-white" name="opsi_penindakan" value="{{ $kategori }}" readonly>
@@ -138,13 +138,15 @@
 
                               <div class="col-md-6 mb-3">
                                 <label>Pejabat 1 Penindakan</label>
-                                <select class="form-select select2" name="id_petugas_1_sbp">
-                                  <option value="" disabled selected>- Pilih -</option>
+                                <select class="form-select select2" name="id_petugas_1_sbp" id="id_petugas_1_sbp" readonly>
                                   @foreach ($users as $user)
-                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                                    <option value="{{ $user->id_admin }}" {{ old('id_petugas_1_sbp', $loggedInUserId) == $user->id_admin ? 'selected' : '' }} {{ $loggedInUserId != $user->id_admin ? 'disabled' : '' }}>
+                                      {{ $user->name }}
+                                    </option>
                                   @endforeach
                                 </select>
                               </div>
+
                               <div class="col-md-6 mb-3">
                                 <label>Pejabat 2 Penindakan</label>
                                 <select class="form-select select2" name="id_petugas_2_sbp">
@@ -155,13 +157,35 @@
                                 </select>
                               </div>
 
+                              <div class="col-md-6 mb-3">
+                                <label>Pejabat 3 Penindakan</label>
+                                <select class="form-select select2" name="id_petugas_3_sbp">
+                                  <option value="" disabled selected>- Pilih -</option>
+                                  @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                <label>Pejabat 4 Penindakan</label>
+                                <select class="form-select select2" name="id_petugas_4_sbp">
+                                  <option value="" disabled selected>- Pilih -</option>
+                                  @foreach ($users as $user)
+                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+
+
                               <h6><b>C. Data Saksi</b></h6>
                               <hr>
 
                               <div class="col-md-6 mb-3">
                                 <label>Nama Saksi</label>
-                                <input type="text" class="form-control" placeholder="Nama Saksi" name="nama_saksi">
+                                <input type="text" class="form-control" id="nama_saksi" placeholder="Nama Saksi" name="nama_saksi">
                               </div>
+
                               <div class="col-md-6 mb-3">
                                 <label>Pekerjaan Saksi</label>
                                 <input type="text" class="form-control" placeholder="Pekerjaan Saksi" name="pekerjaan_saksi">
@@ -172,7 +196,11 @@
                               </div>
                               <div class="col-md-6 mb-3">
                                 <label>No. Identitas Saksi</label>
-                                <input type="text" class="form-control" placeholder="No. Identitas Saksi" name="no_identitas_saksi">
+                                <input type="text" class="form-control" id="no_identitas_saksi" placeholder="No. Identitas Saksi" name="no_identitas_saksi">
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                <label>Jenis Identitas Saksi</label>
+                                <input type="text" class="form-control" placeholder="KTP/SIM/DLL" name="jenis_iden_saksi">
                               </div>
                               <div class="col-md-12 mb-3">
                                 <label>Alamat Saksi</label>
@@ -180,7 +208,7 @@
                               </div>
                               <div class="col-md-6 mb-3">
                                 <label>Jenis Kelamin</label>
-                                <select class="form-control" name="jenis_kelamin_saksi">
+                                <select class="form-control" name="jk_saksi">
                                   <option value="" selected disabled>Pilih Jenis Kelamin</option>
                                   <option value="Laki-laki">Laki-laki</option>
                                   <option value="Perempuan">Perempuan</option>
@@ -188,11 +216,22 @@
                               </div>
                               <div class="col-md-6 mb-3">
                                 <label>Tempat Tanggal Lahir</label>
-                                <input type="text" class="form-control" placeholder="Tempat Tanggal Lahir" name="tempat_tanggal_lahir_saksi">
+                                <input type="text" class="form-control" placeholder="Tempat Tanggal Lahir" name="ttl_saksi">
                               </div>
-                              <div class="col-md-6 mb-3">
+                              <div class="mb-3 form-group">
                                 <label>Kewarganegaraan</label>
-                                <input type="text" class="form-control" placeholder="Kewarganegaraan" name="kewarganegaraan_saksi">
+                                <div class="col-sm-12">
+                                  <select class="form-control form-input select2" name="kewarganegaraan_saksi">
+                                    <option value="" disabled selected>- Pilih Kewarganegaraan -</option>
+                                    @foreach ($nama_negara as $benua => $negara)
+                                      <optgroup label="{{ $benua }}">
+                                        @foreach ($negara as $item)
+                                          <option value="{{ $item->UrEdi }}">{{ $item->UrEdi }}</option>
+                                        @endforeach
+                                      </optgroup>
+                                    @endforeach
+                                  </select>
+                                </div>
                               </div>
                               <div class="col-md-6 mb-3">
                                 <label>Umur</label>
@@ -202,13 +241,10 @@
                                 <label>NPWP</label>
                                 <input type="text" class="form-control" placeholder="NPWP" name="npwp_saksi">
                               </div>
-                              <div class="col-md-6 mb-3">
+                              <div class="col-md-12 mb-3">
                                 <label>Nomor Rekening</label>
-                                <input type="text" class="form-control" placeholder="Nomor Rekening" name="nomor_rekening_saksi">
+                                <input type="text" class="form-control" placeholder="Nomor Rekening" name="norek_saksi">
                               </div>
-
-
-
 
                               <!-- Perintah Yang Dilaksanakan (Switch Checkboxes) -->
                               {{-- <div class="col-md-12 mb-3">
@@ -318,7 +354,7 @@
                               </div>
                               <div class="col-md-12 mb-3">
                                 <label>Uraian Penindakan</label>
-                                <textarea class="form-control" placeholder="Uraian Penindakan" name="uraian_penindakan" rows="5"></textarea>
+                                <textarea class="form-control" placeholder="Uraian Penindakan" name="uraian_penindakan" rows="8"></textarea>
                               </div>
 
                               <div class="col-md-12 mb-3">
@@ -335,7 +371,7 @@
 
                               <div class="col-md-12 mb-3">
                                 <label>Jenis Pelanggaran</label>
-                                <textarea class="form-control form-input bg-primary text-white" rows="5" id="jenis_pelanggaran" disabled></textarea>
+                                <textarea class="form-control form-input bg-primary text-white" rows="8" id="jenis_pelanggaran" disabled></textarea>
                               </div>
 
 
@@ -403,15 +439,16 @@
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Nahkoda/ Pilot/ Pengemudi</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="pengemudi" placeholder="Nahkoda/ Pilot/ Pengemudi" disabled>
+                                        <input type="text" class="form-control form-input" name="pengemudi" id="pengemudi" placeholder="Nahkoda/ Pilot/ Pengemudi" disabled>
                                       </div>
                                     </div>
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">No. Identitas Nahkoda/ Pilot/ Pengemudi</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="no_identitas_pengemudi" placeholder="No. Identitas Nahkoda/ Pilot/ Pengemudi" disabled>
+                                        <input type="text" class="form-control form-input" name="no_identitas_pengemudi" id="no_identitas_pengemudi" placeholder="No. Identitas Nahkoda/ Pilot/ Pengemudi" disabled>
                                       </div>
                                     </div>
+
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Bendera</label>
                                       <div class="col-sm-8">
@@ -678,50 +715,28 @@
                                     <h6><b>B. Data Pemeriksaan</b></h6>
                                     <hr>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Lokasi Pemeriksaan</label>
-                                      <div class="col-sm-8">
+                                    <div class=" mb-3 form-group">
+                                      <label>Lokasi Pemeriksaan</label>
+                                      <div class="col-sm-12">
                                         <textarea class="form-control form-input" placeholder="Lokasi Pemeriksaan" name="lokasi_pemeriksaan" rows="3"></textarea>
                                       </div>
                                     </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Rincian Hasil Pemeriksaan</label>
-                                      <div class="col-sm-8">
-                                        <textarea class="form-control form-input" placeholder="Rincian Hasil Pemeriksaan" name="rincian_hasil_pemeriksaan" rows="3"></textarea>
-                                      </div>
-                                    </div>
 
                                   </div>
                                 </div>
 
                                 <!-- Right Column (Pejabat Selection) -->
                                 <div class="col-lg-6">
-                                  <h6><b>C. Data Pejabat</b></h6>
+                                  <h6><b>C. Data lainnya</b></h6>
                                   <hr>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Melakukan Pemeriksaan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_riksa">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
+                                  <div class="mb-3 form-group">
+                                    <label>Rincian Hasil Pemeriksaan</label>
+                                    <div class="col-sm-12">
+                                      <textarea class="form-control form-input" placeholder="Rincian Hasil Pemeriksaan" name="rincian_hasil_pemeriksaan" rows="9"></textarea>
+                                    </div>
                                   </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Melakukan Pemeriksaan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_riksa">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
 
 
                                 </div>
@@ -759,21 +774,21 @@
                                       <input type="date" class="form-control bg-primary text-white" name="tgl_ba_riksa_badan">
                                     </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
+                                    <div class="mb-3 form-group">
+                                      <label>
                                         Lokasi pemeriksaan Badan
                                       </label>
-                                      <div class="col-sm-8">
+                                      <div class="col-sm-12">
                                         <input type="text" class="form-control" placeholder="Lokasi pemeriksaan Badan" name="lokasi_pemeriksaan_badan">
                                       </div>
                                     </div>
 
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">
+                                    <div class="mb-3 form-group">
+                                      <label>
                                         Uraian pakaian yang dibuka/pemeriksaan medis
                                       </label>
-                                      <div class="col-sm-8">
+                                      <div class="col-sm-12">
                                         <textarea class="form-control form-input" placeholder="Uraian pakaian yang dibuka/pemeriksaan medis" name="rincian_pemeriksaan_badan" rows="3"></textarea>
                                       </div>
                                     </div>
@@ -786,12 +801,12 @@
                                 <div class="col-lg-6">
 
 
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">
+                                  <div class="mb-3 form-group">
+                                    <label>
                                       Hasil pemeriksaan kedapatan
                                     </label>
-                                    <div class="col-sm-8">
-                                      <textarea class="form-control form-input" placeholder="Hasil pemeriksaan kedapatan" name="hasil_pemeriksaan_badan" rows="3"></textarea>
+                                    <div class="col-sm-12">
+                                      <textarea class="form-control form-input" placeholder="Hasil pemeriksaan kedapatan" name="hasil_pemeriksaan_badan" rows="13"></textarea>
                                     </div>
                                   </div>
 
@@ -805,28 +820,6 @@
                                   </div> --}}
 
 
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Melakukan Pemeriksaan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_riksa_badan">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Melakukan Pemeriksaan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_riksa_badan">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
                                 </div>
 
@@ -1051,23 +1044,23 @@
                                     <h6><b>B. Data Pemeriksaan</b></h6>
                                     <hr>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Dari</label>
-                                      <div class="col-sm-8">
+                                    <div class="mb-3 form-group">
+                                      <label>Dari</label>
+                                      <div class="col-sm-12">
                                         <input type="text" class="form-control form-input" name="dibawa_dari" placeholder="Tempat sarkut mulai dibawa">
                                       </div>
                                     </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Tujuan</label>
-                                      <div class="col-sm-8">
+                                    <div class="mb-3 form-group">
+                                      <label>Tujuan</label>
+                                      <div class="col-sm-12">
                                         <input type="text" class="form-control form-input" name="tujuan" placeholder="Tempat tujuan sarkut">
                                       </div>
                                     </div>
 
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Alasan</label>
-                                      <div class="col-sm-8">
+                                    <div class="mb-3 form-group">
+                                      <label>Alasan</label>
+                                      <div class="col-sm-12">
                                         <textarea class="form-control form-input" placeholder="Diisi pertimbangan dan alasan sarana pengangkut/barang dibawa" name="alasan" rows="3"></textarea>
                                       </div>
                                     </div>
@@ -1079,41 +1072,21 @@
                                 <!-- Right Column (Pejabat Selection) -->
                                 <div class="col-lg-6">
 
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">Waktu Berangkat</label>
-                                    <div class="col-sm-8">
+                                  <div class="mb-3 form-group">
+                                    <label>Waktu Berangkat</label>
+                                    <div class="col-sm-12">
                                       <input type="text" class="form-control" name="waktu_berangkat" id="datetime-datepicker" placeholder="Waktu Keberangkatan">
                                     </div>
                                   </div>
 
-                                  <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">Waktu Tiba</label>
-                                    <div class="col-sm-8">
+                                  <div class="mb-3 form-group">
+                                    <label>Waktu Tiba</label>
+                                    <div class="col-sm-12">
                                       <input type="text" class="form-control" name="waktu_tiba" id="datetime-datepicker" placeholder="Waktu Tiba">
                                     </div>
                                   </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Membawa Sarkut</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_sarkut">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Membawa Sarkut</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_sarkut">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
 
 
@@ -1145,54 +1118,50 @@
                           <hr class="my-0">
                           <div id="flush-collapse101" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+
+                              <!-- Left Column (Data Laporan Informasi) -->
+
+                              <h6><b>A. Data B.A Contoh</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Contoh</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Contoh</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_contoh', $no_ref->no_ba_contoh) }}" placeholder="No. B.A Contoh" name="no_ba_contoh" readonly>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Contoh</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_contoh', $no_ref->no_ba_contoh) }}" placeholder="No. B.A Contoh" name="no_ba_contoh" readonly>
+                                </div>
 
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Contoh</label>
-                                      <input type="date" class="form-control bg-primary text-white" name="tgl_ba_contoh">
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Contoh</label>
+                                  <input type="date" class="form-control bg-primary text-white" name="tgl_ba_contoh">
+                                </div>
+                              </div>
 
-                                    <h6><b>B. Data Pengambilan Barang Contoh</b></h6>
-                                    <hr>
+                              <h6><b>B. Data Pengambilan Barang Contoh</b></h6>
+                              <hr>
 
-                                    <div class="card-body">
-                                      <div class="accordion accordion-flush" id="accordionFlushExample">
+                              <div class="card-body">
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
 
 
-                                        <div class="accordion-item">
-                                          <h2 class="accordion-header">
-                                            <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapserrte">
-                                              Barang
-                                            </button>
-                                          </h2>
-                                          <div id="flush-collapserrte" class="accordion-collapse collapse">
-                                            <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
+                                  <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                      <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapserrte">
+                                        Barang
+                                      </button>
+                                    </h2>
+                                    <div id="flush-collapserrte" class="accordion-collapse collapse">
+                                      <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
 
-                                              <div class="row mb-3 form-group">
-                                                <label class="col-sm-4 col-form-label">Jumlah dan Jenis Barang</label>
-                                                <div class="col-sm-8">
-                                                  <textarea class="form-control form-input" placeholder="Jumlah dan Jenis Barang Contoh" name="jumlah_jenis_barang_contoh" rows="3"></textarea>
-                                                </div>
-                                              </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Jumlah dan Jenis Barang</label>
+                                          <div class="col-sm-8">
+                                            <textarea class="form-control form-input" placeholder="Jumlah dan Jenis Barang Contoh" name="jumlah_jenis_barang_contoh" rows="3"></textarea>
+                                          </div>
+                                        </div>
 
-                                              <div class="row mb-3 form-group">
-                                                <label class="col-sm-4 col-form-label">Lokasi</label>
-                                                <div class="col-sm-8">
-                                                  <input type="text" class="form-control form-input" placeholder="Lokasi Pengambilan Barang Contoh" name="lokasi_barcon">
-                                                </div>
-                                              </div>
-
-
-                                            </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Lokasi</label>
+                                          <div class="col-sm-8">
+                                            <input type="text" class="form-control form-input" placeholder="Lokasi Pengambilan Barang Contoh" name="lokasi_barcon">
                                           </div>
                                         </div>
 
@@ -1200,36 +1169,12 @@
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
 
                                 </div>
                               </div>
+
+
                             </div>
                           </div>
                         </div>
@@ -1247,180 +1192,38 @@
                           <div class="d-flex justify-content-between align-items-center p-3 bg-light">
                             <span class="fw-bold">B.A Dokumentasi</span>
                             <div class="form-check form-switch mb-0">
-                              <input class="form-check-input status-toggle" type="checkbox" role="switch" id="flexSwitchCheck102" data-id="flush-collapse102" name="ba_dok" value="TIDAK" aria-expanded="false"
-                                aria-controls="flush-collapse102">
-                              <label class="form-check-label" for="flexSwitchCheck102" id="switch-label-102">TIDAK</label>
+                              <input class="form-check-input status-toggle" type="checkbox" role="switch" id="flexSwitchCheck102n" data-id="flush-collapse102n" name="ba_dok" value="TIDAK" aria-expanded="false"
+                                aria-controls="flush-collapse102n">
+                              <label class="form-check-label" for="flexSwitchCheck102n" id="switch-label-102n">TIDAK</label>
                             </div>
                           </div>
                           <hr class="my-0">
-                          <div id="flush-collapse102" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                          <div id="flush-collapse102n" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+                              <h6><b>A. Data B.A Dokumentasi</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Dokumentasi</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Dokumentasi</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_dok', $no_ref->no_ba_dok) }}" placeholder="No. B.A Dokumentasi" name="no_ba_dok" readonly>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Dokumentasi</label>
-                                      <input type="date" class="form-control bg-primary text-white" name="tgl_ba_dok">
-                                    </div>
-
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Lokasi</label>
-                                      <div class="col-sm-8">
-                                        <textarea class="form-control form-input" placeholder="Lokasi Dokumentasi Barang" name="lokasi_ba_dok" rows="3"></textarea>
-                                      </div>
-                                    </div>
-
-                                    {{-- <h6><b>B. Data Pengambilan Dokumentasi Barang</b></h6>
-                                    <hr>
-
-                                    <div class="card-body">
-                                      <div class="accordion accordion-flush" id="accordionFlushExample">
-
-
-                                        <div class="accordion-item">
-                                          <h2 class="accordion-header">
-                                            <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse"
-                                              data-bs-target="#flush-collapserrtez">
-                                              Dokumentasi Barang
-                                            </button>
-                                          </h2>
-                                          <div id="flush-collapserrtez" class="accordion-collapse collapse">
-                                            <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
-
-                                              <div class="row mb-3 form-group">
-                                                <label class="col-sm-4 col-form-label">Komoditas/Jenis Barang</label>
-                                                <div class="col-sm-8">
-                                                  <textarea class="form-control form-input" placeholder="Komoditas/Jenis Barang" name="komoditas_jenis_ba_dok" rows="3"></textarea>
-                                                </div>
-                                              </div>
-
-
-                                              <div class="row mb-3 form-group">
-                                                <label class="col-sm-4 col-form-label">Pemilik/Importir/Eksportir/Yang Menguasai</label>
-                                                <div class="col-sm-8">
-                                                  <textarea class="form-control form-input" placeholder="Pemilik/Importir/Eksportir/Yang Menguasai" name="pemilik_ba_dok" rows="3"></textarea>
-                                                </div>
-                                              </div>
-
-                                              <div class="row mb-3 form-group">
-                                                <label class="col-sm-4 col-form-label">Identitas (KTP/NPWP/NPPBKC)</label>
-                                                <div class="col-sm-8">
-                                                  <textarea class="form-control form-input" placeholder="Diisi nomor identitas pemilik atau yang menguasai barang yang terhadapnya dilakukan pengambilan contoh" name="no_iden_barang_ba_contoh" rows="3"></textarea>
-                                                </div>
-                                              </div>
-
-                                              <div class="row mb-3 form-group">
-                                                <label class="col-sm-4 col-form-label">Jenis/Nomor dan Tgl Dokumen</label>
-                                                <div class="col-sm-8">
-                                                  <textarea class="form-control form-input" placeholder="Jenis/Nomor dan Tgl Dokumen" name="jenis_no_tgl_ba_contoh" rows="3"></textarea>
-                                                </div>
-                                              </div>
-
-                                              <div class="col-md-6 mb-3">
-                                                <label>Lokasi</label>
-                                                <input type="text" class="form-control " placeholder="Lokasi" name="lokasi_ba_contoh" readonly>
-                                              </div>
-
-                                            </div>
-                                          </div>
-                                        </div>
-
-
-                                      </div>
-                                    </div> --}}
-
-                                  </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Dokumentasi</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_dok', $no_ref->no_ba_dok) }}" placeholder="No. B.A Dokumentasi" name="no_ba_dok" readonly>
                                 </div>
 
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Mengambil Dokumentasi</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_dokumentasi">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Mengambil Dokumentasi</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_dokumentasi">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-
-                                  {{-- <div class="card-body">
-                                    <div class="accordion accordion-flush" id="accordionFlushExampleSaksi">
-
-                                      <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                          <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#flush-collapseSaksi">
-                                            Saksi
-                                          </button>
-                                        </h2>
-                                        <div id="flush-collapseSaksi" class="accordion-collapse collapse">
-                                          <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
-
-                                            <div class="row mb-3 form-group">
-                                              <label class="col-sm-4 col-form-label">Nama Saksi</label>
-                                              <div class="col-sm-8">
-                                                <textarea class="form-control form-input" placeholder="Nama Saksi" name="nama_saksi_ba_contoh" rows="3"></textarea>
-                                              </div>
-                                            </div>
-
-                                            <div class="row mb-3 form-group">
-                                              <label class="col-sm-4 col-form-label">Alamat Saksi</label>
-                                              <div class="col-sm-8">
-                                                <textarea class="form-control form-input" placeholder="Alamat Saksi" name="alamat_saksi_ba_contoh" rows="3"></textarea>
-                                              </div>
-                                            </div>
-
-                                            <div class="row mb-3 form-group">
-                                              <label class="col-sm-4 col-form-label">Pekerjaan Saksi</label>
-                                              <div class="col-sm-8">
-                                                <input type="text" class="form-control" placeholder="Pekerjaan Saksi" name="pekerjaan_saksi_ba_contoh" readonly>
-                                              </div>
-                                            </div>
-
-                                            <div class="row mb-3 form-group">
-                                              <label class="col-sm-4 col-form-label">Identitas (KTP/SIM/Paspor*) Saksi</label>
-                                              <div class="col-sm-8">
-                                                <textarea class="form-control form-input" placeholder="Identitas (KTP/SIM/Paspor*) Saksi" name="iden_saksi_ba_contoh" rows="3"></textarea>
-                                              </div>
-                                            </div>
-
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                    </div>
-                                  </div> --}}
-
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Dokumentasi</label>
+                                  <input type="date" class="form-control bg-primary text-white" name="tgl_ba_dok">
                                 </div>
                               </div>
+
+                              <div class="mb-3 form-group">
+                                <label>Lokasi</label>
+                                <div class="col-sm-12">
+                                  <textarea class="form-control form-input" placeholder="Lokasi Dokumentasi Barang" name="lokasi_ba_dok" rows="3"></textarea>
+                                </div>
+                              </div>
+
                             </div>
                           </div>
                         </div>
-
-
                       </div>
                     </div>
 
@@ -1440,51 +1243,17 @@
                           <hr class="my-0">
                           <div id="flush-collapse1059" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+                              <h6><b>A. Data B.A Tegah</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Tegah</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Tegah</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_tegah', $no_ref->no_ba_tegah) }}" placeholder="No. B.A Tegah" name="no_ba_tegah" readonly>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Tegah</label>
-                                      <input type="date" class="form-control bg-primary text-white" name="tgl_ba_tegah">
-                                    </div>
-
-
-                                  </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Tegah</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_tegah', $no_ref->no_ba_tegah) }}" placeholder="No. B.A Tegah" name="no_ba_tegah" readonly>
                                 </div>
 
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  {{-- <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Mengambil Contoh</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_contoh">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div> --}}
-
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Tegah</label>
+                                  <input type="date" class="form-control bg-primary text-white" name="tgl_ba_tegah">
                                 </div>
                               </div>
                             </div>
@@ -1511,83 +1280,56 @@
                           <hr class="my-0">
                           <div id="flush-collapse1032" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+
+
+                              <h6><b>A. Data B.A Segel</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Segel</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Segel</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_segel', $no_ref->no_ba_segel) }}" placeholder="No. B.A Segel" name="no_ba_segel" readonly>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Segel</label>
-                                      <input type="date" class="form-control bg-primary text-white" name="tgl_ba_segel">
-                                    </div>
-
-                                    <div class="col-lg-12 mb-3">
-                                      <label>Jenis Segel</label>
-                                      <select class="form-control form-select select2" name="jenis_segel_ba_segel">
-                                        <option value="" selected disabled>- Pilih -</option>
-                                        @foreach ($segels as $segel)
-                                          <option value="{{ $segel->jenis_segel }}">{{ $segel->jenis_segel }}
-                                          </option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Jumlah Segel</label>
-                                      <input type="text" class="form-control" placeholder="Jumlah Segel" name="jumlah_segel_ba_segel">
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Nomor Segel</label>
-                                      <input type="text" class="form-control" placeholder="Nomor Segel" name="nomor_segel_ba_segel">
-                                    </div>
-
-                                    <div class="col-md-12 mb-3">
-                                      <label>Peletakan Segel</label>
-                                      <textarea class="form-control form-input" placeholder="Peletakan Segel" name="peletakan_segel_ba_segel" rows="3"></textarea>
-                                    </div>
-
-                                  </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Segel</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_segel', $no_ref->no_ba_segel) }}" placeholder="No. B.A Segel" name="no_ba_segel" readonly>
                                 </div>
 
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Melakukan Penyegelan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_segel">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Melakukan Penyegelan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_segel">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Segel</label>
+                                  <input type="date" class="form-control bg-primary text-white" name="tgl_ba_segel">
                                 </div>
                               </div>
+
+
+                              <div class="col-lg-12 mb-3">
+                                <label>Jenis Segel</label>
+                                <select class="form-control form-select select2" name="jenis_segel_ba_segel">
+                                  <option value="" selected disabled>- Pilih -</option>
+                                  @foreach ($segels as $segel)
+                                    <option value="{{ $segel->jenis_segel }}">{{ $segel->jenis_segel }}
+                                    </option>
+                                  @endforeach
+                                </select>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6 mb-3">
+                                  <label>Jumlah Segel</label>
+                                  <input type="text" class="form-control" placeholder="Jumlah Segel" name="jumlah_segel_ba_segel">
+                                </div>
+
+
+                                <div class="col-md-6 mb-3">
+                                  <label>Nomor Segel</label>
+                                  <input type="text" class="form-control" placeholder="Nomor Segel" name="nomor_segel_ba_segel">
+                                </div>
+
+                              </div>
+
+                              <div class="col-md-12 mb-3">
+                                <label>Peletakan Segel</label>
+                                <textarea class="form-control form-input" placeholder="Peletakan Segel" name="peletakan_segel_ba_segel" rows="3"></textarea>
+                              </div>
+
                             </div>
                           </div>
                         </div>
-
-
                       </div>
                     </div>
 
@@ -1608,116 +1350,71 @@
                           <hr class="my-0">
                           <div id="flush-collapse1011" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body bg-light">
+                              <h6><b>A. Data B.A Titip</b></h6>
+                              <hr>
                               <div class="row">
-                                <!-- Left Column (Data Laporan Informasi) -->
-                                <div class="col-lg-6">
-                                  <h6><b>A. Data B.A Titip</b></h6>
-                                  <hr>
-                                  <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                      <label>No. B.A Titip</label>
-                                      <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_titip', $no_ref->no_ba_titip) }}" placeholder="No. B.A Titip" name="no_ba_titip" readonly>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                      <label>Tgl. B.A Tegah</label>
-                                      <input type="date" class="form-control bg-primary text-white" name="tgl_ba_titip">
-                                    </div>
-
-
-
-                                  </div>
+                                <div class="col-md-6 mb-3">
+                                  <label>No. B.A Titip</label>
+                                  <input type="text" class="form-control bg-primary text-white" value="{{ old('no_ba_titip', $no_ref->no_ba_titip) }}" placeholder="No. B.A Titip" name="no_ba_titip" readonly>
                                 </div>
 
-                                <!-- Right Column (Pejabat Selection) -->
-                                <div class="col-lg-6">
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Melakukan Penitipan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_titip">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Melakukan Penitipan</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_titip">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. B.A Tegah</label>
+                                  <input type="date" class="form-control bg-primary text-white" name="tgl_ba_titip">
                                 </div>
+                              </div>
 
 
-                                <h6><b>B. Data Penitipan</b></h6>
-                                <hr>
+                              <h6><b>B. Data Penitipan</b></h6>
+                              <hr>
 
+                              <div class="card-body">
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
 
-                                <div class="card-body">
-                                  <div class="accordion accordion-flush" id="accordionFlushExample">
+                                  <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                      <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapserrtez">
+                                        Penitipan
+                                      </button>
+                                    </h2>
+                                    <div id="flush-collapserrtez" class="accordion-collapse collapse">
+                                      <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
 
-                                    <div class="accordion-item">
-                                      <h2 class="accordion-header">
-                                        <button class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3" type="button" data-bs-toggle="collapse"
-                                          data-bs-target="#flush-collapserrtez">
-                                          Penitipan
-                                        </button>
-                                      </h2>
-                                      <div id="flush-collapserrtez" class="accordion-collapse collapse">
-                                        <div class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
-
-                                          <div class="row mb-3 form-group">
-                                            <label class="col-sm-4 col-form-label">Lokasi Penitipan</label>
-                                            <div class="col-sm-8">
-                                              <textarea class="form-control form-input" placeholder="Lokasi Penitipan" name="lokasi_penitipan_ba_titip" rows="3"></textarea>
-                                            </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Lokasi Penitipan</label>
+                                          <div class="col-sm-8">
+                                            <textarea class="form-control form-input" placeholder="Lokasi Penitipan" name="lokasi_penitipan_ba_titip" rows="3"></textarea>
                                           </div>
+                                        </div>
 
-                                          <div class="row mb-3 form-group">
-                                            <label class="col-sm-4 col-form-label">Nama Yang Dititipkan</label>
-                                            <div class="col-sm-8">
-                                              <input type="text" class="form-control form-input" placeholder="Nama Yang Dititipkan" name="nama_ba_titip">
-                                            </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Nama Yang Dititipkan</label>
+                                          <div class="col-sm-8">
+                                            <input type="text" class="form-control form-input" placeholder="Nama Yang Dititipkan" name="nama_ba_titip">
                                           </div>
+                                        </div>
 
-                                          <div class="row mb-3 form-group">
-                                            <label class="col-sm-4 col-form-label">Alamat yang dtitipkan</label>
-                                            <div class="col-sm-8">
-                                              <textarea class="form-control form-input" placeholder="Alamat yang dtitipkan" name="alamat_ba_titip" rows="3"></textarea>
-                                            </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Alamat yang dtitipkan</label>
+                                          <div class="col-sm-8">
+                                            <textarea class="form-control form-input" placeholder="Alamat yang dtitipkan" name="alamat_ba_titip" rows="3"></textarea>
                                           </div>
+                                        </div>
 
-                                          <div class="row mb-3 form-group">
-                                            <label class="col-sm-4 col-form-label">Jabatan yang dtitipkan</label>
-                                            <div class="col-sm-8">
-                                              <input type="text" class="form-control form-input" placeholder="Jabatan yang dtitipkan" name="jabatan_ba_titip">
-                                            </div>
+                                        <div class="row mb-3 form-group">
+                                          <label class="col-sm-4 col-form-label">Jabatan yang dtitipkan</label>
+                                          <div class="col-sm-8">
+                                            <input type="text" class="form-control form-input" placeholder="Jabatan yang dtitipkan" name="jabatan_ba_titip">
                                           </div>
-
-
                                         </div>
                                       </div>
                                     </div>
-
-
                                   </div>
                                 </div>
-
-
                               </div>
                             </div>
                           </div>
                         </div>
-
-
                       </div>
                     </div>
 
@@ -1824,25 +1521,8 @@
 
                                 <!-- Right Column (Pejabat Selection) -->
                                 <div class="col-lg-6">
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Menandatangani</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_tolak1">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Menandatangani</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_tolak1">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
-                                      @endforeach
-                                    </select>
-                                  </div>
+
 
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-3 col-form-label">Alasan Tolak Pertama</label>
@@ -1906,29 +1586,8 @@
 
                                 <!-- Right Column (Pejabat Selection) -->
                                 <div class="col-lg-6">
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 1 Yang Menandatangani</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_1_ba_tolak2">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
 
-                                  <div class="col-lg-12 mb-3">
-                                    <label>Pejabat 2 Yang Menandatangani</label>
-                                    <select class="form-control form-select select2" name="id_pejabat_2_ba_tolak2">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                      @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}">
-                                          {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
+
 
                                   <div class="row mb-3 form-group">
                                     <label class="col-sm-3 col-form-label">Alasan Tolak Kedua</label>
@@ -1975,6 +1634,38 @@
       </form>
     </div>
   </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const namaSaksiInput = document.getElementById('nama_saksi');
+      const noIdentitasSaksiInput = document.getElementById('no_identitas_saksi');
+      const pengemudiInput = document.getElementById('pengemudi');
+      const noIdentitasPengemudiInput = document.getElementById('no_identitas_pengemudi');
+
+      namaSaksiInput.addEventListener('input', function() {
+        pengemudiInput.value = this.value;
+      });
+
+      noIdentitasSaksiInput.addEventListener('input', function() {
+        noIdentitasPengemudiInput.value = this.value;
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const select = document.getElementById('id_petugas_1_sbp');
+      const currentValue = select.value;
+
+      select.addEventListener('change', function(e) {
+        if (this.value !== currentValue) {
+          alert('Anda tidak dapat mengubah akun login!');
+          this.value = currentValue;
+        }
+      });
+    });
+  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {

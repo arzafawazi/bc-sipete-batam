@@ -66,6 +66,8 @@ class PenindakanController extends Controller
         $no_ref = TblNoRef::first();
         $nama_negara = TblNegara::all()->groupBy('benua');
         $jenisPelanggaran = TblJenisPelanggaran::all();
+        $loggedInUserId = auth()->user()->id_admin;
+
 
         return view('Dokpenindakan.penindakan.create', compact(
             'users',
@@ -76,7 +78,8 @@ class PenindakanController extends Controller
             'laporan',
             'id_pra_penindakan',
             'kategori',
-            'nama_negara'
+            'nama_negara',
+            'loggedInUserId'
         ));
     }
 
