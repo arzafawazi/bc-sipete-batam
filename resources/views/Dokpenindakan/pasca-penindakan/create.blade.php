@@ -654,11 +654,12 @@
                             <div class="col-lg-12 mb-3">
                               <label>Pelaksana Harian</label>
                               <select class="form-control form-select select2" name="plh">
-                                <option value="" disabled {{ empty($pascapenindakan->plh) ? 'selected' : '' }}>- Pilih -</option>
-                                <option value="Plh." {{ $pascapenindakan->plh === 'Plh.' ? 'selected' : '' }}>Pelaksana Harian</option>
-                                <option value="" {{ $pascapenindakan->plh === '' ? 'selected' : '' }}>Tidak Pelaksana Harian</option>
+                                <option value="" selected disabled>- Pilih -</option>
+                                <option value="Plh.">Pelaksana Harian</option>
+                                <option value="">Tidak Pelaksana Harian</option>
                               </select>
                             </div>
+
 
 
 
@@ -691,7 +692,7 @@
     function generateUniqueID() {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 1000000);
-      return `id_penindakan_${timestamp}_${randomNum}`;
+      return `id_pasca_penindakan_${timestamp}_${randomNum}`;
     }
 
     document.getElementById('id_pasca_penindakan').value = generateUniqueID();

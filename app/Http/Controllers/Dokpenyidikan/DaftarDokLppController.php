@@ -106,7 +106,20 @@ class DaftarDokLppController extends Controller
     }
 
 
-    public function store() {}
+    public function store(Request $request)
+    {
+        TblPenyidikan::create($request->all());
+        $no_ref = TblNoRef::first();
+        $no_ref->no_lpp += 1;
+        $no_ref->no_lpf += 1;
+        $no_ref->no_split += 1;
+        $no_ref->no_print_cacah += 1;
+        $no_ref->no_ba_cacah += 1;
+        $no_ref->no_lhp_penyidikan += 1;
+        $no_ref->save();
+
+        return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data Penyidikan berhasil disimpan dan nomor referensi telah diperbarui.');
+    }
 
 
 

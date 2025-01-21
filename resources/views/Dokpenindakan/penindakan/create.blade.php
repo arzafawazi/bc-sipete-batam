@@ -208,7 +208,7 @@
                               </div>
                               <div class="col-md-6 mb-3">
                                 <label>Jenis Kelamin</label>
-                                <select class="form-control" name="jk_saksi">
+                                <select class="form-control form-input select2" name="jk_saksi">
                                   <option value="" selected disabled>Pilih Jenis Kelamin</option>
                                   <option value="Laki-laki">Laki-laki</option>
                                   <option value="Perempuan">Perempuan</option>
@@ -537,15 +537,17 @@
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Pemilik/Importir/Eksportir/Kuasa</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="pemilik" placeholder="Pemilik/Importir/Eksportir/ Kuasa" name="pemilik_importir" disabled>
+                                        <input type="text" class="form-control form-input" name="pemilik" id="pemilik" placeholder="Pemilik/Importir/Eksportir/ Kuasa" disabled>
                                       </div>
                                     </div>
+
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">No. Identitas Pemilik/Importir/Eksportir/Kuasa</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="no_identitas_pemilik" placeholder="No. Identitas Pemilik/Importir/Eksportir/Kuasa" name="no_identitas_pemilik_importir" disabled>
+                                        <input type="text" class="form-control form-input" name="no_identitas_pemilik" id="no_identitas_pemilik" placeholder="No. Identitas Pemilik/Importir/Eksportir/Kuasa" disabled>
                                       </div>
                                     </div>
+
                                   </div>
                                 </div>
                               </div>
@@ -586,14 +588,14 @@
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">Nama Pemilik | Yang Menguasai</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" placeholder="Nama Pemilik | Yang Menguasai" name="nama_pemilik_bangunan" disabled>
+                                        <input type="text" class="form-control form-input" placeholder="Nama Pemilik | Yang Menguasai" name="nama_pemilik_bangunan" id="nama_pemilik_bangunan" disabled>
                                       </div>
                                     </div>
 
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">No. Identitas Pemilik | Yang Menguasai</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" placeholder="No. Identitas Pemilik | Yang Menguasai" name="no_identitas_pemilik_bangunan" disabled>
+                                        <input type="text" class="form-control form-input" placeholder="No. Identitas Pemilik | Yang Menguasai" name="no_identitas_pemilik_bangunan" id="no_identitas_pemilik_bangunan" disabled>
                                       </div>
                                     </div>
                                   </div>
@@ -1475,17 +1477,17 @@
 
                                     <div class="col-md-12 mb-3">
                                       <label>Nama Orang Yang Menolak</label>
-                                      <input type="text" class="form-control form-input" placeholder="Nama Orang Yang Menolak" name="nama_ba_tolak1">
+                                      <input type="text" class="form-control form-input" placeholder="Nama Orang Yang Menolak" name="nama_ba_tolak1" id="nama_orang_menolak">
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                       <label>Tempat Tanggal Lahir</label>
-                                      <input type="text" class="form-control form-input" placeholder="Tempat Tanggal Lahir" name="ttl_ba_tolak1">
+                                      <input type="text" class="form-control form-input" placeholder="Tempat Tanggal Lahir" name="ttl_ba_tolak1" id="ttl_orang_menolak">
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                       <label>Jenis Kelamin</label>
-                                      <select class="form-control form-select select2" name="jk_ba_tolak1">
+                                      <select class="form-control form-select select2" name="jk_ba_tolak1" id="jk_orang_menolak">
                                         <option value="" selected disabled>- Pilih -</option>
                                         <option value="Laki-laki">Laki-laki</option>
                                         <option value="Perempuan">Perempuan</option>
@@ -1494,12 +1496,12 @@
 
                                     <div class="col-md-12 mb-3">
                                       <label>Alamat</label>
-                                      <textarea class="form-control form-input" placeholder="Alamat" name="alamat_ba_tolak1" rows="3"></textarea>
+                                      <textarea class="form-control form-input" placeholder="Alamat" name="alamat_ba_tolak1" rows="3" id="alamat_orang_menolak"></textarea>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                       <label>Kewarganegaraan</label>
-                                      <select class="form-control form-select select2" name="kewarganegaraan_ba_tolak1">
+                                      <select class="form-control form-select select2" name="kewarganegaraan_ba_tolak1" id="kewarganegaraan_orang_menolak">
                                         <option value="" selected disabled>Pilih Kewarganegaraan</option>
                                         @foreach ($nama_negara as $benua => $negara)
                                           <optgroup label="{{ $benua }}">
@@ -1513,8 +1515,9 @@
 
                                     <div class="col-md-12 mb-3">
                                       <label>Pekerjaan</label>
-                                      <input type="text" class="form-control form-input" placeholder="Pekerjaan" name="pekerjaan_ba_tolak1">
+                                      <input type="text" class="form-control form-input" placeholder="Pekerjaan" name="pekerjaan_ba_tolak1" id="pekerjaan_orang_menolak">
                                     </div>
+
 
                                   </div>
                                 </div>
@@ -1638,18 +1641,105 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Input elements from saksi
       const namaSaksiInput = document.getElementById('nama_saksi');
       const noIdentitasSaksiInput = document.getElementById('no_identitas_saksi');
+      const ttlSaksiInput = document.querySelector('[name="ttl_saksi"]');
+      const jkSaksiSelect = document.querySelector('[name="jk_saksi"]');
+      const alamatSaksiInput = document.querySelector('[name="alamat_saksi"]');
+      const kewarganegaraanSaksiSelect = document.querySelector('[name="kewarganegaraan_saksi"]');
+      const pekerjaanSaksiInput = document.querySelector('[name="pekerjaan_saksi"]');
+
+      // Target elements
       const pengemudiInput = document.getElementById('pengemudi');
       const noIdentitasPengemudiInput = document.getElementById('no_identitas_pengemudi');
+      const pemilikInput = document.getElementById('pemilik');
+      const noIdentitasPemilikInput = document.getElementById('no_identitas_pemilik');
+      const namaPemilikBangunanInput = document.getElementById('nama_pemilik_bangunan');
+      const noIdentitasPemilikBangunanInput = document.getElementById('no_identitas_pemilik_bangunan');
+      const namaOrangMenolakInput = document.getElementById('nama_orang_menolak');
+      const ttlOrangMenolakInput = document.querySelector('[name="ttl_ba_tolak1"]');
+      const jkOrangMenolakSelect = document.getElementById('jk_orang_menolak');
+      const alamatOrangMenolakInput = document.querySelector('[name="alamat_ba_tolak1"]');
+      const kewarganegaraanOrangMenolakSelect = document.getElementById('kewarganegaraan_orang_menolak');
+      const pekerjaanOrangMenolakInput = document.querySelector('[name="pekerjaan_ba_tolak1"]');
 
+      // Sync nama saksi to all target name fields
       namaSaksiInput.addEventListener('input', function() {
-        pengemudiInput.value = this.value;
+        if (pengemudiInput) pengemudiInput.value = this.value;
+        if (pemilikInput) pemilikInput.value = this.value;
+        if (namaPemilikBangunanInput) namaPemilikBangunanInput.value = this.value;
+        if (namaOrangMenolakInput) namaOrangMenolakInput.value = this.value;
       });
 
+      // Sync no identitas saksi to all target identity fields
       noIdentitasSaksiInput.addEventListener('input', function() {
-        noIdentitasPengemudiInput.value = this.value;
+        if (noIdentitasPengemudiInput) noIdentitasPengemudiInput.value = this.value;
+        if (noIdentitasPemilikInput) noIdentitasPemilikInput.value = this.value;
+        if (noIdentitasPemilikBangunanInput) noIdentitasPemilikBangunanInput.value = this.value;
       });
+
+      // Existing field syncs
+      if (ttlSaksiInput && ttlOrangMenolakInput) {
+        ttlSaksiInput.addEventListener('input', function() {
+          ttlOrangMenolakInput.value = this.value;
+        });
+      }
+
+      if (alamatSaksiInput && alamatOrangMenolakInput) {
+        alamatSaksiInput.addEventListener('input', function() {
+          alamatOrangMenolakInput.value = this.value;
+        });
+      }
+
+      if (pekerjaanSaksiInput && pekerjaanOrangMenolakInput) {
+        pekerjaanSaksiInput.addEventListener('input', function() {
+          pekerjaanOrangMenolakInput.value = this.value;
+        });
+      }
+
+      // Select2 fields sync
+      if (jkSaksiSelect && jkOrangMenolakSelect) {
+        $(jkSaksiSelect).on('select2:select', function(e) {
+          const selectedValue = e.params.data.id;
+          $(jkOrangMenolakSelect)
+            .val(selectedValue)
+            .trigger('change.select2');
+        });
+      }
+
+      if (kewarganegaraanSaksiSelect && kewarganegaraanOrangMenolakSelect) {
+        $(kewarganegaraanSaksiSelect).on('select2:select', function(e) {
+          const selectedValue = e.params.data.id;
+          $(kewarganegaraanOrangMenolakSelect)
+            .val(selectedValue)
+            .trigger('change.select2');
+        });
+      }
+
+      // Initial sync for Select2 fields if needed
+      function syncInitialValues() {
+        if (jkSaksiSelect && jkOrangMenolakSelect) {
+          const jkValue = $(jkSaksiSelect).val();
+          if (jkValue) {
+            $(jkOrangMenolakSelect)
+              .val(jkValue)
+              .trigger('change.select2');
+          }
+        }
+
+        if (kewarganegaraanSaksiSelect && kewarganegaraanOrangMenolakSelect) {
+          const kewarganegaraanValue = $(kewarganegaraanSaksiSelect).val();
+          if (kewarganegaraanValue) {
+            $(kewarganegaraanOrangMenolakSelect)
+              .val(kewarganegaraanValue)
+              .trigger('change.select2');
+          }
+        }
+      }
+
+      // Run initial sync after a short delay
+      setTimeout(syncInitialValues, 100);
     });
   </script>
 

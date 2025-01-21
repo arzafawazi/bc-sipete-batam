@@ -620,8 +620,8 @@
                               <label>Pelaksana Harian</label>
                               <select class="form-control form-select select2" name="plh">
                                 <option value="" disabled>- Pilih -</option>
-                                <option value="YA" {{ old('plh', $pascapenindakan->plh) == 'YA' ? 'selected' : '' }}>Pelaksana Harian</option>
-                                <option value="TIDAK" {{ old('plh', $pascapenindakan->plh) == 'TIDAK' ? 'selected' : '' }}>Tidak Pelaksana Harian</option>
+                                <option value="Plh." {{ old('plh', $pascapenindakan->plh) == 'Plh.' ? 'selected' : '' }}>Pelaksana Harian</option>
+                                <option value="" {{ old('plh', $pascapenindakan->plh) == '' ? 'selected' : '' }}>Tidak Pelaksana Harian</option>
                               </select>
                             </div>
                           </div>

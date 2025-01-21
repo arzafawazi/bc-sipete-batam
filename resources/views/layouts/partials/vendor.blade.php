@@ -9,7 +9,6 @@
 
 
 
-
 @yield('script')
 @vite(['resources/js/app.js'])
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -19,5 +18,6 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
 @yield('script-bottom')
