@@ -16,6 +16,7 @@ use App\Models\TblSbp;
 use App\Models\TblNegara;
 use App\Models\TblLocus;
 use App\Models\TblPenyidikan;
+use App\Models\TblAturanLartas;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -85,6 +86,7 @@ class DaftarDokLppController extends Controller
         $locus = TblLocus::all();
         $kemasans = TblKemasan::all();
         $no_ref = TblNoRef::first();
+        $lartas = TblAturanLartas::all();
         $nama_negara = TblNegara::all()->groupBy('benua');
         $jenisPelanggaran = TblJenisPelanggaran::all();
 
@@ -101,7 +103,8 @@ class DaftarDokLppController extends Controller
             'penyidikan', // Menambahkan data TblPenyidikan
             'sbpData', // Menambahkan data TblSbp
             'laporanInformasi', // Menambahkan data TblLaporanInformasi
-            'tipe_penyidikan'
+            'tipe_penyidikan',
+            'lartas'
         ));
     }
 

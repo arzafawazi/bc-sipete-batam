@@ -26,6 +26,7 @@ use App\Http\Controllers\Dokpenindakan\PraPenindakanNppController;
 use App\Http\Controllers\Dokpenindakan\PenindakanNppController;
 use App\Http\Controllers\Dokpenyidikan\DaftarDokLppController;
 use App\Http\Controllers\Dokpenyidikan\LembarMonitoringBarangController;
+use App\Http\Controllers\Dokpenyidikan\BarangController;
 
 use App\Http\Controllers\Pengawasanlain\BaBukaSegelCtpController;
 use App\Http\Controllers\Pengawasanlain\BaCacahAmunisiController;
@@ -128,6 +129,12 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     // Dokpenyidikan routes
     Route::resource('Dokpenyidikan/daftar-dok-lpp', DaftarDokLppController::class);
     Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-lpp', [DaftarDokLppController::class, 'print_surat_lpp'])->name('surat-lpp.print');
+
+    //Barang Controller
+    Route::resource('Dokpenyidikan/barang', BarangController::class);
+    Route::get('/Dokpenyidikan/barang', [BarangController::class, 'getBarangData']);
+    Route::get('/barang/data', [BarangController::class, 'getBarangData'])->name('getBarangData');
+
 
 
     // Lembar Monitoring Barang Routes

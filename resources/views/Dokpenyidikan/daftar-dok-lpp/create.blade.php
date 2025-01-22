@@ -57,8 +57,8 @@
                           <h6><b>Data Referensi</b></h6>
                           <hr>
                           <div class="row">
-                            <input type="hidden" id="id_penyidikan" name="id_penyidikan" value="">
-                            <input type="hidden" name="id_pasca_penindakan_ref" value="{{ old('id_pasca_penindakan', $pascapenindakan->id_pasca_penindakan) }}">
+                            <input type="text" id="id_penyidikan" name="id_penyidikan" value="">
+                            <input type="text" name="id_pasca_penindakan_ref" value="{{ old('id_pasca_penindakan', $pascapenindakan->id_pasca_penindakan) }}">
 
                             <div class="col-md-12 mb-3">
                               <label>Tipe Penyidikan</label>
@@ -515,174 +515,171 @@
                                     <th class="text-center px-3 py-3" style="width: 20%">Opsi</th>
                                   </tr>
                                 </thead>
-                                <tbody align="center">
-                                  {{-- @foreach ($penyidikan as $index => $penyidikan) --}}
-                                  <tr class="shadow-sm">
-                                    <td class="text-center fw-medium">1</td>
-                                    <td class="fw-medium">a</td>
-                                    <td class="fw-medium">a</td>
-                                    <td class="fw-medium">a</td>
-                                    <td class="fw-medium">a</td>
-                                    <td class="fw-medium">a</td>
-                                    <td class="fw-medium">a</td>
-                                    <td class="fw-medium">a</td>
-                                    <td class="fw-medium">a</td>
-                                    <td>
-                                      <div class="d-flex gap-1 justify-content-center">
-                                        <a href="" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
-                                          <i data-feather="edit" class="icon-sm"></i> Edit
-                                        </a>
-                                        <form action="" method="POST" class="d-inline delete-form">
-                                          @csrf
-                                          @method('DELETE')
-                                          <button type="submit" class="btn btn-soft-danger btn-icon btn-sm rounded-pill" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                            <i data-feather="trash" class="icon-sm"></i> Delete
-                                          </button>
-                                        </form>
+                                <tbody align="center" id="tableBody">
+                                </tbody>
+                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                      <!-- Modal Header -->
+                                      <div class="modal-header bg-primary text-white border-bottom-0">
+                                        <i data-feather="package" class="icon-lg"></i>&nbsp;&nbsp;
+                                        <h5 class="modal-title" id="exampleModalLabel">Detail Barang</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                       </div>
-                                    </td>
 
-
-                                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                      <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                          <!-- Modal Header -->
-                                          <div class="modal-header bg-primary text-white border-bottom-0">
-                                            <i data-feather="package" class="icon-lg"></i>&nbsp;&nbsp;
-                                            <h5 class="modal-title" id="exampleModalLabel">Detail Barang</h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      <!-- Modal Body -->
+                                      <div class="modal-body p-4" style="max-height: 65vh; overflow-y: auto;">
+                                        <form>
+                                          <!-- Always visible fields -->
+                                          <div class="row mb-4">
+                                            <div class="col-md-6">
+                                              <label for="kategori-barang" class="form-label fw-bold">Kategori Barang</label>
+                                              <select class="form-select form-input select2" id="kategori-barang" name="kategori_barang">
+                                                <option value="">-- Pilih Kategori Barang --</option>
+                                                <option value="pabean">Barang Pabean</option>
+                                                <option value="cukai">Barang Kena Cukai</option>
+                                                <option value="pabean_cukai">Barang Pabean dan Barang Kena Cukai</option>
+                                              </select>
+                                            </div>
                                           </div>
 
-                                          <!-- Modal Body -->
-                                          <div class="modal-body p-4" style="max-height: 65vh; overflow-y: auto;">
-                                            <form>
-                                              <!-- Always visible fields -->
-                                              <div class="row mb-4">
-                                                <div class="col-md-6">
-                                                  <label for="kategori-barang" class="form-label fw-bold">Kategori Barang</label>
-                                                  <select class="form-select form-input select2" id="kategori-barang">
-                                                    <option value="">-- Pilih Kategori Barang --</option>
-                                                    <option value="pabean">Barang Pabean</option>
-                                                    <option value="cukai">Barang Kena Cukai</option>
-                                                    <option value="pabean_cukai">Barang Pabean dan Barang Kena Cukai</option>
-                                                  </select>
-                                                </div>
-                                              </div>
-
-                                              <!-- Default Fields -->
-                                              <div class="default-fields mb-4">
-                                                <div class="mb-3">
-                                                  <label for="kode-komoditi" class="form-label fw-bold">Kode Komoditi</label>
-                                                  <input type="text" class="form-control" id="kode-komoditi" placeholder="Kode Komoditi">
-                                                </div>
-                                                <div class="mb-3">
-                                                  <label for="jenis-barang" class="form-label fw-bold">Jenis Barang / Uraian Barang</label>
-                                                  <textarea class="form-control" id="jenis-barang" rows="3" placeholder="Jenis Barang/Uraian Barang"></textarea>
-                                                </div>
-                                              </div>
-
-                                              <!-- Pabean Fields -->
-                                              <div id="pabean-fields" class="d-none">
-                                                <div class="row">
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="merk-pabean" class="form-label fw-bold">Merk</label>
-                                                    <input type="text" class="form-control" id="merk-pabean" placeholder="Masukkan Merk Barang">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="tipe-pabean" class="form-label fw-bold">Tipe</label>
-                                                    <input type="text" class="form-control" id="tipe-pabean" placeholder="Masukkan Tipe Barang">
-                                                  </div>
-                                                </div>
-                                                <div class="row">
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="ukuran-kapasitas" class="form-label fw-bold">Ukuran/Kapasitas</label>
-                                                    <input type="text" class="form-control" id="ukuran-kapasitas" placeholder="Masukkan Ukuran/Kapasitas">
-                                                  </div>
-                                                </div>
-                                                <div class="row">
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="jumlah" class="form-label fw-bold">Jumlah</label>
-                                                    <input type="number" class="form-control" id="jumlah" placeholder="Masukkan Jumlah">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="satuan" class="form-label fw-bold">Satuan</label>
-                                                    <input type="text" class="form-control" id="satuan" placeholder="Masukkan Satuan">
-                                                  </div>
-                                                </div>
-                                                <div class="row">
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="negara-asal" class="form-label fw-bold">Negara Asal</label>
-                                                    <input type="text" class="form-control" id="negara-asal" placeholder="Masukkan Negara Asal">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="kondisi-pabean" class="form-label fw-bold">Kondisi</label>
-                                                    <input type="text" class="form-control" id="kondisi-pabean" placeholder="Masukkan Kondisi Barang">
-                                                  </div>
-                                                </div>
-                                              </div>
-
-                                              <!-- Cukai Fields -->
-                                              <div id="cukai-fields" class="d-none">
-                                                <div class="row">
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="merk-cukai" class="form-label fw-bold">Merk</label>
-                                                    <input type="text" class="form-control" id="merk-cukai" placeholder="Merk Barang">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="tipe-cukai" class="form-label fw-bold">Tipe</label>
-                                                    <input type="text" class="form-control" id="tipe-cukai" placeholder="Tipe Barang">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="kadar-cukai" class="form-label fw-bold">Kadar</label>
-                                                    <input type="text" class="form-control" id="kadar-cukai" placeholder="Kadar Barang">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label for="subyek-cukai" class="form-label fw-bold">Subyek Cukai</label>
-                                                    <input type="text" class="form-control" id="subyek-cukai" placeholder="Subyek Cukai">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label class="form-label fw-bold">Tahun</label>
-                                                    <input type="text" class="form-control" id="tahun" placeholder="Masukkan Tahun">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label class="form-label fw-bold">Gol.</label>
-                                                    <input type="text" class="form-control" id="gol" placeholder="Golongan">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label class="form-label fw-bold">Tarif</label>
-                                                    <input type="text" class="form-control" id="tarif" placeholder="Tarif">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label class="form-label fw-bold">Vol. (ml)</label>
-                                                    <input type="text" class="form-control" id="vol" placeholder="Volume">
-                                                  </div>
-                                                  <div class="col-md-6 mb-3">
-                                                    <label class="form-label fw-bold">Kondisi</label>
-                                                    <input type="text" class="form-control" id="kondisi-cukai" placeholder="Kondisi Barang">
-                                                  </div>
-                                                </div>
-                                              </div>
-
-                                              <!-- Always visible keterangan at the bottom -->
-                                              <div class="mb-3">
-                                                <label for="keterangan" class="form-label fw-bold">Keterangan</label>
-                                                <textarea class="form-control" id="keterangan" rows="3" placeholder="Tambahkan keterangan"></textarea>
-                                              </div>
-                                            </form>
-
+                                          <!-- Default Fields -->
+                                          <div class="default-fields mb-4">
+                                            <div class="mb-3">
+                                              <label for="kode-komoditi" class="form-label fw-bold">Kode Komoditi</label>
+                                              <input type="text" class="form-control" name="kode_komoditi" id="kode-komoditi" placeholder="Kode Komoditi">
+                                            </div>
+                                            <div class="mb-3">
+                                              <label for="jenis-barang" class="form-label fw-bold">Jenis Barang / Uraian Barang</label>
+                                              <textarea class="form-control" name="jenis_barang" id="jenis-barang" rows="3" placeholder="Jenis Barang/Uraian Barang"></textarea>
+                                            </div>
                                           </div>
 
-                                          <!-- Modal Footer -->
-                                          <div class="modal-footer border-top-0 bg-light">
-                                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Tutup</button>
-                                            <button type="button" class="btn btn-outline-primary">Simpan</button>
+                                          <!-- Pabean Fields -->
+                                          <div id="pabean-fields" class="d-none">
+                                            <h6><b>Ciri Khusus Barang Pabean</b></h6>
+                                            <hr>
+                                            <div class="row">
+                                              <div class="col-md-6 mb-3">
+                                                <label for="merk-pabean" class="form-label fw-bold">Merk</label>
+                                                <input type="text" class="form-control" name="merk_pabean" id="merk-pabean" placeholder="Masukkan Merk Barang">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label for="tipe-pabean" class="form-label fw-bold">Tipe</label>
+                                                <input type="text" class="form-control"name="tipe_pabean" id="tipe-pabean" placeholder="Masukkan Tipe Barang">
+                                              </div>
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                              <label for="ukuran-kapasitas" class="form-label fw-bold">Ukuran/Kapasitas</label>
+                                              <input type="text" class="form-control" name="ukuran_kapasitas" id="ukuran-kapasitas" placeholder="Masukkan Ukuran/Kapasitas">
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-6 mb-3">
+                                                <label for="jumlah" class="form-label fw-bold">Jumlah</label>
+                                                <input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Masukkan Jumlah">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label for="satuan" class="form-label fw-bold">Satuan</label>
+                                                <input type="text" class="form-control" name="satuan" id="satuan" placeholder="Masukkan Satuan">
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-6 mb-3">
+                                                <label for="negara-asal" class="form-label fw-bold">Negara Asal</label>
+                                                <select class="form-select select2" placeholder="Masukkan Negara Asal" id="negara-asal" name="negara_asal">
+                                                  <option value="" disabled selected>- Pilih Kewarganegaraan -</option>
+                                                  @foreach ($nama_negara as $benua => $negara)
+                                                    <optgroup label="{{ $benua }}">
+                                                      @foreach ($negara as $item)
+                                                        <option value="{{ $item->UrEdi }}">{{ $item->UrEdi }}</option>
+                                                      @endforeach
+                                                    </optgroup>
+                                                  @endforeach
+                                                </select>
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label for="kondisi-pabean" class="form-label fw-bold">Kondisi</label>
+                                                <input type="text" class="form-control" name="kondisi_pabean" id="kondisi-pabean" placeholder="Masukkan Kondisi Barang">
+                                              </div>
+                                            </div>
                                           </div>
-                                        </div>
+
+                                          <!-- Cukai Fields -->
+                                          <div id="cukai-fields" class="d-none">
+                                            <h6><b>Ciri Khusus Barang Kena Cukai</b></h6>
+                                            <hr>
+                                            <div class="row">
+                                              <div class="col-md-6 mb-3">
+                                                <label for="merk-cukai" class="form-label fw-bold">Merk</label>
+                                                <input type="text" name="merk_cukai" class="form-control" id="merk-cukai" placeholder="Merk Barang">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label for="tipe-cukai" class="form-label fw-bold">Tipe</label>
+                                                <input type="text" class="form-control" name="tipe_cukai" id="tipe-cukai" placeholder="Tipe Barang">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label for="kadar-cukai" class="form-label fw-bold">Kadar</label>
+                                                <input type="text" class="form-control" name="kadar_cukai" id="kadar-cukai" placeholder="Kadar Barang">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label for="subyek-cukai" class="form-label fw-bold">Subyek Cukai</label>
+                                                <input type="text" class="form-control" name="subyek_cukai" id="subyek-cukai" placeholder="Subyek Cukai">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-bold">Tahun</label>
+                                                <input type="text" class="form-control" name="tahun" id="tahun" placeholder="Masukkan Tahun">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-bold">Gol.</label>
+                                                <input type="text" class="form-control" name="gol" id="gol" placeholder="Golongan">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-bold">Tarif</label>
+                                                <input type="text" class="form-control" name="tarif" id="tarif" placeholder="Tarif">
+                                              </div>
+                                              <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-bold">Vol. (ml)</label>
+                                                <input type="text" class="form-control" name="vol" id="vol" placeholder="Volume">
+                                              </div>
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                              <label class="form-label fw-bold">Kondisi</label>
+                                              <input type="text" class="form-control" name="kondisi_cukai" id="kondisi-cukai" placeholder="Kondisi Barang">
+                                            </div>
+                                          </div>
+
+                                          <div class="mb-3">
+                                            <label for="keterangan" class="form-label fw-bold">Keterangan</label>
+                                            <textarea class="form-control" id="keterangan" name="keterangan" rows="3" placeholder="Tambahkan keterangan"></textarea>
+                                          </div>
+
+                                          <div class="mb-3">
+                                            <label class="form-label fw-bold">Pilih Kategori Lartas</label>
+                                            <select class="form-select select2" name="kategori_lartas" id="kategori-lartas" placeholder="Pilih Kategori Lartas">
+                                              <option value="" selected disabled>- Pilih Kategori Lartas -</option>
+                                              @foreach ($lartas as $lartas)
+                                                <option value="{{ $lartas->jenis_barang }} ({{ $lartas->no_aturan }})">{{ $lartas->jenis_barang }} ({{ $lartas->no_aturan }})
+                                                </option>
+                                              @endforeach
+                                            </select>
+                                          </div>
+
+                                        </form>
+
+                                      </div>
+
+                                      <!-- Modal Footer -->
+                                      <div class="modal-footer border-top-0 bg-light">
+                                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Tutup</button>
+                                        <button type="button" class="btn btn-outline-primary" id="formBarang">
+                                          <span id="buttonText">Simpan</span>
+                                          <span id="buttonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                        </button>
+
                                       </div>
                                     </div>
-                                  </tr>
-                                  {{-- @endforeach --}}
-                                </tbody>
+                                  </div>
+                                </div>
                               </table>
                             </div>
                           </div>
@@ -825,15 +822,157 @@
   </div>
 
 
+
+
+
   <script>
+    // Fungsi untuk menghasilkan ID unik
     function generateUniqueID() {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 1000000);
       return `id_penyidikan_${timestamp}_${randomNum}`;
     }
 
-    document.getElementById('id_penyidikan').value = generateUniqueID();
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ambil input ID Penyidikan
+      const idPenyidikanInput = document.getElementById('id_penyidikan');
+      if (idPenyidikanInput) {
+        idPenyidikanInput.value = generateUniqueID(); // Jika ID Penyidikan tidak ada, buat ID baru
+      }
+
+      // Ambil tombol formBarang dan elemen-elemen lainnya
+      const formBarangButton = document.getElementById('formBarang');
+      const buttonText = formBarangButton.querySelector('#buttonText');
+      const buttonSpinner = formBarangButton.querySelector('#buttonSpinner');
+
+      // Ketika tombol formBarang diklik
+      $('#formBarang').on('click', function(e) {
+        e.preventDefault();
+
+        // Nonaktifkan tombol dan tampilkan animasi loading
+        formBarangButton.disabled = true;
+        buttonSpinner.classList.remove('d-none');
+        buttonText.textContent = 'Tunggu...';
+
+        // Ambil data dari form
+        var formData = {
+          'id_penyidikan': idPenyidikanInput ? idPenyidikanInput.value : '', // Ambil id_penyidikan dari input
+          'kategori_barang': $('#kategori-barang').val(),
+          'kode_komoditi': $('#kode-komoditi').val(),
+          'jenis_barang': $('#jenis-barang').val(),
+          'merk_pabean': $('#merk-pabean').val(),
+          'tipe_pabean': $('#tipe-pabean').val(),
+          'ukuran_kapasitas': $('#ukuran-kapasitas').val(),
+          'jumlah': $('#jumlah').val(),
+          'satuan': $('#satuan').val(),
+          'negara_asal': $('#negara-asal').val(),
+          'kondisi_pabean': $('#kondisi-pabean').val(),
+          'keterangan': $('#keterangan').val(),
+          'kategori_lartas': $('#kategori-lartas').val(),
+        };
+
+        // Kirim data ke server menggunakan AJAX
+        $.ajax({
+          url: '/Dokpenyidikan/barang', // Ganti dengan route yang sesuai untuk menyimpan data
+          type: 'POST',
+          data: formData,
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(response) {
+            console.log('Data berhasil dikirim:', response);
+            alert('Data berhasil disimpan!');
+
+            // Reset data input form setelah berhasil disimpan
+            $('#kategori-barang').val('').trigger('change'); // Reset Select2
+            $('#kode-komoditi').val('');
+            $('#jenis-barang').val('');
+            $('#merk-pabean').val('');
+            $('#tipe-pabean').val('');
+            $('#ukuran-kapasitas').val('');
+            $('#jumlah').val('');
+            $('#satuan').val('');
+            $('#negara-asal').val('').trigger('change'); // Reset Select2
+            $('#kondisi-pabean').val('');
+            $('#keterangan').val('');
+            $('#kategori-lartas').val('').trigger('change'); // Reset Select2
+
+            // Panggil fungsi untuk update tabel real-time
+            loadData(idPenyidikanInput.value); // Panggil dengan id_penyidikan
+          },
+          error: function(xhr, status, error) {
+            console.error('Kesalahan:', error);
+            alert('Terjadi kesalahan saat mengirim data.');
+          },
+          complete: function() {
+            // Aktifkan kembali tombol dan sembunyikan animasi loading
+            formBarangButton.disabled = false;
+            buttonSpinner.classList.add('d-none');
+            buttonText.textContent = 'Simpan';
+          }
+        });
+      });
+    });
+
+    // Fungsi untuk memuat data tabel secara real-time
+    function loadData(idPenyidikan) {
+      $.ajax({
+        url: '/Dokpenyidikan/barang', // Ganti dengan route yang sesuai untuk mengambil data
+        type: 'GET',
+        data: {
+          'id_penyidikan': idPenyidikan
+        }, // Kirimkan id_penyidikan ke server
+        success: function(response) {
+          // Kosongkan tabel sebelum menambahkan data baru
+          $('#tableBody').empty();
+
+          // Periksa apakah data ada
+          if (response.data && response.data.length > 0) {
+            // Loop untuk menambahkan data ke tabel
+            response.data.forEach(function(item, index) {
+              $('#tableBody').append(`
+                <tr class="shadow-sm">
+                  <td class="text-center fw-medium">${index + 1}</td>
+                  <td class="fw-medium">${item.kategori_barang}</td>
+                  <td class="fw-medium">${item.kode_komoditi}</td>
+                  <td class="fw-medium">${item.jenis_barang}</td>
+                  <td class="fw-medium">${item.merk_pabean}</td>
+                  <td class="fw-medium">${item.tipe_pabean}</td>
+                  <td class="fw-medium">${item.ukuran_kapasitas}</td>
+                  <td class="fw-medium">${item.jumlah}</td>
+                  <td class="fw-medium">${item.satuan}</td>
+                  <td>
+                    <div class="d-flex gap-1 justify-content-center">
+                      <a href="" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
+                        <i data-feather="edit" class="icon-sm"></i> Edit
+                      </a>
+                      <form action="" method="POST" class="d-inline delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-soft-danger btn-icon btn-sm rounded-pill" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                          <i data-feather="trash" class="icon-sm"></i> Delete
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              `);
+            });
+          } else {
+            $('#tableBody').append('<tr><td colspan="10" class="text-center">Data tidak ditemukan</td></tr>');
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Kesalahan:', error);
+          alert('Terjadi kesalahan saat memuat data.');
+        }
+      });
+    }
   </script>
+
+
+
+
 
 
   <script>
@@ -945,17 +1084,27 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      $('.bs-example-modal-lg').on('shown.bs.modal', function() {
+        $('.select2').select2({
+          dropdownParent: $('.bs-example-modal-lg'),
+          width: '100%',
+          allowClear: true,
+        });
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
       const pabeanFields = document.getElementById('pabean-fields');
       const cukaiFields = document.getElementById('cukai-fields');
 
       $('#kategori-barang').on('change', function(e) {
         const value = $(this).val();
 
-        // Hide all optional fields first
         pabeanFields.classList.add('d-none');
         cukaiFields.classList.add('d-none');
 
-        // Show relevant fields based on selection
         if (value === 'pabean') {
           pabeanFields.classList.remove('d-none');
         } else if (value === 'cukai') {
