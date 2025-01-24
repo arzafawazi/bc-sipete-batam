@@ -27,6 +27,14 @@ class BarangController extends Controller
             'satuan' => 'nullable|string',
             'negara_asal' => 'nullable|string',
             'kondisi_pabean' => 'nullable|string',
+            'merk_cukai' => 'nullable|string',
+            'tipe_cukai' => 'nullable|string',
+            'kadar_cukai' => 'nullable|string',
+            'subyek_cukai' => 'nullable|string',
+            'tahun' => 'nullable|string',
+            'gol' => 'nullable|string',
+            'vol' => 'nullable|string',
+            'kondisi_cukai' => 'nullable|string',
             'keterangan' => 'nullable|string',
             'kategori_lartas' => 'nullable|string',
         ]);
@@ -43,6 +51,14 @@ class BarangController extends Controller
         $barang->satuan = $validatedData['satuan'] ?? null;
         $barang->negara_asal = $validatedData['negara_asal'] ?? null;
         $barang->kondisi_pabean = $validatedData['kondisi_pabean'] ?? null;
+        $barang->merk_cukai = $validatedData['merk_cukai'] ?? null;
+        $barang->tipe_cukai = $validatedData['tipe_cukai'] ?? null;
+        $barang->kadar_cukai = $validatedData['kadar_cukai'] ?? null;
+        $barang->subyek_cukai = $validatedData['subyek_cukai'] ?? null;
+        $barang->tahun = $validatedData['tahun'] ?? null;
+        $barang->gol = $validatedData['gol'] ?? null;
+        $barang->vol = $validatedData['vol'] ?? null;
+        $barang->kondisi_cukai = $validatedData['kondisi_cukai'] ?? null;
         $barang->keterangan = $validatedData['keterangan'] ?? null;
         $barang->kategori_lartas = $validatedData['kategori_lartas'] ?? null;
         $barang->save();
@@ -52,7 +68,7 @@ class BarangController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Data berhasil disimpan!',
+            'message' => 'Data Barang Cacah berhasil disimpan!',
         ]);
     }
 
@@ -72,6 +88,35 @@ class BarangController extends Controller
         // Kembalikan data barang dalam format JSON
         return response()->json([
             'data' => $barangData
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $barang = Barang::findOrFail($id);
+        return response()->json($barang);
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $barang = Barang::findOrFail($id);
+            $barang->update($request->all());
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $barang = Barang::findOrFail($id); // Cari barang berdasarkan ID
+
+        $barang->delete(); // Hapus barang
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Barang berhasil dihapus!',
         ]);
     }
 }

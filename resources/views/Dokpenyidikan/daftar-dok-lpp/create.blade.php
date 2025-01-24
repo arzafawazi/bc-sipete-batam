@@ -382,32 +382,12 @@
                             <div id="flush-collapseOnetsa" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                               <div class="accordion-body bg-light">
 
-
-                                <!-- Form Inputs -->
-                                <div class="col-md-12 mb-3">
-                                  <label>Nama Penerima</label>
-                                  <input type="text" class="form-control form-input" placeholder="Nama Penerima" name="nama_penerima_bast_instansi">
+                                <div class="col-md-6 mb-3">
+                                  <label>Tgl. Berita Acara Wawancara</label>
+                                  <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_baw">
                                 </div>
 
-                                <div class="col-lg-12 mb-3">
-                                  <label>Jenis Identitas Penerima</label>
-                                  <input type="text" class="form-control form-input" placeholder="Jenis Identitas" name="jenis_iden_bast_instansi">
-                                </div>
 
-                                <div class="col-md-12 mb-3">
-                                  <label>NRP/Identitas</label>
-                                  <input type="text" class="form-control form-input" placeholder="NRP/Identitas" name="identitas_bast_instansi">
-                                </div>
-
-                                <div class="col-md-12 mb-3">
-                                  <label>Menerima penyerahan untuk/atas nama</label>
-                                  <input type="text" class="form-control form-input" value="Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam" name="atas_nama_bast_instansi">
-                                </div>
-
-                                <div class="col-md-12 mb-3">
-                                  <label>Penyerahan dilaksanakan dalam rangka</label>
-                                  <textarea class="form-control" rows="4" placeholder="Penyerahan dilaksanakan dalam rangka" name="penyerahan_bast_instansi"></textarea>
-                                </div>
 
                               </div>
                             </div>
@@ -504,6 +484,7 @@
                                 <thead>
                                   <tr class="bg-light">
                                     <th class="text-center px-3 py-3" style="width: 5%">No</th>
+                                    <th class="px-3 text-center py-3" style="width: 25%">Kategori Barang</th>
                                     <th class="px-3 text-center py-3" style="width: 25%">Uraian Barang</th>
                                     <th class="px-3 text-center py-3" style="width: 15%">Jumlah</th>
                                     <th class="px-3 text-center py-3" style="width: 15%">Satuan</th>
@@ -684,12 +665,160 @@
                             </div>
                           </div>
                         </div>
-
-
-
-
                       </div>
                     </div>
+
+
+                    <div class="modal fade" id="editBarangModal" tabindex="-1" role="dialog" aria-labelledby="editBarangModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header bg-primary text-white border-bottom-0">
+                            <i data-feather="package" class="icon-lg"></i>&nbsp;&nbsp;
+                            <h5 class="modal-title" id="editBarangModalLabel">Edit Barang</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+
+                          <!-- Modal Body -->
+                          <div class="modal-body p-4" style="max-height: 65vh; overflow-y: auto;">
+                            <form id="editBarangForm">
+
+
+                              <!-- Always visible fields -->
+                              <div class="row mb-4">
+                                <div class="col-md-6">
+                                  <label for="edit-kategori-barang" class="form-label fw-bold">Kategori Barang</label>
+                                  <select class="form-select form-input select2" id="edit-kategori-barang" name="kategori_barang">
+                                    <option value="">-- Pilih Kategori Barang --</option>
+                                    <option value="pabean">Barang Pabean</option>
+                                    <option value="cukai">Barang Kena Cukai</option>
+                                    <option value="pabean_cukai">Barang Pabean dan Barang Kena Cukai</option>
+                                  </select>
+                                </div>
+                              </div>
+
+                              <!-- Default Fields -->
+                              <div class="default-fields mb-4">
+                                <div class="mb-3">
+                                  <label for="edit-kode-komoditi" class="form-label fw-bold">Kode Komoditi</label>
+                                  <input type="text" class="form-control" name="kode_komoditi" id="edit-kode-komoditi" placeholder="Kode Komoditi">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="edit-jenis-barang" class="form-label fw-bold">Jenis Barang / Uraian Barang</label>
+                                  <textarea class="form-control" name="jenis_barang" id="edit-jenis-barang" rows="3" placeholder="Jenis Barang/Uraian Barang"></textarea>
+                                </div>
+                              </div>
+
+                              <!-- Pabean Fields -->
+                              <div id="edit-pabean-fields" class="d-none">
+                                <h6><b>Ciri Khusus Barang Pabean</b></h6>
+                                <hr>
+                                <div class="row">
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-merk-pabean" class="form-label fw-bold">Merk</label>
+                                    <input type="text" class="form-control" name="merk_pabean" id="edit-merk-pabean" placeholder="Masukkan Merk Barang">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-tipe-pabean" class="form-label fw-bold">Tipe</label>
+                                    <input type="text" class="form-control" name="tipe_pabean" id="edit-tipe-pabean" placeholder="Masukkan Tipe Barang">
+                                  </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                  <label for="edit-ukuran-kapasitas" class="form-label fw-bold">Ukuran/Kapasitas</label>
+                                  <input type="text" class="form-control" name="ukuran_kapasitas" id="edit-ukuran-kapasitas" placeholder="Masukkan Ukuran/Kapasitas">
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-jumlah" class="form-label fw-bold">Jumlah</label>
+                                    <input type="number" class="form-control" name="jumlah" id="edit-jumlah" placeholder="Masukkan Jumlah">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-satuan" class="form-label fw-bold">Satuan</label>
+                                    <input type="text" class="form-control" name="satuan" id="edit-satuan" placeholder="Masukkan Satuan">
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-negara-asal" class="form-label fw-bold">Negara Asal</label>
+                                    <select class="form-select select2" id="edit-negara-asal" name="negara_asal">
+                                      <option value="" disabled selected>- Pilih Kewarganegaraan -</option>
+                                      @foreach ($nama_negara as $benua => $negara)
+                                        <optgroup label="{{ $benua }}">
+                                          @foreach ($negara as $item)
+                                            <option value="{{ $item->UrEdi }}">{{ $item->UrEdi }}</option>
+                                          @endforeach
+                                        </optgroup>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-kondisi-pabean" class="form-label fw-bold">Kondisi</label>
+                                    <input type="text" class="form-control" name="kondisi_pabean" id="edit-kondisi-pabean" placeholder="Masukkan Kondisi Barang">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- Cukai Fields -->
+                              <div id="edit-cukai-fields" class="d-none">
+                                <h6><b>Ciri Khusus Barang Kena Cukai</b></h6>
+                                <hr>
+                                <div class="row">
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-merk-cukai" class="form-label fw-bold">Merk</label>
+                                    <input type="text" name="merk_cukai" class="form-control" id="edit-merk-cukai" placeholder="Merk Barang">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-tipe-cukai" class="form-label fw-bold">Tipe</label>
+                                    <input type="text" class="form-control" name="tipe_cukai" id="edit-tipe-cukai" placeholder="Tipe Barang">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-kadar-cukai" class="form-label fw-bold">Kadar</label>
+                                    <input type="text" class="form-control" name="kadar_cukai" id="edit-kadar-cukai" placeholder="Kadar Barang">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-subyek-cukai" class="form-label fw-bold">Subyek Cukai</label>
+                                    <input type="text" class="form-control" name="subyek_cukai" id="edit-subyek-cukai" placeholder="Subyek Cukai">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="mb-3">
+                                <label for="edit-keterangan" class="form-label fw-bold">Keterangan</label>
+                                <textarea class="form-control" id="edit-keterangan" name="keterangan" rows="3" placeholder="Tambahkan keterangan"></textarea>
+                              </div>
+
+                              <div class="mb-3">
+                                <label class="form-label fw-bold">Pilih Kategori Lartas</label>
+                                <select class="form-select select2" name="kategori_lartas" id="edit-kategori-lartas" placeholder="Pilih Kategori Lartas">
+                                  <option value="" selected disabled>- Pilih Kategori Lartas -</option>
+                                  @foreach ($lartas as $item)
+                                    @if (is_object($item))
+                                      <option value="{{ $item->jenis_barang }} ({{ $item->no_aturan }})">
+                                        {{ $item->jenis_barang }} ({{ $item->no_aturan }})
+                                      </option>
+                                    @else
+                                      <option disabled>Data tidak valid</option>
+                                    @endif
+                                  @endforeach
+                                </select>
+                              </div>
+
+                            </form>
+                          </div>
+
+
+                          <!-- Modal Footer -->
+                          <div class="modal-footer border-top-0 bg-light">
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-outline-primary" id="updateBarangBtn">
+                              Update
+                              <span id="updateButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
 
                     <div class="tab-pane fade" id="lhp" role="tabpanel" aria-labelledby="lhp-tab">
                       <div class="row">
@@ -867,6 +996,14 @@
           'satuan': $('#satuan').val(),
           'negara_asal': $('#negara-asal').val(),
           'kondisi_pabean': $('#kondisi-pabean').val(),
+          'merk_cukai': $('#merk-cukai').val(),
+          'tipe_cukai': $('#tipe-cukai').val(),
+          'kadar_cukai': $('#kadar-cukai').val(),
+          'subyek_cukai': $('#subyek-cukai').val(),
+          'tahun': $('#tahun').val(),
+          'gol': $('#gol').val(),
+          'vol': $('#vol').val(),
+          'kondisi_cukai': $('#kondisi-cukai').val(),
           'keterangan': $('#keterangan').val(),
           'kategori_lartas': $('#kategori-lartas').val(),
         };
@@ -894,8 +1031,16 @@
             $('#satuan').val('');
             $('#negara-asal').val('').trigger('change'); // Reset Select2
             $('#kondisi-pabean').val('');
+            $('#merk-cukai').val('');
+            $('#tipe-cukai').val('');
+            $('#kadar-cukai').val('');
+            $('#subyek-cukai').val('');
+            $('#tahun').val('');
+            $('#gol').val('');
+            $('#vol').val('');
+            $('#kondisi-cukai').val('');
             $('#keterangan').val('');
-            $('#kategori-lartas').val('').trigger('change'); // Reset Select2
+            $('#kategori-lartas').val('').trigger('change');
 
             // Panggil fungsi untuk update tabel real-time
             loadData(idPenyidikanInput.value); // Panggil dengan id_penyidikan
@@ -914,6 +1059,189 @@
       });
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+      // Dynamic field display based on category
+      $('#edit-kategori-barang').on('change', function() {
+        const kategori = $(this).val();
+        $('#edit-pabean-fields, #edit-cukai-fields').addClass('d-none');
+
+        if (kategori === 'pabean') {
+          $('#edit-pabean-fields').removeClass('d-none');
+        } else if (kategori === 'cukai') {
+          $('#edit-cukai-fields').removeClass('d-none');
+        } else if (kategori === 'pabean_cukai') {
+          $('#edit-pabean-fields, #edit-cukai-fields').removeClass('d-none');
+        }
+      });
+
+      // Edit button event delegation
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.edit-btn')) {
+          e.preventDefault();
+          const itemId = e.target.closest('.edit-btn').getAttribute('data-id');
+
+          // Fetch item details for editing
+          $.ajax({
+            url: `/Dokpenyidikan/barang/${itemId}/edit`,
+            type: 'GET',
+            success: function(response) {
+              // Populate hidden ID field
+              $('#barang-id').val(response.id);
+
+              // Populate kategori barang and trigger change to show/hide fields
+              $('#edit-kategori-barang').val(response.kategori_barang).trigger('change');
+
+              // Populate default fields
+              $('#edit-kode-komoditi').val(response.kode_komoditi);
+              $('#edit-jenis-barang').val(response.jenis_barang);
+
+              // Populate Pabean fields
+              $('#edit-merk-pabean').val(response.merk_pabean);
+              $('#edit-tipe-pabean').val(response.tipe_pabean);
+              $('#edit-ukuran-kapasitas').val(response.ukuran_kapasitas);
+              $('#edit-jumlah').val(response.jumlah);
+              $('#edit-satuan').val(response.satuan);
+
+              // Special handling for Kategori Lartas dropdown
+              const editKategoriLartas = $('#edit-kategori-lartas');
+              editKategoriLartas.find('option').each(function() {
+                if ($(this).val() === response.kategori_lartas) {
+                  editKategoriLartas.val(response.kategori_lartas).trigger('change');
+                }
+              });
+
+              // Special handling for Negara Asal dropdown
+              const editNegaraAsal = $('#edit-negara-asal');
+              editNegaraAsal.find('option').each(function() {
+                if ($(this).val() === response.negara_asal) {
+                  editNegaraAsal.val(response.negara_asal).trigger('change');
+                }
+              });
+
+              $('#edit-kondisi-pabean').val(response.kondisi_pabean);
+
+              // Populate Cukai fields
+              $('#edit-merk-cukai').val(response.merk_cukai);
+              $('#edit-tipe-cukai').val(response.tipe_cukai);
+              $('#edit-kadar-cukai').val(response.kadar_cukai);
+              $('#edit-subyek-cukai').val(response.subyek_cukai);
+
+              // Populate other fields
+              $('#edit-keterangan').val(response.keterangan);
+
+              // Show the modal
+              var editModal = new bootstrap.Modal(document.getElementById('editBarangModal'));
+              editModal.show();
+            },
+            error: function(xhr, status, error) {
+              console.error('Error fetching item details:', error);
+              alert('Gagal mengambil data untuk diedit.');
+            }
+          });
+        }
+      });
+
+      // Update button event
+      $('#updateBarangBtn').on('click', function() {
+        const itemId = $('#barang-id').val();
+        const formData = {
+          'id_penyidikan': $('#id_penyidikan').val(),
+          'kategori_barang': $('#edit-kategori-barang').val(),
+          'kode_komoditi': $('#edit-kode-komoditi').val(),
+          'jenis_barang': $('#edit-jenis-barang').val(),
+          'merk_pabean': $('#edit-merk-pabean').val(),
+          'tipe_pabean': $('#edit-tipe-pabean').val(),
+          'ukuran_kapasitas': $('#edit-ukuran-kapasitas').val(),
+          'jumlah': $('#edit-jumlah').val(),
+          'satuan': $('#edit-satuan').val(),
+          'negara_asal': $('#edit-negara-asal').val(),
+          'kondisi_pabean': $('#edit-kondisi-pabean').val(),
+          'merk_cukai': $('#edit-merk-cukai').val(),
+          'tipe_cukai': $('#edit-tipe-cukai').val(),
+          'kadar_cukai': $('#edit-kadar-cukai').val(),
+          'subyek_cukai': $('#edit-subyek-cukai').val(),
+          'keterangan': $('#edit-keterangan').val(),
+          'kategori_lartas': $('#edit-kategori-lartas').val()
+        };
+
+        // Show loading spinner
+        const updateButton = $(this);
+        const buttonSpinner = $('#updateButtonSpinner');
+        updateButton.prop('disabled', true);
+        buttonSpinner.removeClass('d-none');
+
+        // Get investigation ID
+        const idPenyidikan = $('#id_penyidikan').val();
+
+        $.ajax({
+          url: `/Dokpenyidikan/barang/${itemId}`,
+          type: 'PUT',
+          data: formData,
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(response) {
+            if (response.success) {
+              alert('Data berhasil diupdate!');
+
+              // Close modal
+              $('#editBarangModal').modal('hide');
+
+              // Reload data
+              loadData(idPenyidikan);
+            } else {
+              alert('Gagal mengupdate data.');
+            }
+          },
+          error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengupdate data.');
+          },
+          complete: function() {
+            // Restore button state
+            updateButton.prop('disabled', false);
+            buttonSpinner.addClass('d-none');
+          }
+        });
+      });
+    });
+
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.matches('.delete-btn')) {
+        const form = e.target.closest('form');
+        const itemId = form.getAttribute('data-id');
+        // Get the investigation ID from a more reliable source
+        const idPenyidikan = document.getElementById('id_penyidikan').value;
+
+        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+          const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+          fetch(`/Dokpenyidikan/barang/${itemId}`, {
+              method: 'DELETE',
+              headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Content-Type': 'application/json',
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('Data berhasil dihapus!');
+                // Pass the investigation ID here
+                loadData(idPenyidikan);
+              } else {
+                alert('Terjadi kesalahan saat menghapus data.');
+              }
+            })
+            .catch(error => {
+              console.error('Kesalahan:', error);
+              alert('Terjadi kesalahan saat menghapus data.');
+            });
+        }
+      }
+    });
+
+
     // Fungsi untuk memuat data tabel secara real-time
     function loadData(idPenyidikan) {
       $.ajax({
@@ -923,44 +1251,60 @@
           'id_penyidikan': idPenyidikan
         }, // Kirimkan id_penyidikan ke server
         success: function(response) {
-          // Kosongkan tabel sebelum menambahkan data baru
           $('#tableBody').empty();
 
-          // Periksa apakah data ada
           if (response.data && response.data.length > 0) {
-            // Loop untuk menambahkan data ke tabel
             response.data.forEach(function(item, index) {
+              let fieldMerkTipeUkuran, fieldKondisi;
+
+              if (item.kategori_barang === 'pabean') {
+                fieldMerkTipeUkuran = `${item.merk_pabean}/${item.tipe_pabean}/${item.ukuran_kapasitas}`;
+                fieldKondisi = `${item.kondisi_pabean}`;
+              } else if (item.kategori_barang === 'cukai') {
+                fieldMerkTipeUkuran = `${item.merk_cukai},${item.tipe_cukai},${item.kadar_cukai}`;
+                fieldKondisi = `${item.kondisi_cukai}`;
+              } else {
+                fieldMerkTipeUkuran = '-';
+                fieldKondisi = '-';
+              }
+
               $('#tableBody').append(`
-                <tr class="shadow-sm">
-                  <td class="text-center fw-medium">${index + 1}</td>
-                  <td class="fw-medium">${item.kategori_barang}</td>
-                  <td class="fw-medium">${item.kode_komoditi}</td>
-                  <td class="fw-medium">${item.jenis_barang}</td>
-                  <td class="fw-medium">${item.merk_pabean}</td>
-                  <td class="fw-medium">${item.tipe_pabean}</td>
-                  <td class="fw-medium">${item.ukuran_kapasitas}</td>
-                  <td class="fw-medium">${item.jumlah}</td>
-                  <td class="fw-medium">${item.satuan}</td>
-                  <td>
-                    <div class="d-flex gap-1 justify-content-center">
-                      <a href="" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
-                        <i data-feather="edit" class="icon-sm"></i> Edit
-                      </a>
-                      <form action="" method="POST" class="d-inline delete-form">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-soft-danger btn-icon btn-sm rounded-pill" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                          <i data-feather="trash" class="icon-sm"></i> Delete
-                        </button>
-                      </form>
-                    </div>
-                  </td>
-                </tr>
-              `);
+  <tr class="shadow-sm">
+      <td class="text-center fw-medium">${index + 1}</td>
+         <td class="fw-medium">${item.kategori_barang || '-'}</td>
+                <td class="fw-medium">${item.jenis_barang || '-'}</td>
+                <td class="fw-medium">${item.jumlah || '-'}</td>
+                <td class="fw-medium">${item.satuan || '-'}</td>
+      <td class="fw-medium">${fieldMerkTipeUkuran}</td>
+    <td class="fw-medium">${item.negara_asal || '-'}</td>
+      <td class="fw-medium">${fieldKondisi}</td>
+       <td class="fw-medium">${item.kategori_lartas || '-'}</td>
+                <td class="fw-medium">${item.keterangan || '-'}</td>
+      <td>
+          <div class="d-flex gap-1 justify-content-center">
+              <a href="#" class="btn btn-soft-success btn-icon btn-sm rounded-pill edit-btn" data-id="${item.id}">
+                  <i data-feather="edit" class="icon-sm"></i> Edit
+              </a>
+           <form action="/Dokpenyidikan/barang/${item.id}" method="POST" class="d-inline delete-form" data-id="${item.id}">
+   @csrf
+   @method('DELETE')
+   <button type="button" class="btn btn-soft-danger btn-icon btn-sm rounded-pill delete-btn">
+       <i data-feather="trash" class="icon-sm"></i> Delete
+   </button>
+</form>
+
+
+
+          </div>
+      </td>
+  </tr>
+`);
+
             });
           } else {
             $('#tableBody').append('<tr><td colspan="10" class="text-center">Data tidak ditemukan</td></tr>');
           }
+
         },
         error: function(xhr, status, error) {
           console.error('Kesalahan:', error);
@@ -969,11 +1313,6 @@
       });
     }
   </script>
-
-
-
-
-
 
   <script>
     function toggleForm(selectedValue, sectionId) {

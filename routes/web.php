@@ -134,6 +134,8 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::resource('Dokpenyidikan/barang', BarangController::class);
     Route::get('/Dokpenyidikan/barang', [BarangController::class, 'getBarangData']);
     Route::get('/barang/data', [BarangController::class, 'getBarangData'])->name('getBarangData');
+    Route::get('/Dokpenyidikan/barang/{id}/edit', [BarangController::class, 'edit'])->name('barang.edit'); // Rute edit
+    Route::delete('/Dokpenyidikan/barang/{id}', [BarangController::class, 'destroy'])->name('barang.destroy'); // Rute hapus
 
 
 
