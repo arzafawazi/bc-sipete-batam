@@ -87,6 +87,7 @@ class DaftarDokLppController extends Controller
         $kemasans = TblKemasan::all();
         $no_ref = TblNoRef::first();
         $lartas = TblAturanLartas::all();
+        $lartasedit = TblAturanLartas::all();
         $nama_negara = TblNegara::all()->groupBy('benua');
         $jenisPelanggaran = TblJenisPelanggaran::all();
 
@@ -104,7 +105,8 @@ class DaftarDokLppController extends Controller
             'sbpData', // Menambahkan data TblSbp
             'laporanInformasi', // Menambahkan data TblLaporanInformasi
             'tipe_penyidikan',
-            'lartas'
+            'lartas',
+            'lartasedit'
         ));
     }
 
@@ -126,11 +128,79 @@ class DaftarDokLppController extends Controller
 
 
 
-    public function edit() {}
+    public function edit(Request $request, $id)
+    {
+        // Ambil data berdasarkan ID yang diberikan
+        $penyidikan = TblPenyidikan::findOrFail($id);  // Mengambil data TblPenyidikan berdasarkan ID
+        $id_pasca_penindakan = $penyidikan->id_pasca_penindakan_ref;  // Mengambil id_pasca_penindakan dari data Penyidikan
+        $tipe_penyidikan = $penyidikan->tipe_penyidikan;  // Ambil tipe penyidikan
 
-    public function update() {}
+        // Ambil data pasca penindakan berdasarkan ID
+        $pascapenindakan = TblPascaPenindakan::where('id_pasca_penindakan', $id_pasca_penindakan)->first();
 
-    public function destroy() {}
+        // Ambil data SBP
+        $sbpData = TblSbp::with('laporanInformasi')
+            ->where('id_penindakan', $pascapenindakan->id_penindakan_ref)
+            ->first();
+
+        // Ambil data laporan informasi
+        $laporanInformasi = TblLaporanInformasi::where('id_pra_penindakan', $sbpData->pluck('id_pra_penindakan_ref'))
+            ->get();
+
+        // Ambil data terkait lainnya
+        $users = User::all();
+        $segels = TblSegel::all();
+        $locus = TblLocus::all();
+        $kemasans = TblKemasan::all();
+        $no_ref = TblNoRef::first();
+        $lartas = TblAturanLartas::all();
+        $lartasedit = TblAturanLartas::all();
+        $nama_negara = TblNegara::all()->groupBy('benua');
+        $jenisPelanggaran = TblJenisPelanggaran::all();
+
+        // Kembalikan tampilan edit dengan membawa data yang dibutuhkan
+        return view('Dokpenyidikan.daftar-dok-lpp.edit', compact(
+            'users',
+            'segels',
+            'kemasans',
+            'jenisPelanggaran',
+            'no_ref',
+            'id_pasca_penindakan',
+            'nama_negara',
+            'pascapenindakan',
+            'locus',
+            'penyidikan', // Menambahkan data TblPenyidikan
+            'sbpData', // Menambahkan data TblSbp
+            'laporanInformasi', // Menambahkan data TblLaporanInformasi
+            'tipe_penyidikan',
+            'lartas',
+            'lartasedit'
+        ));
+    }
+
+
+    public function update($id)
+    {
+        $data = request()->all();
+
+        $item = TblPenyidikan::find($id);
+        if ($item) {
+            $item->update($data);
+            return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data berhasil diperbarui.');
+        }
+
+        return redirect()->route('daftar-dok-lpp.index')->with('error', 'Data tidak ditemukan.');
+    }
+
+    public function destroy($id)
+    {
+        $penyidikan = TblPenyidikan::find($id);
+        if ($penyidikan) {
+            $penyidikan->delete();
+            return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data berhasil dihapus.');
+        }
+        return redirect()->route('daftar-dok-lpp.index')->with('error', 'Data tidak ditemukan.');
+    }
 
 
 

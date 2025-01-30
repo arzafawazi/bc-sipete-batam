@@ -57,8 +57,8 @@
                           <h6><b>Data Referensi</b></h6>
                           <hr>
                           <div class="row">
-                            <input type="text" id="id_penyidikan" name="id_penyidikan" value="">
-                            <input type="text" name="id_pasca_penindakan_ref" value="{{ old('id_pasca_penindakan', $pascapenindakan->id_pasca_penindakan) }}">
+                            <input type="hidden" id="id_penyidikan" name="id_penyidikan" value="">
+                            <input type="hidden" name="id_pasca_penindakan_ref" value="{{ old('id_pasca_penindakan', $pascapenindakan->id_pasca_penindakan) }}">
 
                             <div class="col-md-12 mb-3">
                               <label>Tipe Penyidikan</label>
@@ -372,28 +372,224 @@
 
 
 
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion accordion-flush" id="mainAccordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
-                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnetsa" aria-expanded="false" aria-controls="flush-collapseOnetsa">
+                              <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseMain" aria-expanded="false" aria-controls="flush-collapseMain">
                                 B. Berita Acara Wawancara (BAW)
                               </button>
                             </h2>
-                            <div id="flush-collapseOnetsa" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div id="flush-collapseMain" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                               <div class="accordion-body bg-light">
 
-                                <div class="col-md-6 mb-3">
+                                <!-- Tanggal BAW -->
+                                <div class="col-md-12 mb-3">
                                   <label>Tgl. Berita Acara Wawancara</label>
                                   <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_baw">
                                 </div>
 
+                                <!-- Nested Accordion for Questions -->
+                                <div class="accordion accordion-flush" id="accordionQuestions">
+                                  <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingQuestions">
+                                      <button class="accordion-button btn bg-primary text-white fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuestions" aria-expanded="false"
+                                        aria-controls="collapseQuestions">
+                                        Daftar Pertanyaan
+                                      </button>
+                                    </h2>
+                                    <div id="collapseQuestions" class="accordion-collapse collapse" aria-labelledby="headingQuestions" data-bs-parent="#accordionQuestions">
+                                      <div class="accordion-body">
 
+                                        <!-- Pertanyaan dan Jawaban 01 -->
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 01:</h6>
+                                            <p>Apakah pada saat ini saudara dalam keadaan sehat jasmani dan rohani?</p>
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_1_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
 
+                                        <!-- Pertanyaan dan Jawaban 02 -->
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 02:</h6>
+                                            <p>Apakah saudara mengerti dan bersedia dimintai keterangan dengan memberikan keterangan yang jujur dan sebenarnya? Jelaskan!</p>
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_2_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <!-- Pertanyaan dan Jawaban 03 -->
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 03:</h6>
+                                            <p>Jelaskan riwayat pendidikan dan riwayat pekerjaan saudara?</p>
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_3_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 04:</h6>
+                                            <p>Kemanakah tujuan Sarana Pengangkut beserta muatan yang dilakukan penindakan oleh Petugas Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_4_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+
+                                            <div class="d-flex align-items-center mt-3">
+                                              <input type="file" id="uploadBukti1" name="bukti_1" accept="image/*" class="form-control">
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 05:</h6>
+                                            <p>Ada berapa jumlah crew pada Sarana Pengangkut? Jelaskan tugas dan tanggung jawab masing-masing kru!</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_5_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 06:</h6>
+                                            <p>Sudah berapa lama Saudara menjadi Nahkoda dari Sarana Pengangkut tersebut?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_6_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 07:</h6>
+                                            <p>Sebutkan siapa pemilik dari Sarana Pengangkut yang dilakukan penindakan oleh Petugas Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_7_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+
+                                            <div class="d-flex align-items-center mt-3">
+                                              <input type="file" id="uploadBukti2" name="bukti_2" accept="image/*" class="form-control">
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 08:</h6>
+                                            <p>Bagaimana kronologis penindakan yang dilakukan oleh Petugas Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_8_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 09:</h6>
+                                            <p>Apa barang muatan Sarana Pengangkut yang dilakukan penindakan oleh Petugas Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam yang Saudara kemudikan tersebut? Jelaskan!</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_9_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 10:</h6>
+                                            <p>Siapakah pemilik muatan kapal Sarana Pengangkut yang dilakukan penindakan oleh Petugas Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam yang Saudara kemudikan tersebut?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_10_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 11:</h6>
+                                            <p>Jelaskan berapakah upah yang Saudara terima sebagai Nahkoda Sarana Pengangkut atas pembawaan barang tersebut!</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_11_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 12:</h6>
+                                            <p>Apakah atas Sarana Pengangkut dan barang muatan dilindungi/dilengkapi dengan dokumen kepabenanan?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_12_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 13:</h6>
+                                            <p>Apakah atas kegiatan bongkar muat barang yang ada diawasi atau telah mendapat ijin dari Bea Cukai?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_13_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 14:</h6>
+                                            <p>Apakah Saudara mengetahui ketentuan bahwa pengeluaran barang dari KPBPB Batam ke Tempat Lain Dalam Daerah Pabean harus dilengkapi dengan pemberitahuan pabean?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_14_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 15:</h6>
+                                            <p>Apakah saudara bersedia diwawancarai kembali untuk diminta keterangan tambahan jika diperlukan dalam perkara ini?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_15_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 16:</h6>
+                                            <p>Apakah selama dalam wawancara ini saudara ada mendapat tekanan, paksaan atau arahan dari saya selaku pemeriksa atau dari pihak lain untuk memberikan keterangan di atas?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_16_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                          <div class="card-body">
+                                            <h6 class="fw-bold">PERTANYAAN 17:</h6>
+                                            <p>Apakah masih ada lagi keterangan lain yang ingin saudara tambahkan sehubungan dengan perkara di atas?</p>
+
+                                            <h6 class="fw-bold mt-3">JAWABAN:</h6>
+                                            <textarea class="form-control" name="tanya_17_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
+                                          </div>
+                                        </div>
+
+                                        <div class="text-center mt-3">
+                                          <a href="javascript:void(0)" id="closeAccordionBtn" class="btn btn-danger">Tutup Daftar Pertanyaan</a>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div> <!-- End of Nested Accordion -->
                               </div>
                             </div>
                           </div>
                         </div>
-
 
                         <div class="card-body">
                           <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -683,7 +879,7 @@
                           <div class="modal-body p-4" style="max-height: 65vh; overflow-y: auto;">
                             <form id="editBarangForm">
 
-
+                              <input type="hidden" id="barang-id">
                               <!-- Always visible fields -->
                               <div class="row mb-4">
                                 <div class="col-md-6">
@@ -789,16 +985,12 @@
 
                               <div class="mb-3">
                                 <label class="form-label fw-bold">Pilih Kategori Lartas</label>
+
                                 <select class="form-select select2" name="kategori_lartas" id="edit-kategori-lartas" placeholder="Pilih Kategori Lartas">
                                   <option value="" selected disabled>- Pilih Kategori Lartas -</option>
-                                  @foreach ($lartas as $item)
-                                    @if (is_object($item))
-                                      <option value="{{ $item->jenis_barang }} ({{ $item->no_aturan }})">
-                                        {{ $item->jenis_barang }} ({{ $item->no_aturan }})
-                                      </option>
-                                    @else
-                                      <option disabled>Data tidak valid</option>
-                                    @endif
+                                  @foreach ($lartasedit as $item)
+                                    <option value="{{ $item->jenis_barang }} ({{ $item->no_aturan }})">{{ $item->jenis_barang }} ({{ $item->no_aturan }})
+                                    </option>
                                   @endforeach
                                 </select>
                               </div>
@@ -815,6 +1007,7 @@
                               <span id="updateButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                             </button>
                           </div>
+
                         </div>
                       </div>
                     </div>
@@ -847,44 +1040,47 @@
                           <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
                               <h2 class="accordion-header">
-                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnes" aria-expanded="false" aria-controls="flush-collapseOnes">
-                                  A. Barang Hasil Penindakan
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnesbbv" aria-expanded="false" aria-controls="flush-collapseOnesbbv">
+                                  A. Pelanggaran Pidana Dengan Pelaku Tidak Dikenal Saksi-saksi
                                 </button>
                               </h2>
-                              <div id="flush-collapseOnes" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                              <div id="flush-collapseOnesbbv" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body bg-light">
 
                                   <!-- Form Inputs -->
                                   <div class="col-md-12 mb-3">
-                                    <label>Merk Barang</label>
-                                    <input type="text" class="form-control" placeholder="Merek Barang" name="merek_barang_lpf">
+                                    <label>Nama</label>
+                                    <input type="text" class="form-control" placeholder="Nama" name="nama_lhp">
                                   </div>
 
                                   <div class="col-md-12 mb-3">
-                                    <label>Kondisi Barang</label>
-                                    <input type="text" class="form-control" placeholder="Kondisi Barang" name="kondisi_barang_lpf">
+                                    <label>NIK/No. Passport</label>
+                                    <input type="text" class="form-control" placeholder="NIK/No. Passport" name="nik_paspor_lhp">
                                   </div>
 
                                   <div class="col-md-12 mb-3">
-                                    <label>Tipe Barang</label>
-                                    <input type="text" class="form-control" placeholder="Tipe Barang" name="tipe_barang_lpf">
+                                    <label>Nomor Telepon</label>
+                                    <input type="text" class="form-control" placeholder="Nomor Telepon" name="no_telp">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Jenis Kelamin</label>
+                                    <select class="form-select form-input select2" name="jk_lhp">
+                                      <option value="">-- Pilih jenis kelamin --</option>
+                                      <option value="Laki-Laki">Laki-Laki</option>
+                                      <option value="Perempuan">Perempuan</option>
+                                    </select>
                                   </div>
 
                                   <div class="col-md-12 mb-3">
                                     <label class="d-flex align-items-center">
-                                      Spesifikasi Lain
+                                      Alamat
                                       {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                   data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
                                   <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
                                 </button> --}}
                                     </label>
-                                    <textarea class="form-control" rows="3" placeholder="Spesifikasi Lain" name="spesifikasi_barang_lpf"></textarea>
-                                  </div>
-
-
-                                  <div class="col-md-12 mb-3">
-                                    <label>Kantor Pendaftaran Dokumen</label>
-                                    <input type="text" class="form-control" placeholder="Kantor Pendaftaran Dokumen" name="kantor_pendaftaran_lpf">
+                                    <textarea class="form-control" rows="3" placeholder="Alamat" name="alamat_lhp"></textarea>
                                   </div>
 
                                 </div>
@@ -896,35 +1092,57 @@
 
                         <div class="col-md-12 mb-3">
                           <label class="d-flex align-items-center">
+                            Pemenuhan Unsur Pasal
+                            {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                          </label>
+                          <textarea class="form-control" rows="3" placeholder="Pemenuhan Unsur Pasal" name="unsur_pasal_lhp"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
                             Kesimpulan
                             {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                   data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
                                   <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
                                 </button> --}}
                           </label>
-                          <textarea class="form-control" rows="3" placeholder="Kesimpulan LPF" name="kesimpulan_lpf"></textarea>
+                          <textarea class="form-control" rows="3" placeholder="Kesimpulan" name="kesimpulan_lhp"></textarea>
                         </div>
 
                         <div class="col-md-12 mb-3">
                           <label class="d-flex align-items-center">
-                            Usulan
+                            Alternatif Penyelesaian Perkara
                             {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                   data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
                                   <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
                                 </button> --}}
                           </label>
-                          <textarea class="form-control" rows="3" placeholder="Usulan LPF" name="usulan_lpf"></textarea>
+                          <textarea class="form-control" rows="3" placeholder="Alternatif Penyelesaian Perkara" name="penyelesaian_perkara_lhp"></textarea>
                         </div>
 
                         <div class="col-md-12 mb-3">
                           <label class="d-flex align-items-center">
-                            Catatan/disposisi atasan
+                            Informasi Lainnya
                             {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                   data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
                                   <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
                                 </button> --}}
                           </label>
-                          <textarea class="form-control" rows="3" placeholder="Catatan/disposisi atasan" name="catatan_lpf"></textarea>
+                          <textarea class="form-control" rows="3" placeholder="Informasi Lainnya" name="informasi_lainnya_lhp"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                          <label class="d-flex align-items-center">
+                            Catatan Atasan
+                            {{-- <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                  data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                  <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
+                                </button> --}}
+                          </label>
+                          <textarea class="form-control" rows="3" placeholder="Catatan Atasan" name="catatan_lhp"></textarea>
                         </div>
 
 
@@ -1080,6 +1298,11 @@
           e.preventDefault();
           const itemId = e.target.closest('.edit-btn').getAttribute('data-id');
 
+          if (!itemId) {
+            alert('ID item tidak ditemukan');
+            return;
+          }
+
           // Fetch item details for editing
           $.ajax({
             url: `/Dokpenyidikan/barang/${itemId}/edit`,
@@ -1104,20 +1327,17 @@
 
               // Special handling for Kategori Lartas dropdown
               const editKategoriLartas = $('#edit-kategori-lartas');
-              editKategoriLartas.find('option').each(function() {
-                if ($(this).val() === response.kategori_lartas) {
-                  editKategoriLartas.val(response.kategori_lartas).trigger('change');
-                }
-              });
+              editKategoriLartas.val(response.kategori_lartas).trigger('change'); // Ensure Select2 updates
+              // Reinitialize select2 to update its UI
+              editKategoriLartas.trigger('change');
 
               // Special handling for Negara Asal dropdown
               const editNegaraAsal = $('#edit-negara-asal');
-              editNegaraAsal.find('option').each(function() {
-                if ($(this).val() === response.negara_asal) {
-                  editNegaraAsal.val(response.negara_asal).trigger('change');
-                }
-              });
+              editNegaraAsal.val(response.negara_asal).trigger('change'); // Ensure Select2 updates
+              // Reinitialize select2 to update its UI
+              editNegaraAsal.trigger('change');
 
+              // Populate other fields
               $('#edit-kondisi-pabean').val(response.kondisi_pabean);
 
               // Populate Cukai fields
@@ -1128,6 +1348,9 @@
 
               // Populate other fields
               $('#edit-keterangan').val(response.keterangan);
+
+              // Reinitialize Select2 elements
+              $('.select2').select2();
 
               // Show the modal
               var editModal = new bootstrap.Modal(document.getElementById('editBarangModal'));
@@ -1141,9 +1364,15 @@
         }
       });
 
+
       // Update button event
       $('#updateBarangBtn').on('click', function() {
         const itemId = $('#barang-id').val();
+
+        if (!itemId) {
+          alert('ID barang bagian update tidak valid');
+          return;
+        }
         const formData = {
           'id_penyidikan': $('#id_penyidikan').val(),
           'kategori_barang': $('#edit-kategori-barang').val(),
@@ -1206,6 +1435,8 @@
       });
     });
 
+    //diatas ini bagian edit
+
     document.addEventListener('click', function(e) {
       if (e.target && e.target.matches('.delete-btn')) {
         const form = e.target.closest('form');
@@ -1258,11 +1489,11 @@
               let fieldMerkTipeUkuran, fieldKondisi;
 
               if (item.kategori_barang === 'pabean') {
-                fieldMerkTipeUkuran = `${item.merk_pabean}/${item.tipe_pabean}/${item.ukuran_kapasitas}`;
-                fieldKondisi = `${item.kondisi_pabean}`;
+                fieldMerkTipeUkuran = `${item.merk_pabean || '-'}/${item.tipe_pabean || '-'}/${item.ukuran_kapasitas || '-'}`;
+                fieldKondisi = `${item.kondisi_pabean || '-'}`;
               } else if (item.kategori_barang === 'cukai') {
-                fieldMerkTipeUkuran = `${item.merk_cukai},${item.tipe_cukai},${item.kadar_cukai}`;
-                fieldKondisi = `${item.kondisi_cukai}`;
+                fieldMerkTipeUkuran = `${item.merk_cukai || '-'},${item.tipe_cukai || '-'},${item.kadar_cukai || '-'}`;
+                fieldKondisi = `${item.kondisi_cukai || '-'}`;
               } else {
                 fieldMerkTipeUkuran = '-';
                 fieldKondisi = '-';
@@ -1271,20 +1502,21 @@
               $('#tableBody').append(`
   <tr class="shadow-sm">
       <td class="text-center fw-medium">${index + 1}</td>
-         <td class="fw-medium">${item.kategori_barang || '-'}</td>
-                <td class="fw-medium">${item.jenis_barang || '-'}</td>
-                <td class="fw-medium">${item.jumlah || '-'}</td>
-                <td class="fw-medium">${item.satuan || '-'}</td>
-      <td class="fw-medium">${fieldMerkTipeUkuran}</td>
-    <td class="fw-medium">${item.negara_asal || '-'}</td>
-      <td class="fw-medium">${fieldKondisi}</td>
-       <td class="fw-medium">${item.kategori_lartas || '-'}</td>
-                <td class="fw-medium">${item.keterangan || '-'}</td>
+         <td class="fw-medium">${(item.kategori_barang || '-').slice(0, 20)}${(item.kategori_barang && item.kategori_barang.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${(item.jenis_barang || '-').slice(0, 20)}${(item.jenis_barang && item.jenis_barang.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${(item.jumlah || '-').slice(0, 20)}${(item.jumlah && item.jumlah.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${(item.satuan || '-').slice(0, 20)}${(item.satuan && item.satuan.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${fieldMerkTipeUkuran.slice(0, 20)}${(fieldMerkTipeUkuran.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${(item.negara_asal || '-').slice(0, 20)}${(item.negara_asal && item.negara_asal.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${fieldKondisi.slice(0, 20)}${(fieldKondisi.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${(item.kategori_lartas || '-').slice(0, 20)}${(item.kategori_lartas && item.kategori_lartas.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${(item.keterangan || '-').slice(0, 20)}${(item.keterangan && item.keterangan.length > 20 ? '...' : '')}</td>
+
       <td>
           <div class="d-flex gap-1 justify-content-center">
-              <a href="#" class="btn btn-soft-success btn-icon btn-sm rounded-pill edit-btn" data-id="${item.id}">
-                  <i data-feather="edit" class="icon-sm"></i> Edit
-              </a>
+               <a href="#" class="btn btn-soft-success btn-icon btn-sm rounded-pill edit-btn" data-id="${item.id}">
+        <i data-feather="edit" class="icon-sm"></i> Edit
+    </a>
            <form action="/Dokpenyidikan/barang/${item.id}" method="POST" class="d-inline delete-form" data-id="${item.id}">
    @csrf
    @method('DELETE')
@@ -1383,6 +1615,7 @@
     }
   </style>
 
+
   <style>
     .form-input:disabled {
       background-color: #f0f0f0;
@@ -1452,6 +1685,15 @@
           pabeanFields.classList.remove('d-none');
           cukaiFields.classList.remove('d-none');
         }
+      });
+    });
+  </script>
+
+  <script>
+    document.getElementById('closeAccordionBtn').addEventListener('click', function() {
+      var collapseElement = document.getElementById('collapseQuestions');
+      var accordionCollapse = new bootstrap.Collapse(collapseElement, {
+        toggle: true
       });
     });
   </script>

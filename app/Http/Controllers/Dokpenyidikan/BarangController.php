@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dokpenyidikan;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use Illuminate\Http\Request;
+use App\Models\TblAturanLartas;
 use Illuminate\Support\Facades\DB; // Tambahkan ini
 use Illuminate\Support\Facades\Schema; // Tambahkan ini
 use Illuminate\Database\Schema\Blueprint;
@@ -107,6 +108,7 @@ class BarangController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
 
     public function destroy($id)
     {
