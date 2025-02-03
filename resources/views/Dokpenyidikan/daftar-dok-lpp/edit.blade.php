@@ -263,6 +263,48 @@
                             <label>Tgl. LPF</label>
                             <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lpf" value="{{ old('tgl_lpf', $penyidikan->tgl_lpf) }}">
                           </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>BAP Saksi atas nama</label>
+                            <input type="text" class="form-control" name="bap_nama" value="{{ old('bap_nama', $penyidikan->bap_nama) }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Tgl. BAP Saksi atas nama</label>
+                            <input type="date" class="form-control" placeholder="yyyy-mm-dd" name="tgl_bap_nama" value="{{ old('tgl_bap_nama', $penyidikan->tgl_bap_nama) }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>BAP Tersangka atas nama</label>
+                            <input type="text" class="form-control" name="bap_tersangka" value="{{ old('bap_tersangka', $penyidikan->bap_tersangka) }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Tgl. BAP Tersangka atas nama</label>
+                            <input type="date" class="form-control" placeholder="yyyy-mm-dd" name="tgl_bap_tersangka" value="{{ old('tgl_bap_tersangka', $penyidikan->tgl_bap_tersangka) }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Resume Perkara</label>
+                            <input type="text" class="form-control" name="resume_perkara" value="{{ old('resume_perkara', $penyidikan->resume_perkara) }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Tgl. Resume Perkara</label>
+                            <input type="date" class="form-control" placeholder="yyyy-mm-dd" name="tgl_resume_perkara" value="{{ old('tgl_resume_perkara', $penyidikan->tgl_resume_perkara) }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Dokumen Lain</label>
+                            <input type="text" class="form-control" name="dokumen_lain" value="{{ old('dokumen_lain', $penyidikan->dokumen_lain) }}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Tgl. Dokumen Lain</label>
+                            <input type="date" class="form-control" placeholder="yyyy-mm-dd" name="tgl_dokumen_lain" value="{{ old('tgl_dokumen_lain', $penyidikan->tgl_dokumen_lain) }}">
+                          </div>
+
+
                         </div>
 
                         <h6><b>B. Data Lainnya</b></h6>
@@ -321,16 +363,19 @@
                                   <h3 class="text-center text-uppercase fw-bold border-bottom border-dark border-3 pb-2 mb-4 mx-auto" style="letter-spacing: 4px; max-width: 600px;">
                                     <span class="d-inline-block py-2">D I P E R I N T A H K A N</span>
                                   </h3>
+
                                   <div class="col-lg-12 mb-3">
-                                    <label>Pejabat Yang Melakukan Penelitian</label>
-                                    <select class="form-control form-select select2" name="pejabat_penelitian[]" multiple>
+                                    <label for="pejabat_penelitian">Pejabat Yang Melakukan Penelitian</label>
+                                    <select class="form-control form-select select2" id="pejabat_penelitian" name="pejabat_penelitian[]" multiple>
+                                      {{-- <option value="" selected disabled>- Pilih -</option> --}}
                                       @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}" @if (in_array($user->id_admin, old('pejabat_penelitian', $penyidikan->pejabat_penelitian ? $penyidikan->pejabat_penelitian->pluck('id_admin')->toArray() : []))) selected @endif>
+                                        <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, json_decode($penyidikan->pejabat_penelitian)) ? 'selected' : '' }}>
                                           {{ $user->name }}
                                         </option>
                                       @endforeach
                                     </select>
                                   </div>
+
 
 
                                 </div>
@@ -599,8 +644,9 @@
                                 <div class="col-lg-12 mb-3">
                                   <label>Pejabat Yang Melakukan Pencacahan</label>
                                   <select class="form-control form-select select2" name="pejabat_print_cacah[]" multiple>
+                                    {{-- <option value="" selected disabled>- Pilih -</option> --}}
                                     @foreach ($users as $user)
-                                      <option value="{{ $user->id_admin }}" @if (in_array($user->id_admin, old('pejabat_print_cacah', $penyidikan->pejabat_print_cacah ? $penyidikan->pejabat_print_cacah->pluck('id_admin')->toArray() : []))) selected @endif>
+                                      <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, json_decode($penyidikan->pejabat_print_cacah)) ? 'selected' : '' }}>
                                         {{ $user->name }}
                                       </option>
                                     @endforeach

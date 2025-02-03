@@ -52,7 +52,7 @@ class TblPenyidikan extends Model
         return $this->hasManyThrough(
             TblLaporanInformasi::class,
             TblSbp::class,
-            'id_penindakan_ref',        // Foreign key di TblSbp
+            'id_penindakan',        // Foreign key di TblSbp, bagian ini kuubah untuk penyidikan nanti cek lagi dibagian index penyidikan
             'id_pra_penindakan',        // Foreign key di TblLaporanInformasi
             'id_pasca_penindakan_ref',  // Local key di TblPenyidikan
             'id_pra_penindakan_ref'     // Local key di TblSbp

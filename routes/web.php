@@ -129,6 +129,12 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     // Dokpenyidikan routes
     Route::resource('Dokpenyidikan/daftar-dok-lpp', DaftarDokLppController::class);
     Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-lpp', [DaftarDokLppController::class, 'print_surat_lpp'])->name('surat-lpp.print');
+    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-lpf', [DaftarDokLppController::class, 'print_surat_lpf'])->name('surat-lpf.print');
+    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-split', [DaftarDokLppController::class, 'print_surat_split'])->name('surat-split.print');
+    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-baw', [DaftarDokLppController::class, 'print_surat_baw'])->name('surat-baw.print');
+    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-print-cacah', [DaftarDokLppController::class, 'print_surat_print_cacah'])->name('surat-print-cacah.print');
+    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-ba-cacah', [DaftarDokLppController::class, 'print_surat_ba_cacah'])->name('surat-ba-cacah.print');
+    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-lhp', [DaftarDokLppController::class, 'print_surat_lhp'])->name('surat-lhp.print');
 
     //Barang Controller
     Route::resource('Dokpenyidikan/barang', BarangController::class);
@@ -136,6 +142,7 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('/barang/data', [BarangController::class, 'getBarangData'])->name('getBarangData');
     Route::get('/Dokpenyidikan/barang/{id}/edit', [BarangController::class, 'edit'])->name('barang.edit'); // Rute edit
     Route::delete('/Dokpenyidikan/barang/{id}', [BarangController::class, 'destroy'])->name('barang.destroy'); // Rute hapus
+
 
 
 

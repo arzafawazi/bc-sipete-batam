@@ -62,7 +62,7 @@
 
                             <div class="col-md-12 mb-3">
                               <label>Tipe Penyidikan</label>
-                              <input type="text" class="form-control bg-primary text-white" value="{{ $tipe_penyidikan }}" readonly>
+                              <input type="text" name="tipe_penyidikan" class="form-control bg-primary text-white" value="{{ $tipe_penyidikan }}" readonly>
                             </div>
 
                             <div class="col-md-6 mb-3">
@@ -272,6 +272,26 @@
                           <div class="col-md-6 mb-3">
                             <label>Tgl. LPF</label>
                             <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_lpf">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>BAP Saksi atas nama</label>
+                            <input type="text" class="form-control" name="bap_nama">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Tgl. BAP Saksi atas nama</label>
+                            <input type="date" class="form-control" placeholder="yyyy-mm-dd" name="tgl_bap_nama">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>BAP Tersangka atas nama</label>
+                            <input type="text" class="form-control" name="bap_tersangka">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label>Tgl. BAP Tersangka atas nama</label>
+                            <input type="date" class="form-control" placeholder="yyyy-mm-dd" name="tgl_bap_tersangka">
                           </div>
 
                         </div>
