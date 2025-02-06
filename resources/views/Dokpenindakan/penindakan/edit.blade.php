@@ -182,6 +182,7 @@
                                 <label>Nama Saksi</label>
                                 <input type="text" class="form-control" placeholder="Nama Saksi" name="nama_saksi" value="{{ old('nama_saksi', $penindakans->nama_saksi) }}">
                               </div>
+
                               <div class="col-md-6 mb-3">
                                 <label>Pekerjaan Saksi</label>
                                 <input type="text" class="form-control" placeholder="Pekerjaan Saksi" name="pekerjaan_saksi" value="{{ old('pekerjaan_saksi', $penindakans->pekerjaan_saksi) }}">
@@ -422,12 +423,21 @@
 
                                     <!-- Form Inputs -->
                                     <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Nama dan Jenis Sarkut</label>
+                                      <label class="col-sm-4 col-form-label">Nama Sarkut</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="nama_jenis_sarkut" value="{{ old('nama_jenis_sarkut', $penindakans->nama_jenis_sarkut) }}" placeholder="Nama Dan Jenis Sarkut"
+                                        <input type="text" class="form-control form-input" name="nama_jenis_sarkut" value="{{ old('nama_jenis_sarkut', $penindakans->nama_jenis_sarkut) }}" placeholder="Nama Sarkut"
                                           {{ $penindakans->data_sarkut == 'YA' ? '' : 'disabled' }}>
                                       </div>
                                     </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">Jenis Sarkut</label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" name="jenis_sarkut" value="{{ old('jenis_sarkut', $penindakans->jenis_sarkut) }}" placeholder="Jenis Sarkut"
+                                          {{ $penindakans->data_sarkut == 'YA' ? '' : 'disabled' }}>
+                                      </div>
+                                    </div>
+
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">No. Voy/ Penerbangan/ Trayek</label>
                                       <div class="col-sm-8">
@@ -506,7 +516,7 @@
                                         <select class="form-control form-input select2" name="id_kemasan" {{ $penindakans->data_barang == 'YA' ? '' : 'disabled' }}>
                                           <option value="" disabled selected>- Pilih -</option>
                                           @foreach ($kemasans as $kemasan)
-                                            <option value="{{ $kemasan->id_kemasan }}" {{ old('id_kemasan', $penindakans->id_kemasan) == $kemasan->id_kemasan ? 'selected' : '' }}>{{ $kemasan->nama_kemasan }}</option>
+                                            <option value="{{ $kemasan->nama_kemasan }}" {{ old('id_kemasan', $penindakans->id_kemasan) == $kemasan->nama_kemasan ? 'selected' : '' }}>{{ $kemasan->nama_kemasan }}</option>
                                           @endforeach
                                         </select>
                                       </div>
@@ -534,6 +544,14 @@
                                       </div>
                                       <div class="col-sm-4">
                                         <input type="date" class="form-control form-input" name="tgl_dokumen" value="{{ old('tgl_dokumen', $penindakans->tgl_dokumen) }}" {{ $penindakans->data_barang == 'YA' ? '' : 'disabled' }}>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">Masa Berlaku Dokumen</label>
+                                      <div class="col-sm-8">
+                                        <input type="date" class="form-control form-input" name="masa_berlaku_dokumen" placeholder="Masa Berlaku Dokumen" value="{{ old('masa_berlaku_dokumen', $penindakans->masa_berlaku_dokumen) }}"
+                                          {{ $penindakans->data_barang == 'YA' ? '' : 'disabled' }}>
                                       </div>
                                     </div>
 

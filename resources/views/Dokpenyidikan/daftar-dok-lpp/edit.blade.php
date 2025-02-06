@@ -998,7 +998,28 @@
                                     <label for="edit-subyek-cukai" class="form-label fw-bold">Subyek Cukai</label>
                                     <input type="text" class="form-control" name="subyek_cukai" id="edit-subyek-cukai" placeholder="Subyek Cukai">
                                   </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-tahun" class="form-label fw-bold">Tahun</label>
+                                    <input type="text" class="form-control" name="tahun" id="edit-tahun" placeholder="Masukkan Tahun">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-gol" class="form-label fw-bold">Gol.</label>
+                                    <input type="text" class="form-control" name="gol" id="edit-gol" placeholder="Golongan">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-tarif" class="form-label fw-bold">Tarif</label>
+                                    <input type="text" class="form-control" name="tarif" id="edit-tarif" placeholder="Tarif">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="edit-vol" class="form-label fw-bold">Vol. (ml)</label>
+                                    <input type="text" class="form-control" name="vol" id="edit-vol" placeholder="Volume">
+                                  </div>
                                 </div>
+                                <div class="col-md-12 mb-3">
+                                  <label for="edit-kondisi-cukai" class="form-label fw-bold">Kondisi</label>
+                                  <input type="text" class="form-control" name="kondisi_cukai" id="edit-kondisi-cukai" placeholder="Kondisi Barang">
+                                </div>
+
                               </div>
 
                               <div class="mb-3">
@@ -1101,6 +1122,61 @@
                                     </label>
                                     <textarea class="form-control" rows="3" placeholder="Alamat" name="alamat_lhp">{{ old('alamat_lhp', $penyidikan->alamat_lhp ?? '') }}</textarea>
                                   </div>
+
+                                </div>
+                              </div>
+
+                            </div>
+
+
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnesbbva" aria-expanded="false"
+                                  aria-controls="flush-collapseOnesbbva">
+                                  B. Dokumen Pelangkap
+                                </button>
+                              </h2>
+                              <div id="flush-collapseOnesbbva" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+
+                                  <!-- Form Inputs -->
+                                  <div class="col-md-12 mb-3">
+                                    <label>Nomor Dokumen</label>
+                                    <input type="text" class="form-control" placeholder="Nomor Dokumen Pelengkap" name="no_dok_pelengkap" value="{{ old('no_dok_pelengkap', $penyidikan->no_dok_pelengkap ?? '') }}">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Tanggal Dokumen</label>
+                                    <input type="date" class="form-control" placeholder="Tanggal Dokumen Pelengkap" name="tanggal_dok_pelengkap" value="{{ old('tanggal_dok_pelengkap', $penyidikan->tanggal_dok_pelengkap ?? '') }}">
+                                  </div>
+
+                                  <div class="col-md-12 mb-3">
+                                    <label>Masa Berlaku Dokumen</label>
+                                    <input type="date" class="form-control" placeholder="Masa Berlaku Dokumen Pelengkap" name="masa_berlaku_dokumen_pelengkap"
+                                      value="{{ old('masa_berlaku_dokumen_pelengkap', $penyidikan->masa_berlaku_dokumen_pelengkap ?? '') }}">
+                                  </div>
+
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnesbbvaz" aria-expanded="false"
+                                  aria-controls="flush-collapseOnesbbvaz">
+                                  C. Pengulangan Pelanggaran Yang Dilakukan Oleh Pelaku
+                                </button>
+                              </h2>
+                              <div id="flush-collapseOnesbbvaz" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body bg-light">
+
+                                  <!-- Form Inputs -->
+                                  <div class="col-md-12 mb-3">
+                                    <label>Pengulangan Pelanggaran</label>
+                                    <textarea class="form-control" placeholder="Pengulangan Pelanggaran" name="pengulangan_pelanggaran" rows="3">{{ old('pengulangan_pelanggaran', $penyidikan->pengulangan_pelanggaran ?? '') }}</textarea>
+                                  </div>
+
 
                                 </div>
                               </div>
@@ -1319,6 +1395,22 @@
               $('#edit-kode-komoditi').val(response.kode_komoditi);
               $('#edit-jenis-barang').val(response.jenis_barang);
 
+              $('#edit-kondisi-pabean').val(response.kondisi_pabean);
+
+              // Populate Cukai fields
+              $('#edit-merk-cukai').val(response.merk_cukai);
+              $('#edit-tipe-cukai').val(response.tipe_cukai);
+              $('#edit-kadar-cukai').val(response.kadar_cukai);
+              $('#edit-subyek-cukai').val(response.subyek_cukai);
+              $('#edit-tahun').val(response.tahun);
+              $('#edit-gol').val(response.gol);
+              $('#edit-vol').val(response.vol);
+              $('#edit-tarif').val(response.tarif);
+              $('#edit-kondisi-cukai').val(response.kondisi_cukai);
+
+              // Populate other fields
+              $('#edit-keterangan').val(response.keterangan);
+
               // Populate Pabean fields
               $('#edit-merk-pabean').val(response.merk_pabean);
               $('#edit-tipe-pabean').val(response.tipe_pabean);
@@ -1339,16 +1431,7 @@
               editNegaraAsal.trigger('change');
 
               // Populate other fields
-              $('#edit-kondisi-pabean').val(response.kondisi_pabean);
 
-              // Populate Cukai fields
-              $('#edit-merk-cukai').val(response.merk_cukai);
-              $('#edit-tipe-cukai').val(response.tipe_cukai);
-              $('#edit-kadar-cukai').val(response.kadar_cukai);
-              $('#edit-subyek-cukai').val(response.subyek_cukai);
-
-              // Populate other fields
-              $('#edit-keterangan').val(response.keterangan);
 
               // Reinitialize Select2 elements
               $('.select2').select2();
@@ -1390,6 +1473,11 @@
           'tipe_cukai': $('#edit-tipe-cukai').val(),
           'kadar_cukai': $('#edit-kadar-cukai').val(),
           'subyek_cukai': $('#edit-subyek-cukai').val(),
+          'tahun': $('#edit-tahun').val(),
+          'gol': $('#edit-gol').val(),
+          'vol': $('#edit-vol').val(),
+          'tarif': $('#edit-tarif').val(),
+          'kondisi_cukai': $('#edit-kondisi-cukai').val(),
           'keterangan': $('#edit-keterangan').val(),
           'kategori_lartas': $('#edit-kategori-lartas').val()
         };
@@ -1505,7 +1593,7 @@
       <td class="text-center fw-medium">${index + 1}</td>
          <td class="fw-medium">${(item.kategori_barang || '-').slice(0, 20)}${(item.kategori_barang && item.kategori_barang.length > 20 ? '...' : '')}</td>
 <td class="fw-medium">${(item.jenis_barang || '-').slice(0, 20)}${(item.jenis_barang && item.jenis_barang.length > 20 ? '...' : '')}</td>
-<td class="fw-medium">${(item.jumlah || '-').slice(0, 20)}${(item.jumlah && item.jumlah.length > 20 ? '...' : '')}</td>
+<td class="fw-medium">${item.jumlah || '-'}</td>
 <td class="fw-medium">${(item.satuan || '-').slice(0, 20)}${(item.satuan && item.satuan.length > 20 ? '...' : '')}</td>
 <td class="fw-medium">${fieldMerkTipeUkuran.slice(0, 20)}${(fieldMerkTipeUkuran.length > 20 ? '...' : '')}</td>
 <td class="fw-medium">${(item.negara_asal || '-').slice(0, 20)}${(item.negara_asal && item.negara_asal.length > 20 ? '...' : '')}</td>

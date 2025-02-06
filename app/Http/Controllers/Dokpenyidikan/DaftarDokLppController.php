@@ -18,9 +18,11 @@ use App\Models\TblLocus;
 use App\Models\TblPenyidikan;
 use App\Models\TblAturanLartas;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\Barang;
 
 class DaftarDokLppController extends Controller
 {
@@ -73,13 +75,7 @@ class DaftarDokLppController extends Controller
         $laporanInformasi = TblLaporanInformasi::where('id_pra_penindakan', $sbpData->pluck('id_pra_penindakan_ref'))
             ->get();
 
-        // dd([
-        //     'pascapenindakan' => $pascapenindakan,
-        //     'sbpData' => $sbpData,
-        //     'laporanInformasi' => $laporanInformasi
-        // ]);
 
-        // dd($sbpData);
 
         $users = User::all();
         $segels = TblSegel::all();
@@ -111,20 +107,64 @@ class DaftarDokLppController extends Controller
     }
 
 
+
+
     public function store(Request $request)
     {
-        TblPenyidikan::create($request->all());
-        $no_ref = TblNoRef::first();
-        $no_ref->no_lpp += 1;
-        $no_ref->no_lpf += 1;
-        $no_ref->no_split += 1;
-        $no_ref->no_print_cacah += 1;
-        $no_ref->no_ba_cacah += 1;
-        $no_ref->no_lhp_penyidikan += 1;
-        $no_ref->save();
+        try {
+            // Validasi hanya untuk file bukti_1 dan bukti_2
+            $validatedData = $request->validate([
+                'bukti_1' => 'nullable|mimes:jpg,jpeg,png,pdf|max:5048',
+                'bukti_2' => 'nullable|mimes:jpg,jpeg,png,pdf|max:5048',
+            ]);
 
-        return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data Penyidikan berhasil disimpan dan nomor referensi telah diperbarui.');
+            // Menyimpan file bukti_1 jika ada
+            if ($request->hasFile('bukti_1')) {
+                $bukti_1 = $request->file('bukti_1');
+                $path_bukti_1 = $bukti_1->store('bukti', 'public');
+                Log::info('Bukti 1 uploaded successfully: ' . $path_bukti_1);
+            } else {
+                $path_bukti_1 = null;
+            }
+
+            // Menyimpan file bukti_2 jika ada
+            if ($request->hasFile('bukti_2')) {
+                $bukti_2 = $request->file('bukti_2');
+                $path_bukti_2 = $bukti_2->store('bukti', 'public');
+                Log::info('Bukti 2 uploaded successfully: ' . $path_bukti_2);
+            } else {
+                $path_bukti_2 = null;
+            }
+
+            // Menggabungkan data file yang diupload ke dalam data request
+            $data = $request->all();
+            $data['bukti_1'] = $path_bukti_1;
+            $data['bukti_2'] = $path_bukti_2;
+
+            // Menyimpan data ke database
+            TblPenyidikan::create($data);
+            Log::info('Data Penyidikan berhasil disimpan: ' . json_encode($data));
+
+            // Update nomor referensi
+            $no_ref = TblNoRef::first();
+            $no_ref->no_lpp += 1;
+            $no_ref->no_lpf += 1;
+            $no_ref->no_split += 1;
+            $no_ref->no_print_cacah += 1;
+            $no_ref->no_ba_cacah += 1;
+            $no_ref->no_lhp_penyidikan += 1;
+            $no_ref->save();
+
+            Log::info('Nomor referensi berhasil diperbarui: ' . json_encode($no_ref));
+
+            return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data Penyidikan berhasil disimpan dan nomor referensi telah diperbarui.');
+        } catch (\Exception $e) {
+            // Log error jika terjadi pengecualian
+            Log::error('Error saat menyimpan data penyidikan: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
+        }
     }
+
 
 
 
@@ -894,6 +934,8 @@ class DaftarDokLppController extends Controller
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
 
+
+
     public function print_surat_print_cacah($id) //print(perintah)
     {
         $penyidikan = TblPenyidikan::with([
@@ -1154,7 +1196,12 @@ class DaftarDokLppController extends Controller
         $tglbacacah = $penyidikan->tgl_ba_cacah;
 
 
+
+
         $penyidikan->tgl_ba_cacah = $this->formatDates(['tgl_ba_cacah' => $penyidikan->tgl_ba_cacah])['tgl_ba_cacah'];
+
+        $data['tgl_cacah'] = $this->formatDates(['tgl_cacah' => $penyidikan->tgl_ba_cacah])['tgl_cacah'] ?? '-';
+
 
         $pascapenindakan = $penyidikan->pascapenindakan;
         $penindakans = $pascapenindakan ? $pascapenindakan->penindakans : collect();
@@ -1239,8 +1286,6 @@ class DaftarDokLppController extends Controller
                 $data['pejabat_print_cacah'] = [];
             }
         }
-
-
 
 
         $data = $this->formatDates($penyidikan->toArray());
@@ -1369,8 +1414,6 @@ class DaftarDokLppController extends Controller
         }
 
 
-
-
         $data['pejabat_penelitian'] = [];
         // Decode string JSON menjadi array
         if (!empty($penyidikan->pejabat_penelitian)) {
@@ -1396,8 +1439,6 @@ class DaftarDokLppController extends Controller
                 }
             }
         }
-
-
 
 
         // Bagian template processor
@@ -1447,9 +1488,96 @@ class DaftarDokLppController extends Controller
         }
 
 
+        $combinedData = [];
+        $maxCount = max(count($data['pejabat_penelitian'] ?? []), count($data['pejabat_print_cacah'] ?? []));
+
+        for ($i = 0; $i < $maxCount; $i++) {
+            $combinedData[] = [
+                'ttdp'      => $data['pejabat_print_cacah'][$i]['nama'] ?? '',
+                'ttd_namap' => $data['pejabat_print_cacah'][$i]['nip'] ?? '',
+                'ttdt'      => $data['pejabat_penelitian'][$i]['nama'] ?? '',
+                'ttd_namat' => $data['pejabat_penelitian'][$i]['nip'] ?? '',
+            ];
+        }
+
+        $templateProcessor->cloneBlock('ttd_section', count($combinedData), true, true);
+
+        foreach ($combinedData as $index => $item) {
+            $realIndex = $index + 1;
+            $templateProcessor->setValue("ttdp#$realIndex", $item['ttdp']);
+            $templateProcessor->setValue("ttd_namap#$realIndex", $item['ttd_namap']);
+            $templateProcessor->setValue("ttdt#$realIndex", $item['ttdt']);
+            $templateProcessor->setValue("ttd_namat#$realIndex", $item['ttd_namat']);
+            $templateProcessor->setValue("ttd#$realIndex", "Ditandatangani secara elektronik");
+        }
+
+
+        $barangData = Barang::where('id_penyidikan', $penyidikan->id_penyidikan)->get();
+
+
+        if ($barangData->isNotEmpty()) {
+            $values = [];
+
+            foreach ($barangData as $index => $barang) {
+                $realIndex = $index + 1;
+                $values[] = [
+                    'i' => $realIndex,
+                    'kategori_barangc' => $barang->kategori_barang,
+                    'kode_komoditic' => $barang->kode_komoditi,
+                    'jenis_barangc' => $barang->jenis_barang,
+                    'merk_pabeanc' => $barang->merk_pabean,
+                    'tipe_pabeanc' => $barang->tipe_pabean,
+                    'ukuran_kapasitasc' => $barang->ukuran_kapasitas,
+                    'jumlahc' => $barang->jumlah,
+                    'satuanc' => $barang->satuan,
+                    'negara_asalc' => $barang->negara_asal,
+                    'kondisi_pabeanc' => $barang->kondisi_pabean,
+                    'merk_cukaic' => $barang->merk_cukai,
+                    'tipe_cukaic' => $barang->tipe_cukai,
+                    'kadar_cukaic' => $barang->kadar_cukai,
+                    'subyek_cukaic' => $barang->subyek_cukai,
+                    'tahunc' => $barang->tahun,
+                    'golc' => $barang->gol,
+                    'tarifc' => $barang->tarif,
+                    'volc' => $barang->vol,
+                    'kondisi_cukaic' => $barang->kondisi_cukai,
+                    'keteranganc' => $barang->keterangan,
+                    'kategori_lartasc' => $barang->kategori_lartas
+                ];
+            }
+
+            $templateProcessor->cloneRowAndSetValues('i', $values);
+        } else {
+            // If no data exists, replace with empty values
+            $templateProcessor->setValue('i', '');
+            $templateProcessor->setValue('kategori_barangc', '');
+            $templateProcessor->setValue('kode_komoditic', '');
+            $templateProcessor->setValue('jenis_barangc', '');
+            $templateProcessor->setValue('merk_pabeanc', '');
+            $templateProcessor->setValue('tipe_pabeanc', '');
+            $templateProcessor->setValue('ukuran_kapasitasc', '');
+            $templateProcessor->setValue('jumlahc', '');
+            $templateProcessor->setValue('satuanc', '');
+            $templateProcessor->setValue('negara_asalc', '');
+            $templateProcessor->setValue('kondisi_pabeanc', '');
+            $templateProcessor->setValue('merk_cukaic', '');
+            $templateProcessor->setValue('tipe_cukaic', '');
+            $templateProcessor->setValue('kadar_cukaic', '');
+            $templateProcessor->setValue('subyek_cukaic', '');
+            $templateProcessor->setValue('tahunc', '');
+            $templateProcessor->setValue('golc', '');
+            $templateProcessor->setValue('tarifc', '');
+            $templateProcessor->setValue('volc', '');
+            $templateProcessor->setValue('keteranganc', '');
+            $templateProcessor->setValue('kategori_lartasc', '');
+        }
+
+
+
         $templateProcessor->setValue('tgllp', $data['tgllp']);
 
         $templateProcessor->setValue('formatLp', $data['formatLp']);
+
 
         $tglprint = $data['tgl_print'] ?? null;
         $data['tg_print'] = $tglprint ? $this->formatDates(['tgl_print' => $tglprint])['tgl_print'] ?? '-' : '-';
@@ -1482,6 +1610,12 @@ class DaftarDokLppController extends Controller
         // Lakukan yang lainnya seperti menyetting nilai untuk TemplateProcessor
         $templateProcessor->setValue('formatTglBaCacah', $data['formatTglBaCacah']);
 
+        $tgl_cacah = $penyidikan->tgl_ba_cacah ?? null;
+        $data['tgl_cacah'] = $this->formatDates(['tgl_cacah' => $tgl_cacah])['tgl_cacah'] ?? '-';
+
+        // Kemudian set value ke template
+        $templateProcessor->setValue('tgl_cacah', $data['tgl_cacah']);
+
 
         $data['tahun_ba_cacah'] = $tglbacacah ? date('Y', strtotime($tglbacacah)) : '-';
 
@@ -1490,6 +1624,179 @@ class DaftarDokLppController extends Controller
         // dd($data);
 
         $fileName = "Dokumen_Penyidikan_Berita_Acara_Pencacahan_Nomor_{$penyidikan->no_ba_cacah}.docx";
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+
+
+    public function print_surat_lhp($id)
+    {
+        $penyidikan = TblPenyidikan::with([
+            'pascapenindakan',
+            'penindakan',
+            'laporanInformasi'
+        ])->findOrFail($id);
+
+        $tgllhppenyidikan = $penyidikan->tgl_lhp_penyidikan;
+
+        $penyidikan->tgl_lhp_penyidikan = $this->formatDates(['tgl_lhp_penyidikan' => $penyidikan->tgl_lhp_penyidikan])['tgl_lhp_penyidikan'];
+
+        $pascapenindakan = $penyidikan->pascapenindakan;
+        $penindakans = $pascapenindakan ? $pascapenindakan->penindakans : collect();
+        $formattedPenindakans = [];
+
+        foreach ($penindakans as $penindakan) {
+            $penindakanArray = $penindakan->toArray();
+            $formattedPenindakan = $this->formatDates($penindakanArray);
+
+            // Menjaga format tgl_sbp tetap seperti di data asli
+            $formattedPenindakan['tgl_sbp'] = $penindakanArray['tgl_sbp'] ?? null;
+
+            // Data pejabat yang diambil dari model Penyidikan
+            $pejabatKeys = [
+                'kepala_bidang_penindakan_lpp',
+                'id_1_pejabat_penyidik',
+                'id_2_pejabat_penyidik',
+            ];
+
+            foreach ($pejabatKeys as $key) {
+                if ($penyidikan && $penyidikan->$key) {  // Ambil dari Penyidikan, bukan Pascapenindakan
+                    $pejabat = $penyidikan->pejabat($key)->first();
+                    $formattedPenindakan[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                    $formattedPenindakan[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                    $formattedPenindakan[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                    $formattedPenindakan[$key . '_nip'] = $pejabat->nip ?? '';
+                } else {
+                    $formattedPenindakan[$key . '_nama'] = '';
+                    $formattedPenindakan[$key . '_pangkat'] = '';
+                    $formattedPenindakan[$key . '_jabatan'] = '';
+                    $formattedPenindakan[$key . '_nip'] = '';
+                }
+            }
+
+            $formattedPenindakans[] = $formattedPenindakan;
+        }
+
+        $data = $this->formatDates($penyidikan->toArray());
+        foreach ($formattedPenindakans as $penindakan) {
+            foreach ($penindakan as $key => $value) {
+                $data[$key] = $value ?? '-';
+            }
+        }
+        $data['penindakans'] = $formattedPenindakans;
+
+        $tglsbp = $data['tgl_sbp'] ?? null;
+        $data['tahun_sbp'] = !empty($tglsbp) ? date('Y', strtotime($tglsbp)) : '-';
+
+        $laporan = $penindakans->first()->laporanInformasi ?? null;
+        // dd($laporan);
+        if (!empty($laporan->skema_penindakan_perintah)) {
+            $tipePenindakan = strtoupper($laporan->skema_penindakan_perintah);
+            $nosbp = $data['no_sbp'] ?? '-';
+            $tahunsbp = $data['tahun_sbp'];
+
+            switch ($tipePenindakan) {
+                case 'MANDIRI':
+                    $data['formatSbp'] = "SBP-{$nosbp}/MANDIRI/KPU.206/{$tahunsbp}";
+                    break;
+                case 'PERBANTUAN':
+                    $data['formatSbp'] = "SBP-{$nosbp}/PERBANTUAN/KPU.206/{$tahunsbp}";
+                    break;
+                case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
+                    $data['formatSbp'] = "SBP-{$nosbp}/PERBANTUAN/BERSAMA INSTANSI LAIN/KPU.206/{$tahunsbp}";
+                    break;
+                default:
+                    $data['formatSbp'] = "SBP-{$nosbp}/UNKNOWN/KPU.206/{$tahunsbp}";
+                    break;
+            }
+        } else {
+            $data['formatSbp'] = "SBP-{$data['no_sbp']}/UNKNOWN/KPU.206/{$data['tahun_sbp']}";
+        }
+
+
+
+        $data['locus_lp'] = $pascapenindakan->locus_lp ?? '-';
+        $data['uraian_modus_lp'] = $pascapenindakan->uraian_modus_lp ?? '-';
+        if (!empty($pascapenindakan->tempus_lp) && Carbon::hasFormat($pascapenindakan->tempus_lp, 'Y-m-d H:i')) {
+            $tempusLp = Carbon::parse($pascapenindakan->tempus_lp);
+
+            // Format hari dan tanggal lengkap
+            $hariLp = $tempusLp->translatedFormat('l/d F Y'); // Contoh: Rabu/16 September 2024
+            $waktuLp = $tempusLp->translatedFormat('H:i') . ' WIB'; // Contoh: 09.00 WIB
+
+            $data['hari_lp'] = $hariLp;
+            $data['waktu_lp'] = $waktuLp;
+        } else {
+            $data['hari_lp'] = '-';
+            $data['waktu_lp'] = '-';
+        }
+
+
+        $tglLp = $pascapenindakan->tgl_lp;
+        $no_lp = $pascapenindakan->no_lp;
+        $data['tgllp'] = !empty($tglLp) ? $this->formatDates(['tgl_lp' => $tglLp])['tgl_lp'] : '-';
+
+        // Format LP
+        $tahunLp = !empty($tglLp) ? date('Y', strtotime($tglLp)) : '-';
+        $data['tahun_lp'] = $tahunLp;
+
+        $nolp = $no_lp ?? '-';
+        $tahunlp = $data['tahun_lp'];
+
+        $data['formatLp'] = "LP-{$nolp}/KPU.206/{$tahunlp}";
+
+        $tglSplit = $penyidikan->tgl_split;
+        $no_split = $penyidikan->no_split;
+
+        $data['tglsplit'] = !empty($tglSplit) ? $this->formatDates(['tgl_split' => $tglSplit])['tgl_split'] : '-';
+
+        // Ambil tahun tanpa formatDates
+        $tahunSplit = !empty($tglSplit) ? date('Y', strtotime($tglSplit)) : '-';
+        $data['tahun_split'] = $tahunSplit;
+
+        $noSplitFormatted = $no_split ?? '-';
+        $tahunSplitFormatted = $data['tahun_split'];
+
+        $data['formatSplit'] = "SPLIT-{$noSplitFormatted}/KPU.206/{$tahunSplitFormatted}";
+
+
+        $data = array_map(fn($value) => $value ?? '-', $data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenyidikan/surat-lhp.docx'));
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        // Set value untuk tgllp
+        $templateProcessor->setValue('tgllp', $data['tgllp']);
+
+        // Mengatur nilai lainnya dalam template
+        $templateProcessor->setValue('formatLp', $data['formatLp']);
+
+
+        // Menggunakan formatDates untuk tgl_lpp
+        $data['tahun_lhp'] = $tgllhppenyidikan ? date('Y', strtotime($tgllhppenyidikan)) : '-';
+
+        // Set value untuk tahun_lpp
+        $templateProcessor->setValue('tahun_lhp', $data['tahun_lhp']);
+
+        $templateProcessor->setValue('locus_lp', $data['locus_lp']);
+        $templateProcessor->setValue('hari_lp', $data['hari_lp']);
+        $templateProcessor->setValue('waktu_lp', $data['waktu_lp']);
+
+
+        $tglsbp = $data['tgl_sbp'] ?? null;
+        $data['tg_sbp'] = $tglsbp ? $this->formatDates(['tgl_sbp' => $tglsbp])['tgl_sbp'] ?? '-' : '-';
+        $templateProcessor->setValue('tg_sbp', $data['tg_sbp']);
+
+        // dd($data);
+
+        $fileName = "Dokumen_Penyidikan_Lembar_Hasil_Penelitian_Nomor_{$penyidikan->no_lhp_penyidikan}.docx";
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 

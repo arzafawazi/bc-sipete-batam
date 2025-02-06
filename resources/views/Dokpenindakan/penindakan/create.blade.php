@@ -419,11 +419,19 @@
 
                                     <!-- Form Inputs -->
                                     <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Nama dan Jenis Sarkut</label>
+                                      <label class="col-sm-4 col-form-label">Nama Sarkut</label>
                                       <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input" name="nama_jenis_sarkut" placeholder="Nama Dan Jenis Sarkut" disabled>
+                                        <input type="text" class="form-control form-input" name="nama_jenis_sarkut" placeholder="Nama Sarkut" disabled>
                                       </div>
                                     </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">Jenis Sarkut</label>
+                                      <div class="col-sm-8">
+                                        <input type="text" class="form-control form-input" name="jenis_sarkut" placeholder="Jenis Sarkut" disabled>
+                                      </div>
+                                    </div>
+
                                     <div class="row mb-3 form-group">
                                       <label class="col-sm-4 col-form-label">No. Voy/ Penerbangan/ Trayek</label>
                                       <div class="col-sm-8">
@@ -497,7 +505,7 @@
                                         <select class="form-control form-input select2" name="id_kemasan" disabled>
                                           <option value="" disabled selected>- Pilih -</option>
                                           @foreach ($kemasans as $kemasan)
-                                            <option value="{{ $kemasan->id_kemasan }}">{{ $kemasan->nama_kemasan }}</option>
+                                            <option value="{{ $kemasan->nama_kemasan }}">{{ $kemasan->nama_kemasan }}</option>
                                           @endforeach
                                         </select>
                                       </div>
@@ -531,6 +539,13 @@
                                       </div>
                                       <div class="col-sm-4">
                                         <input type="date" class="form-control form-input" name="jenis_no_tgl_dok" placeholder="-" disabled>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3 form-group">
+                                      <label class="col-sm-4 col-form-label">Masa Berlaku Dokumen</label>
+                                      <div class="col-sm-8">
+                                        <input type="date" class="form-control form-input" name="masa_berlaku_dokumen" placeholder="Masa Berlaku Dokumen" disabled>
                                       </div>
                                     </div>
 

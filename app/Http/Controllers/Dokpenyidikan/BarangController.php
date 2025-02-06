@@ -34,6 +34,7 @@ class BarangController extends Controller
             'subyek_cukai' => 'nullable|string',
             'tahun' => 'nullable|string',
             'gol' => 'nullable|string',
+            'tarif' => 'nullable|string',
             'vol' => 'nullable|string',
             'kondisi_cukai' => 'nullable|string',
             'keterangan' => 'nullable|string',
@@ -58,6 +59,7 @@ class BarangController extends Controller
         $barang->subyek_cukai = $validatedData['subyek_cukai'] ?? null;
         $barang->tahun = $validatedData['tahun'] ?? null;
         $barang->gol = $validatedData['gol'] ?? null;
+        $barang->tarif = $validatedData['tarif'] ?? null;
         $barang->vol = $validatedData['vol'] ?? null;
         $barang->kondisi_cukai = $validatedData['kondisi_cukai'] ?? null;
         $barang->keterangan = $validatedData['keterangan'] ?? null;
@@ -83,10 +85,8 @@ class BarangController extends Controller
         // Ambil id_penyidikan dari request
         $idPenyidikan = $validatedData['id_penyidikan'];
 
-        // Cari data barang berdasarkan id_penyidikan
         $barangData = Barang::where('id_penyidikan', $idPenyidikan)->get();
 
-        // Kembalikan data barang dalam format JSON
         return response()->json([
             'data' => $barangData
         ]);
@@ -101,13 +101,54 @@ class BarangController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // Validasi data yang masuk
+            $validatedData = $request->validate([
+                'id_penyidikan' => 'required|string',
+                'kategori_barang' => 'nullable|string',
+                'kode_komoditi' => 'nullable|string',
+                'jenis_barang' => 'nullable|string',
+                'merk_pabean' => 'nullable|string',
+                'tipe_pabean' => 'nullable|string',
+                'ukuran_kapasitas' => 'nullable|string',
+                'jumlah' => 'nullable|integer',
+                'satuan' => 'nullable|string',
+                'negara_asal' => 'nullable|string',
+                'kondisi_pabean' => 'nullable|string',
+                'merk_cukai' => 'nullable|string',
+                'tipe_cukai' => 'nullable|string',
+                'kadar_cukai' => 'nullable|string',
+                'subyek_cukai' => 'nullable|string',
+                'tahun' => 'nullable|string',
+                'gol' => 'nullable|string',
+                'tarif' => 'nullable|string',
+                'vol' => 'nullable|string',
+                'kondisi_cukai' => 'nullable|string',
+                'keterangan' => 'nullable|string',
+                'kategori_lartas' => 'nullable|string',
+            ]);
+
+            // Cari barang berdasarkan ID
             $barang = Barang::findOrFail($id);
-            $barang->update($request->all());
-            return response()->json(['success' => true]);
+
+            // Update data dengan yang baru
+            $barang->update($validatedData);
+
+            // Ambil ID penyidikan untuk redirect
+            $idPenyidikan = $barang->id_penyidikan;
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Barang Cacah berhasil diperbarui!',
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
+
 
 
     public function destroy($id)
