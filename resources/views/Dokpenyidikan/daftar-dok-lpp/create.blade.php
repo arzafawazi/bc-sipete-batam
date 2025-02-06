@@ -19,7 +19,7 @@
       </div>
 
       <div class="card-body">
-        <form action="{{ route('daftar-dok-lpp.store') }}" method="POST">
+        <form action="{{ route('daftar-dok-lpp.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
 
           <div class="card">
@@ -513,7 +513,7 @@
                                             <textarea class="form-control" name="tanya_7_baw" rows="3" placeholder="Masukkan jawaban..."></textarea>
 
                                             <div class="d-flex align-items-center mt-3">
-                                              <input type="file" id="uploadBukti2" name="bukti_2" accept="image/*" class="form-control">
+                                              <input type="file" id="uploadBukti2" name="bukti_2" class="form-control">
                                             </div>
                                           </div>
                                         </div>
@@ -1318,7 +1318,7 @@
 
         // Ambil data dari form
         var formData = {
-          'id_penyidikan': idPenyidikanInput ? idPenyidikanInput.value : '', // Ambil id_penyidikan dari input
+          'id_penyidikan': idPenyidikanInput ? idPenyidikanInput.value : '',
           'kategori_barang': $('#kategori-barang').val(),
           'kode_komoditi': $('#kode-komoditi').val(),
           'jenis_barang': $('#jenis-barang').val(),

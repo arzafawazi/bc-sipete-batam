@@ -19,7 +19,7 @@
       </div>
 
       <div class="card-body">
-        <form action="{{ route('daftar-dok-lpp.update', ['daftar_dok_lpp' => $penyidikan->id]) }}" method="POST">
+        <form action="{{ route('daftar-dok-lpp.update', ['daftar_dok_lpp' => $penyidikan->id]) }}" method="POST" enctype="multipart/form-data">
           @csrf
           @method('PUT')
 
@@ -456,8 +456,19 @@
                                           <h6 class="fw-bold mt-3">JAWABAN:</h6>
                                           <textarea class="form-control" name="tanya_4_baw" rows="3" placeholder="Masukkan jawaban...">{{ old('tanya_4_baw', $penyidikan->tanya_4_baw) }}</textarea>
 
-                                          <div class="d-flex align-items-center mt-3">
-                                            <input type="file" id="uploadBukti1" name="bukti_1" accept="image/*" class="form-control">
+                                          <div class="mt-3">
+                                            <label class="fw-bold">Upload Bukti 1:</label>
+                                            <input type="file" id="uploadBukti1" name="bukti_1" accept="image/*" class="form-control" onchange="previewImage(event, 'previewBukti1')">
+
+                                            <!-- Preview Gambar Jika Sudah Ada -->
+                                            @if ($penyidikan->bukti_1)
+                                              <div class="mt-2">
+                                                <p class="text-muted">Foto saat ini:</p>
+                                                <img id="previewBukti1" src="{{ asset('storage/' . $penyidikan->bukti_1) }}" alt="Bukti 1" class="img-thumbnail" style="max-width: 200px;">
+                                              </div>
+                                            @else
+                                              <img id="previewBukti1" class="img-thumbnail mt-2" style="max-width: 200px; display: none;">
+                                            @endif
                                           </div>
                                         </div>
                                       </div>
@@ -491,11 +502,23 @@
                                           <h6 class="fw-bold mt-3">JAWABAN:</h6>
                                           <textarea class="form-control" name="tanya_7_baw" rows="3" placeholder="Masukkan jawaban...">{{ old('tanya_7_baw', $penyidikan->tanya_7_baw) }}</textarea>
 
-                                          <div class="d-flex align-items-center mt-3">
-                                            <input type="file" id="uploadBukti2" name="bukti_2" accept="image/*" class="form-control">
+                                          <div class="mt-3">
+                                            <label class="fw-bold">Upload Bukti 2:</label>
+                                            <input type="file" id="uploadBukti2" name="bukti_2" accept="image/*" class="form-control" onchange="previewImage(event, 'previewBukti2')">
+
+                                            <!-- Preview Gambar Jika Sudah Ada -->
+                                            @if ($penyidikan->bukti_2)
+                                              <div class="mt-2">
+                                                <p class="text-muted">Foto saat ini:</p>
+                                                <img id="previewBukti2" src="{{ asset('storage/' . $penyidikan->bukti_2) }}" alt="Bukti 2" class="img-thumbnail" style="max-width: 200px;">
+                                              </div>
+                                            @else
+                                              <img id="previewBukti2" class="img-thumbnail mt-2" style="max-width: 200px; display: none;">
+                                            @endif
                                           </div>
                                         </div>
                                       </div>
+
 
                                       <!-- Pertanyaan dan Jawaban 08 -->
                                       <div class="card mb-3">
@@ -1784,6 +1807,22 @@
         toggle: true
       });
     });
+  </script>
+
+  <script>
+    function previewImage(event, previewId) {
+      const preview = document.getElementById(previewId);
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    }
   </script>
 @endsection
 @section('script')

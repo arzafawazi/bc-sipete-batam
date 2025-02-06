@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 use App\Models\Barang;
 
 class DaftarDokLppController extends Controller
@@ -105,7 +106,6 @@ class DaftarDokLppController extends Controller
             'lartasedit'
         ));
     }
-
 
 
 
@@ -222,26 +222,99 @@ class DaftarDokLppController extends Controller
 
     public function update($id)
     {
-        $data = request()->all();
-
         $item = TblPenyidikan::find($id);
-        if ($item) {
-            $item->update($data);
-            return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data berhasil diperbarui.');
+
+        if (!$item) {
+            Log::warning("Data penyidikan dengan ID $id tidak ditemukan.");
+            return redirect()->route('daftar-dok-lpp.index')->with('error', 'Data tidak ditemukan.');
         }
 
-        return redirect()->route('daftar-dok-lpp.index')->with('error', 'Data tidak ditemukan.');
+        // Validasi khusus untuk file
+        $validatedData = request()->validate([
+            'bukti_1' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'bukti_2' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $data = request()->except(['bukti_1', 'bukti_2']); // Ambil semua data kecuali file
+
+        // Proses bukti_1 jika diunggah
+        if (request()->hasFile('bukti_1')) {
+            // Hapus file lama jika ada
+            if ($item->bukti_1) {
+                $oldBukti1Path = 'bukti/' . basename($item->bukti_1);
+                if (Storage::disk('public')->exists($oldBukti1Path)) {
+                    Storage::disk('public')->delete($oldBukti1Path);
+                    Log::info("File bukti_1 lama dihapus: " . $oldBukti1Path);
+                }
+            }
+            // Simpan file baru
+            $bukti1Path = request()->file('bukti_1')->store('bukti', 'public');
+            $data['bukti_1'] = $bukti1Path;
+            Log::info("File bukti_1 baru disimpan: " . $bukti1Path);
+        }
+
+        // Proses bukti_2 jika diunggah
+        if (request()->hasFile('bukti_2')) {
+            // Hapus file lama jika ada
+            if ($item->bukti_2) {
+                $oldBukti2Path = 'bukti/' . basename($item->bukti_2);
+                if (Storage::disk('public')->exists($oldBukti2Path)) {
+                    Storage::disk('public')->delete($oldBukti2Path);
+                    Log::info("File bukti_2 lama dihapus: " . $oldBukti2Path);
+                }
+            }
+            // Simpan file baru
+            $bukti2Path = request()->file('bukti_2')->store('bukti', 'public');
+            $data['bukti_2'] = $bukti2Path;
+            Log::info("File bukti_2 baru disimpan: " . $bukti2Path);
+        }
+
+        // Update data di database
+        $item->update($data);
+
+        Log::info("Data penyidikan ID $id berhasil diperbarui.");
+
+        return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data berhasil diperbarui.');
     }
+
 
     public function destroy($id)
     {
         $penyidikan = TblPenyidikan::find($id);
+
         if ($penyidikan) {
+            // Ambil path bukti_1 & bukti_2
+            $cleanBukti1Path = 'bukti/' . basename($penyidikan->bukti_1);
+            $cleanBukti2Path = 'bukti/' . basename($penyidikan->bukti_2);
+
+            // Hapus bukti_1 jika ada
+            if (Storage::disk('public')->exists($cleanBukti1Path)) {
+                Storage::disk('public')->delete($cleanBukti1Path);
+                Log::info("File bukti_1 dihapus: " . $cleanBukti1Path);
+            } else {
+                Log::warning("File bukti_1 tidak ditemukan di Storage: " . $cleanBukti1Path);
+            }
+
+            // Hapus bukti_2 jika ada
+            if (Storage::disk('public')->exists($cleanBukti2Path)) {
+                Storage::disk('public')->delete($cleanBukti2Path);
+                Log::info("File bukti_2 dihapus: " . $cleanBukti2Path);
+            } else {
+                Log::warning("File bukti_2 tidak ditemukan di Storage: " . $cleanBukti2Path);
+            }
+
+            // Hapus data dari database
             $penyidikan->delete();
-            return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data berhasil dihapus.');
+            Log::info("Data penyidikan ID $id berhasil dihapus.");
+
+            return redirect()->route('daftar-dok-lpp.index')->with('success', 'Data dan bukti berhasil dihapus.');
         }
+
+        Log::warning("Data penyidikan dengan ID $id tidak ditemukan.");
         return redirect()->route('daftar-dok-lpp.index')->with('error', 'Data tidak ditemukan.');
     }
+
+
 
 
     public function print_surat_lpp($id)
@@ -894,7 +967,7 @@ class DaftarDokLppController extends Controller
 
         $data = array_map(fn($value) => $value ?? '-', $data);
 
-        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenyidikan/surat-lpf.docx'));
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenyidikan/surat-baw.docx'));
         foreach ($data as $key => $value) {
             if (!is_array($value)) {
                 $templateProcessor->setValue($key, $value);
@@ -927,7 +1000,7 @@ class DaftarDokLppController extends Controller
 
         // dd($data);
 
-        $fileName = "Dokumen_Penyidikan_Lembar_Penelitian_Formal_Nomor_{$penyidikan->no_lpf}.docx";
+        $fileName = "Dokumen_Penyidikan_Berita_Wawancara_{$penindakan['nama_saksi']}.docx";
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
