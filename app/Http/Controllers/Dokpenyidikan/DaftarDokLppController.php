@@ -1878,6 +1878,113 @@ class DaftarDokLppController extends Controller
 
 
 
+    public function print_surat_bast_pemilik_penyidikan($id)
+    {
+        $penyidikan = TblPenyidikan::with([
+            'pascapenindakan',
+            'penindakan',
+            'laporanInformasi'
+        ])->findOrFail($id);
+
+        Carbon::setLocale('id');
+
+
+        $tglBastPemilikOriginal = $penyidikan->tgl_ba_serah_terima_pemilik_penyidikan ?? null;
+
+
+        $data['tgl_ba_serah_terima_pemilik_penyidikan'] = $tglBastPemilikOriginal;
+
+
+        $pascapenindakan = $penyidikan->pascapenindakan;
+        $penindakans = $pascapenindakan ? $pascapenindakan->penindakans : collect();
+        $formattedPenindakans = [];
+
+        foreach ($penindakans as $penindakan) {
+            $penindakanArray = $penindakan->toArray();
+            $formattedPenindakan = $penindakanArray;
+
+
+            // Menjaga format tgl_sbp tetap seperti di data asli
+            $formattedPenindakan['tgl_sbp'] = $penindakanArray['tgl_sbp'] ?? null;
+
+            // Data pejabat yang diambil dari model Penyidikan
+            $pejabatKeys = [
+                'pejabat_yang_menyerahkan',
+                'saksi_pertama',
+                'saksi_kedua',
+            ];
+
+            foreach ($pejabatKeys as $key) {
+                if ($penyidikan && $penyidikan->$key) {  // Ambil dari Penyidikan, bukan Pascapenindakan
+                    $pejabat = $penyidikan->pejabat($key)->first();
+                    $formattedPenindakan[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                    $formattedPenindakan[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                    $formattedPenindakan[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                    $formattedPenindakan[$key . '_nip'] = $pejabat->nip ?? '';
+                } else {
+                    $formattedPenindakan[$key . '_nama'] = '';
+                    $formattedPenindakan[$key . '_pangkat'] = '';
+                    $formattedPenindakan[$key . '_jabatan'] = '';
+                    $formattedPenindakan[$key . '_nip'] = '';
+                }
+            }
+
+            $formattedPenindakans[] = $formattedPenindakan;
+        }
+
+        $data = $penyidikan->toArray();
+        foreach ($formattedPenindakans as $penindakan) {
+            foreach ($penindakan as $key => $value) {
+                $data[$key] = $value ?? '-';
+            }
+        }
+
+        $data['penindakans'] = $formattedPenindakans;
+
+        $data = array_map(fn($value) => $value ?? '-', $data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenyidikan/surat-bast-pemilik.docx'));
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+
+        if (!empty($data['tgl_ba_serah_terima_pemilik_penyidikan']) && $this->isValidDate($data['tgl_ba_serah_terima_pemilik_penyidikan'])) {
+            $tglBastPemilik = Carbon::parse($data['tgl_ba_serah_terima_pemilik_penyidikan']);
+            $namaHari = $tglBastPemilik->translatedFormat('l');
+
+
+            $formatter = new \NumberFormatter('id', \NumberFormatter::SPELLOUT);
+
+            $tanggal = $formatter->format($tglBastPemilik->day);
+            $bulan = $tglBastPemilik->translatedFormat('F');
+            $tahun = $formatter->format($tglBastPemilik->year);
+
+
+            $data['formatBastPemilik'] = ucwords("$namaHari tanggal $tanggal bulan $bulan tahun $tahun");
+        } else {
+            $data['formatBastPemilik'] = '';
+        }
+
+        if (isset($data['formatBastPemilik'])) {
+            $templateProcessor->setValue('formatBastPemilik', $data['formatBastPemilik']);
+        } else {
+            $templateProcessor->setValue('formatBastPemilik', '-');
+        }
+
+
+        // dd($data);
+
+        $fileName = "Dokumen_Penyidikan_Berita_Serah_Terima_Pemilik_{$penindakan['nama_saksi']}.docx";
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+
 
 
     private function formatDates($data)

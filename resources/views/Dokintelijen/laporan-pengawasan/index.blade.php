@@ -74,7 +74,7 @@
               <button type="button" class="btn btn-secondary btn-sm" onclick="location.reload();">
                 <i data-feather="refresh-cw" style="width: 16px; height: 16px;" class="me-1"></i> Refresh
               </button>
-              <a href="{{ route('laporan-pengawasan.create') }}" class="tp-link">
+              <a href="{{ route('laporan-pengawasan.create') }}">
                 <button type="button" class="btn btn-success btn-sm">
                   <i data-feather="plus" style="width: 16px; height: 16px;" class="me-1"></i> Rekam Data Laporan Pengawasan Intelijen
                 </button>

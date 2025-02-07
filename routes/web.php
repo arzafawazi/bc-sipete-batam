@@ -27,6 +27,7 @@ use App\Http\Controllers\Dokpenindakan\PenindakanNppController;
 use App\Http\Controllers\Dokpenyidikan\DaftarDokLppController;
 use App\Http\Controllers\Dokpenyidikan\LembarMonitoringBarangController;
 use App\Http\Controllers\Dokpenyidikan\BarangController;
+use App\Http\Controllers\Tindaklanjut\PelanggaranAdministrasiController;
 
 use App\Http\Controllers\Pengawasanlain\BaBukaSegelCtpController;
 use App\Http\Controllers\Pengawasanlain\BaCacahAmunisiController;
@@ -125,7 +126,6 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 
     // Pasca Penindakan NPP routes
     Route::resource('Dokpenindakan/pasca-penindakan-npp', PascaPenindakanNppController::class);
-
     // Dokpenyidikan routes
     Route::resource('Dokpenyidikan/daftar-dok-lpp', DaftarDokLppController::class);
     Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-lpp', [DaftarDokLppController::class, 'print_surat_lpp'])->name('surat-lpp.print');
@@ -135,6 +135,12 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-print-cacah', [DaftarDokLppController::class, 'print_surat_print_cacah'])->name('surat-print-cacah.print');
     Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-ba-cacah', [DaftarDokLppController::class, 'print_surat_ba_cacah'])->name('surat-ba-cacah.print');
     Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-lhp', [DaftarDokLppController::class, 'print_surat_lhp'])->name('surat-lhp.print');
+    Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-bast-pemilikPenyidikan', [DaftarDokLppController::class, 'print_surat_bast_pemilik_penyidikan'])->name('surat-bast-pemilik-penyidikan.print');
+
+
+    // Tindak Lanjut Route
+    Route::resource('Tindaklanjut/pelanggaran-administrasi', PelanggaranAdministrasiController::class);
+
 
     //Barang Controller
     Route::resource('Dokpenyidikan/barang', BarangController::class);

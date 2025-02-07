@@ -377,7 +377,7 @@
                                         </svg>
                                       </div>
                                       <h6 class="card-title mb-3">BAST PEMILIK</h6>
-                                      {{-- <a href="{{ route('surat-lpt-pasca-penindakan.print', $pascapenindakan->id) }}" class="btn btn-outline-danger print-btn">Print</a> --}}
+                                      <a href="{{ route('surat-bast-pemilik-penyidikan.print', $penyidikan->id) }}" class="btn btn-outline-danger print-btn">Print</a>
                                     </div>
                                   </div>
                                 </div>

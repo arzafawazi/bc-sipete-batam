@@ -77,101 +77,147 @@
 
                 <div class="tab-content p-3 text-muted">
                   <div class="tab-pane fade show active" id="st1" role="tabpanel" aria-labelledby="st1-tab">
-                    <div class="row">
-
-                      <div class="col-lg-6">
-                        <h6><b>A. Data Laporan Surat Tugas(ST-1)</b></h6>
-                        <hr>
-                        <div class="row">
-                          <input type="hidden" id="id_pengawasan" name="id_pengawasan" value="">
-                          <div class="col-md-6 mb-3">
-                            {{-- bagian no surat tugas dan tanggal surat tugas ini dihapus dikarenakan mau diambil dari aplikasi nadin saja  --}}
-                            {{-- format untuk tanggal dibuat menjadi dd mm yyy 12 desember 2024 --}}
-                            {{-- <label>No. Surat Tugas</label> --}}
-                            <input type="hidden" name="no_st" class="form-control bg-primary text-white">
-                          </div>
-                          <div class="col-md-6 mb-3">
-                            {{-- <label>Tgl. Surat Tugas</label> --}}
-                            <input type="hidden" class="form-control" placeholder="yyyy-mm-dd" id="tgl_st" name="tgl_st">
-                          </div>
-                          <div class="col-lg-12 mb-3">
-                            <label for="pengendali_operasi">Pengendali Operasi</label>
-                            <select class="form-control form-select select2" id="pengendali_operasi" name="pengendali_operasi_st">
-                              <option value="" selected disabled>- Pilih -</option>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
-                          <div class="col-lg-12 mb-3">
-                            <label for="tim_operasi">Tim Operasi</label>
-                            <select class="form-control form-select select2 " id="tim_operasi" name="tim_operasi_st[]" multiple>
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
-                          <div class="col-lg-12 mb-3">
-                            <label for="tim_dukungan_operasi">Tim Dukungan Operasi</label>
-                            <select class="form-control form-select select2 " id="tim_dukungan_operasi" name="tim_dukungan_operasi_st[]" multiple>
-                              {{-- <option value="" selected disabled>- Pilih -</option> --}}
-                              @foreach ($users as $user)
-                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
+                    <div class="container mt-4">
+                      <!-- Header with Logo -->
+                      <div class="row mb-4">
+                        <div class="col-12 text-center">
+                          <img src="/api/placeholder/80/80" alt="Logo" class="mb-2">
+                          <h5 class="text-center mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                          <p class="text-center small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                          <p class="text-center small">KANTOR WILAYAH DJBC JAWA TIMUR II</p>
                         </div>
                       </div>
 
-                      <!-- Right Column (Pejabat Selection) -->
-                      <div class="col-lg-6">
-                        <h6><b>B. Penugasan</b></h6>
-                        <hr>
+                      <!-- Main Form -->
+                      <div class="card">
+                        <p class="fw-bold">
+                          Dalam rangka pelaksanaan Undang-Undang Nomor 10 Tahun 1995 tentang Kepabeanan
+                          jo. Undang-Undang Nomor 17 Tahun 2006 dan Undang-Undang Nomor 11 Tahun 1995 tentang
+                          Cukai jo. Undang-Undang Nomor 7 Tahun 2021, kami pejabat yang bertanda tangan di bawah
+                          ini memberi tugas kepada:
+                        </p>
+                        <div class="card-body">
+                          <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-lg-6 ">
 
-                        <div class="col-lg-12 mb-3">
-                          <label for="melaksanakan_tugas" class="d-flex align-items-center">
-                            Melaksanakan Tugas
-                            <button type="button" class="btn p-0 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                              data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                              <i data-feather="alert-circle" style="width: 18px; height: 18px;"></i>
-                            </button>
-                          </label>
-                          <textarea class="form-control form-input" placeholder="Di Isi Uraian Tugas" name="melaksanakan_tugas_st" rows="3"></textarea>
-                        </div>
+                              <hr class="mb-4">
+
+                              <div class="row">
+
+                                <input type="hidden" id="id_pengawasan" name="id_pengawasan" value="">
+                                <input type="hidden" name="no_st" class="form-control bg-primary text-white">
+                                <input type="hidden" class="form-control" placeholder="yyyy-mm-dd" id="tgl_st" name="tgl_st">
+
+                                <div class="col-12 mb-3">
+                                  <label class="form-label fw-semibold">Pengendali Operasi</label>
+                                  <select class="form-control form-select select2" id="pengendali_operasi" name="pengendali_operasi_st">
+                                    <option value="" selected disabled>- Pilih -</option>
+                                  </select>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                  <label class="form-label fw-semibold">Tim Operasi</label>
+                                  <select class="form-control form-select select2" id="tim_operasi" name="tim_operasi_st[]" multiple>
+                                  </select>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                  <label class="form-label fw-semibold">Tim Dukungan Operasi</label>
+                                  <select class="form-control form-select select2" id="tim_dukungan_operasi" name="tim_dukungan_operasi_st[]" multiple>
+                                  </select>
+                                </div>
+                              </div>
+                              <hr class="mb-4">
+                            </div>
+
+                            <div class="card mb-3">
+                              <div class="card-body">
+                                <h6 class="fw-bold">Untuk melaksanakan tugas sebagai berikut:</h6>
+                                <ol class="ps-3" start="2" style="line-height: 1.5;">
+                                  <li class="mb-1">Melakukan penggalangan informan dalam hal diperlukan dalam proses pengumpulan dan pendalaman informasi.</li>
+                                  <li class="mb-1">Melakukan tindakan pengamanan pertama apabila ditemukan adanya indikasi pelanggaran di bidang kepabeanan dan/atau cukai.</li>
+                                  <li class="mb-1">Melakukan tindakan lainnya dan mengambil langkah-langkah sesuai peraturan perundangan guna mengamankan hak-hak negara, apabila dalam pelaksanaan tugas ditemukan adanya pelanggaran ketentuan dan/atau
+                                    tindak pidana di bidang kepabeanan dan/atau cukai.</li>
+                                  <li class="mb-1">Melakukan koordinasi dengan pihak eksternal atau Bidang Penindakan dan Penyidikan pada Kantor Wilayah (Kanwil) DJBC setempat apabila dipandang perlu.</li>
+                                  <li class="mb-1">Membuat laporan pelaksanaan tugas.</li>
+                                  <li class="mb-1">Melakukan tugas dan kewajiban sesuai dengan tugas pokok dan fungsinya masing-masing serta dilaksanakan dengan penuh rasa tanggung jawab.</li>
+                                </ol>
+                              </div>
+                            </div>
 
 
 
-                        <div class="col-lg-12 mb-3">
-                          <label for="wilayah_penugasan">Wilayah Penugasan</label>
-                          <input type="text" class="form-control form-input" placeholder="Isi Wilayah Penugasan" name="wilayah_penugasan_st">
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-6 mb-3">
-                            <label for="tanggal_dimulai_tugas">Tanggal Dimulai</label>
-                            <input type="date" class="form-control form-input" placeholder="yyyy-mm-dd" name="tanggal_dimulai_st">
+                            <div class="mb-3">
+                              <label class="form-label fw-semibold d-flex align-items-center">
+                                Melaksanakan Tugas
+                                <button type="button" class="btn btn-link p-0 ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="1.Isi Bagian Nomor 1 Pada inputan ini">
+                                  <i class="bi bi-info-circle"></i>
+                                </button>
+                              </label>
+                              <textarea class="form-control" name="melaksanakan_tugas_st" rows="3" placeholder="1.Isi Bagian Nomor 1 Pada inputan ini"></textarea>
+                            </div>
+
+                            <div class="card mb-3">
+                              <div class="card-body">
+                                <!-- Wilayah Penugasan -->
+                                <div class="mb-3 row align-items-center">
+                                  <label class="col-md-3 col-form-label fw-semibold text-md-start">Wilayah Penugasan :</label>
+                                  <div class="col-md-8">
+                                    <input type="text" class="form-control" name="wilayah_penugasan_st" placeholder="Wilayah Pengawasan KPU Bea dan Cukai Tipe B Batam" value="Wilayah Pengawasan KPU Bea dan Cukai Tipe B Batam">
+                                  </div>
+                                </div>
+
+                                <!-- Periode Penugasan (Tanggal Dimulai & Tanggal Berakhir dalam satu baris) -->
+                                <div class="mb-3 row align-items-center">
+                                  <label class="col-md-3 col-form-label fw-semibold text-md-start">Periode Penugasan :</label>
+                                  <div class="col-md-4">
+                                    <input type="date" class="form-control" name="tanggal_dimulai_st">
+                                  </div>
+                                  <div class="col-md-1 text-center fw-semibold">s.d</div>
+                                  <div class="col-md-4">
+                                    <input type="date" class="form-control" name="tanggal_berakhir_st">
+                                  </div>
+                                </div>
+
+                                <!-- Ketentuan -->
+                                <div class="mb-3 row">
+                                  <label class="col-md-3 col-form-label fw-bold text-md-start">Ketentuan :</label>
+                                  <div class="col-md-8">
+                                    <ol class="mb-0 ps-3" start="1" style="line-height: 1.5;">
+                                      <li class="mb-1">Surat Tugas ini bersifat rahasia dan terbatas untuk pihak yang berkepentingan;</li>
+                                      <li class="mb-1">Sifat kegiatan intelijen tertutup/terbuka;</li>
+                                      <li class="mb-1">Berpakaian PDH/non-PDH;</li>
+                                      <li class="mb-1">Dapat dilengkapi dengan senjata api dinas.</li>
+                                    </ol>
+                                  </div>
+                                </div>
+
+                                <h6 class="fw-bold">&nbsp;&nbsp;&nbsp;Biaya yang digunakan untuk pelaksanaan surat tugas ini dibebankan pada DIPA ................ dan/atau DOKPPN.</h6>
+                                <br>
+                                <div class="mb-3 row align-items-center">
+                                  <label class="col-md-3 col-form-label fw-semibold text-md-start">Nama Kantor Atau Unit :</label>
+                                  <div class="col-md-8">
+                                    <input type="text" class="form-control" name="nama_kantor_st" placeholder="Isi Titik-titik bagian atas untuk nomor kantor pada bagian ini">
+                                  </div>
+                                </div>
+
+                                <!-- Penerbit Surat Tugas -->
+                                <div class="mb-3 row align-items-center">
+                                  <label class="col-md-3 col-form-label fw-semibold text-md-start">Penerbit Surat Tugas :</label>
+                                  <div class="col-md-8">
+                                    <select class="form-select" id="penerbit_surat_tugas" name="penerbit_st">
+                                      <option value="" selected disabled>- Pilih -</option>
+                                    </select>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+
+
+
                           </div>
-                          <div class="col-lg-6 mb-3">
-                            <label for="tanggal_berakhir_tugas">Tanggal Berakhir</label>
-                            <input type="date" class="form-control form-input" placeholder="yyyy-mm-dd" name="tanggal_berakhir_st">
-                          </div>
-                        </div>
-                        <div class="col-lg-12 mb-3">
-                          <label for="nama_kantor">Nama Kantor Atau Unit</label>
-                          <input type="text" class="form-control form-input" placeholder="Nama Kantor Atau Unit" name="nama_kantor_st">
-                        </div>
-
-                        <div class="col-lg-12 mb-3">
-                          <label for="tim_operasi">Penerbit Surat Tugas</label>
-                          <select class="form-control form-select select2 " id="penerbit_surat_tugas" name="penerbit_st">
-                            <option value="" selected disabled>- Pilih -</option>
-                            @foreach ($users as $user)
-                              <option value="{{ $user->id_admin }}">{{ $user->name }}
-                              </option>
-                            @endforeach
-                          </select>
                         </div>
                       </div>
                     </div>

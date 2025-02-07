@@ -1245,6 +1245,60 @@
                         </div>
 
 
+                        <div class="col-md-12 mb-3">
+                          <label>Pelanggaran</label>
+                          <select class="form-select form-input select2" name="pelanggaran" id="pelanggaran">
+                            <option value="">-- Pilih jenis pelanggaran --</option>
+                            <option value="Tidak Ada Pelanggaran" {{ $penyidikan->pelanggaran == 'Tidak Ada Pelanggaran' ? 'selected' : '' }}>Tidak Ada Pelanggaran</option>
+                            <option value="Terjadi Pelanggaran" {{ $penyidikan->pelanggaran == 'Terjadi Pelanggaran' ? 'selected' : '' }}>Terjadi Pelanggaran</option>
+                          </select>
+                        </div>
+
+                        <div id="additionalFields" style="display: none;">
+                          <div class="row">
+                            <div class="col-md-6 mb-3">
+                              <label>Tgl. B.A Serah Terima Pemilik</label>
+                              <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_ba_serah_terima_pemilik_penyidikan" value="{{ $penyidikan->tgl_ba_serah_terima_pemilik_penyidikan }}">
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                              <label>Pejabat Yang Menyerahkan</label>
+                              <select class="form-control form-select select2" name="pejabat_yang_menyerahkan">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}" {{ $penyidikan->pejabat_yang_menyerahkan == $user->id_admin ? 'selected' : '' }}>
+                                    {{ $user->name }} | {{ $user->jabatan }}
+                                  </option>
+                                @endforeach
+                              </select>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                              <label>Saksi Pertama</label>
+                              <select class="form-control form-select select2" name="saksi_pertama">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}" {{ $penyidikan->saksi_pertama == $user->id_admin ? 'selected' : '' }}>
+                                    {{ $user->name }} | {{ $user->jabatan }}
+                                  </option>
+                                @endforeach
+                              </select>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                              <label>Saksi Kedua</label>
+                              <select class="form-control form-select select2" name="saksi_kedua">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}" {{ $penyidikan->saksi_kedua == $user->id_admin ? 'selected' : '' }}>
+                                    {{ $user->name }} | {{ $user->jabatan }}
+                                  </option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
 
                       </div>
                     </div>
@@ -1268,6 +1322,42 @@
     </div>
   </div>
 
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Inisialisasi Select2
+      $('#pelanggaran').select2();
+
+      // Ambil elemen tambahan
+      var additionalFields = document.getElementById('additionalFields');
+      var pelanggaranSelect = document.getElementById('pelanggaran');
+
+      // Fungsi untuk menampilkan atau menyembunyikan additionalFields
+      function toggleAdditionalFields(value) {
+        if (value === 'Tidak Ada Pelanggaran') {
+          additionalFields.style.display = 'block';
+        } else {
+          additionalFields.style.display = 'none';
+        }
+      }
+
+      // Pengecekan saat halaman dimuat (untuk form edit)
+      var selectedValue = pelanggaranSelect.value;
+      toggleAdditionalFields(selectedValue);
+
+      // Event listener untuk perubahan select (tanpa Select2)
+      pelanggaranSelect.addEventListener('change', function() {
+        toggleAdditionalFields(this.value);
+      });
+
+      // Event listener jika Select2 digunakan
+      $('#pelanggaran').on('select2:select', function(e) {
+        toggleAdditionalFields(e.params.data.id);
+      });
+    });
+  </script>
 
 
 

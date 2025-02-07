@@ -1260,6 +1260,60 @@
                           <textarea class="form-control" rows="3" placeholder="Catatan Atasan" name="catatan_lhp"></textarea>
                         </div>
 
+                        <div class="col-md-12 mb-3">
+                          <label>Pelanggaran</label>
+                          <select class="form-select form-input select2" name="pelanggaran" id="pelanggaran">
+                            <option value="">-- Pilih jenis pelanggaran --</option>
+                            <option value="Tidak Ada Pelanggaran">Tidak Ada Pelanggaran</option>
+                            <option value="Terjadi Pelanggaran">Terjadi Pelanggaran</option>
+                          </select>
+                        </div>
+
+
+
+
+                        <div id="additionalFields" style="display: none;">
+                          <div class="row">
+                            <div class="col-md-6 mb-3">
+                              <label>Tgl. B.A Serah Terima Pemilik</label>
+                              <input type="date" class="form-control bg-primary text-white" placeholder="yyyy-mm-dd" name="tgl_ba_serah_terima_pemilik_penyidikan">
+                            </div>
+
+
+                            <div class="col-lg-6 mb-3">
+                              <label>Pejabat Yang Menyerahkan</label>
+                              <select class="form-control form-select select2" name="pejabat_yang_menyerahkan">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                @endforeach
+                              </select>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                              <label>Saksi Pertama</label>
+                              <select class="form-control form-select select2" name="saksi_pertama">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                @endforeach
+                              </select>
+                            </div>
+
+
+                            <div class="col-lg-6 mb-3">
+                              <label>Saksi Kedua</label>
+                              <select class="form-control form-select select2" name="saksi_kedua">
+                                <option value="" selected disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+
 
                       </div>
                     </div>
@@ -1283,6 +1337,31 @@
     </div>
   </div>
 
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      $('#pelanggaran').select2();
+
+      document.getElementById('pelanggaran').addEventListener('change', function() {
+        var additionalFields = document.getElementById('additionalFields');
+        if (this.value === 'Tidak Ada Pelanggaran') {
+          additionalFields.style.display = 'block';
+        } else {
+          additionalFields.style.display = 'none';
+        }
+      });
+
+      $('#pelanggaran').on('select2:select', function(e) {
+        var selectedValue = e.params.data.id;
+        var additionalFields = document.getElementById('additionalFields');
+        if (selectedValue === 'Tidak Ada Pelanggaran') {
+          additionalFields.style.display = 'block';
+        } else {
+          additionalFields.style.display = 'none';
+        }
+      });
+    });
+  </script>
 
 
 
