@@ -28,6 +28,7 @@ use App\Http\Controllers\Dokpenyidikan\DaftarDokLppController;
 use App\Http\Controllers\Dokpenyidikan\LembarMonitoringBarangController;
 use App\Http\Controllers\Dokpenyidikan\BarangController;
 use App\Http\Controllers\Tindaklanjut\PelanggaranAdministrasiController;
+use App\Http\Controllers\Tindaklanjut\PelanggaranKetentuanLainController;
 
 use App\Http\Controllers\Pengawasanlain\BaBukaSegelCtpController;
 use App\Http\Controllers\Pengawasanlain\BaCacahAmunisiController;
@@ -140,6 +141,10 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 
     // Tindak Lanjut Route
     Route::resource('Tindaklanjut/pelanggaran-administrasi', PelanggaranAdministrasiController::class);
+
+    Route::resource('Tindaklanjut/pelanggaran-ketentuan-lain', PelanggaranKetentuanLainController::class);
+    Route::get('Tindaklanjut/pelanggaran-ketentuan-lain/{id}/print-surat-bast-instansi-lain-pkl', [PelanggaranKetentuanLainController::class, 'print_surat_bast_instansi_lain_pkl'])->name('surat-bast-instansi-lain-pkl.print');
+
 
 
     //Barang Controller

@@ -1488,12 +1488,9 @@ class DaftarDokLppController extends Controller
 
 
         $data['pejabat_penelitian'] = [];
-        // Decode string JSON menjadi array
         if (!empty($penyidikan->pejabat_penelitian)) {
-            // Decode JSON string
             $timPeneliti = json_decode($penyidikan->pejabat_penelitian, true);
 
-            // Pastikan hasil decode valid dan berbentuk array
             if (json_last_error() === JSON_ERROR_NONE && is_array($timPeneliti)) {
                 foreach ($timPeneliti as $index => $id) {
                     // Bersihkan ID dari karakter yang tidak diinginkan

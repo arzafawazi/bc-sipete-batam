@@ -187,8 +187,8 @@
               <thead>
                 <tr class="bg-light">
                   <th class="text-center px-3 py-3" style="width: 5%">No</th>
-                  <th class="px-3 text-center py-3" style="width: 15%">No LPP</th>
-                  <th class="px-3 text-center py-3" style="width: 15%">Tanggal LPP</th>
+                  <th class="px-3 text-center py-3" style="width: 15%">Tipe Pelanggaran Administrasi</th>
+                  <th class="px-3 text-center py-3" style="width: 15%">Tanggal Pelanggaran Administrasi</th>
                   <th class="text-center px-3 py-3" style="width: 20%">Opsi</th>
                 </tr>
               </thead>
