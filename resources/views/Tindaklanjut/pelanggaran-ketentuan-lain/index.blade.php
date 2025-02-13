@@ -73,8 +73,6 @@
               </button>
             </div>
 
-
-
           </div>
         </form>
       </div>
@@ -120,7 +118,6 @@
                         Pilih
                       </button>
                     </td>
-
                   </tr>
                 @endforeach
 
@@ -169,7 +166,7 @@
               <thead>
                 <tr class="bg-light">
                   <th class="text-center px-3 py-3" style="width: 5%">No</th>
-                  <th class="px-3 text-center py-3" style="width: 15%">Tanggal Pelanggaran Administrasi</th>
+                  <th class="px-3 text-center py-3" style="width: 15%">Tanggal Pelanggaran Ketentuan Lain</th>
                   <th class="text-center px-3 py-3" style="width: 20%">Opsi</th>
                 </tr>
               </thead>
@@ -177,7 +174,7 @@
                 @foreach ($pelanggaranlain as $index => $pelanggaranlain)
                   <tr class="shadow-sm">
                     <td class="text-center fw-medium">{{ $index + 1 }}.</td>
-                    <td class="fw-medium">{{ $pelanggaranlain->tanggal_pelanggaran }}</td>
+                    <td class="fw-medium">{{ $pelanggaranlain->tgl_bast_instansi_lain_pkl }}</td>
                     <td>
                       <div class="d-flex gap-1 justify-content-center">
                         <a href="{{ route('pelanggaran-ketentuan-lain.edit', ['pelanggaran_ketentuan_lain' => $pelanggaranlain->id]) }}" class="btn btn-soft-success btn-icon btn-sm rounded-pill">

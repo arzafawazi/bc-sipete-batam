@@ -19,12 +19,14 @@
           @if (!in_array($menu->kode, $displayedMenus))
             <li class="nav-item">
               @if ($menu->subMenus->isNotEmpty())
-                <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-{{ $menu->id }}" aria-expanded="false" aria-controls="submenu-{{ $menu->id }}">
+                <a class="nav-link tambahan" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-{{ $menu->id }}" aria-expanded="false" aria-controls="submenu-{{ $menu->id }}">
                   @if ($menu->icon)
                     <i data-feather="{{ $menu->icon }}"></i>
                   @endif
-                  {{ $menu->uraian_menu }}
-                  <span class="menu-arrow"></span>
+                  <span>{{ $menu->uraian_menu }}</span>
+                  @if ($menu->subMenus->isNotEmpty())
+                    <span class="menu-arrow"></span>
+                  @endif
                 </a>
                 <div class="collapse" id="submenu-{{ $menu->id }}">
                   <ul class="nav-second-level">
@@ -36,7 +38,7 @@
                   </ul>
                 </div>
               @else
-                <a class="nav-link" href="{{ url($menu->fd) }}">
+                <a class="nav-link tambahan" href="{{ url($menu->fd) }}">
                   @if ($menu->icon)
                     <i data-feather="{{ $menu->icon }}"></i>
                   @endif
@@ -55,6 +57,41 @@
 </div>
 
 <style>
+  .tambahan {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 0.85rem 1.2rem !important;
+  }
+
+  .nav-link i {
+    min-width: 20px !important;
+    /* Memastikan icon memiliki lebar tetap */
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+
+  .menu-arrow {
+    margin-left: auto !important;
+    /* Mendorong arrow ke kanan */
+  }
+
+  /* Memastikan teks menu sejajar */
+  .nav-link {
+    position: relative !important;
+  }
+
+  .nav-link i+span,
+  .nav-link span:first-child {
+    padding-left: 20px !important;
+    /* Jarak seragam untuk menu tanpa icon */
+  }
+
+  .nav-link i~span {
+    padding-left: 0 !important;
+  }
+
   body[data-sidebar="hidden"] .logo-box {
     opacity: 0;
     visibility: hidden;
@@ -62,6 +99,8 @@
     margin: 0;
     padding: 0;
   }
+
+
 
   body[data-sidebar="default"] .logo-box {
     height: 0;
@@ -132,7 +171,9 @@
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     overflow: hidden;
+
   }
+
 
   .nav-link::before {
     content: '';

@@ -30,11 +30,11 @@ class PelanggaranKetentuanLainController extends Controller
 {
     public function index()
     {
-        $pelanggaranlain = TblPelanggaranKetentuanLain::select('id', 'tanggal_pelanggaran')->get();
+        $pelanggaranlain = TblPelanggaranKetentuanLain::select('id', 'tgl_bast_instansi_lain_pkl')->get();
 
 
         $pelanggaranlain = $pelanggaranlain->map(function ($item) {
-            $item->tanggal_pelanggaran = $this->formatDates(['tanggal_pelanggaran' => $item->tanggal_pelanggaran])['tanggal_pelanggaran'];
+            $item->tgl_bast_instansi_lain_pkl = $this->formatDates(['tgl_bast_instansi_lain_pkl' => $item->tgl_bast_instansi_lain_pkl])['tgl_bast_instansi_lain_pkl'];
             return $item;
         });
         // dd($pelanggaranlain);
@@ -79,6 +79,7 @@ class PelanggaranKetentuanLainController extends Controller
             ->where('id_penindakan', $pascapenindakan->id_penindakan_ref)
             ->first();
 
+
         $laporanInformasi = TblLaporanInformasi::where('id_pra_penindakan', $sbpData->pluck('id_pra_penindakan_ref'))
             ->get();
 
@@ -97,6 +98,183 @@ class PelanggaranKetentuanLainController extends Controller
             'laporanInformasi', // Menambahkan data TblLaporanInformasi
         ));
     }
+
+    public function store(Request $request)
+    {
+        TblPelanggaranKetentuanLain::create($request->all());
+        $no_ref = TblNoRef::first();
+        $no_ref->no_bast_instansi_lain_pkl += 1;
+        $no_ref->save();
+
+        return redirect()->route('pelanggaran-ketentuan-lain.index')->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
+    }
+
+
+    public function edit($id)
+    {
+        $pelanggaranlain = TblPelanggaranKetentuanLain::where('id', $id)->first();
+        if (!$pelanggaranlain) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        $penyidikan = TblPenyidikan::where('id_penyidikan', $pelanggaranlain->id_penyidikan_ref)->first();
+
+        $pascapenindakan = TblPascaPenindakan::where('id_pasca_penindakan', $penyidikan->id_pasca_penindakan_ref)->first();
+
+        $sbpData = TblSbp::with('laporanInformasi')
+            ->where('id_penindakan', $pascapenindakan->id_penindakan_ref)
+            ->first();
+
+        $laporanInformasi = TblLaporanInformasi::where('id_pra_penindakan', $sbpData->pluck('id_pra_penindakan_ref'))
+            ->get();
+
+        $users = User::all();
+
+        $no_ref = TblNoRef::first();
+
+        return view('Tindaklanjut.pelanggaran-ketentuan-lain.edit', compact(
+            'pelanggaranlain',
+            'users',
+            'no_ref',
+            'penyidikan',
+            'pascapenindakan',
+            'sbpData',
+            'laporanInformasi',
+        ));
+    }
+
+
+    public function update($id)
+    {
+        $data = request()->all();
+
+        $item = TblPelanggaranKetentuanLain::find($id);
+        if ($item) {
+            $item->update($data);
+            return redirect()->route('pelanggaran-ketentuan-lain.index')->with('success', 'Data berhasil diperbarui.');
+        }
+
+        return redirect()->route('pelanggaran-ketentuan-lain.index')->with('error', 'Data tidak ditemukan.');
+    }
+
+    public function destroy($id)
+    {
+        $pelanggaranlain = TblPelanggaranKetentuanLain::find($id);
+        if ($pelanggaranlain) {
+            $pelanggaranlain->delete();
+            return redirect()->route('pelanggaran-ketentuan-lain.index')->with('success', 'Data berhasil dihapus.');
+        }
+        return redirect()->route('pelanggaran-ketentuan-lain.index')->with('error', 'Data tidak ditemukan.');
+    }
+
+
+    public function print_surat_bast_instansi_lain_pkl($id)
+    {
+        $pelanggaranlain = TblPelanggaranKetentuanLain::where('id', $id)->first();
+        if (!$pelanggaranlain) {
+            return response()->json(['error' => 'Data tidak ditemukan.'], 404);
+        }
+
+        $penyidikan = TblPenyidikan::where('id_penyidikan', $pelanggaranlain->id_penyidikan_ref)->first();
+
+        $pascapenindakan = TblPascaPenindakan::where('id_pasca_penindakan', optional($penyidikan)->id_pasca_penindakan_ref)->first();
+
+        $sbpData = TblSbp::with('laporanInformasi')
+            ->where('id_penindakan', optional($pascapenindakan)->id_penindakan_ref)
+            ->first();
+
+        Carbon::setLocale('id');
+
+        $tglBastinstansiOriginal = $pelanggaranlain->tgl_bast_instansi_lain_pkl ?? null;
+        $data = $this->formatDates(array_diff_key($pelanggaranlain->toArray(), ['tgl_bast_instansi_lain_pkl' => '']));
+        $data['tgl_bast_instansi_lain_pkl'] = $tglBastinstansiOriginal;
+        $data['tgl_bast_instansi_lain_pkll'] = $this->formatDates(['tgl_bast_instansi_lain_pkl' => $tglBastinstansiOriginal])['tgl_bast_instansi_lain_pkl'] ?? '-';
+
+        $pejabatKeys = [
+            'pejabat_menyerahkan_bast_instansi_pkl',
+            'saksi_pertama_bast_instansi_pkl',
+            'saksi_kedua_bast_instansi_pkl',
+        ];
+
+        foreach ($pejabatKeys as $key) {
+            if ($pelanggaranlain->$key) {
+                $pejabat = $pelanggaranlain->pejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '-';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '-';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '-';
+                $data[$key . '_nip'] = $pejabat->nip ?? '-';
+            } else {
+                $data[$key . '_nama'] = '-';
+                $data[$key . '_pangkat'] = '-';
+                $data[$key . '_jabatan'] = '-';
+                $data[$key . '_nip'] = '-';
+            }
+        }
+
+        if ($sbpData) {
+            $sbpArray = $sbpData->toArray();
+            $formattedSbpData = $this->formatDates($sbpArray);
+
+            $data['nama_jenis_sarkut'] = $formattedSbpData['nama_jenis_sarkut'] ?? '-';
+            $data['kapasitas_muatan'] = $formattedSbpData['kapasitas_muatan'] ?? '-';
+            $data['no_polisi'] = $formattedSbpData['no_polisi'] ?? '-';
+            $data['jumlah_barang'] = $formattedSbpData['jumlah_barang'] ?? '-';
+            $data['jenis_barang'] = $formattedSbpData['jenis_barang'] ?? '-';
+            $data['jenis_no_tgl_dok'] = $formattedSbpData['jenis_no_tgl_dok'] ?? '-';
+            $data['tgl_dokumen'] = $formattedSbpData['tgl_dokumen'] ?? '-';
+            $data['nama_saksi'] = $formattedSbpData['nama_saksi'] ?? '-';
+            $data['ttl_saksi'] = $formattedSbpData['ttl_saksi'] ?? '-';
+            $data['kewarganegaraan_saksi'] = $formattedSbpData['kewarganegaraan_saksi'] ?? '-';
+            $data['no_identitas_saksi'] = $formattedSbpData['no_identitas_saksi'] ?? '-';
+        } else {
+            $data['nama_jenis_sarkut'] = '-';
+            $data['kapasitas_muatan'] = '-';
+            $data['no_polisi'] = '-';
+            $data['jumlah_barang'] = '-';
+            $data['jenis_barang'] = '-';
+            $data['jenis_no_tgl_dok'] = '-';
+            $data['tgl_dokumen'] = '-';
+            $data['nama_saksi'] = '-';
+            $data['ttl_saksi'] = '-';
+            $data['kewarganegaraan_saksi'] = '-';
+            $data['no_identitas_saksi'] = '-';
+        }
+
+        if (!empty($data['tgl_bast_instansi_lain_pkl']) && $this->isValidDate($data['tgl_bast_instansi_lain_pkl'])) {
+            $tglBastInstansi = Carbon::parse($data['tgl_bast_instansi_lain_pkl']);
+            $namaHari = $tglBastInstansi->translatedFormat('l');
+            $tanggal = $tglBastInstansi->translatedFormat('d');
+            $bulan = $tglBastInstansi->translatedFormat('F');
+            $tahun = $tglBastInstansi->translatedFormat('Y');
+
+            $data['formatBastInstansi'] = "$namaHari tanggal $tanggal bulan $bulan tahun $tahun";
+        } else {
+            $data['formatBastInstansi'] = '';
+        }
+
+        $tglinstansi = $pelanggaranlain->tgl_bast_instansi_lain_pkl;
+        $tahuninstansi = !empty($tglinstansi) ? date('Y', strtotime($tglinstansi)) : '-';
+        $data['tahun_instansi'] = $tahuninstansi;
+
+        $data = array_map(fn($value) => $value ?? '-', $data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Tindaklanjut/pelanggaran-ketentuan-lain/surat-bast-instansi-lain.docx'));
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        // dd($data);
+
+        $fileName = "Dokumen_Tindak_Lanjut_Berita_Acara_Serah_Terima_Instansi_Lain_Nomor_{$pelanggaranlain->no_bast_instansi_lain_pkl}.docx";
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+
 
     private function formatDates($data)
     {

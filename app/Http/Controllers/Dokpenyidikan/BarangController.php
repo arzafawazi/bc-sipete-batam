@@ -23,20 +23,13 @@ class BarangController extends Controller
             'jenis_barang' => 'nullable|string',
             'merk_pabean' => 'nullable|string',
             'tipe_pabean' => 'nullable|string',
-            'ukuran_kapasitas' => 'nullable|string',
             'jumlah' => 'nullable|integer',
             'satuan' => 'nullable|string',
             'negara_asal' => 'nullable|string',
             'kondisi_pabean' => 'nullable|string',
             'merk_cukai' => 'nullable|string',
             'tipe_cukai' => 'nullable|string',
-            'kadar_cukai' => 'nullable|string',
-            'subyek_cukai' => 'nullable|string',
-            'tahun' => 'nullable|string',
-            'gol' => 'nullable|string',
-            'tarif' => 'nullable|string',
-            'vol' => 'nullable|string',
-            'kondisi_cukai' => 'nullable|string',
+            'pita_cukai' => 'nullable|string',
             'keterangan' => 'nullable|string',
             'kategori_lartas' => 'nullable|string',
         ]);
@@ -48,20 +41,13 @@ class BarangController extends Controller
         $barang->jenis_barang = $validatedData['jenis_barang'] ?? null;
         $barang->merk_pabean = $validatedData['merk_pabean'] ?? null;
         $barang->tipe_pabean = $validatedData['tipe_pabean'] ?? null;
-        $barang->ukuran_kapasitas = $validatedData['ukuran_kapasitas'] ?? null;
         $barang->jumlah = $validatedData['jumlah'] ?? null;
         $barang->satuan = $validatedData['satuan'] ?? null;
         $barang->negara_asal = $validatedData['negara_asal'] ?? null;
         $barang->kondisi_pabean = $validatedData['kondisi_pabean'] ?? null;
         $barang->merk_cukai = $validatedData['merk_cukai'] ?? null;
         $barang->tipe_cukai = $validatedData['tipe_cukai'] ?? null;
-        $barang->kadar_cukai = $validatedData['kadar_cukai'] ?? null;
-        $barang->subyek_cukai = $validatedData['subyek_cukai'] ?? null;
-        $barang->tahun = $validatedData['tahun'] ?? null;
-        $barang->gol = $validatedData['gol'] ?? null;
-        $barang->tarif = $validatedData['tarif'] ?? null;
-        $barang->vol = $validatedData['vol'] ?? null;
-        $barang->kondisi_cukai = $validatedData['kondisi_cukai'] ?? null;
+        $barang->pita_cukai = $validatedData['pita_cukai'] ?? null;
         $barang->keterangan = $validatedData['keterangan'] ?? null;
         $barang->kategori_lartas = $validatedData['kategori_lartas'] ?? null;
         $barang->save();
@@ -109,20 +95,13 @@ class BarangController extends Controller
                 'jenis_barang' => 'nullable|string',
                 'merk_pabean' => 'nullable|string',
                 'tipe_pabean' => 'nullable|string',
-                'ukuran_kapasitas' => 'nullable|string',
                 'jumlah' => 'nullable|integer',
                 'satuan' => 'nullable|string',
                 'negara_asal' => 'nullable|string',
                 'kondisi_pabean' => 'nullable|string',
                 'merk_cukai' => 'nullable|string',
                 'tipe_cukai' => 'nullable|string',
-                'kadar_cukai' => 'nullable|string',
-                'subyek_cukai' => 'nullable|string',
-                'tahun' => 'nullable|string',
-                'gol' => 'nullable|string',
-                'tarif' => 'nullable|string',
-                'vol' => 'nullable|string',
-                'kondisi_cukai' => 'nullable|string',
+                'pita_cukai' => 'nullable|string',
                 'keterangan' => 'nullable|string',
                 'kategori_lartas' => 'nullable|string',
             ]);

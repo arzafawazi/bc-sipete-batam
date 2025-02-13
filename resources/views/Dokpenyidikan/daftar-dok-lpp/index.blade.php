@@ -80,6 +80,7 @@
       </div>
     </div>
 
+
     <div class="modal fade" id="laporanInfoModal" tabindex="-1" aria-labelledby="laporanInfoModalLabel" aria-hidden="true">
 
       <div class="modal-dialog modal-xl">

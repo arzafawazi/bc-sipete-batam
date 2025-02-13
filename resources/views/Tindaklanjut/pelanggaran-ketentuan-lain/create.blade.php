@@ -25,15 +25,18 @@
 
                 <div class="card-body">
                   <div class="tabs-container" id="tabs-container">
-                    <ul class="nav nav-pills nav-justified flex-nowrap overflow-auto" style="white-space: nowrap;" role="tablist">
+                    <ul class="nav nav-pills nav-justified flex-nowrap " style="white-space: nowrap;" role="tablist">
                       <li class="nav-item">
                         <a class="nav-link active" id="navtabs2-bast-instansi-lain-tab" data-bs-toggle="tab" href="#navtabs2-bast-instansi-lain" role="tab" aria-controls="navtabs2-bast-instansi-lain" aria-selected="true">
                           <span class="d-block d-sm-none">(BAST INSTANSI)</span>
-                          <span class="d-none d-sm-block">BAST Ke Instansi Lain</span>
+                          <span class="d-none d-sm-block">BAST KE INSTANSI LAIN</span>
                         </a>
                       </li>
                     </ul>
                   </div>
+
+                  <input type="hidden" id="id_pelanggaran_ketentuan_lain" name="id_pelanggaran_ketentuan_lain" value="">
+                  <input type="hidden" name="id_penyidikan_ref" value="{{ $id_penyidikan }}" readonly>
 
 
                   <div class="tab-content p-3 text-muted">
@@ -41,146 +44,217 @@
                     <div class="tab-pane active" id="navtabs2-bast-instansi-lain" role="tabpanel">
                       <div class="container mt-4">
                         <!-- Header with Logo -->
-                        <div class="row mb-4">
-                          <div class="col-12 text-center">
-                            <img src="/api/placeholder/80/80" alt="Logo" class="mb-2">
-                            <h5 class="text-center mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
-                            <p class="text-center small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
-                            <p class="text-center small">KANTOR WILAYAH DJBC JAWA TIMUR II</p>
+                        <div class="row mb-4 align-items-center">
+                          <div class="col-2 text-center">
+                            <img src="/images/logocop.png" alt="Logo" class="img-fluid" style="max-height:170px;">
+                          </div>
+                          <div class="col-10 text-center">
+                            <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                            <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                            <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</p>
+                            <p class="small mb-0">
+                              JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                              TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                            </p>
+                            <p class="small mb-0">
+                              LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                              PUSAT KONTAK LAYANAN 1500225;
+                              SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                              KPBC.BATAM@KEMENKEU.GO.ID
+                            </p>
                           </div>
                         </div>
+
+                        <hr class="border border-dark border-2 bg-dark">
+
 
                         <div class="mb-3 row align-items-center">
                           <div class="input-group">
                             <span class="input-group-text">NO : BAST-</span>
-                            <input type="text" class="form-control" name="input_angka" placeholder="Masukkan angka" required>
+                            <input type="text" class="form-control" value="{{ old('no_bast_instansi_lain_pkl', $no_ref->no_bast_instansi_lain_pkl) }}" name="no_bast_instansi_lain_pkl" readonly>
                             <span class="input-group-text">/KPU.02/BD.06/</span>
-                            <input type="date" class="form-control" name="input_tanggal" required>
+                            <input type="date" class="form-control" name="tgl_bast_instansi_lain_pkl">
                           </div>
                         </div>
 
 
                         <!-- Main Form -->
-                        <div class="card">
+                        <div class="card p-4">
                           <p class="fw-bold">
-                            Pada hari ini ................... Saya/Kami* yang bertanda tangan di bawah bertindak untuk/ atas nama Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam
+                            &nbsp;&nbsp;&nbsp;Pada hari ini ................... Saya/Kami* yang bertanda tangan di bawah bertindak untuk/ atas nama Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam
                             Telah menyerahkan:
                           </p>
                           <div class="card-body">
                             <div class="row">
-                              <!-- Left Column -->
-                              <div class="col-lg-6 ">
+                              <div class="col-lg-12">
+                                <div class="container">
 
-                                <hr class="mb-4">
-
-                                <div class="row">
-
-                                  <input type="hidden" id="id_pelanggaran_ketentuan_lain" name="id_pelanggaran_ketentuan_lain" value="">
-                                  <input type="hidden" name="id_penyidikan_ref" value="{{ $penyidikan->id_penyidikan }}" readonly>
-
-                                  <div class="col-12 mb-3">
-                                    <label class="form-label fw-semibold">Pengendali Operasi</label>
-                                    <select class="form-control form-select select2" id="pengendali_operasi" name="pengendali_operasi_st">
-                                      <option value="" selected disabled>- Pilih -</option>
-                                    </select>
-                                  </div>
-
-                                  <div class="col-12 mb-3">
-                                    <label class="form-label fw-semibold">Tim Operasi</label>
-                                    <select class="form-control form-select select2" id="tim_operasi" name="tim_operasi_st[]" multiple>
-                                    </select>
-                                  </div>
-
-                                  <div class="col-12 mb-3">
-                                    <label class="form-label fw-semibold">Tim Dukungan Operasi</label>
-                                    <select class="form-control form-select select2" id="tim_dukungan_operasi" name="tim_dukungan_operasi_st[]" multiple>
-                                    </select>
-                                  </div>
-                                </div>
-                                <hr class="mb-4">
-                              </div>
-
-                              <div class="card mb-3">
-                                <div class="card-body">
-                                  <h6 class="fw-bold">Untuk melaksanakan tugas sebagai berikut:</h6>
-                                  <ol class="ps-3" start="2" style="line-height: 1.5;">
-                                    <li class="mb-1">Melakukan penggalangan informan dalam hal diperlukan dalam proses pengumpulan dan pendalaman informasi.</li>
-                                    <li class="mb-1">Melakukan tindakan pengamanan pertama apabila ditemukan adanya indikasi pelanggaran di bidang kepabeanan dan/atau cukai.</li>
-                                    <li class="mb-1">Melakukan tindakan lainnya dan mengambil langkah-langkah sesuai peraturan perundangan guna mengamankan hak-hak negara, apabila dalam pelaksanaan tugas ditemukan adanya pelanggaran ketentuan
-                                      dan/atau
-                                      tindak pidana di bidang kepabeanan dan/atau cukai.</li>
-                                    <li class="mb-1">Melakukan koordinasi dengan pihak eksternal atau Bidang Penindakan dan Penyidikan pada Kantor Wilayah (Kanwil) DJBC setempat apabila dipandang perlu.</li>
-                                    <li class="mb-1">Membuat laporan pelaksanaan tugas.</li>
-                                    <li class="mb-1">Melakukan tugas dan kewajiban sesuai dengan tugas pokok dan fungsinya masing-masing serta dilaksanakan dengan penuh rasa tanggung jawab.</li>
-                                  </ol>
-                                </div>
-                              </div>
-
-
-
-                              <div class="mb-3">
-                                <label class="form-label fw-semibold d-flex align-items-center">
-                                  Melaksanakan Tugas
-                                  <button type="button" class="btn btn-link p-0 ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="1.Isi Bagian Nomor 1 Pada inputan ini">
-                                    <i class="bi bi-info-circle"></i>
-                                  </button>
-                                </label>
-                                <textarea class="form-control" name="melaksanakan_tugas_st" rows="3" placeholder="1.Isi Bagian Nomor 1 Pada inputan ini"></textarea>
-                              </div>
-
-                              <div class="card mb-3">
-                                <div class="card-body">
-                                  <!-- Wilayah Penugasan -->
-                                  <div class="mb-3 row align-items-center">
-                                    <label class="col-md-3 col-form-label fw-semibold text-md-start">Wilayah Penugasan :</label>
-                                    <div class="col-md-8">
-                                      <input type="text" class="form-control" name="wilayah_penugasan_st" placeholder="Wilayah Pengawasan KPU Bea dan Cukai Tipe B Batam" value="Wilayah Pengawasan KPU Bea dan Cukai Tipe B Batam">
-                                    </div>
-                                  </div>
-
-                                  <!-- Periode Penugasan (Tanggal Dimulai & Tanggal Berakhir dalam satu baris) -->
-                                  <div class="mb-3 row align-items-center">
-                                    <label class="col-md-3 col-form-label fw-semibold text-md-start">Periode Penugasan :</label>
-                                    <div class="col-md-4">
-                                      <input type="date" class="form-control" name="tanggal_dimulai_st">
-                                    </div>
-                                    <div class="col-md-1 text-center fw-semibold">s.d</div>
-                                    <div class="col-md-4">
-                                      <input type="date" class="form-control" name="tanggal_berakhir_st">
-                                    </div>
-                                  </div>
-
-                                  <!-- Ketentuan -->
+                                  <!-- Sarana Pengangkut -->
+                                  <h5 class="fw-bold">1. Sarana Pengangkut</h5>
                                   <div class="mb-3 row">
-                                    <label class="col-md-3 col-form-label fw-bold text-md-start">Ketentuan :</label>
+                                    <label class="col-md-3 col-form-label">Nama dan Jenis Sarkut</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
                                     <div class="col-md-8">
-                                      <ol class="mb-0 ps-3" start="1" style="line-height: 1.5;">
-                                        <li class="mb-1">Surat Tugas ini bersifat rahasia dan terbatas untuk pihak yang berkepentingan;</li>
-                                        <li class="mb-1">Sifat kegiatan intelijen tertutup/terbuka;</li>
-                                        <li class="mb-1">Berpakaian PDH/non-PDH;</li>
-                                        <li class="mb-1">Dapat dilengkapi dengan senjata api dinas.</li>
-                                      </ol>
+                                      <input type="text" class="form-control border-0 border-0" value="{{ old('nama_jenis_sarkut', $sbpData->nama_jenis_sarkut) }}" readonly>
+                                    </div>
+                                  </div>
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Ukuran/ Kapasitas Muatan</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control border-0" value="{{ old('kapasitas_muatan', $sbpData->kapasitas_muatan) }}" readonly>
+                                    </div>
+                                  </div>
+                                  <div class="mb-4 row">
+                                    <label class="col-md-3 col-form-label">No Reg./ No. Polisi</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control border-0" value="{{ old('no_polisi', $sbpData->no_polisi) }}" readonly>
                                     </div>
                                   </div>
 
-                                  <h6 class="fw-bold">&nbsp;&nbsp;&nbsp;Biaya yang digunakan untuk pelaksanaan surat tugas ini dibebankan pada DIPA ................ dan/atau DOKPPN.</h6>
-                                  <br>
-                                  <div class="mb-3 row align-items-center">
-                                    <label class="col-md-3 col-form-label fw-semibold text-md-start">Nama Kantor Atau Unit :</label>
-                                    <div class="col-md-8">
-                                      <input type="text" class="form-control" name="nama_kantor_st" placeholder="Isi Titik-titik bagian atas untuk nomor kantor pada bagian ini">
+                                  <!-- Barang -->
+                                  <h5 class="fw-bold">2. Barang</h5>
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Jumlah/Jenis Barang</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control border-0" value="{{ old('jumlah_barang', $sbpData->jumlah_barang) }}" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control border-0" value="{{ old('jenis_barang', $sbpData->jenis_barang) }}" readonly>
+                                    </div>
+                                  </div>
+                                  <div class="mb-4 row">
+                                    <label class="col-md-3 col-form-label">Jenis/No dan Tgl Dokumen</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control border-0" value="{{ old('jenis_no_tgl_dok', $sbpData->jenis_no_tgl_dok) }}" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="date" class="form-control border-0" value="{{ old('tgl_dokumen', $sbpData->tgl_dokumen) }}" readonly>
                                     </div>
                                   </div>
 
-                                  <!-- Penerbit Surat Tugas -->
-                                  <div class="mb-3 row align-items-center">
-                                    <label class="col-md-3 col-form-label fw-semibold text-md-start">Penerbit Surat Tugas :</label>
+                                  <!-- Orang -->
+                                  <h5 class="fw-bold">3. Orang</h5>
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Nama</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
                                     <div class="col-md-8">
-                                      <select class="form-select" id="penerbit_surat_tugas" name="penerbit_st">
+                                      <input type="text" class="form-control border-0" value="{{ old('nama_saksi', $sbpData->nama_saksi) }}" readonly>
+                                    </div>
+                                  </div>
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Tanggal Lahir</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control border-0" value="{{ old('ttl_saksi', $sbpData->ttl_saksi) }}" readonly>
+                                    </div>
+                                  </div>
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Kewarganegaraan</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control border-0" value="{{ old('kewarganegaraan_saksi', $sbpData->kewarganegaraan_saksi) }}" readonly>
+                                    </div>
+                                  </div>
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">No. Identitas</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control border-0" value="{{ old('no_identitas_saksi', $sbpData->no_identitas_saksi) }}" readonly>
+                                    </div>
+                                  </div>
+
+
+                                  <h5 class="fw-bold">Diserahkan Kepada</h5>
+
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Nama</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control" placeholder="Nama Orang Yang Padanya Dilakukan Serah Terima" name="nama_bast_instansi_pkl">
+                                    </div>
+                                  </div>
+
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Jenis Identitas</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control" placeholder="Jenis Identitas Yang Padanya Dilakukan Serah Terima" name="jenis_iden_bast_instansi_pkl">
+                                    </div>
+                                  </div>
+
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">NRP/Identitas</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control" placeholder="Nomor Identitas Yang Padanya Dilakukan Serah Terima" name="iden_bast_instansi_pkl">
+                                    </div>
+                                  </div>
+
+
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Menerima penyerahan untuk/atas nama</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control" placeholder="Menerima penyerahan untuk/atas nama" name="atas_nama_bast_instansi_pkl">
+                                    </div>
+                                  </div>
+
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Penyerahan dilaksanakan dalam rangka</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <textarea class="form-control" rows="3" placeholder="Penyerahan dilaksanakan dalam rangka" name="dilaksanakan_dalam_rangka_bast_instansi_pkl"></textarea>
+                                    </div>
+                                  </div>
+
+                                  <p class="fw-bold">
+                                    Demikian Berita Acara ini dibuat dengan sebenarnya.
+                                  </p>
+
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Pejabat Yang Menyerahkan</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <select class="form-control form-select select2" name="pejabat_menyerahkan_bast_instansi_pkl">
                                         <option value="" selected disabled>- Pilih -</option>
+                                        @foreach ($users as $user)
+                                          <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                        @endforeach
                                       </select>
                                     </div>
                                   </div>
+
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Saksi Pertama</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <select class="form-control form-select select2" name="saksi_pertama_bast_instansi_pkl">
+                                        <option value="" selected disabled>- Pilih -</option>
+                                        @foreach ($users as $user)
+                                          <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                        @endforeach
+                                      </select>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="mb-3 row">
+                                    <label class="col-md-3 col-form-label">Saksi Kedua</label>
+                                    <div class=" col-md-1 text-center mt-1">:</div>
+                                    <div class="col-md-8">
+                                      <select class="form-control form-select select2" name="saksi_kedua_bast_instansi_pkl">
+                                        <option value="" selected disabled>- Pilih -</option>
+                                        @foreach ($users as $user)
+                                          <option value="{{ $user->id_admin }}">{{ $user->name }} | {{ $user->jabatan }}</option>
+                                        @endforeach
+                                      </select>
+                                    </div>
+                                  </div>
+
 
                                 </div>
                               </div>
@@ -197,7 +271,7 @@
 
                     <div class="card-footer d-flex justify-content-end">
                       <button type="submit" class="btn btn-success btn-sm me-2">
-                        <i data-feather="save"></i> Simpan Data LI
+                        <i data-feather="save"></i> Simpan Data Pelanggaran Ketentuan Lain
                       </button>
                     </div>
 
@@ -215,83 +289,6 @@
     </form>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const selectKegiatan = document.getElementById("pilihan_kegiatan");
-      const selectSkema = document.getElementById("skema_penindakan");
-
-      function updateTabs() {
-        const selectedKegiatan = selectKegiatan.value;
-        const selectedSkema = selectSkema.value;
-
-        document.getElementById("penindakan_section").classList.add("d-none");
-        document.getElementById("patroli_section").classList.add("d-none");
-        document.getElementById("tidak_layak_section").classList.add("d-none");
-
-        if (selectedKegiatan === "penindakan") {
-          document.getElementById("penindakan_section").classList.remove("d-none");
-        } else if (selectedKegiatan === "patroli") {
-          document.getElementById("patroli_section").classList.remove("d-none");
-        } else if (selectedKegiatan === "tidak_layak") {
-          document.getElementById("tidak_layak_section").classList.remove("d-none");
-        }
-
-        const tabsConfig = [{
-            id: "navtabs2-messages-tab-item",
-            linkId: "navtabs2-messages-tab",
-            condition: selectedKegiatan === "tidak_layak",
-          },
-          {
-            id: "navtabs2-mpp-tab-item",
-            linkId: "navtabs2-mpp-tab",
-            condition: (selectedKegiatan === "penindakan" || selectedKegiatan === "patroli") &&
-              selectedSkema === "PELIMPAHAN",
-          },
-          {
-            id: "navtabs2-settings-tab-item",
-            linkId: "navtabs2-settings-tab",
-            condition: selectedKegiatan === "penindakan" || selectedKegiatan === "patroli",
-          },
-        ];
-
-        tabsConfig.forEach(({
-          id,
-          linkId,
-          condition
-        }) => {
-          const tabElement = document.getElementById(id);
-          const tabLinkElement = document.getElementById(linkId);
-
-          if (condition) {
-            tabElement.style.display = "block";
-
-            if (tabLinkElement) {
-              tabLinkElement.classList.add("highlight");
-              setTimeout(() => tabLinkElement.classList.remove("highlight"), 1000);
-            }
-          } else {
-            tabElement.style.display = "none";
-          }
-        });
-      }
-
-      selectKegiatan.addEventListener("change", updateTabs);
-      selectSkema.addEventListener("change", updateTabs);
-
-      document.getElementById("penindakan_section").classList.add("d-none");
-      document.getElementById("patroli_section").classList.add("d-none");
-      document.getElementById("tidak_layak_section").classList.add("d-none");
-      ["navtabs2-messages", "navtabs2-mpp", "navtabs2-settings"].forEach((id) => {
-        const tabElement = document.getElementById(id);
-        tabElement.classList.remove("active", "show");
-      });
-
-      updateTabs();
-    });
-  </script>
-
-
-
 
   <style>
     .nav-link.highlight {
@@ -300,85 +297,6 @@
     }
   </style>
 
-
-
-  {{-- <script>
-    // Convert Laravel data into a JavaScript-friendly format
-    const jenisPelanggaranData = @json($jenisPelanggaran->groupBy('alasan_penindakan'));
-
-    document.getElementById('alasan_penindakan').addEventListener('change', function() {
-        const selectedAlasan = this.value;
-        const jenisPelanggaranInput = document.getElementById('jenis_pelanggaran');
-
-        // Auto-fill the corresponding Jenis Pelanggaran
-        if (jenisPelanggaranData[selectedAlasan]) {
-            // Assuming each alasan_penindakan only has one jenis_pelanggaran
-            const jenisPelanggaran = jenisPelanggaranData[selectedAlasan][0].jenis_pelanggaran;
-            jenisPelanggaranInput.value = jenisPelanggaran;
-        } else {
-            // Clear the field if no matching jenis_pelanggaran is found
-            jenisPelanggaranInput.value = '';
-        }
-    });
-</script> --}}
-
-
-  <style>
-    .form-input:disabled {
-      background-color: #f0f0f0;
-      color: #888888;
-      cursor: not-allowed;
-    }
-
-    .form-input.enabled {
-      background-color: #ffffff;
-      color: #000000;
-    }
-
-
-    .form-group.disabled label {
-      color: #888888;
-    }
-  </style>
-
-  <script>
-    document.querySelector('select[name="jenis_segel"]').addEventListener('change', function() {
-      const idSegel = this.value;
-      if (idSegel) {
-        fetch(`/getNomorSegel/${idSegel}`)
-          .then(response => response.json())
-          .then(data => {
-            document.querySelector('input[name="nomor_segel"]').value = data.nomor_segel;
-            document.querySelector('input[name="nomor_segel"]').disabled = false;
-          })
-          .catch(error => console.error('Error:', error));
-      } else {
-        document.querySelector('input[name="nomor_segel"]').value = '';
-        document.querySelector('input[name="nomor_segel"]').disabled = true;
-      }
-    });
-  </script>
-
-  <script>
-    function toggleForm(selectedValue, sectionId) {
-      const section = document.getElementById(sectionId);
-      const inputs = section.querySelectorAll('.form-input');
-
-      if (selectedValue === 'YA') {
-        inputs.forEach(input => {
-          input.removeAttribute('disabled');
-          input.classList.add('enabled');
-          input.classList.remove('disabled');
-        });
-      } else {
-        inputs.forEach(input => {
-          input.setAttribute('disabled', 'disabled');
-          input.classList.remove('enabled');
-          input.classList.add('disabled');
-        });
-      }
-    }
-  </script>
 
   <script>
     function generateUniqueID() {

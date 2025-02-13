@@ -316,7 +316,6 @@ class DaftarDokLppController extends Controller
 
 
 
-
     public function print_surat_lpp($id)
     {
         $penyidikan = TblPenyidikan::with([
@@ -431,6 +430,7 @@ class DaftarDokLppController extends Controller
 
         // Mengatur nilai lainnya dalam template
         $templateProcessor->setValue('formatLp', $data['formatLp']);
+
 
 
         // Menggunakan formatDates untuk tgl_lpp
@@ -1269,8 +1269,6 @@ class DaftarDokLppController extends Controller
         $tglbacacah = $penyidikan->tgl_ba_cacah;
 
 
-
-
         $penyidikan->tgl_ba_cacah = $this->formatDates(['tgl_ba_cacah' => $penyidikan->tgl_ba_cacah])['tgl_ba_cacah'];
 
         $data['tgl_cacah'] = $this->formatDates(['tgl_cacah' => $penyidikan->tgl_ba_cacah])['tgl_cacah'] ?? '-';
@@ -1584,62 +1582,69 @@ class DaftarDokLppController extends Controller
 
         $barangData = Barang::where('id_penyidikan', $penyidikan->id_penyidikan)->get();
 
-
         if ($barangData->isNotEmpty()) {
-            $values = [];
+            $pabeanValues = [];
+            $cukaiValues = [];
+            $pabeanIndex = 1;
+            $cukaiIndex = 1;
 
-            foreach ($barangData as $index => $barang) {
-                $realIndex = $index + 1;
-                $values[] = [
-                    'i' => $realIndex,
-                    'kategori_barangc' => $barang->kategori_barang,
-                    'kode_komoditic' => $barang->kode_komoditi,
-                    'jenis_barangc' => $barang->jenis_barang,
-                    'merk_pabeanc' => $barang->merk_pabean,
-                    'tipe_pabeanc' => $barang->tipe_pabean,
-                    'ukuran_kapasitasc' => $barang->ukuran_kapasitas,
-                    'jumlahc' => $barang->jumlah,
-                    'satuanc' => $barang->satuan,
-                    'negara_asalc' => $barang->negara_asal,
-                    'kondisi_pabeanc' => $barang->kondisi_pabean,
-                    'merk_cukaic' => $barang->merk_cukai,
-                    'tipe_cukaic' => $barang->tipe_cukai,
-                    'kadar_cukaic' => $barang->kadar_cukai,
-                    'subyek_cukaic' => $barang->subyek_cukai,
-                    'tahunc' => $barang->tahun,
-                    'golc' => $barang->gol,
-                    'tarifc' => $barang->tarif,
-                    'volc' => $barang->vol,
-                    'kondisi_cukaic' => $barang->kondisi_cukai,
-                    'keteranganc' => $barang->keterangan,
-                    'kategori_lartasc' => $barang->kategori_lartas
-                ];
+            foreach ($barangData as $barang) {
+                if ($barang->kategori_barang === 'pabean') {
+                    $pabeanValues[] = [
+                        'b' => $pabeanIndex++,
+                        'kode_komoditip' => $barang->kode_komoditi,
+                        'jenis_barangp' => $barang->jenis_barang,
+                        'merk_pabeanp' => $barang->merk_pabean,
+                        'tipe_pabeanp' => $barang->tipe_pabean,
+                        'jumlahp' => $barang->jumlah,
+                        'satuanp' => $barang->satuan,
+                        'negara_asalp' => $barang->negara_asal,
+                        'kondisi_pabeanp' => $barang->kondisi_pabean,
+                        'keteranganp' => $barang->keterangan,
+                    ];
+                } elseif ($barang->kategori_barang === 'cukai') {
+                    $cukaiValues[] = [
+                        'v' => $cukaiIndex++,
+                        'kode_komoditic' => $barang->kode_komoditi,
+                        'jenis_barangc' => $barang->jenis_barang,
+                        'jumlahc' => $barang->jumlah,
+                        'merk_cukaic' => $barang->merk_cukai,
+                        'tipe_cukaic' => $barang->tipe_cukai,
+                        'negara_asalc' => $barang->negara_asal,
+                        'pita_cukaic' => $barang->pita_cukai,
+                        'keteranganc' => $barang->keterangan,
+                    ];
+                }
             }
 
-            $templateProcessor->cloneRowAndSetValues('i', $values);
-        } else {
-            // If no data exists, replace with empty values
-            $templateProcessor->setValue('i', '');
-            $templateProcessor->setValue('kategori_barangc', '');
-            $templateProcessor->setValue('kode_komoditic', '');
-            $templateProcessor->setValue('jenis_barangc', '');
-            $templateProcessor->setValue('merk_pabeanc', '');
-            $templateProcessor->setValue('tipe_pabeanc', '');
-            $templateProcessor->setValue('ukuran_kapasitasc', '');
-            $templateProcessor->setValue('jumlahc', '');
-            $templateProcessor->setValue('satuanc', '');
-            $templateProcessor->setValue('negara_asalc', '');
-            $templateProcessor->setValue('kondisi_pabeanc', '');
-            $templateProcessor->setValue('merk_cukaic', '');
-            $templateProcessor->setValue('tipe_cukaic', '');
-            $templateProcessor->setValue('kadar_cukaic', '');
-            $templateProcessor->setValue('subyek_cukaic', '');
-            $templateProcessor->setValue('tahunc', '');
-            $templateProcessor->setValue('golc', '');
-            $templateProcessor->setValue('tarifc', '');
-            $templateProcessor->setValue('volc', '');
-            $templateProcessor->setValue('keteranganc', '');
-            $templateProcessor->setValue('kategori_lartasc', '');
+            if (!empty($pabeanValues)) {
+                $templateProcessor->cloneRowAndSetValues('b', $pabeanValues);
+            } else {
+                $templateProcessor->setValue('b', '');
+                $templateProcessor->setValue('kode_komoditip', '');
+                $templateProcessor->setValue('jenis_barangp', '');
+                $templateProcessor->setValue('merk_pabeanp', '');
+                $templateProcessor->setValue('tipe_pabeanp', '');
+                $templateProcessor->setValue('jumlahp', '');
+                $templateProcessor->setValue('satuanp', '');
+                $templateProcessor->setValue('negara_asalp', '');
+                $templateProcessor->setValue('kondisi_pabeanp', '');
+                $templateProcessor->setValue('keteranganp', '');
+            }
+
+            if (!empty($cukaiValues)) {
+                $templateProcessor->cloneRowAndSetValues('v', $cukaiValues);
+            } else {
+                $templateProcessor->setValue('v', '');
+                $templateProcessor->setValue('kode_komoditic', '');
+                $templateProcessor->setValue('jenis_barangc', '');
+                $templateProcessor->setValue('jumlahc', '');
+                $templateProcessor->setValue('merk_cukaic', '');
+                $templateProcessor->setValue('tipe_cukaic', '');
+                $templateProcessor->setValue('negara_asalc', '');
+                $templateProcessor->setValue('pita_cukaic', '');
+                $templateProcessor->setValue('keteranganc', '');
+            }
         }
 
 
@@ -1984,6 +1989,9 @@ class DaftarDokLppController extends Controller
 
 
 
+
+
+
     private function formatDates($data)
     {
         $bulanIndo = [
@@ -2013,7 +2021,8 @@ class DaftarDokLppController extends Controller
                 $dateValue = $data[$field];
                 if ($dateValue) {
                     $date = Carbon::parse($dateValue);
-                    $formattedDate = 'Tanggal ' . $date->isoFormat('D MMMM YYYY') . ' Pukul ' . $date->format('H.i');
+                    $formattedDate = 'Tanggal ' . $date->isoFormat('D MMMM
+                        YYYY') . ' Pukul ' . $date->format('H.i');
                     $data[$field] = $formattedDate;
                 } else {
                     $data[$field] = '';
@@ -2029,9 +2038,16 @@ class DaftarDokLppController extends Controller
                 if ($date) {
                     $formattedDate = $date->format('d F Y');
 
-                    foreach ($bulanIndo as $englishMonth => $indonesianMonth) {
+                    foreach (
+                        $bulanIndo as $englishMonth =>
+                        $indonesianMonth
+                    ) {
                         if (strpos($formattedDate, $englishMonth) !== false) {
-                            $formattedDate = str_replace($englishMonth, $indonesianMonth, $formattedDate);
+                            $formattedDate = str_replace(
+                                $englishMonth,
+                                $indonesianMonth,
+                                $formattedDate
+                            );
                             break;
                         }
                     }
@@ -2084,17 +2100,21 @@ class DaftarDokLppController extends Controller
         if ($angka < 20) {
             return $huruf[$angka];
         } elseif ($angka < 100) {
-            $puluhan = floor($angka / 10) * 10;
+            $puluhan = floor($angka / 10)
+                * 10;
             $satuan = $angka % 10;
-            return $huruf[$puluhan] . ($satuan ? ' ' . $huruf[$satuan] : '');
+            return $huruf[$puluhan] . ($satuan ? ' ' . $huruf[$satuan] : ''
+            );
         } elseif ($angka < 1000) {
             $ratusan = floor($angka / 100);
             $sisa = $angka % 100;
-            return $huruf[$ratusan] . ' ratus' . ($sisa ? ' ' . $this->angkaKeKata($sisa) : '');
+            return
+                $huruf[$ratusan] . ' ratus' . ($sisa ? ' ' . $this->angkaKeKata($sisa) : '');
         } else {
             $ribuan = floor($angka / 1000);
             $sisa = $angka % 1000;
-            return $huruf[$ribuan] . ' ribu' . ($sisa ? ' ' . $this->angkaKeKata($sisa) : '');
+            return $huruf[$ribuan] . ' ribu' . ($sisa ? ' ' .
+                $this->angkaKeKata($sisa) : '');
         }
     }
 

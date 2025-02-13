@@ -396,7 +396,6 @@ class LaporanPengawasanControllers extends Controller
         $data = $this->formatDates($data);
 
 
-
         $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
 
 

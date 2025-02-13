@@ -1,15 +1,12 @@
-/* Pengaturan default untuk progressive enhancement */
 .no-js body {
     opacity: 1;
 }
 
-/* State awal body - tersembunyi */
 body {
     opacity: 0;
     visibility: hidden;
 }
 
-/* Class yang ditambahkan setelah load selesai */
 body.is-loaded {
     opacity: 1;
     visibility: visible;
@@ -20,7 +17,6 @@ body.is-loaded {
     -o-transition: opacity 0.8s ease-out;
 }
 
-/* Pastikan animasi tidak berjalan jika user memilih reduced motion */
 @media (prefers-reduced-motion: reduce) {
     body {
         transition: none;

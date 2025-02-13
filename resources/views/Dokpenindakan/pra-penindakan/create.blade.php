@@ -1085,7 +1085,6 @@
         tabElement.classList.remove("active", "show");
       });
 
-      // Run initial tabs update
       updateTabs();
     });
   </script>

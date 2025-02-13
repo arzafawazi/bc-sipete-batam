@@ -78,15 +78,28 @@
                 <div class="tab-content p-3 text-muted">
                   <div class="tab-pane fade show active" id="st1" role="tabpanel" aria-labelledby="st1-tab">
                     <div class="container mt-4">
-                      <!-- Header with Logo -->
-                      <div class="row mb-4">
-                        <div class="col-12 text-center">
-                          <img src="/api/placeholder/80/80" alt="Logo" class="mb-2">
-                          <h5 class="text-center mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
-                          <p class="text-center small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
-                          <p class="text-center small">KANTOR WILAYAH DJBC JAWA TIMUR II</p>
+                      <div class="row mb-4 align-items-center">
+                        <div class="col-2 text-center">
+                          <img src="/images/logocop.png" alt="Logo" class="img-fluid" style="max-height:170px;">
+                        </div>
+                        <div class="col-10 text-center">
+                          <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                          <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                          <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</p>
+                          <p class="small mb-0">
+                            JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                            TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                          </p>
+                          <p class="small mb-0">
+                            LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                            PUSAT KONTAK LAYANAN 1500225;
+                            SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                            KPBC.BATAM@KEMENKEU.GO.ID
+                          </p>
                         </div>
                       </div>
+
+                      <hr class="border border-dark border-2 bg-dark">
 
                       <!-- Main Form -->
                       <div class="card">
@@ -145,7 +158,6 @@
                                 </ol>
                               </div>
                             </div>
-
 
 
                             <div class="mb-3">

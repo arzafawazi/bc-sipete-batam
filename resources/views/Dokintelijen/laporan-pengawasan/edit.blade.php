@@ -108,6 +108,7 @@
                               @endforeach
                             </select>
                           </div>
+
                           <div class="col-lg-12 mb-3">
                             <label for="tim_operasi">Tim Operasi</label>
                             <select class="form-control form-select select2 " id="tim_operasi" name="tim_operasi_st[]" multiple>
@@ -119,6 +120,7 @@
                               @endforeach
                             </select>
                           </div>
+                          
                           <div class="col-lg-12 mb-3">
                             <label for="tim_dukungan_operasi">Tim Dukungan Operasi</label>
                             <select class="form-control form-select select2 " id="tim_dukungan_operasi" name="tim_dukungan_operasi_st[]" multiple>

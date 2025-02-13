@@ -4,6 +4,7 @@
 <head>
     @include('layouts.partials/title-meta', ['title' => $title])
     @include('layouts.partials/head-css')
+    
 </head>
 
 <body class="bg-primary-subtle">

@@ -724,7 +724,7 @@
                                     <th class="px-3 text-center py-3" style="width: 25%">Uraian Barang</th>
                                     <th class="px-3 text-center py-3" style="width: 15%">Jumlah</th>
                                     <th class="px-3 text-center py-3" style="width: 15%">Satuan</th>
-                                    <th class="px-3 text-center py-3" style="width: 15%">Spesifikasi(merk/tipe/ukr)</th>
+                                    <th class="px-3 text-center py-3" style="width: 15%">Spesifikasi</th>
                                     <th class="px-3 text-center py-3" style="width: 15%">Negara</th>
                                     <th class="px-3 text-center py-3" style="width: 15%">Kondisi</th>
                                     <th class="text-center px-3 py-3" style="width: 20%">Lartas</th>
@@ -755,7 +755,6 @@
                                                 <option value="">-- Pilih Kategori Barang --</option>
                                                 <option value="pabean">Barang Pabean</option>
                                                 <option value="cukai">Barang Kena Cukai</option>
-                                                <option value="pabean_cukai">Barang Pabean dan Barang Kena Cukai</option>
                                               </select>
                                             </div>
                                           </div>
@@ -786,33 +785,10 @@
                                                 <input type="text" class="form-control"name="tipe_pabean" id="tipe-pabean" placeholder="Masukkan Tipe Barang">
                                               </div>
                                             </div>
-                                            <div class="col-md-12 mb-3">
-                                              <label for="ukuran-kapasitas" class="form-label fw-bold">Ukuran/Kapasitas</label>
-                                              <input type="text" class="form-control" name="ukuran_kapasitas" id="ukuran-kapasitas" placeholder="Masukkan Ukuran/Kapasitas">
-                                            </div>
                                             <div class="row">
-                                              <div class="col-md-6 mb-3">
-                                                <label for="jumlah" class="form-label fw-bold">Jumlah</label>
-                                                <input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Masukkan Jumlah">
-                                              </div>
                                               <div class="col-md-6 mb-3">
                                                 <label for="satuan" class="form-label fw-bold">Satuan</label>
                                                 <input type="text" class="form-control" name="satuan" id="satuan" placeholder="Masukkan Satuan">
-                                              </div>
-                                            </div>
-                                            <div class="row">
-                                              <div class="col-md-6 mb-3">
-                                                <label for="negara-asal" class="form-label fw-bold">Negara Asal</label>
-                                                <select class="form-select select2" placeholder="Masukkan Negara Asal" id="negara-asal" name="negara_asal">
-                                                  <option value="" disabled selected>- Pilih Kewarganegaraan -</option>
-                                                  @foreach ($nama_negara as $benua => $negara)
-                                                    <optgroup label="{{ $benua }}">
-                                                      @foreach ($negara as $item)
-                                                        <option value="{{ $item->UrEdi }}">{{ $item->UrEdi }}</option>
-                                                      @endforeach
-                                                    </optgroup>
-                                                  @endforeach
-                                                </select>
                                               </div>
                                               <div class="col-md-6 mb-3">
                                                 <label for="kondisi-pabean" class="form-label fw-bold">Kondisi</label>
@@ -834,35 +810,34 @@
                                                 <label for="tipe-cukai" class="form-label fw-bold">Tipe</label>
                                                 <input type="text" class="form-control" name="tipe_cukai" id="tipe-cukai" placeholder="Tipe Barang">
                                               </div>
-                                              <div class="col-md-6 mb-3">
-                                                <label for="kadar-cukai" class="form-label fw-bold">Kadar</label>
-                                                <input type="text" class="form-control" name="kadar_cukai" id="kadar-cukai" placeholder="Kadar Barang">
-                                              </div>
-                                              <div class="col-md-6 mb-3">
-                                                <label for="subyek-cukai" class="form-label fw-bold">Subyek Cukai</label>
-                                                <input type="text" class="form-control" name="subyek_cukai" id="subyek-cukai" placeholder="Subyek Cukai">
-                                              </div>
-                                              <div class="col-md-6 mb-3">
-                                                <label class="form-label fw-bold">Tahun</label>
-                                                <input type="text" class="form-control" name="tahun" id="tahun" placeholder="Masukkan Tahun">
-                                              </div>
-                                              <div class="col-md-6 mb-3">
-                                                <label class="form-label fw-bold">Gol.</label>
-                                                <input type="text" class="form-control" name="gol" id="gol" placeholder="Golongan">
-                                              </div>
-                                              <div class="col-md-6 mb-3">
-                                                <label class="form-label fw-bold">Tarif</label>
-                                                <input type="text" class="form-control" name="tarif" id="tarif" placeholder="Tarif">
-                                              </div>
-                                              <div class="col-md-6 mb-3">
-                                                <label class="form-label fw-bold">Vol. (ml)</label>
-                                                <input type="text" class="form-control" name="vol" id="vol" placeholder="Volume">
-                                              </div>
                                             </div>
                                             <div class="col-md-12 mb-3">
-                                              <label class="form-label fw-bold">Kondisi</label>
-                                              <input type="text" class="form-control" name="kondisi_cukai" id="kondisi-cukai" placeholder="Kondisi Barang">
+                                              <label class="form-label fw-bold">Pita Cukai</label>
+                                              <input type="text" class="form-control" name="pita-cukai" id="pita-cukai" placeholder="Pita Cukai">
                                             </div>
+                                          </div>
+
+                                          <div class="row">
+
+                                            <div class="col-md-6 mb-3">
+                                              <label for="jumlah" class="form-label fw-bold">Jumlah Barang</label>
+                                              <input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Masukkan Jumlah Barang">
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                              <label for="negara-asal" class="form-label fw-bold">Negara Asal</label>
+                                              <select class="form-select select2" placeholder="Masukkan Negara Asal" id="negara-asal" name="negara_asal">
+                                                <option value="" disabled selected>- Pilih Kewarganegaraan -</option>
+                                                @foreach ($nama_negara as $benua => $negara)
+                                                  <optgroup label="{{ $benua }}">
+                                                    @foreach ($negara as $item)
+                                                      <option value="{{ $item->UrEdi }}">{{ $item->UrEdi }}</option>
+                                                    @endforeach
+                                                  </optgroup>
+                                                @endforeach
+                                              </select>
+                                            </div>
+
                                           </div>
 
                                           <div class="mb-3">
@@ -880,9 +855,7 @@
                                               @endforeach
                                             </select>
                                           </div>
-
                                         </form>
-
                                       </div>
 
                                       <!-- Modal Footer -->
@@ -928,7 +901,6 @@
                                     <option value="">-- Pilih Kategori Barang --</option>
                                     <option value="pabean">Barang Pabean</option>
                                     <option value="cukai">Barang Kena Cukai</option>
-                                    <option value="pabean_cukai">Barang Pabean dan Barang Kena Cukai</option>
                                   </select>
                                 </div>
                               </div>
@@ -959,33 +931,10 @@
                                     <input type="text" class="form-control" name="tipe_pabean" id="edit-tipe-pabean" placeholder="Masukkan Tipe Barang">
                                   </div>
                                 </div>
-                                <div class="col-md-12 mb-3">
-                                  <label for="edit-ukuran-kapasitas" class="form-label fw-bold">Ukuran/Kapasitas</label>
-                                  <input type="text" class="form-control" name="ukuran_kapasitas" id="edit-ukuran-kapasitas" placeholder="Masukkan Ukuran/Kapasitas">
-                                </div>
                                 <div class="row">
-                                  <div class="col-md-6 mb-3">
-                                    <label for="edit-jumlah" class="form-label fw-bold">Jumlah</label>
-                                    <input type="number" class="form-control" name="jumlah" id="edit-jumlah" placeholder="Masukkan Jumlah">
-                                  </div>
                                   <div class="col-md-6 mb-3">
                                     <label for="edit-satuan" class="form-label fw-bold">Satuan</label>
                                     <input type="text" class="form-control" name="satuan" id="edit-satuan" placeholder="Masukkan Satuan">
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-6 mb-3">
-                                    <label for="edit-negara-asal" class="form-label fw-bold">Negara Asal</label>
-                                    <select class="form-select select2" id="edit-negara-asal" name="negara_asal">
-                                      <option value="" disabled selected>- Pilih Kewarganegaraan -</option>
-                                      @foreach ($nama_negara as $benua => $negara)
-                                        <optgroup label="{{ $benua }}">
-                                          @foreach ($negara as $item)
-                                            <option value="{{ $item->UrEdi }}">{{ $item->UrEdi }}</option>
-                                          @endforeach
-                                        </optgroup>
-                                      @endforeach
-                                    </select>
                                   </div>
                                   <div class="col-md-6 mb-3">
                                     <label for="edit-kondisi-pabean" class="form-label fw-bold">Kondisi</label>
@@ -1007,34 +956,32 @@
                                     <label for="edit-tipe-cukai" class="form-label fw-bold">Tipe</label>
                                     <input type="text" class="form-control" name="tipe_cukai" id="edit-tipe-cukai" placeholder="Tipe Barang">
                                   </div>
-                                  <div class="col-md-6 mb-3">
-                                    <label for="edit-kadar-cukai" class="form-label fw-bold">Kadar</label>
-                                    <input type="text" class="form-control" name="kadar_cukai" id="edit-kadar-cukai" placeholder="Kadar Barang">
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                    <label for="edit-subyek-cukai" class="form-label fw-bold">Subyek Cukai</label>
-                                    <input type="text" class="form-control" name="subyek_cukai" id="edit-subyek-cukai" placeholder="Subyek Cukai">
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                    <label for="edit-tahun" class="form-label fw-bold">Tahun</label>
-                                    <input type="text" class="form-control" name="tahun" id="edit-tahun" placeholder="Masukkan Tahun">
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                    <label for="edit-gol" class="form-label fw-bold">Gol.</label>
-                                    <input type="text" class="form-control" name="gol" id="edit-gol" placeholder="Golongan">
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                    <label for="edit-tarif" class="form-label fw-bold">Tarif</label>
-                                    <input type="text" class="form-control" name="tarif" id="edit-tarif" placeholder="Tarif">
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                    <label for="edit-vol" class="form-label fw-bold">Vol. (ml)</label>
-                                    <input type="text" class="form-control" name="vol" id="edit-vol" placeholder="Volume">
-                                  </div>
                                 </div>
                                 <div class="col-md-12 mb-3">
-                                  <label for="edit-kondisi-cukai" class="form-label fw-bold">Kondisi</label>
-                                  <input type="text" class="form-control" name="kondisi_cukai" id="edit-kondisi-cukai" placeholder="Kondisi Barang">
+                                  <label for="edit-kondisi-cukai" class="form-label fw-bold">Pita Cukai</label>
+                                  <input type="text" class="form-control" name="pita_cukai" id="edit-pita-cukai" placeholder="Pita Cukai">
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6 mb-3">
+                                  <label for="edit-jumlah" class="form-label fw-bold">Jumlah Barang</label>
+                                  <input type="number" class="form-control" name="jumlah" id="edit-jumlah" placeholder="Masukkan Jumlah Barang">
+                                </div>
+
+
+                                <div class="col-md-6 mb-3">
+                                  <label for="edit-negara-asal" class="form-label fw-bold">Negara Asal</label>
+                                  <select class="form-select select2" id="edit-negara-asal" name="negara_asal">
+                                    <option value="" disabled selected>- Pilih Kewarganegaraan -</option>
+                                    @foreach ($nama_negara as $benua => $negara)
+                                      <optgroup label="{{ $benua }}">
+                                        @foreach ($negara as $item)
+                                          <option value="{{ $item->UrEdi }}">{{ $item->UrEdi }}</option>
+                                        @endforeach
+                                      </optgroup>
+                                    @endforeach
+                                  </select>
                                 </div>
                               </div>
 
@@ -1054,7 +1001,6 @@
                                   @endforeach
                                 </select>
                               </div>
-
                             </form>
                           </div>
 
@@ -1150,8 +1096,7 @@
 
                             <div class="accordion-item">
                               <h2 class="accordion-header">
-                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnesbbva" aria-expanded="false"
-                                  aria-controls="flush-collapseOnesbbva">
+                                <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnesbbva" aria-expanded="false" aria-controls="flush-collapseOnesbbva">
                                   B. Dokumen Pelangkap
                                 </button>
                               </h2>
@@ -1403,20 +1348,13 @@
           'jenis_barang': $('#jenis-barang').val(),
           'merk_pabean': $('#merk-pabean').val(),
           'tipe_pabean': $('#tipe-pabean').val(),
-          'ukuran_kapasitas': $('#ukuran-kapasitas').val(),
           'jumlah': $('#jumlah').val(),
           'satuan': $('#satuan').val(),
           'negara_asal': $('#negara-asal').val(),
           'kondisi_pabean': $('#kondisi-pabean').val(),
           'merk_cukai': $('#merk-cukai').val(),
           'tipe_cukai': $('#tipe-cukai').val(),
-          'kadar_cukai': $('#kadar-cukai').val(),
-          'subyek_cukai': $('#subyek-cukai').val(),
-          'tahun': $('#tahun').val(),
-          'gol': $('#gol').val(),
-          'vol': $('#vol').val(),
-          'tarif': $('#tarif').val(),
-          'kondisi_cukai': $('#kondisi-cukai').val(),
+          'pita_cukai': $('#pita-cukai').val(),
           'keterangan': $('#keterangan').val(),
           'kategori_lartas': $('#kategori-lartas').val(),
         };
@@ -1439,20 +1377,13 @@
             $('#jenis-barang').val('');
             $('#merk-pabean').val('');
             $('#tipe-pabean').val('');
-            $('#ukuran-kapasitas').val('');
             $('#jumlah').val('');
             $('#satuan').val('');
             $('#negara-asal').val('').trigger('change'); // Reset Select2
             $('#kondisi-pabean').val('');
             $('#merk-cukai').val('');
             $('#tipe-cukai').val('');
-            $('#kadar-cukai').val('');
-            $('#subyek-cukai').val('');
-            $('#tahun').val('');
-            $('#gol').val('');
-            $('#vol').val('');
-            $('#tarif').val('');
-            $('#kondisi-cukai').val('');
+            $('#pita-cukai').val('');
             $('#keterangan').val('');
             $('#kategori-lartas').val('').trigger('change');
 
@@ -1517,9 +1448,12 @@
               // Populate Pabean fields
               $('#edit-merk-pabean').val(response.merk_pabean);
               $('#edit-tipe-pabean').val(response.tipe_pabean);
-              $('#edit-ukuran-kapasitas').val(response.ukuran_kapasitas);
               $('#edit-jumlah').val(response.jumlah);
               $('#edit-satuan').val(response.satuan);
+
+              $('#edit-merk-cukai').val(response.merk_cukai);
+              $('#edit-tipe-cukai').val(response.tipe_cukai);
+              $('#edit-pita-cukai').val(response.pita_cukai);
 
               // Special handling for Kategori Lartas dropdown
               const editKategoriLartas = $('#edit-kategori-lartas');
@@ -1537,14 +1471,7 @@
               $('#edit-kondisi-pabean').val(response.kondisi_pabean);
 
               // Populate Cukai fields
-              $('#edit-merk-cukai').val(response.merk_cukai);
-              $('#edit-tipe-cukai').val(response.tipe_cukai);
-              $('#edit-kadar-cukai').val(response.kadar_cukai);
-              $('#edit-subyek-cukai').val(response.subyek_cukai);
-              $('#edit-tahun').val(response.tahun);
-              $('#edit-gol').val(response.gol);
-              $('#edit-tarif').val(response.tarif);
-              $('#edit-kondisi-cukai').val(response.kondisi_cukai);
+
 
               // Populate other fields
               $('#edit-keterangan').val(response.keterangan);
@@ -1580,20 +1507,13 @@
           'jenis_barang': $('#edit-jenis-barang').val(),
           'merk_pabean': $('#edit-merk-pabean').val(),
           'tipe_pabean': $('#edit-tipe-pabean').val(),
-          'ukuran_kapasitas': $('#edit-ukuran-kapasitas').val(),
           'jumlah': $('#edit-jumlah').val(),
           'satuan': $('#edit-satuan').val(),
           'negara_asal': $('#edit-negara-asal').val(),
           'kondisi_pabean': $('#edit-kondisi-pabean').val(),
           'merk_cukai': $('#edit-merk-cukai').val(),
           'tipe_cukai': $('#edit-tipe-cukai').val(),
-          'kadar_cukai': $('#edit-kadar-cukai').val(),
-          'subyek_cukai': $('#edit-subyek-cukai').val(),
-          'tahun': $('#edit-tahun').val(),
-          'gol': $('#edit-gol').val(),
-          'vol': $('#edit-vol').val(),
-          'tarif': $('#edit-tarif').val(),
-          'kondisi_cukai': $('#edit-kondisi-cukai').val(),
+          'pita_cukai': $('#edit-pita-cukai').val(),
           'keterangan': $('#edit-keterangan').val(),
           'kategori_lartas': $('#edit-kategori-lartas').val()
         };
