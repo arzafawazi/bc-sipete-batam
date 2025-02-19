@@ -73,8 +73,6 @@
               </button>
             </div>
 
-
-
           </div>
         </form>
       </div>
@@ -168,7 +166,7 @@
               <thead>
                 <tr class="bg-light">
                   <th class="text-center px-3 py-3" style="width: 5%">No</th>
-                  <th class="px-3 text-center py-3" style="width: 15%">Tanggal Pelanggaran Administrasi</th>
+                  <th class="px-3 text-center py-3" style="width: 15%">Jenis Pelanggaran Administrasi</th>
                   <th class="text-center px-3 py-3" style="width: 20%">Opsi</th>
                 </tr>
               </thead>
@@ -179,294 +177,26 @@
                     <td class="fw-medium">{{ $pelanggaranadministrasi->jenis_pelanggaran_administrasi }}</td>
                     <td>
                       <div class="d-flex gap-1 justify-content-center">
-                        <a href="{{ route('pelanggaran-ketentuan-lain.edit', ['pelanggaran_ketentuan_lain' => $pelanggaranadministrasi->id]) }}" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
+                        <a href="{{ route('pelanggaran-administrasi.edit', ['pelanggaran_administrasi' => $pelanggaranadministrasi->id]) }}" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
                           <i data-feather="edit" class="icon-sm"></i> Edit
                         </a>
-                        <form action="{{ route('pelanggaran-ketentuan-lain.destroy', $pelanggaranadministrasi->id) }}" method="POST" class="d-inline delete-form">
+                        <form action="{{ route('pelanggaran-administrasi.destroy', $pelanggaranadministrasi->id) }}" method="POST" class="d-inline delete-form">
                           @csrf
                           @method('DELETE')
                           <button type="submit" class="btn btn-soft-danger btn-icon btn-sm rounded-pill" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                             <i data-feather="trash" class="icon-sm"></i> Delete
                           </button>
                         </form>
-                        <button type="button" class="btn btn-soft-info btn-icon btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
-                          <i data-feather="printer" class="icon-sm"></i> Print
-                        </button>
+                        <a href="javascript:void(0);" onclick="openPrintDocuments(this, '{{ route('pelanggaran-administrasi.cetak', $pelanggaranadministrasi->id) }}')" class="btn btn-soft-info btn-icon btn-sm rounded-pill d-flex align-items-center"
+                          id="printButton">
+                          <span class="me-1">
+                            <i data-feather="printer" class="icon-sm"></i> Print
+                          </span>
+                          <div class="spinner-border spinner-border-sm text-light d-none" role="status" id="spinner-print"></div>
+                        </a>
+
                       </div>
                     </td>
-
-                    <div class="modal fade bs-example-modal-lg" id="modalPrint{{ $pelanggaranadministrasi->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content">
-                          <div class="modal-header border-bottom-0 pb-0" style="position: sticky; top: 0; z-index: 1055; background: #fff; height: 70px;">
-                            <h5 class="modal-title" id="printModalLabel">Print Dokumen Penyidikan</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body" style="max-height: 65vh; overflow-y: auto;">
-                            <div class="container">
-                              <div class="row g-3">
-
-
-                                <div class="col-md-4">
-                                  <div class="card print-card border-success shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-success mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">LPP</h6>
-                                      <a href="" class="btn btn-outline-success print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-
-
-                                <div class="col-md-4">
-                                  <div class="card print-card border-info shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-info mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">LPF</h6>
-                                      <a href="" class="btn btn-outline-success print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                  <div class="card print-card border-primary shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-primary mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">SPLIT</h6>
-                                      <a href="" class="btn btn-outline-primary print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div class="row g-3">
-                                <div class="col-md-4">
-                                  <div class="card print-card border-warning shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-info mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">BAW</h6>
-                                      <a href="" class="btn btn-outline-success print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-
-
-                                <div class="col-md-4">
-                                  <div class="card print-card border-warning shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-info mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">SPRINT CACAH</h6>
-                                      <a href="" class="btn btn-outline-success print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                  <div class="card print-card border-warning shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-warning mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">BA CACAH</h6>
-                                      <a href="" class="btn btn-outline-warning print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-
-                              </div>
-
-                              <div class="row g-3">
-
-                                <div class="col-md-4">
-                                  <div class="card print-card border-warning shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-info mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">LHP</h6>
-                                      <a href="" class="btn btn-outline-success print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                  <div class="card print-card border-danger shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-danger mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">BAST PEMILIK</h6>
-                                      <a href="" class="btn btn-outline-danger print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-
-
-                                <div class="col-md-4">
-                                  <div class="card print-card border-dark shadow-lg">
-                                    <div class="card-body text-center">
-                                      <div class="print-card-icon text-dark mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                          <polyline points="14 2 14 8 20 8"></polyline>
-                                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                                          <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                      </div>
-                                      <h6 class="card-title mb-3">B.A Segel</h6>
-                                      <a href="" class="btn btn-outline-dark print-btn">Print</a>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row g-3">
-                                  <div class="col-md-4">
-                                    <div class="card print-card border-danger shadow-lg">
-                                      <div class="card-body text-center">
-                                        <div class="print-card-icon text-danger mb-3">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                            <polyline points="14 2 14 8 20 8"></polyline>
-                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                            <polyline points="10 9 9 9 8 9"></polyline>
-                                          </svg>
-                                        </div>
-                                        <h6 class="card-title mb-3">B.A Titip</h6>
-                                        <a href="" class="btn btn-outline-danger print-btn">Print</a>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4 ">
-                                    <div class="card print-card border-secondary shadow-lg">
-                                      <div class="card-body text-center">
-                                        <div class="print-card-icon mb-3">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="text-primary">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                            <polyline points="14 2 14 8 20 8"></polyline>
-                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                            <polyline points="10 9 9 9 8 9"></polyline>
-                                          </svg>
-                                        </div>
-                                        <h6 class="card-title mb-3">SBP</h6>
-                                        <a href="" class="btn btn-outline-primary print-btn">Print</a>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4">
-                                    <div class="card print-card border-danger shadow-lg">
-                                      <div class="card-body text-center">
-                                        <div class="print-card-icon text-danger mb-3">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                            <polyline points="14 2 14 8 20 8"></polyline>
-                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                            <polyline points="10 9 9 9 8 9"></polyline>
-                                          </svg>
-                                        </div>
-                                        <h6 class="card-title mb-3">B.A Tolak Pertama</h6>
-                                        <a href="" class="btn btn-outline-danger print-btn">Print</a>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                </div>
-
-                                <div class="row g-3 justify-content-center">
-                                  <div class="col-md-4">
-                                    <div class="card print-card border-danger shadow-lg">
-                                      <div class="card-body text-center">
-                                        <div class="print-card-icon text-danger mb-3">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                            <polyline points="14 2 14 8 20 8"></polyline>
-                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                            <polyline points="10 9 9 9 8 9"></polyline>
-                                          </svg>
-                                        </div>
-                                        <h6 class="card-title mb-3">B.A Tolak Kedua</h6>
-                                        <a href="" class="btn btn-outline-danger print-btn">Print</a>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-
-
-
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer border-top-0">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </tr>
                 @endforeach
               </tbody>
@@ -480,19 +210,76 @@
   <!-- container-fluid -->
 
 
-
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('pilih-laporan')) {
           let nomorLaporan = event.target.getAttribute('data-nomor');
-          let buttonLabel = event.target.getAttribute('data-label'); // Ambil label tombol dari data-label
-          let url = `/Dokpenyidikan/daftar-dok-lpp/create?id_pasca_penindakan=${encodeURIComponent(nomorLaporan)}&penyidikan=${encodeURIComponent(buttonLabel)}`;
+          let buttonLabel = event.target.getAttribute('data-label');
+          let url = `/Tindaklanjut/pelanggaran-administrasi/create?id_penyidikan=${encodeURIComponent(nomorLaporan)}`;
           window.location.href = url;
         }
       });
     });
   </script>
+
+  <script>
+    function openPrintDocuments(button, url) {
+      let spinner = button.querySelector("#spinner-print");
+      let iconText = button.querySelector("span");
+
+      if (button.classList.contains("loading")) {
+        return;
+      }
+
+      spinner.classList.remove("d-none");
+      iconText.style.opacity = "0.5";
+      button.classList.add("loading");
+      button.setAttribute("disabled", "true");
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          let missingDocs = data.missingDokumen;
+          let availableDocs = data.dokumenLinks;
+
+          if (missingDocs.length > 0) {
+            let missingMessage = "Dokumen berikut belum diunggah:\n";
+            missingDocs.forEach(doc => {
+              missingMessage += "- " + doc + "\n";
+            });
+
+            alert(missingMessage);
+          }
+
+          if (availableDocs.length === 0) {
+            alert("Tidak ada dokumen yang tersedia untuk dicetak.");
+            return;
+          }
+
+          availableDocs.forEach(link => {
+            let newTab = window.open(link, '_blank');
+            if (!newTab) {
+              alert("Popup diblokir! Silakan izinkan pop-up di browser Anda.");
+              return;
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("Terjadi kesalahan saat mengambil dokumen. Silakan coba lagi.");
+        })
+        .finally(() => {
+          spinner.classList.add("d-none");
+          iconText.style.opacity = "1";
+          button.classList.remove("loading");
+          button.removeAttribute("disabled");
+        });
+    }
+  </script>
+
+
+
 
 
 

@@ -32,6 +32,11 @@ class TblPelanggaranAdministrasi extends Model
         return $this->belongsTo(TblPenyidikan::class, 'id_penyidikan_ref', 'id_penyidikan');
     }
 
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'id_penyidikan_ref', 'id_penyidikan');
+    }
+
     // Relasi ke TblPascaPenindakan melalui TblPenyidikan
     public function pascapenindakan()
     {

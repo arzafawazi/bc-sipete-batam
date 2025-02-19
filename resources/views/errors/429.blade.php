@@ -1,4 +1,4 @@
-@extends('layouts.error', ['title' => 'Error 404'])
+@extends('layouts.error', ['title' => 'Error 429'])
 
 @section('content')
   <div class="col-md-5 mx-auto">
@@ -12,12 +12,12 @@
           </div>
 
           <div class="maintenance-img">
-            <img src="/images/svg/404-error.svg" class="img-fluid" alt="coming-soon">
+            <img src="/images/svg/429-error.svg" class="img-fluid" alt="coming-soon">
           </div>
 
-          <div class="">
-            <h3 class="mt-5 fw-semibold text-dark text-capitalize">Oops!, Page Not Found</h3>
-            <p class="text-dark">This pages you are trying to access does not exits or has been moved. <br> Try going back to our homepage.</p>
+          <div class="text-center">
+            <h3 class="mt-4 fw-semibold text-black text-capitalize">Too many requests</h3>
+            <p class="text-muted">This pages you are trying to access does not exits or has been moved. <br> Try going back to our homepage.</p>
           </div>
 
           <a class="btn btn-primary mt-3 me-1" href="">Back to Home</a>

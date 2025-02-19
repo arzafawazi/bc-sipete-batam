@@ -141,6 +141,7 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 
     // Tindak Lanjut Route
     Route::resource('Tindaklanjut/pelanggaran-administrasi', PelanggaranAdministrasiController::class);
+    Route::get('Tindaklanjut/pelanggaran-administrasi/{id}/cetak', [PelanggaranAdministrasiController::class, 'print_dokumen'])->name('pelanggaran-administrasi.cetak');
     Route::resource('Tindaklanjut/pelanggaran-ketentuan-lain', PelanggaranKetentuanLainController::class);
     Route::get('Tindaklanjut/pelanggaran-ketentuan-lain/{id}/print-surat-bast-instansi-lain-pkl', [PelanggaranKetentuanLainController::class, 'print_surat_bast_instansi_lain_pkl'])->name('surat-bast-instansi-lain-pkl.print');
 
@@ -194,7 +195,6 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::resource('Pengawasanlain/ba-cacah-amunisi', BaCacahAmunisiController::class);
     Route::resource('Pengawasanlain/bast-senjata-api', BastSenjataApiController::class);
 });
-
 
 
 

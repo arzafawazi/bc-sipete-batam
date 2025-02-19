@@ -19,7 +19,7 @@
 
     </div>
   </div>
-
+  @include('layouts.partials/vendor')
 </body>
 
 </html>
