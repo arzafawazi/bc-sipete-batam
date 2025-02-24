@@ -33,6 +33,12 @@
                           <span class="d-none d-sm-block">Pelanggaran Administrasi</span>
                         </a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="navtabs2-bast-pemilik-tab" data-bs-toggle="tab" href="#navtabs2-bast-pemilik" role="tab" aria-controls="navtabs2-bast-pemilik" aria-selected="false">
+                          <span class="d-block d-sm-none">Bast Pemilik</span>
+                          <span class="d-none d-sm-block">Bast Pemilik</span>
+                        </a>
+                      </li>
                     </ul>
                   </div>
 
@@ -43,7 +49,7 @@
                     <div class="tab-pane active" id="navtabs2-ppftz" role="tabpanel">
                       <div class="container mt-4">
                         <!-- Header with Logo -->
-                        <div class="row mb-4 align-items-center">
+                        <div class="row mb-4 align-items-center text-black">
                           <div class="col-2 text-center">
                             <img src="/images/logocop.png" alt="Logo" class="img-fluid" style="max-height:170px;">
                           </div>
@@ -340,6 +346,132 @@
                       </div>
                     </div>
 
+                    <div class="tab-pane" id="navtabs2-bast-pemilik" role="tabpanel">
+                      <div class="container mt-4">
+                        <!-- Header with Logo -->
+                        <div class="row mb-4 align-items-center text-black">
+                          <div class="col-2 text-center">
+                            <img src="/images/logocop.png" alt="Logo" class="img-fluid" style="max-height:170px;">
+                          </div>
+                          <div class="col-10 text-center">
+                            <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                            <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                            <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</p>
+                            <p class="small mb-0">
+                              JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                              TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                            </p>
+                            <p class="small mb-0">
+                              LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                              PUSAT KONTAK LAYANAN 1500225;
+                              SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                              KPBC.BATAM@KEMENKEU.GO.ID
+                            </p>
+                          </div>
+                        </div>
+
+                        <hr class="border border-dark border-2 bg-dark">
+
+                        <h5 class="fw-bold text-center">Berita Acara Serah Terima</h5>
+
+                        <div class="container">
+                          <div class="row justify-content-center">
+                            <!-- Kolom pertama -->
+                            <label for="tgl_pelanggaran_administrasi">Tanggal Berita Acara Serah terima</label>
+                            <div class="mb-3 col-sm-13">
+                              <input type="date" class="form-control" name="tgl_bast_pemilik" value="{{ old('tgl_bast_pemilik', $pelanggaranadministrasi->tgl_bast_pemilik) }}">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card p-4">
+                          <p class="fw-bold">
+                            &nbsp;&nbsp;&nbsp;Pada hari ini ...................................... bertempat di Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam, saya :
+                          </p>
+                          <div class="fw-bold text-center">
+                            <select class="form-control form-select select2" name="pejabat_bast_1">
+                              <option value="" disabled>- Pilih -</option>
+                              @foreach ($users as $user)
+                                <option value="{{ $user->id_admin }}" {{ old('pejabat_bast_1', $pelanggaranadministrasi->pejabat_bast_1) == $user->id_admin ? 'selected' : '' }}>
+                                  {{ $user->name }} | {{ $user->jabatan }}
+                                </option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <br>
+                          <p class="fw-bold">
+                            &nbsp;&nbsp;&nbsp;pada Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam, ......................................
+                          </p>
+                          <div class="text-center">
+                            <textarea class="form-control" rows="5" placeholder="Keterangan Berita Acara Serah Terima" name="ket_ba_pemilik_tl">{{ old('ket_ba_pemilik_tl', $pelanggaranadministrasi->ket_ba_pemilik_tl) }}</textarea>
+
+                          </div>
+                          <br>
+                          <p class="fw-bold">
+                            &nbsp;&nbsp;&nbsp;Barang sebagaimana dimaksud telah diserahkan dalam keadaan baik dan lengkap kepada :
+                          </p>
+
+                          <div class="mb-3 row">
+                            <label class="col-md-3 col-form-label">Nama</label>
+                            <div class="col-md-1 text-center mt-1">:</div>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control border-0" value="{{ old('nama_saksi', $sbpData->nama_saksi) }}" readonly>
+                            </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label class="col-md-3 col-form-label">Pekerjaan</label>
+                            <div class="col-md-1 text-center mt-1">:</div>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control border-0" value="{{ old('pekerjaan_saksi', $sbpData->pekerjaan_saksi) }}" readonly>
+                            </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label class="col-md-3 col-form-label">Alamat</label>
+                            <div class="col-md-1 text-center mt-1">:</div>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control border-0" value="{{ old('alamat_saksi', $sbpData->alamat_saksi) }}" readonly>
+                            </div>
+                          </div>
+                          <p class="fw-bold">
+                            &nbsp;&nbsp;&nbsp; Serah terima ini dilakukan di Gudang Importir dengan disaksikan oleh :
+                          </p>
+                          <div class="mb-3 row">
+                            <label class="col-md-3 col-form-label">Saksi Pertama</label>
+                            <div class="col-md-1 text-center mt-1">:</div>
+                            <div class="col-md-8">
+                              <select class="form-control form-select select2" name="pejabat_bast_2">
+                                <option value="" disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}" {{ old('pejabat_bast_2', $pelanggaranadministrasi->pejabat_bast_2) == $user->id_admin ? 'selected' : '' }}>
+                                    {{ $user->name }} | {{ $user->jabatan }}
+                                  </option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label class="col-md-3 col-form-label">Saksi Kedua</label>
+                            <div class="col-md-1 text-center mt-1">:</div>
+                            <div class="col-md-8">
+                              <select class="form-control form-select select2" name="pejabat_bast_3">
+                                <option value="" disabled>- Pilih -</option>
+                                @foreach ($users as $user)
+                                  <option value="{{ $user->id_admin }}" {{ old('pejabat_bast_3', $pelanggaranadministrasi->pejabat_bast_3 ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                    {{ $user->name }} | {{ $user->jabatan }}
+                                  </option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                          <p class="fw-bold">
+                            &nbsp;&nbsp;&nbsp; Demikian Berita Acara Serah Terima ini dibuat dengan sebenarnya atas kekuatan sumpah jabatan, kemudian ditutup dan ditandatangani di Batam pada hari dan tanggal seperti tersebut diatas.
+                          </p>
+
+
+                        </div>
+                      </div>
+                    </div>
+
 
                     <div class="card-footer d-flex justify-content-end">
                       <button type="submit" class="btn btn-primary btn-sm me-2">
@@ -420,6 +552,64 @@
       });
     });
   </script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const bastPemilikTab = document.getElementById('navtabs2-bast-pemilik-tab');
+      const jenisSelect = document.getElementById('jenis_pelanggaran');
+
+      const showTabValues = [
+        'Pembuatan Dokumen PPFTZ-01',
+        'Re-Ekspor/Pembatalan Dokumen',
+        'Sanksi Administrasi SPSA',
+        'Pemenuhan Dokumen lartas'
+      ];
+
+      // Ambil nilai dari mode edit (jika ada)
+      const selectedValue = jenisSelect ? jenisSelect.value : null;
+
+      handleTabVisibility(selectedValue);
+
+      $('#jenis_pelanggaran').on('change', function() {
+        handleTabVisibility($(this).val());
+      });
+
+      function handleTabVisibility(value) {
+        if (showTabValues.includes(value)) {
+          $(bastPemilikTab).closest('li').show();
+        } else {
+          $(bastPemilikTab).closest('li').hide();
+
+          if ($(bastPemilikTab).hasClass('active')) {
+            const firstVisibleTab = $('.nav-link:visible').first();
+            if (firstVisibleTab.length) {
+              firstVisibleTab.tab('show');
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .nav-link.highlight {
+      color: #287F71 !important;
+      transition: background-color 0.5s ease;
+    }
+
+    .fw-bold {
+      color: black !important;
+    }
+
+    .col-form-label {
+      color: black !important;
+    }
+
+    input[readonly] {
+      color: black !important;
+    }
+  </style>
 @endsection
 
 @section('script')

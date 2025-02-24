@@ -101,14 +101,20 @@ class PelanggaranAdministrasiController extends Controller
         ));
     }
 
+
+
     public function store(Request $request)
     {
         try {
-
-            $request->validate([
+            // Validasi Input
+            $validatedData = $request->validate([
                 'tgl_pelanggaran_administrasi' => 'nullable|date',
                 'jenis_pelanggaran_administrasi' => 'nullable|string',
-                'nama_barang_pelanggaran_administrasi' => 'required|array',
+                'id_barang_pelanggaran_administrasi' => 'nullable|array',
+                'id_penyidikan_ref' => 'required|string',
+                'id_pelanggaran_administrasi' => 'required|string',
+
+                // Validasi untuk semua file
                 'permohonan_dokumen_kepabeanan_ppftz' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
                 'bukti_penerimaan_negara_ppftz' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
                 'dokumen_ppftz' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
@@ -122,35 +128,38 @@ class PelanggaranAdministrasiController extends Controller
                 'billing_djbc_spsa' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
                 'bukti_transaksi_spsa' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
                 'dokumen_lartas' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+
+                // Field tambahan
+                'tgl_bast_pemilik' => 'nullable|date',
+                'pejabat_bast_1' => 'nullable|string',
+                'ket_ba_pemilik_tl' => 'nullable|string',
+                'pejabat_bast_2' => 'nullable|string',
+                'pejabat_bast_3' => 'nullable|string',
             ]);
 
-
+            // Simpan Data ke Model
             $data = new TblPelanggaranAdministrasi();
-            $data->id_penyidikan_ref = $request->id_penyidikan_ref;
-            $data->id_pelanggaran_administrasi = $request->id_pelanggaran_administrasi;
-            $data->tgl_pelanggaran_administrasi = $request->tgl_pelanggaran_administrasi;
-            $data->jenis_pelanggaran_administrasi = $request->jenis_pelanggaran_administrasi;
-            $data->nama_barang_pelanggaran_administrasi = json_encode($request->nama_barang_pelanggaran_administrasi);
+            $data->fill($validatedData);
 
+            // Simpan array sebagai JSON jika ada
+            if (isset($validatedData['id_barang_pelanggaran_administrasi'])) {
+                $data->id_barang_pelanggaran_administrasi = json_encode($validatedData['id_barang_pelanggaran_administrasi']);
+            }
 
-
+            // Penyimpanan File
             $fileFields = [
                 'permohonan_dokumen_kepabeanan_ppftz' => 'pelanggaran_administrasi/pembuatan_dokumen_ppftz',
                 'bukti_penerimaan_negara_ppftz' => 'pelanggaran_administrasi/pembuatan_dokumen_ppftz',
                 'dokumen_ppftz' => 'pelanggaran_administrasi/pembuatan_dokumen_ppftz',
-
                 'keputusan_bdn' => 'pelanggaran_administrasi/bdn',
                 'bast_bdn' => 'pelanggaran_administrasi/bdn',
-
                 'surat_permohonan_reekspor' => 'pelanggaran_administrasi/reekspor',
                 'dokumen_ppftz_reekspor' => 'pelanggaran_administrasi/reekspor',
                 'penelitian_dokumen_reekspor' => 'pelanggaran_administrasi/reekspor',
-
                 'penerbitan_spsa' => 'pelanggaran_administrasi/spsa',
                 'surat_spsa' => 'pelanggaran_administrasi/spsa',
                 'billing_djbc_spsa' => 'pelanggaran_administrasi/spsa',
                 'bukti_transaksi_spsa' => 'pelanggaran_administrasi/spsa',
-
                 'dokumen_lartas' => 'pelanggaran_administrasi/dokumen_lartas',
             ];
 
@@ -160,20 +169,27 @@ class PelanggaranAdministrasiController extends Controller
                         $filePath = $request->file($field)->store($directory, 'public');
                         $data->$field = $filePath;
                     } catch (\Exception $e) {
-                        return redirect()->back()->withErrors(["Gagal mengunggah file $field"]);
+                        Log::error("Gagal mengunggah file $field: " . $e->getMessage());
+                        return redirect()->back()->withErrors(["Gagal mengunggah file $field: " . $e->getMessage()]);
                     }
                 }
             }
 
-
-            $data->save();
-
-
-            return redirect()->route('pelanggaran-administrasi.index')->with('success', 'Data Pelanggaran Administrasi berhasil disimpan!');
+            // Simpan Data ke Database
+            try {
+                $data->save();
+                return redirect()->route('pelanggaran-administrasi.index')->with('success', 'Data Pelanggaran Administrasi berhasil disimpan!');
+            } catch (\Exception $e) {
+                Log::error('Gagal menyimpan data ke database: ' . $e->getMessage());
+                return redirect()->route('pelanggaran-administrasi.index')->withErrors(['error' => 'Terjadi kesalahan dalam menyimpan data: ' . $e->getMessage()]);
+            }
         } catch (\Exception $e) {
-            return redirect()->route('pelanggaran-administrasi.index')->withErrors(['error' => 'Terjadi kesalahan dalam menyimpan data.']);
+            Log::error('Kesalahan umum: ' . $e->getMessage());
+            return redirect()->route('pelanggaran-administrasi.index')->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
+
+
 
 
     public function edit($id)
@@ -199,7 +215,7 @@ class PelanggaranAdministrasiController extends Controller
         $no_ref = TblNoRef::first();
 
         $barang = Barang::all();
-        $selectedBarangIds = json_decode($pelanggaranadministrasi->nama_barang_pelanggaran_administrasi, true) ?? [];
+        $selectedBarangIds = json_decode($pelanggaranadministrasi->id_barang_pelanggaran_administrasi, true) ?? [];
 
         return view('Tindaklanjut.pelanggaran-administrasi.edit', compact(
             'pelanggaranadministrasi',
@@ -220,7 +236,7 @@ class PelanggaranAdministrasiController extends Controller
         try {
             $request->validate([
                 'tgl_pelanggaran_administrasi' => 'nullable|date',
-                'nama_barang_pelanggaran_administrasi' => 'required|array',
+                'id_barang_pelanggaran_administrasi' => 'nullable|array',
                 'permohonan_dokumen_kepabeanan_ppftz' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
                 'bukti_penerimaan_negara_ppftz' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
                 'dokumen_ppftz' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
@@ -234,14 +250,23 @@ class PelanggaranAdministrasiController extends Controller
                 'billing_djbc_spsa' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
                 'bukti_transaksi_spsa' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
                 'dokumen_lartas' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+
+                'tgl_bast_pemilik' => 'nullable|date',
+                'pejabat_bast_1' => 'nullable|string',
+                'ket_ba_pemilik_tl' => 'nullable|string',
+                'pejabat_bast_2' => 'nullable|string',
+                'pejabat_bast_3' => 'nullable|string',
             ]);
 
-            // Cari data yang akan diupdate
             $data = TblPelanggaranAdministrasi::findOrFail($id);
             $data->tgl_pelanggaran_administrasi = $request->tgl_pelanggaran_administrasi;
-            $data->nama_barang_pelanggaran_administrasi = json_encode($request->nama_barang_pelanggaran_administrasi);
+            $data->tgl_bast_pemilik = $request->tgl_bast_pemilik;
+            $data->pejabat_bast_1 = $request->pejabat_bast_1;
+            $data->ket_ba_pemilik_tl = $request->ket_ba_pemilik_tl;
+            $data->pejabat_bast_2 = $request->pejabat_bast_2;
+            $data->pejabat_bast_3 = $request->pejabat_bast_3;
+            $data->id_barang_pelanggaran_administrasi = json_encode($request->id_barang_pelanggaran_administrasi);
 
-            // Daftar field file
             $fileFields = [
                 'permohonan_dokumen_kepabeanan_ppftz' => 'pelanggaran_administrasi/pembuatan_dokumen_ppftz',
                 'bukti_penerimaan_negara_ppftz' => 'pelanggaran_administrasi/pembuatan_dokumen_ppftz',
@@ -284,9 +309,6 @@ class PelanggaranAdministrasiController extends Controller
             return redirect()->route('pelanggaran-administrasi.index')->withErrors(['error' => 'Terjadi kesalahan dalam memperbarui data.']);
         }
     }
-
-
-
 
 
     public function destroy($id)
@@ -383,6 +405,95 @@ class PelanggaranAdministrasiController extends Controller
 
 
 
+    public function print_bast_pemilik_tindak_lanjut($id)
+    {
+        $pelanggaran = TblPelanggaranAdministrasi::with([
+            'pascapenindakan',
+            'penindakan',
+            'laporanInformasi'
+        ])->findOrFail($id);
+
+        Carbon::setLocale('id');
+
+        $tglBastPemilikOriginal = $pelanggaran->tgl_ba_serah_terima_pemilik_tindak_lanjut ?? null;
+        $data['tgl_bast_pemilik'] = $tglBastPemilikOriginal;
+
+        $pascapenindakan = $pelanggaran->pascapenindakan;
+        $penindakans = $pascapenindakan ? $pascapenindakan->penindakans : collect();
+        $formattedPenindakans = [];
+
+        foreach ($penindakans as $penindakan) {
+            $penindakanArray = $penindakan->toArray();
+            $formattedPenindakan = $penindakanArray;
+
+            $formattedPenindakan['tgl_sbp'] = $penindakanArray['tgl_sbp'] ?? null;
+
+            $pejabatKeys = [
+                'pejabat_bast_1',
+                'pejabat_bast_2',
+                'pejabat_bast_3',
+            ];
+
+            foreach ($pejabatKeys as $key) {
+                if ($pelanggaran && $pelanggaran->$key) {
+                    $pejabat = $pelanggaran->pejabat($key)->first();
+                    $formattedPenindakan[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                    $formattedPenindakan[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                    $formattedPenindakan[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                    $formattedPenindakan[$key . '_nip'] = $pejabat->nip ?? '';
+                } else {
+                    $formattedPenindakan[$key . '_nama'] = '';
+                    $formattedPenindakan[$key . '_pangkat'] = '';
+                    $formattedPenindakan[$key . '_jabatan'] = '';
+                    $formattedPenindakan[$key . '_nip'] = '';
+                }
+            }
+
+            $formattedPenindakans[] = $formattedPenindakan;
+        }
+
+        $data = $pelanggaran->toArray();
+        foreach ($formattedPenindakans as $penindakan) {
+            foreach ($penindakan as $key => $value) {
+                $data[$key] = $value ?? '-';
+            }
+        }
+
+        $data['penindakans'] = $formattedPenindakans;
+        $data = array_map(fn($value) => $value ?? '-', $data);
+
+        // dd($data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Tindaklanjut/pelanggaran-administrasi/surat-bast-pemilik.docx'));
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        if (!empty($data['tgl_bast_pemilik']) && $this->isValidDate($data['tgl_bast_pemilik'])) {
+            $tglBastPemilik = Carbon::parse($data['tgl_bast_pemilik']);
+            $namaHari = $tglBastPemilik->translatedFormat('l');
+
+            $formatter = new \NumberFormatter('id', \NumberFormatter::SPELLOUT);
+            $tanggal = $formatter->format($tglBastPemilik->day);
+            $bulan = $tglBastPemilik->translatedFormat('F');
+            $tahun = $formatter->format($tglBastPemilik->year);
+
+            $data['formatBastPemilik'] = ucwords("$namaHari tanggal $tanggal bulan $bulan tahun $tahun");
+        } else {
+            $data['formatBastPemilik'] = '';
+        }
+
+
+        $templateProcessor->setValue('formatBastPemilik', $data['formatBastPemilik'] ?? '-');
+
+        $fileName = "Dokumen_Tindak_Lanjut_Berita_Acara_Serah_Terima_Pemilik_{$penindakan['nama_saksi']}.docx";
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
 
 
 

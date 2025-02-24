@@ -190,10 +190,17 @@
                         <a href="javascript:void(0);" onclick="openPrintDocuments(this, '{{ route('pelanggaran-administrasi.cetak', $pelanggaranadministrasi->id) }}')" class="btn btn-soft-info btn-icon btn-sm rounded-pill d-flex align-items-center"
                           id="printButton">
                           <span class="me-1">
-                            <i data-feather="printer" class="icon-sm"></i> Print
+                            <i data-feather="eye" class="icon-sm"></i> Lihat Berkas
                           </span>
                           <div class="spinner-border spinner-border-sm text-light d-none" role="status" id="spinner-print"></div>
                         </a>
+
+                        @if (!in_array($pelanggaranadministrasi->jenis_pelanggaran_administrasi, ['Barang Yang Dikuasai Negara (BDN)']))
+                          <a href="{{ route('surat-bast-pemilik-tindak-lanjut.print', $pelanggaranadministrasi->id) }}" class="btn btn-soft-info btn-icon btn-sm rounded-pill">
+                            <i data-feather="printer" class="icon-sm"></i> Print BAST Pemilik
+                          </a>
+                        @endif
+
 
                       </div>
                     </td>

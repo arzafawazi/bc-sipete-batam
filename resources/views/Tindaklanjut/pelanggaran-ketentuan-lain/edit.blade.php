@@ -42,7 +42,7 @@
                     <div class="tab-pane active" id="navtabs2-bast-instansi-lain" role="tabpanel">
                       <div class="container mt-4">
                         <!-- Header with Logo -->
-                        <div class="row mb-4 align-items-center">
+                        <div class="row mb-4 align-items-center text-black">
                           <div class="col-2 text-center">
                             <img src="/images/logocop.png" alt="Logo" class="img-fluid" style="max-height:170px;">
                           </div>
@@ -299,6 +299,18 @@
     .nav-link.highlight {
       color: #287F71 !important;
       transition: background-color 0.5s ease;
+    }
+
+    .fw-bold {
+      color: black !important;
+    }
+
+    .col-form-label {
+      color: black !important;
+    }
+
+    input[readonly] {
+      color: black !important;
     }
   </style>
 @endsection

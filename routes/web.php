@@ -28,6 +28,8 @@ use App\Http\Controllers\Dokpenyidikan\DaftarDokLppController;
 use App\Http\Controllers\Dokpenyidikan\LembarMonitoringBarangController;
 use App\Http\Controllers\Dokpenyidikan\BarangController;
 use App\Http\Controllers\Tindaklanjut\PelanggaranAdministrasiController;
+use App\Http\Controllers\Tindaklanjut\PelanggaranUnsurPidanaPenyidikanController;
+use App\Http\Controllers\Tindaklanjut\PelanggaranUnsurPidanaUrController;
 use App\Http\Controllers\Tindaklanjut\PelanggaranKetentuanLainController;
 
 use App\Http\Controllers\Pengawasanlain\BaBukaSegelCtpController;
@@ -139,13 +141,18 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('Dokpenyidikan/daftar-dok-lpp/{id}/print-surat-bast-pemilikPenyidikan', [DaftarDokLppController::class, 'print_surat_bast_pemilik_penyidikan'])->name('surat-bast-pemilik-penyidikan.print');
 
 
-    // Tindak Lanjut Route
+    // Tindak Lanjut Pelanggaran Administrasi Route
     Route::resource('Tindaklanjut/pelanggaran-administrasi', PelanggaranAdministrasiController::class);
     Route::get('Tindaklanjut/pelanggaran-administrasi/{id}/cetak', [PelanggaranAdministrasiController::class, 'print_dokumen'])->name('pelanggaran-administrasi.cetak');
+    Route::get('Tindaklanjut/pelanggaran-administrasi/{id}/surat-bast-pemilik-tindak-lanjut', [PelanggaranAdministrasiController::class, 'print_bast_pemilik_tindak_lanjut'])->name('surat-bast-pemilik-tindak-lanjut.print');
+
+    //Tindak Lanjut Pelanggaran Ketentuan Lain Route
     Route::resource('Tindaklanjut/pelanggaran-ketentuan-lain', PelanggaranKetentuanLainController::class);
     Route::get('Tindaklanjut/pelanggaran-ketentuan-lain/{id}/print-surat-bast-instansi-lain-pkl', [PelanggaranKetentuanLainController::class, 'print_surat_bast_instansi_lain_pkl'])->name('surat-bast-instansi-lain-pkl.print');
 
-
+    //Tindak Lanjut Pelanggaran Unsur Pidana Route
+    Route::resource('Tindaklanjut/unsur-pidana-penyidikan', PelanggaranUnsurPidanaPenyidikanController::class);
+    Route::resource('Tindaklanjut/unsur-pidana-ur', PelanggaranUnsurPidanaUrController::class);
 
     //Barang Controller
     Route::resource('Dokpenyidikan/barang', BarangController::class);
