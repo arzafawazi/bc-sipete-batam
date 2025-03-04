@@ -77,8 +77,6 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $tahun_lhp = date('Y', strtotime($penyidikan->tgl_lhp_penyidikan));
 
 
-
-
         // dd($barang);
         $pascapenindakan = TblPascaPenindakan::where('id_pasca_penindakan', $penyidikan->id_pasca_penindakan_ref)->first();
 
@@ -107,6 +105,76 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         ));
     }
 
+    public function store(Request $request)
+    {
+        TblPelanggaranUnsurPidanaPenyidikan::create($request->all());
+        $no_ref = TblNoRef::first();
+        $no_ref->no_lk += 1;
+        $no_ref->no_sptp += 1;
+        $no_ref->no_pdp += 1;
+        $no_ref->save();
+
+        return redirect()->route('unsur-pidana-penyidikan.index')->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
+    }
+
+
+
+    public function edit($id)
+    {
+        $unsurpenyidikan = TblPelanggaranUnsurPidanaPenyidikan::where('id', $id)->first();
+        if (!$unsurpenyidikan) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        $penyidikan = TblPenyidikan::where('id_penyidikan', $unsurpenyidikan->id_penyidikan_ref)->first();
+
+        $pascapenindakan = TblPascaPenindakan::where('id_pasca_penindakan', $penyidikan->id_pasca_penindakan_ref)->first();
+
+        $sbpData = TblSbp::with('laporanInformasi')
+            ->where('id_penindakan', $pascapenindakan->id_penindakan_ref)
+            ->first();
+
+        $laporanInformasi = TblLaporanInformasi::where('id_pra_penindakan', $sbpData->pluck('id_pra_penindakan_ref'))
+            ->get();
+
+        $users = User::all();
+
+        $no_ref = TblNoRef::first();
+
+        return view('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.edit', compact(
+            'unsurpenyidikan',
+            'users',
+            'no_ref',
+            'penyidikan',
+            'pascapenindakan',
+            'sbpData',
+            'laporanInformasi',
+        ));
+    }
+
+
+    public function update($id)
+    {
+        $data = request()->all();
+
+        $item = TblPelanggaranUnsurPidanaPenyidikan::find($id);
+        if ($item) {
+            $item->update($data);
+            return redirect()->route('unsur-pidana-penyidikan.index')->with('success', 'Data berhasil diperbarui.');
+        }
+
+        return redirect()->route('unsur-pidana-penyidikan.index')->with('error', 'Data tidak ditemukan.');
+    }
+
+    public function destroy($id)
+    {
+        $unsurpenyidikan = TblPelanggaranUnsurPidanaPenyidikan::find($id);
+        if ($unsurpenyidikan) {
+            $unsurpenyidikan->delete();
+            return redirect()->route('unsur-pidana-penyidikan.index')->with('success', 'Data berhasil dihapus.');
+        }
+        return redirect()->route('unsur-pidana-penyidikan.index')->with('error', 'Data tidak ditemukan.');
+    }
 
 
     private function formatDates($data)
