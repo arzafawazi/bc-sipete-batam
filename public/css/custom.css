@@ -345,3 +345,19 @@ body.is-loaded {
     --tagify-tag-hover-bg: #dbeafe !important;
     --tagify-border-radius: 0.375rem !important;
 }
+
+/* footer */
+.bawah-class {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: calc(110% - 0px);
+    transition: width 0.3s ease-in-out;
+    background-color: transparent;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.sidebar-collapsed ~ .bawah-class {
+    width: 100%;
+}

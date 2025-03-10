@@ -86,47 +86,17 @@ class BarangController extends Controller
 
     public function update(Request $request, $id)
     {
-        try {
-            // Validasi data yang masuk
-            $validatedData = $request->validate([
-                'id_penyidikan' => 'required|string',
-                'kategori_barang' => 'nullable|string',
-                'kode_komoditi' => 'nullable|string',
-                'jenis_barang' => 'nullable|string',
-                'merk_pabean' => 'nullable|string',
-                'tipe_pabean' => 'nullable|string',
-                'jumlah' => 'nullable|integer',
-                'satuan' => 'nullable|string',
-                'negara_asal' => 'nullable|string',
-                'kondisi_pabean' => 'nullable|string',
-                'merk_cukai' => 'nullable|string',
-                'tipe_cukai' => 'nullable|string',
-                'pita_cukai' => 'nullable|string',
-                'keterangan' => 'nullable|string',
-                'kategori_lartas' => 'nullable|string',
-            ]);
-
-            // Cari barang berdasarkan ID
-            $barang = Barang::findOrFail($id);
-
-            // Update data dengan yang baru
-            $barang->update($validatedData);
-
-            // Ambil ID penyidikan untuk redirect
-            $idPenyidikan = $barang->id_penyidikan;
-
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Data Barang Cacah berhasil diperbarui!',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+        $barang = Barang::find($id);
+        if (!$barang) {
+            return response()->json(['success' => false, 'message' => 'Barang tidak ditemukan'], 404);
         }
+
+        $barang->update($request->all());
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil diupdate']);
     }
+
+
 
 
 

@@ -92,11 +92,15 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
 
         $users = User::all();
         $no_ref = TblNoRef::first();
+        $nama_negara = TblNegara::all()->groupBy('benua');
+
+
 
 
         return view('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.create', compact(
             'users',
             'no_ref',
+            'nama_negara',
             'id_penyidikan',
             'pascapenindakan',
             'penyidikan', // Menambahkan data TblPenyidikan
