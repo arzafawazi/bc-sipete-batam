@@ -76,7 +76,7 @@
               </div>
             </div>
 
-            <div class="mb-3 row">
+            {{-- <div class="mb-3 row">
               <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">KEPADA</label>
               <div class="col-md-1 col-sm-1 text-center mt-1 d-none d-sm-block">:</div>
               <div class="col-md-8 col-sm-11">
@@ -88,7 +88,7 @@
                   @endforeach
                 </select>
               </div>
-            </div>
+            </div> --}}
 
 
 

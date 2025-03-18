@@ -26,49 +26,121 @@
 
                 <div class="card-body">
                   <div class="tabs-container" id="tabs-container">
+                    <div class="mb-3 position-relative">
+                      <input type="text" id="searchTab" class="form-control ps-5 rounded-pill shadow-custom border-0" placeholder="Cari Surat...........">
+                      <i data-feather="search" class="search-iconnnnnn"></i>
+                    </div>
                     <ul class="nav nav-pills nav-justified flex-nowrap overflow-auto" style="white-space: nowrap;" role="tablist">
-                      <li class="nav-item">
+                      <li class="nav-item-penyidikan">
                         <a class="nav-link active" id="navtabs2-lk-tab" data-bs-toggle="tab" href="#navtabs2-lk" role="tab" aria-controls="navtabs2-lk" aria-selected="true">
                           <span class="d-block d-sm-none">(LK)</span>
                           <span class="d-none d-sm-block">LAPORAN KEJADIAN TINDAK PIDANA</span>
                         </a>
                       </li>
-                      <li class="nav-item">
+                      <li class="nav-item-penyidikan">
                         <a class="nav-link " id="navtabs2-sptp-tab" data-bs-toggle="tab" href="#navtabs2-sptp" role="tab" aria-controls="navtabs2-sptp" aria-selected="false">
                           <span class="d-block d-sm-none">(SPTP)</span>
                           <span class="d-none d-sm-block">SURAT PERINTAH TUGAS PENYIDIKAN</span>
                         </a>
                       </li>
-                      <li class="nav-item">
+                      <li class="nav-item-penyidikan">
                         <a class="nav-link " id="navtabs2-spdp-tab" data-bs-toggle="tab" href="#navtabs2-spdp" role="tab" aria-controls="navtabs2-spdp" aria-selected="false">
                           <span class="d-block d-sm-none">(SPDP)</span>
                           <span class="d-none d-sm-block">SURAT PEMBERITAHUAN DIMULAINYA PENYIDIKAN</span>
                         </a>
                       </li>
-                      <li class="nav-item">
+                      <li class="nav-item-penyidikan">
                         <a class="nav-link " id="navtabs2-sp1-tab" data-bs-toggle="tab" href="#navtabs2-sp1" role="tab" aria-controls="navtabs2-sp1" aria-selected="false">
                           <span class="d-block d-sm-none">(SP-I)</span>
                           <span class="d-none d-sm-block">SURAT PANGGILAN I</span>
                         </a>
                       </li>
-                      <li class="nav-item">
+                      <li class="nav-item-penyidikan">
                         <a class="nav-link " id="navtabs2-sp2-tab" data-bs-toggle="tab" href="#navtabs2-sp2" role="tab" aria-controls="navtabs2-sp2" aria-selected="false">
                           <span class="d-block d-sm-none">(SP-II)</span>
                           <span class="d-none d-sm-block">SURAT PANGGILAN II</span>
                         </a>
                       </li>
-                      {{-- <li class="nav-item">
-                        <a class="nav-link " id="navtabs2-spdp-tab" data-bs-toggle="tab" href="#navtabs2-spdp" role="tab" aria-controls="navtabs2-spdp" aria-selected="false">
-                          <span class="d-block d-sm-none">(SPDP)</span>
-                          <span class="d-none d-sm-block">SURAT PEMBERITAHUAN DIMULAINYA PENYIDIKAN</span>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-spm-tab" data-bs-toggle="tab" href="#navtabs2-spm" role="tab" aria-controls="navtabs2-spm" aria-selected="false">
+                          <span class="d-block d-sm-none">(SPM)</span>
+                          <span class="d-none d-sm-block">SURAT PERINTAH MEMBAWA</span>
                         </a>
-                      </li> --}}
-                      {{-- <li class="nav-item">
-                        <a class="nav-link" id="navtabs2-pemberitahuan-tab" data-bs-toggle="tab" href="#navtabs2-pemberitahuan" role="tab" aria-controls="navtabs2-pemberitahuan" aria-selected="false">
-                          <span class="d-block d-sm-none">(PEMBERITAHUAN)</span>
-                          <span class="d-none d-sm-block">PEMBERITAHUAN</span>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-baw-tab" data-bs-toggle="tab" href="#navtabs2-baw" role="tab" aria-controls="navtabs2-baw" aria-selected="false">
+                          <span class="d-block d-sm-none">(BAW)</span>
+                          <span class="d-none d-sm-block">BERITA ACARA WAWANCARA SAKSI</span>
                         </a>
-                      </li> --}}
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-bap-tab" data-bs-toggle="tab" href="#navtabs2-bap" role="tab" aria-controls="navtabs2-bap" aria-selected="false">
+                          <span class="d-block d-sm-none">(BAP SAKSI)</span>
+                          <span class="d-none d-sm-block">BERITA ACARA PEMERIKSAAN SAKSI</span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-sppr-tab" data-bs-toggle="tab" href="#navtabs2-sppr" role="tab" aria-controls="navtabs2-sppr" aria-selected="false">
+                          <span class="d-block d-sm-none">(SPPR)</span>
+                          <span class="d-none d-sm-block">SURAT PERINTAH PENGGELEDAHAN RUMAH/BANGUNAN</span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-spp-tab" data-bs-toggle="tab" href="#navtabs2-spp" role="tab" aria-controls="navtabs2-spp" aria-selected="false">
+                          <span class="d-block d-sm-none">(SPP)</span>
+                          <span class="d-none d-sm-block">SURAT PERINTAH PENYITAAN</span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-sppp-tab" data-bs-toggle="tab" href="#navtabs2-sppp" role="tab" aria-controls="navtabs2-sppp" aria-selected="false">
+                          <span class="d-block d-sm-none">(SPPP)</span>
+                          <span class="d-none d-sm-block">SURAT PERINTAH PEMOTRETAN DAN/ATAU PEREKAMAN MELALUI MEDIA AUDIOVISUAL
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-sppsj-tab" data-bs-toggle="tab" href="#navtabs2-sppsj" role="tab" aria-controls="navtabs2-sppsj" aria-selected="false">
+                          <span class="d-block d-sm-none">(SPPSJ)</span>
+                          <span class="d-none d-sm-block">SURAT PERINTAH PENGAMBILAN SIDIK JARI
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-spfd-tab" data-bs-toggle="tab" href="#navtabs2-spfd" role="tab" aria-controls="navtabs2-spfd" aria-selected="false">
+                          <span class="d-block d-sm-none">(SPFD)</span>
+                          <span class="d-none d-sm-block">SURAT PERINTAH FORENSIK DIGITAL
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-staptsk-tab" data-bs-toggle="tab" href="#navtabs2-staptsk" role="tab" aria-controls="navtabs2-staptsk" aria-selected="false">
+                          <span class="d-block d-sm-none">(S.TAPTSK)</span>
+                          <span class="d-none d-sm-block">SURAT PENETAPAN TERSANGKA
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-staptsk-tab" data-bs-toggle="tab" href="#navtabs2-staptsk" role="tab" aria-controls="navtabs2-staptsk" aria-selected="false">
+                          <span class="d-block d-sm-none">(S.TAPTSK)</span>
+                          <span class="d-none d-sm-block">SURAT PENETAPAN TERSANGKA
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-sppenang-tab" data-bs-toggle="tab" href="#navtabs2-sppenang" role="tab" aria-controls="navtabs2-sppenang" aria-selected="false">
+                          <span class="d-block d-sm-none">(SPP)</span>
+                          <span class="d-none d-sm-block"> SURAT PERINTAH PENANGKAPAN
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item-penyidikan">
+                        <a class="nav-link " id="navtabs2-sppenah-tab" data-bs-toggle="tab" href="#navtabs2-sppenah" role="tab" aria-controls="navtabs2-sppenah" aria-selected="false">
+                          <span class="d-block d-sm-none">(SPP)</span>
+                          <span class="d-none d-sm-block"> SURAT PERINTAH PENAHANAN
+                          </span>
+                        </a>
+                      </li>
+
                     </ul>
                   </div>
 
@@ -87,7 +159,12 @@
                     </div>
 
                     <div class="tab-pane" id="navtabs2-sp1" role="tabpanel">
-                      @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-panggilan-pertama', ['unsurpenyidikan' => $unsurpenyidikan])
+                      @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-panggilan-pertama', [
+                          'no_ref' => $no_ref,
+                          'nama_negara' => $nama_negara,
+                          'sbpData' => $sbpData,
+                          'users' => $users,
+                      ])
                     </div>
 
                     <div class="tab-pane" id="navtabs2-sp2" role="tabpanel">
@@ -134,6 +211,45 @@
 
     input[readonly] {
       color: black !important;
+    }
+  </style>
+
+  <script>
+    document.getElementById("searchTab").addEventListener("keyup", function() {
+      let filter = this.value.toLowerCase();
+      let tabs = document.querySelectorAll(".nav-item-penyidikan");
+
+      tabs.forEach(tab => {
+        let tabText = tab.textContent.toLowerCase();
+        if (tabText.includes(filter)) {
+          tab.style.display = "";
+        } else {
+          tab.style.display = "none";
+        }
+      });
+    });
+
+    feather.replace();
+  </script>
+
+  <style>
+    #searchTab {
+      width: 60%;
+      max-width: 400px;
+    }
+
+
+    .search-iconnnnnn {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+
+    .shadow-custom {
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+      transition: box-shadow 0.3s ease-in-out;
     }
   </style>
 

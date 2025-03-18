@@ -293,8 +293,6 @@
                                       <textarea class="form-control" placeholder="Ikhtisar Informasi" name="ikhtisar_informasi_lpt" rows="3">{{ old('ikhtisar_informasi_lpt', $pengawasan->ikhtisar_informasi_lpt) }}</textarea>
                                     </div>
                                   </div>
-
-
                                 </div>
                               </div>
                             </div>

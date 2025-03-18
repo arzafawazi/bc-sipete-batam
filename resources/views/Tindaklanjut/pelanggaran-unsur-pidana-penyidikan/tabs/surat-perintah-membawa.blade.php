@@ -78,13 +78,14 @@
               <div class="col-md-8 col-sm-11">
                 <select class="form-control form-select select2" id="tim_membawa" name="tim_membawa[]" multiple>
                   @foreach ($users as $user)
-                    <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, json_decode(old('tim_membawa', isset($unsurpenyidikan) ? $unsurpenyidikan->tim_membawa : '[]'))) ? 'selected' : '' }}>
+                    <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, json_decode(old('tim_membawa', $unsurpenyidikan->tim_membawa ?? '[]'), true) ?? []) ? 'selected' : '' }}>
                       {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
                     </option>
                   @endforeach
                 </select>
               </div>
             </div>
+
 
             <div class="mb-3 row">
               <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">UNTUK</label>
@@ -99,7 +100,6 @@
                     <div class="col-md-7">
                     </div>
                   </div>
-
 
                   <div class="row mb-3">
                     <div class="col-md-4 text-black d-flex align-items-center">Tempat /Tanggal Lahir</div>
