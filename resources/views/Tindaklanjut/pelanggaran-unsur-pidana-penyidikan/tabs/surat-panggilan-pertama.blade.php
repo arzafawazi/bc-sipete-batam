@@ -84,7 +84,7 @@
                                      <h5 class="fw-bold text-primary">Kumpulan Data Saksi</h5>
                                      <div id="dynamic-form-saksi">
                                          <div class="entry-saksi text-black">
-                                         <hr>
+                                             <hr>
                                              <div class="row mb-3">
                                                  <div class="col-md-12">
                                                      <div class="input-group">
@@ -229,20 +229,20 @@
                                                      </div>
                                                  </div>
                                              </div>
-                                            <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <div class="input-group flex-column">
-                                                <span class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
-                                                    D I P E R I N T A H K A N
-                                                </span>
-                                                <select class="form-select select2 w-100 mt-1" id="pejabat_saksi_spm" name="pejabat_saksi_spm[]" multiple>
-                                                    @foreach ($users as $user)
-                                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                </div>
-                                            </div>
-                                            </div>
+                                             <div class="row mb-3">
+                                                 <div class="col-md-12">
+                                                     <div class="input-group flex-column">
+                                                         <span class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
+                                                             D I P E R I N T A H K A N
+                                                         </span>
+                                                         <select class="form-select select2 w-100 mt-1" id="pejabat_saksi_spm" name="pejabat_saksi_spm[0][]" multiple>
+                                                             @foreach ($users as $user)
+                                                             <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                                                             @endforeach
+                                                         </select>
+                                                     </div>
+                                                 </div>
+                                             </div>
                                              <hr>
                                          </div>
                                      </div>
@@ -255,86 +255,7 @@
                                  <!-- Container untuk Tersangka -->
                                  <div id="form-tersangka" style="display: none;">
                                      <h5 class="fw-bold text-danger">Kumpulan Data Tersangka</h5>
-                                     <!-- Data yang selalu terlihat -->
-                                     <div class="row mb-3 pt-3">
-                                         <div class="col-md-4 text-black d-flex align-items-center">Nama Lengkap</div>
-                                         <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                         <div class="col-md-7">
-                                             <input type="text" class="form-control py-1 border-0" value="{{ old('nama_saksi', $sbpData->nama_saksi) }}" readonly>
-                                         </div>
-                                     </div>
-
-                                     <div class="row mb-3">
-                                         <div class="col-md-4 text-black d-flex align-items-center">Tempat /Tanggal Lahir</div>
-                                         <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                         <div class="col-md-7">
-                                             <input type="text" class="form-control py-1 border-0" value="{{ old('ttl_saksi', $sbpData->ttl_saksi) }}" readonly>
-                                         </div>
-                                     </div>
-
-                                     <div class="row mb-3">
-                                         <div class="col-md-4 text-black d-flex align-items-center">Agama</div>
-                                         <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                         <div class="col-md-7">
-                                             <input type="text" class="form-control py-1 border-0" value="{{ old('agama_saksi', $sbpData->agama_saksi) }}" readonly>
-                                         </div>
-                                     </div>
-
-                                     <!-- Data yang disembunyikan -->
-                                     <div id="data-lengkap" style="display: none;">
-                                         <div class="row mb-3">
-                                             <div class="col-md-4 text-black d-flex align-items-center">Jenis Kelamin</div>
-                                             <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                             <div class="col-md-7">
-                                                 <input type="text" class="form-control py-1 border-0" value="{{ old('jk_saksi', $sbpData->jk_saksi) }}" readonly>
-                                             </div>
-                                         </div>
-
-                                         <div class="row mb-3">
-                                             <div class="col-md-4 text-black d-flex align-items-center">Kewarganegaraan</div>
-                                             <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                             <div class="col-md-7">
-                                                 <input type="text" class="form-control py-1 border-0" value="{{ old('kewarganegaraan_saksi', $sbpData->kewarganegaraan_saksi) }}" readonly>
-                                             </div>
-                                         </div>
-
-                                         <div class="row mb-3">
-                                             <div class="col-md-4 text-black d-flex align-items-center">Pekerjaan saat ini</div>
-                                             <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                             <div class="col-md-7">
-                                                 <input type="text" class="form-control py-1 border-0" value="{{ old('pekerjaan_saksi', $sbpData->pekerjaan_saksi) }}" readonly>
-                                             </div>
-                                         </div>
-
-                                         <div class="row mb-3">
-                                             <div class="col-md-4 text-black d-flex align-items-center">Alamat sesuai Identitas</div>
-                                             <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                             <div class="col-md-7">
-                                                 <input type="text" class="form-control py-1 border-0" value="{{ old('alamat_saksi', $sbpData->alamat_saksi) }}" readonly>
-                                             </div>
-                                         </div>
-
-                                         <div class="row mb-3">
-                                             <div class="col-md-4 text-black d-flex align-items-center">Jenis/ Nomor Identitas</div>
-                                             <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                             <div class="col-md-7">
-                                                 <input type="text" class="form-control py-1 border-0" value="{{ $sbpData->jenis_iden_saksi . ' / ' . $sbpData->no_identitas_saksi }}" readonly>
-                                             </div>
-                                         </div>
-
-                                         <div class="row mb-3">
-                                             <div class="col-md-4 text-black d-flex align-items-center">Pendidikan terakhir</div>
-                                             <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                             <div class="col-md-7">
-                                                 <input type="text" class="form-control py-1 border-0" value="{{ old('pendidikan_terakhir_saksi', $sbpData->pendidikan_terakhir_saksi) }}" readonly>
-                                             </div>
-                                         </div>
-                                     </div>
-
-                                     <!-- Tombol Lihat Selengkapnya -->
-                                     <div class="text-end">
-                                         <button id="toggleButton" class="btn btn-link text-primary">Lihat Selengkapnya</button>
-                                     </div>
+                                     
 
                                      <div id="dynamic-form-tersangka">
                                          <div class="entry-tersangka text-black">
@@ -498,20 +419,20 @@
                                                      </div>
                                                  </div>
                                              </div>
-                                            <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <div class="input-group flex-column">
-                                                <span class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
-                                                    D I P E R I N T A H K A N
-                                                </span>
-                                                <select class="form-select select2 w-100 mt-1" id="pejabat_tersangka_spm" name="pejabat_tersangka_spm[]" multiple>
-                                                    @foreach ($users as $user)
-                                                    <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                </div>
-                                            </div>
-                                            </div>
+                                             <div class="row mb-3">
+                                                 <div class="col-md-12">
+                                                     <div class="input-group flex-column">
+                                                         <span class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
+                                                             D I P E R I N T A H K A N
+                                                         </span>
+                                                         <select class="form-select select2 w-100 mt-1" id="pejabat_tersangka_spm" name="pejabat_tersangka_spm[0][]" multiple>
+                                                             @foreach ($users as $user)
+                                                             <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                                                             @endforeach
+                                                         </select>
+                                                     </div>
+                                                 </div>
+                                             </div>
                                              <hr>
                                          </div>
                                      </div>
@@ -547,38 +468,38 @@
                                      <div class="col-md-4 text-black d-flex align-items-center">Tempat</div>
                                      <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                                      <div class="col-md-7">
-                                         <textarea class="form-control" name="tempat_panggilan1" rows="3" placeholder="Diisi tempat Saksi / Tersangka menghadap">{{ old('tempat_panggilan1', isset($unsurpenyidikan) ? $unsurpenyidikan->tempat_panggilan1 : 'di ruang Seksi Penyidikan, Bidang Penindakan dan Penyidikan, Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam, Jln. Kuda Laut, Batu Ampar, Kota Batam') }}</textarea>
+                                         <textarea class="form-control" name="tempat_panggilan" rows="3" placeholder="Diisi tempat Saksi / Tersangka menghadap">{{ old('tempat_panggilan1', isset($unsurpenyidikan) ? $unsurpenyidikan->tempat_panggilan1 : 'di ruang Seksi Penyidikan, Bidang Penindakan dan Penyidikan, Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam, Jln. Kuda Laut, Batu Ampar, Kota Batam') }}</textarea>
                                      </div>
                                  </div>
 
 
-                                 <div class="row mb-3">
+                                 {{-- <div class="row mb-3">
                                      <div class="col-md-4 text-black d-flex align-items-center">Penerbit Surat Panggilan</div>
                                      <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                                      <div class="col-md-7">
                                          <select class="form-control form-select select2" name="penerbit_sp1">
                                              <option value="" disabled {{ empty(old('penerbit_sp1')) && empty($unsurpenyidikan->penerbit_sp1) ? 'selected' : '' }}>- Pilih -</option>
-                                             @foreach ($users as $user)
-                                             <option value="{{ $user->id_admin }}" {{ old('penerbit_sp1', $unsurpenyidikan->penerbit_sp1 ?? '') == $user->id_admin ? 'selected' : '' }}>
-                                                 {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
-                                             </option>
-                                             @endforeach
-                                         </select>
-                                     </div>
-                                 </div>
-
-
-
+                                 @foreach ($users as $user)
+                                 <option value="{{ $user->id_admin }}" {{ old('penerbit_sp1', $unsurpenyidikan->penerbit_sp1 ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                     {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                 </option>
+                                 @endforeach
+                                 </select>
                              </div>
-                         </div>
+                         </div> --}}
+
+
+
                      </div>
                  </div>
              </div>
          </div>
      </div>
  </div>
+ </div>
+ </div>
 
-{{-- 
+ {{--
 bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta passing data json dari database ke field tersangka --}}
 
  <script>
@@ -644,15 +565,15 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
                  , time_24hr: true
                  , locale: "id"
                  , onClose: function(selectedDates) {
-                     console.log("Selected date:", selectedDates);
+                     // console.log("Selected date:", selectedDates);
                  }
              , });
          });
      }
 
      let data_saksi = <?php echo json_encode($saksiData, JSON_PRETTY_PRINT); ?>;
-   console.log("Data saksi dari PHP:", data_saksi);
-   console.log("Jumlah saksi:", data_saksi.length);
+   // console.log("Data saksi dari PHP:", data_saksi);
+   // console.log("Jumlah saksi:", data_saksi.length);
 
 
    function initializeFormData() {
@@ -661,8 +582,8 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
        container.innerHTML = ""; // Kosongkan sebelum mengisi ulang
 
        data_saksi.forEach((saksi, index) => {
-         console.log("Memproses saksi:", saksi);
-         let newEntry = generateSaksiEntryHTML(saksi, index === 0);
+         // console.log("Memproses saksi:", saksi);
+         let newEntry = generateSaksiEntryHTML(saksi, index === 0, index);
          container.appendChild(newEntry);
        });
 
@@ -674,7 +595,9 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
 
 
    // Helper function to generate HTML for a saksi entry
-   function generateSaksiEntryHTML(saksi = {}, isFirst = false) {
+   function generateSaksiEntryHTML(saksi = {}, isFirst = false, index = 0) {
+
+    let uniqueId = "pejabat_saksi_spm_" + new Date().getTime() + "_" + Math.random().toString(36).substring(2, 8);
      // Create a wrapper div
      let entryDiv = document.createElement('div');
      entryDiv.className = 'entry-saksi text-black';
@@ -690,10 +613,10 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
         </div>
       </div>
     </div> 
-    <div class = "row mb-3">
+    <div class="row mb-3">
          <div class="col-md-4 d-flex align-items-center">Nama Lengkap</div> 
-         <div class = "col-md-1 text-center" >: </div> 
-         <div class = "col-md-7" > <input type="text" class="form-control py-1" name="saksi_nama[]" value="${saksi.nama || ''}"></div>
+         <div class="col-md-1 text-center">: </div> 
+         <div class="col-md-7"><input type="text" class="form-control py-1" name="saksi_nama[]" value="${saksi.nama || ''}"></div>
     </div>
     <div class="row mb-3">
       <div class="col-md-4 d-flex align-items-center">Tempat /Tanggal Lahir</div>
@@ -748,16 +671,6 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
           <input type="text" class="form-control" placeholder="Nomor Surat Panggilan II" name="no_sp2_saksi[]" value="${saksi.no_sp2 || ''}">
           <span class="input-group-text">/PPNS/</span>
           <input type="date" class="form-control" placeholder="Tanggal Surat Panggilan II" name="tgl_sp2_saksi[]" value="${saksi.tgl_sp2 || ''}">
-        </div>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-md-12">
-        <div class="input-group">
-          <span class="input-group-text">NO : SPM-</span>
-          <input type="text" class="form-control" placeholder="Nomor Surat Perintah Membawa" name="no_spm_saksi[]" value="${saksi.no_spm || ''}">
-          <span class="input-group-text">/PPNS/</span>
-          <input type="date" class="form-control" placeholder="Tanggal Surat Perintah Membawa" name="tgl_spm_saksi[]" value="${saksi.tgl_spm || ''}">
         </div>
       </div>
     </div>
@@ -823,6 +736,29 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
           placeholder="Diisi hari, beserta tanggal Saksi / Tersangka menghadap" value="${saksi.tgl_panggilan_2 || ''}">
       </div>
     </div>
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <div class="input-group">
+          <span class="input-group-text">NO : SPM-</span>
+          <input type="text" class="form-control" placeholder="Nomor Surat Perintah Membawa" name="no_spm_saksi[]" value="${saksi.no_spm || ''}">
+          <span class="input-group-text">/PPNS/</span>
+          <input type="date" class="form-control" placeholder="Tanggal Surat Perintah Membawa" name="tgl_spm_saksi[]" value="${saksi.tgl_spm || ''}">
+        </div>
+      </div>
+    </div>
+<div class="row mb-3">
+<div class="col-md-12">
+<div class="input-group flex-column">
+<span class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">D I P E R I N T A H K A N</span>
+    <select class="form-select select2 w-100" id="${uniqueId}" name="pejabat_saksi_spm[${index}][]" multiple>
+      <option value="" disabled>- Pilih Pejabat -</option>
+      @foreach ($users as $user)
+        <option value="{{ $user->id_admin }}" ${saksi.pejabat_spm && saksi.pejabat_spm.includes('{{ $user->id_admin }}') ? 'selected' : ''}>{{ $user->name }}</option>
+      @endforeach
+    </select>
+    </div>
+  </div>
+  </div>
    <button type="button" class="btn btn-danger remove-btn my-2" style='display:none;'>
     <i data-feather="trash-2"></i> Hapus
     </button>
@@ -851,7 +787,7 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
 
      // Pastikan template entry ada
      if (!originalEntry) {
-       console.error(`Elemen .entry-${formType} tidak ditemukan!`);
+       // console.error(`Elemen .entry-${formType} tidak ditemukan!`);
        return null;
      }
 
@@ -892,7 +828,7 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
          updateRemoveButtonVisibility(formType);
        });
      } else {
-       console.warn("Remove button tidak ditemukan dalam newEntry!");
+       // console.warn("Remove button tidak ditemukan dalam newEntry!");
      }
 
      return newEntry;
@@ -916,45 +852,47 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
    // Add a new entry to the form
    function addEntry(formType) {
     let formContainer = document.getElementById(`dynamic-form-${formType}`);
+     let currentEntries = formContainer.querySelectorAll(`.entry-${formType}`);
+    let newIndex = currentEntries.length;
     
-    // Buat entri baru berdasarkan tipe form
+    // Buat entri baru
     let newEntry;
     if (formType === "saksi") {
-        // Gunakan generateSaksiEntryHTML untuk membuat entri baru
-        newEntry = generateSaksiEntryHTML();
+        newEntry = generateSaksiEntryHTML({}, false, newIndex);
     } else if (formType === "tersangka") {
-        // Implementasikan fungsi serupa untuk tersangka jika diperlukan
-        newEntry = generateTersangkaEntryHTML();
+        newEntry = generateTersangkaEntryHTML({}, false, newIndex);
     }
     
-    // Tambahkan entri baru ke container
     if (newEntry) {
+        // Hapus semua instance Select2 yang ada
+        $(formContainer).find('.select2-hidden-accessible').select2('destroy');
+        
+        // Tambahkan entri baru
         formContainer.appendChild(newEntry);
         
-        // Tambahkan event listener untuk tombol hapus
+        // Event listener untuk tombol hapus
         let removeBtn = newEntry.querySelector('.remove-btn');
         if (removeBtn) {
             removeBtn.addEventListener('click', function() {
                 newEntry.remove();
                 updateRemoveButtonVisibility(formType);
+                // Reinisialisasi select2 setelah menghapus entri
+                initializeSelect2ForContainer(formContainer);
             });
         }
         
-        // Inisialisasi Select2 dan Flatpickr pada entri baru
-        $(newEntry).find('.select2').each(function() {
-            if (!$(this).hasClass('select2-hidden-accessible')) {
-                $(this).select2();
-            }
-        });
+        // Inisialisasi semua Select2 dalam container
+        initializeSelect2ForContainer(formContainer);
+
+        let uniqueId = "pejabat_saksi_spm_" + new Date().getTime() + "_" + Math.random().toString(36).substring(2, 8);
+
         
-        // Inisialisasi Flatpickr pada input tanggal baru
+        // Inisialisasi Flatpickr
         newEntry.querySelectorAll('input[name^="tgl_panggilan_"]:not(.flatpickr-initialized)').forEach(function(input, index) {
             input.classList.add("flatpickr-initialized");
-            
             if (!input.id || input.id === "datetime-datepicker") {
                 input.id = "datetime-datepicker-" + new Date().getTime() + "-" + index;
             }
-            
             flatpickr("#" + input.id, {
                 dateFormat: "Y-m-d H:i",
                 enableTime: true,
@@ -963,14 +901,19 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
             });
         });
         
-        // Perbarui ikon Feather
         if (typeof feather !== 'undefined') {
             feather.replace();
         }
         
-        // Perbarui status tombol hapus
         updateRemoveButtonVisibility(formType);
     }
+}
+
+// Fungsi bantuan untuk inisialisasi semua Select2 dalam container
+function initializeSelect2ForContainer(container) {
+    $(container).find('.select2:not(.select2-hidden-accessible)').each(function() {
+        $(this).select2();
+    });
 }
 
    // Remove the last entry from the form
@@ -1003,10 +946,9 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
 
 
  <script>
-
-let data_tersangka = <?php echo json_encode($tersangkaData, JSON_PRETTY_PRINT); ?>;
-console.log("Data tersangka dari PHP:", data_tersangka);
-console.log("Jumlah tersangka:", data_tersangka ? data_tersangka.length : 0);
+     let data_tersangka = <?php echo json_encode($tersangkaData, JSON_PRETTY_PRINT); ?>;
+// console.log("Data tersangka dari PHP:", data_tersangka);
+// console.log("Jumlah tersangka:", data_tersangka ? data_tersangka.length : 0);
 
 
 function initializeFormDataTersangka() {
@@ -1015,8 +957,8 @@ function initializeFormDataTersangka() {
     container.innerHTML = ""; // Kosongkan sebelum mengisi ulang
 
     data_tersangka.forEach((tersangka, index) => {
-      console.log("Memproses tersangka:", tersangka);
-      let newEntry = generateTersangkaEntryHTML(tersangka, index === 0);
+      // console.log("Memproses tersangka:", tersangka);
+      let newEntry = generateTersangkaEntryHTML(tersangka, index === 0, index);
       container.appendChild(newEntry);
     });
 
@@ -1027,10 +969,12 @@ function initializeFormDataTersangka() {
 }
 
 
-function generateTersangkaEntryHTML(tersangka = {}, isFirst = false) {
+function generateTersangkaEntryHTML(tersangka = {}, isFirst = false, index = 0) {
   // Buat wrapper div
   let entryDiv = document.createElement('div');
   entryDiv.className = 'entry-tersangka text-black';
+
+  let uniqueeId = "pejabat_tersangka_spm_" + new Date().getTime() + "_" + Math.random().toString(36).substring(2, 8);
 
   entryDiv.innerHTML = `
     <hr>
@@ -1122,16 +1066,6 @@ function generateTersangkaEntryHTML(tersangka = {}, isFirst = false) {
       </div>
     </div>
     <div class="row mb-3">
-      <div class="col-md-12">
-        <div class="input-group">
-          <span class="input-group-text">NO : SPM-</span>
-          <input type="text" class="form-control" placeholder="Nomor Surat Perintah Membawa" name="no_spm_tersangka[]" value="${tersangka.no_spm || ''}">
-          <span class="input-group-text">/PPNS/</span>
-          <input type="date" class="form-control" placeholder="Tanggal Surat Perintah Membawa" name="tgl_spm_tersangka[]" value="${tersangka.tgl_spm || ''}">
-        </div>
-      </div>
-    </div>
-    <div class="row mb-3">
       <div class="col-md-4 text-black d-flex align-items-center">SP I Menghadap Kepada</div>
       <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
       <div class="col-md-7">
@@ -1193,6 +1127,29 @@ function generateTersangkaEntryHTML(tersangka = {}, isFirst = false) {
           placeholder="Diisi hari, beserta tanggal Saksi / Tersangka menghadap" value="${tersangka.tgl_panggilan_2 || ''}">
       </div>
     </div>
+     <div class="row mb-3">
+      <div class="col-md-12">
+        <div class="input-group">
+          <span class="input-group-text">NO : SPM-</span>
+          <input type="text" class="form-control" placeholder="Nomor Surat Perintah Membawa" name="no_spm_tersangka[]" value="${tersangka.no_spm || ''}">
+          <span class="input-group-text">/PPNS/</span>
+          <input type="date" class="form-control" placeholder="Tanggal Surat Perintah Membawa" name="tgl_spm_tersangka[]" value="${tersangka.tgl_spm || ''}">
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+    <div class="col-md-12">
+    <div class="input-group flex-column">
+    <span class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">D I P E R I N T A H K A N</span>
+    <select class="form-select select2 w-100" id="${uniqueeId}" name="pejabat_tersangka_spm[${index}][]" multiple>
+      <option value="" disabled>- Pilih Pejabat -</option>
+      @foreach ($users as $user)
+        <option value="{{ $user->id_admin }}" ${tersangka.pejabat_spm && tersangka.pejabat_spm.includes('{{ $user->id_admin }}') ? 'selected' : ''}>{{ $user->name }}</option>
+      @endforeach
+    </select>
+    </div>
+  </div>
+  </div>
     <button type="button" class="btn btn-danger remove-btn my-2" style='display:none;'>
       <i data-feather="trash-2"></i> Hapus
     </button>
@@ -1210,62 +1167,223 @@ function generateTersangkaEntryHTML(tersangka = {}, isFirst = false) {
   return entryDiv;
 }
 
-// Modifikasi fungsi yang ada untuk memasukkan panggilan ke initializeFormDataTersangka
 document.addEventListener("DOMContentLoaded", function() {
-  // Panggil fungsi inisialisasi data tersangka setelah DOM selesai dimuat
   initializeFormDataTersangka();
 });
 
-// Implementasi fungsi addEntry yang dimodifikasi untuk tersangka
+  function salinDataSaksiKeTersangka() {
+  // Mengambil data saksi berdasarkan ID input yang spesifik
+  const namaSaksi = document.getElementById('nama_tersangka_utama').value;
+  const ttlSaksi = document.getElementById('ttl_tersangka_utama').value;
+  const agamaSaksi = document.getElementById('agama_tersangka_utama').value;
+  
+  // Data tersembunyi yang perlu ditampilkan sementara
+  const dataLengkap = document.getElementById('data-lengkap');
+  const displayState = dataLengkap.style.display;
+  dataLengkap.style.display = "block"; // Tampilkan untuk mengambil nilai
+  
+  const jkSaksi = document.getElementById('jk_tersangka_utama').value;
+  const kewarganegaraanSaksi = document.getElementById('kewarganegaraan_tersangka_utama').value;
+  const pekerjaanSaksi = document.getElementById('pekerjaan_tersangka_utama').value;
+  const alamatSaksi = document.getElementById('alamat_tersangka_utama').value;
+  
+  // Ambil jenis dan nomor identitas saksi
+  const jenisIdentitas = document.getElementById('jenis_iden_tersangka_utama').value;
+  const nomorIdentitas = document.getElementById('no_iden_tersangka_utama').value;
+  
+  const pendidikanSaksi = document.getElementById('pendidikan_tersangka_utama').value;
+  
+  // Kembalikan display ke keadaan semula
+  dataLengkap.style.display = displayState;
+  
+  // Cek apakah form tersangka sudah ada
+  let container = document.getElementById("dynamic-form-tersangka");
+  // Tambahkan pengecekan apakah container ada
+  if (!container) {
+    // console.error("Container dynamic-form-tersangka tidak ditemukan");
+    return;
+  }
+  
+  let entries = container.querySelectorAll('.entry-tersangka');
+  
+  // Jika belum ada tersangka, tambahkan entri baru
+  if (entries.length === 0) {
+    // Pastikan fungsi addEntryTersangka tersedia
+    if (typeof addEntryTersangka === "function") {
+      addEntryTersangka();
+      entries = container.querySelectorAll('.entry-tersangka');
+    } else {
+      // console.error("Fungsi addEntryTersangka tidak ditemukan");
+      return;
+    }
+  }
+  
+  // Cek lagi apakah entries sudah ada
+  if (entries.length === 0) {
+    // console.error("Tidak dapat menambahkan entry tersangka");
+    return;
+  }
+  
+  // Ambil entri pertama untuk diisi
+  const targetEntry = entries[0];
+  
+  // Fungsi helper untuk mengisi input dengan pengecekan
+  function setInputValue(selector, value) {
+    const element = targetEntry.querySelector(selector);
+    if (element) {
+      element.value = value;
+    } else {
+      // console.warn(`Element dengan selector ${selector} tidak ditemukan`);
+    }
+  }
+  
+  // Isi form tersangka dengan data saksi
+  setInputValue('input[name="tersangka_nama[]"]', namaSaksi);
+  setInputValue('input[name="tersangka_ttl[]"]', ttlSaksi);
+  setInputValue('input[name="tersangka_agama[]"]', agamaSaksi);
+  setInputValue('input[name="tersangka_pekerjaan[]"]', pekerjaanSaksi);
+  setInputValue('input[name="tersangka_alamat[]"]', alamatSaksi);
+  setInputValue('input[name="tersangka_jenis_identitas[]"]', jenisIdentitas);
+  setInputValue('input[name="tersangka_nomor_identitas[]"]', nomorIdentitas);
+  setInputValue('input[name="tersangka_pendidikan[]"]', pendidikanSaksi);
+  
+  // Jenis kelamin (select)
+  const selectJK = targetEntry.querySelector('select[name="tersangka_kelamin[]"]');
+  if (selectJK) {
+    for (let option of selectJK.options) {
+      if (option.value === jkSaksi) {
+        option.selected = true;
+        break;
+      }
+    }
+    
+    // Update select2 jika menggunakan select2
+    if (window.jQuery && jQuery.fn.select2) {
+      jQuery(selectJK).trigger('change');
+    }
+  } else {
+    // console.warn("Select jenis kelamin tidak ditemukan");
+  }
+  
+  const selectKewarganegaraan = targetEntry.querySelector('select[name="tersangka_kewarganegaraan[]"]');
+  if (selectKewarganegaraan) {
+    // Cari option yang sesuai dengan nilai
+    for (let option of selectKewarganegaraan.options) {
+      if (option.value === kewarganegaraanSaksi || option.textContent.includes(kewarganegaraanSaksi)) {
+        option.selected = true;
+        break;
+      }
+    }
+    
+    // Update select2 jika menggunakan select2
+    if (window.jQuery && jQuery.fn.select2) {
+      jQuery(selectKewarganegaraan).trigger('change');
+    }
+  } else {
+    // console.warn("Select kewarganegaraan tidak ditemukan");
+  }
+  
+  // console.log("Data saksi berhasil disalin ke form tersangka");
+}
+
+// Perbarui fungsi addEntryTersangka untuk memperbaiki kesalahan variabel formType
 function addEntryTersangka() {
   let formContainer = document.getElementById("dynamic-form-tersangka");
+  // Perbaiki bagian ini, hapus variabel formType yang tidak didefinisikan
+  let currentEntries = formContainer.querySelectorAll('.entry-tersangka');
+  let newIndex = currentEntries.length;
+  
+  // Simpan referensi semua instance Select2 yang sudah ada beserta nilainya
+  let existingSelect2 = [];
+  if (window.jQuery) {
+    $(formContainer).find('.select2-hidden-accessible').each(function() {
+      let element = this;
+      let value = $(this).val();
+      existingSelect2.push({
+        element: element,
+        value: value
+      });
+    });
+  }
+  
+  // Buat entri baru
   let newEntry = generateTersangkaEntryHTML();
   
+  // Tambahkan entri baru ke container
   formContainer.appendChild(newEntry);
   
-  // Initialize Select2 and Flatpickr on the new entry
-  $(newEntry).find('.select2').each(function() {
-    if (!$(this).hasClass('select2-hidden-accessible')) {
-      $(this).select2();
-    }
-  });
-  
-  newEntry.querySelectorAll('input[name^="tgl_panggilan_"]:not(.flatpickr-initialized)').forEach(function(input, index) {
-    input.classList.add("flatpickr-initialized");
-    
-    if (!input.id || input.id === "datetime-datepicker") {
-      input.id = "datetime-datepicker-" + new Date().getTime() + "-" + index;
-    }
-    
-    flatpickr("#" + input.id, {
-      dateFormat: "Y-m-d H:i",
-      enableTime: true,
-      time_24hr: true,
-      locale: "id"
+  // Inisialisasi ulang semua Select2 yang sudah ada
+  if (window.jQuery) {
+    existingSelect2.forEach(item => {
+      // Pastikan element masih ada di DOM
+      if (document.body.contains(item.element)) {
+        // Hancurkan dan buat ulang instance Select2
+        $(item.element).select2('destroy').select2();
+        // Kembalikan nilainya
+        $(item.element).val(item.value).trigger('change');
+      }
     });
-  });
+    
+    // Inisialisasi Select2 hanya pada elemen di entri baru
+    $(newEntry).find('.select2').each(function() {
+      if (!$(this).hasClass('select2-hidden-accessible')) {
+        $(this).select2();
+      }
+    });
+  }
   
+  // Inisialisasi Flatpickr pada input tanggal baru
+  if (window.flatpickr) {
+    newEntry.querySelectorAll('input[name^="tgl_panggilan_"]:not(.flatpickr-initialized)').forEach(function(input, index) {
+      input.classList.add("flatpickr-initialized");
+      
+      if (!input.id || input.id === "datetime-datepicker") {
+        input.id = "datetime-datepicker-" + new Date().getTime() + "-" + index;
+      }
+      
+      flatpickr("#" + input.id, {
+        dateFormat: "Y-m-d H:i",
+        enableTime: true,
+        time_24hr: true,
+        locale: "id"
+      });
+    });
+  }
+  
+  // Tambahkan event listener untuk tombol hapus
+  let removeBtn = newEntry.querySelector('.remove-btn');
+  if (removeBtn) {
+    removeBtn.addEventListener('click', function() {
+      newEntry.remove();
+      updateRemoveButtonVisibility("tersangka");
+    });
+  }
+  
+  // Perbarui ikon Feather
   if (typeof feather !== 'undefined') {
     feather.replace();
   }
   
   updateRemoveButtonVisibility("tersangka");
 }
+
+// Modifikasi fungsi yang sudah ada
+document.addEventListener("DOMContentLoaded", function() {
+  // Pertama inisialisasi form tersangka
+  initializeFormDataTersangka();
+  
+  // Kemudian coba jalankan penyalinan data
+  // Beri waktu sedikit untuk memastikan semua elemen sudah siap
+  setTimeout(function() {
+    try {
+      salinDataSaksiKeTersangka();
+    } catch (error) {
+      // console.error("Gagal menyalin data saksi:", error);
+    }
+  }, 1000); // Tambah delay untuk memastikan semua elemen sudah dirender
+});
+
  </script>
 
 
- <!-- JavaScript -->
- <script>
-     document.getElementById('toggleButton').addEventListener('click', function() {
-         event.preventDefault(); // Mencegah aksi default
-         var dataLengkap = document.getElementById('data-lengkap');
-         if (dataLengkap.style.display === 'none') {
-             dataLengkap.style.display = 'block';
-             this.textContent = 'Lihat Lebih Sedikit';
-         } else {
-             dataLengkap.style.display = 'none';
-             this.textContent = 'Lihat Selengkapnya';
-         }
-     });
-
- </script>
+ 

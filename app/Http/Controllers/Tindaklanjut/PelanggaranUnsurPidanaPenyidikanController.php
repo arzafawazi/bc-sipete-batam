@@ -113,138 +113,226 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         ));
     }
 
+
+
     public function store(Request $request)
     {
-        // dd($request->all());
-        // Validasi request
-        $request->validate([
-            'no_sp1_saksi.*' => 'nullable|string',
-            'tgl_sp1_saksi.*' => 'nullable|date',
-            'saksi_nama.*' => 'nullable|string',
-            'saksi_ttl.*' => 'nullable|string',
-            'saksi_kelamin.*' => 'nullable|string',
-            'saksi_kewarganegaraan.*' => 'nullable|string',
-            'saksi_agama.*' => 'nullable|string',
-            'saksi_pekerjaan.*' => 'nullable|string',
-            'saksi_alamat.*' => 'nullable|string',
-            'no_sp2_saksi.*' => 'nullable|string',
-            'tgl_sp2_saksi.*' => 'nullable|string',
-            'no_spm_saksi.*' => 'nullable|string',
-            'tgl_spm_saksi.*' => 'nullable|string',
-            'pejabat_saksi_sp1.*' => 'nullable|string',
-            'pejabat_saksi_sp2.*' => 'nullable|string',
-            'status_surat_panggilan_1_saksi.*' => 'nullable|string',
-            'status_surat_panggilan_2_saksi.*' => 'nullable|string',
-            'tgl_panggilan_1_saksi.*' => 'nullable|string',
-            'tgl_panggilan_2_saksi.*' => 'nullable|string',
+        try {
+            DB::beginTransaction(); // Mulai transaksi database
 
-            'no_sp1_tersangka.*' => 'nullable|string',
-            'tgl_sp1_tersangka.*' => 'nullable|date',
-            'tersangka_nama.*' => 'nullable|string',
-            'tersangka_ttl.*' => 'nullable|string',
-            'tersangka_agama.*' => 'nullable|string',
-            'tersangka_kelamin.*' => 'nullable|string',
-            'tersangka_kewarganegaraan.*' => 'nullable|string',
-            'tersangka_pekerjaan.*' => 'nullable|string',
-            'tersangka_alamat.*' => 'nullable|string',
-            'tersangka_jenis_identitas.*' => 'nullable|string',
-            'tersangka_nomor_identitas.*' => 'nullable|string',
-            'tersangka_pendidikan.*' => 'nullable|string',
-            'no_sp2_tersangka.*' => 'nullable|string',
-            'tgl_sp2_tersangka.*' => 'nullable|string',
-            'no_spm_tersangka.*' => 'nullable|string',
-            'tgl_spm_tersangka.*' => 'nullable|string',
-            'pejabat_tersangka_sp1.*' => 'nullable|string',
-            'pejabat_tersangka_sp2.*' => 'nullable|string',
-            'status_surat_panggilan_1_tersangka.*' => 'nullable|string',
-            'status_surat_panggilan_2_tersangka.*' => 'nullable|string',
-            'tgl_panggilan_1_tersangka.*' => 'nullable|string',
-            'tgl_panggilan_2_tersangka.*' => 'nullable|string',
-        ]);
 
-        // Proses data saksi menjadi array
-        $dataSaksi = [];
-        if ($request->has('saksi_nama')) {
-            foreach ($request->saksi_nama as $key => $nama) {
-                $dataSaksi[] = [
-                    'no_sp1' => $request->no_sp1_saksi[$key] ?? null,
-                    'tgl_sp1' => $request->tgl_sp1_saksi[$key] ?? null,
-                    'nama' => $nama,
-                    'ttl' => $request->saksi_ttl[$key] ?? null,
-                    'jenis_kelamin' => $request->saksi_kelamin[$key] ?? null,
-                    'kewarganegaraan' => $request->saksi_kewarganegaraan[$key] ?? null,
-                    'agama' => $request->saksi_agama[$key] ?? null,
-                    'pekerjaan' => $request->saksi_pekerjaan[$key] ?? null,
-                    'alamat' => $request->saksi_alamat[$key] ?? null,
-                    'no_sp2' => $request->no_sp2_saksi[$key] ?? null,
-                    'tgl_sp2' => $request->tgl_sp2_saksi[$key] ?? null,
-                    'no_spm' => $request->no_spm_saksi[$key] ?? null,
-                    'tgl_spm' => $request->tgl_spm_saksi[$key] ?? null,
-                    'pejabat_sp1' => $request->pejabat_saksi_sp1[$key] ?? null,
-                    'pejabat_sp2' => $request->pejabat_saksi_sp2[$key] ?? null,
-                    'status_panggilan_1' => $request->status_surat_panggilan_1_saksi[$key] ?? null,
-                    'status_panggilan_2' => $request->status_surat_panggilan_2_saksi[$key] ?? null,
-                    'tgl_panggilan_1' => $request->tgl_panggilan_1_saksi[$key] ?? null,
-                    'tgl_panggilan_2' => $request->tgl_panggilan_2_saksi[$key] ?? null,
-                ];
+            $requestData = $request->all();
+
+
+            // Validasi request
+            $request->validate([
+                'no_sp1_saksi.*' => 'nullable|string',
+                'tgl_sp1_saksi.*' => 'nullable|date',
+                'saksi_nama.*' => 'nullable|string',
+                'saksi_ttl.*' => 'nullable|string',
+                'saksi_kelamin.*' => 'nullable|string',
+                'saksi_kewarganegaraan.*' => 'nullable|string',
+                'saksi_agama.*' => 'nullable|string',
+                'saksi_pekerjaan.*' => 'nullable|string',
+                'saksi_alamat.*' => 'nullable|string',
+                'no_sp2_saksi.*' => 'nullable|string',
+                'tgl_sp2_saksi.*' => 'nullable|string',
+                'pejabat_saksi_sp1.*' => 'nullable|string',
+                'pejabat_saksi_sp2.*' => 'nullable|string',
+                'status_surat_panggilan_1_saksi.*' => 'nullable|string',
+                'status_surat_panggilan_2_saksi.*' => 'nullable|string',
+                'tgl_panggilan_1_saksi.*' => 'nullable|string',
+                'tgl_panggilan_2_saksi.*' => 'nullable|string',
+                'no_spm_saksi.*' => 'nullable|string',
+                'tgl_spm_saksi.*' => 'nullable|string',
+                'pejabat_saksi_spm.*' => 'nullable',
+
+                'no_sp1_tersangka.*' => 'nullable|string',
+                'tgl_sp1_tersangka.*' => 'nullable|date',
+                'tersangka_nama.*' => 'nullable|string',
+                'tersangka_ttl.*' => 'nullable|string',
+                'tersangka_agama.*' => 'nullable|string',
+                'tersangka_kelamin.*' => 'nullable|string',
+                'tersangka_kewarganegaraan.*' => 'nullable|string',
+                'tersangka_pekerjaan.*' => 'nullable|string',
+                'tersangka_alamat.*' => 'nullable|string',
+                'tersangka_jenis_identitas.*' => 'nullable|string',
+                'tersangka_nomor_identitas.*' => 'nullable|string',
+                'tersangka_pendidikan.*' => 'nullable|string',
+                'no_sp2_tersangka.*' => 'nullable|string',
+                'tgl_sp2_tersangka.*' => 'nullable|string',
+                'pejabat_tersangka_sp1.*' => 'nullable|string',
+                'pejabat_tersangka_sp2.*' => 'nullable|string',
+                'status_surat_panggilan_1_tersangka.*' => 'nullable|string',
+                'status_surat_panggilan_2_tersangka.*' => 'nullable|string',
+                'tgl_panggilan_1_tersangka.*' => 'nullable|string',
+                'tgl_panggilan_2_tersangka.*' => 'nullable|string',
+                'no_spm_tersangka.*' => 'nullable|string',
+                'tgl_spm_tersangka.*' => 'nullable|string',
+                'pejabat_tersangka_spm.*' => 'nullable',
+            ]);
+
+            // dd($request->all());
+
+            // Proses data saksi
+            $dataSaksi = [];
+            if ($request->has('saksi_nama')) {
+                foreach ($request->saksi_nama as $key => $nama) {
+
+                    $pejabatSpm = $request->pejabat_saksi_spm[$key] ?? null;
+                    if ($pejabatSpm !== null && !is_array($pejabatSpm)) {
+                        $pejabatSpm = [$pejabatSpm];
+                    }
+
+                    $dataSaksi[] = [
+                        'no_sp1' => $request->no_sp1_saksi[$key] ?? null,
+                        'tgl_sp1' => $request->tgl_sp1_saksi[$key] ?? null,
+                        'nama' => $nama,
+                        'ttl' => $request->saksi_ttl[$key] ?? null,
+                        'jenis_kelamin' => $request->saksi_kelamin[$key] ?? null,
+                        'kewarganegaraan' => $request->saksi_kewarganegaraan[$key] ?? null,
+                        'agama' => $request->saksi_agama[$key] ?? null,
+                        'pekerjaan' => $request->saksi_pekerjaan[$key] ?? null,
+                        'alamat' => $request->saksi_alamat[$key] ?? null,
+                        'no_sp2' => $request->no_sp2_saksi[$key] ?? null,
+                        'tgl_sp2' => $request->tgl_sp2_saksi[$key] ?? null,
+                        'pejabat_sp1' => $request->pejabat_saksi_sp1[$key] ?? null,
+                        'pejabat_sp2' => $request->pejabat_saksi_sp2[$key] ?? null,
+                        'status_panggilan_1' => $request->status_surat_panggilan_1_saksi[$key] ?? null,
+                        'status_panggilan_2' => $request->status_surat_panggilan_2_saksi[$key] ?? null,
+                        'tgl_panggilan_1' => $request->tgl_panggilan_1_saksi[$key] ?? null,
+                        'tgl_panggilan_2' => $request->tgl_panggilan_2_saksi[$key] ?? null,
+                        'no_spm' => $request->no_spm_saksi[$key] ?? null,
+                        'tgl_spm' => $request->tgl_spm_saksi[$key] ?? null,
+                        'pejabat_spm' => $pejabatSpm ? json_encode($pejabatSpm) : null,
+                    ];
+                }
             }
-        }
 
-        // Proses data tersangka menjadi array
-        $dataTersangka = [];
-        if ($request->has('tersangka_nama')) {
-            foreach ($request->tersangka_nama as $key => $nama) {
-                $dataTersangka[] = [
-                    'no_sp1' => $request->no_sp1_tersangka[$key] ?? null,
-                    'tgl_sp1' => $request->tgl_sp1_tersangka[$key] ?? null,
-                    'nama' => $nama,
-                    'ttl' => $request->tersangka_ttl[$key] ?? null,
-                    'agama' => $request->tersangka_agama[$key] ?? null,
-                    'jenis_kelamin' => $request->tersangka_kelamin[$key] ?? null,
-                    'kewarganegaraan' => $request->tersangka_kewarganegaraan[$key] ?? null,
-                    'pekerjaan' => $request->tersangka_pekerjaan[$key] ?? null,
-                    'alamat' => $request->tersangka_alamat[$key] ?? null,
-                    'jenis_identitas' => $request->tersangka_jenis_identitas[$key] ?? null,
-                    'nomor_identitas' => $request->tersangka_nomor_identitas[$key] ?? null,
-                    'pendidikan' => $request->tersangka_pendidikan[$key] ?? null,
-                    'no_sp2' => $request->no_sp2_tersangka[$key] ?? null,
-                    'tgl_sp2' => $request->tgl_sp2_tersangka[$key] ?? null,
-                    'no_spm' => $request->no_spm_tersangka[$key] ?? null,
-                    'tgl_spm' => $request->tgl_spm_tersangka[$key] ?? null,
-                    'pejabat_sp1' => $request->pejabat_tersangka_sp1[$key] ?? null,
-                    'pejabat_sp2' => $request->pejabat_tersangka_sp2[$key] ?? null,
-                    'status_panggilan_1' => $request->status_surat_panggilan_1_tersangka[$key] ?? null,
-                    'status_panggilan_2' => $request->status_surat_panggilan_2_tersangka[$key] ?? null,
-                    'tgl_panggilan_1' => $request->tgl_panggilan_1_tersangka[$key] ?? null,
-                    'tgl_panggilan_2' => $request->tgl_panggilan_2_tersangka[$key] ?? null,
-                ];
+            // Proses data tersangka
+            $dataTersangka = [];
+            if ($request->has('tersangka_nama')) {
+                foreach ($request->tersangka_nama as $key => $nama) {
+
+                    $pejabatSpm = $request->pejabat_tersangka_spm[$key] ?? null;
+                    if ($pejabatSpm !== null && !is_array($pejabatSpm)) {
+                        $pejabatSpm = [$pejabatSpm];
+                    }
+
+                    $dataTersangka[] = [
+                        'no_sp1' => $request->no_sp1_tersangka[$key] ?? null,
+                        'tgl_sp1' => $request->tgl_sp1_tersangka[$key] ?? null,
+                        'nama' => $nama,
+                        'ttl' => $request->tersangka_ttl[$key] ?? null,
+                        'agama' => $request->tersangka_agama[$key] ?? null,
+                        'jenis_kelamin' => $request->tersangka_kelamin[$key] ?? null,
+                        'kewarganegaraan' => $request->tersangka_kewarganegaraan[$key] ?? null,
+                        'pekerjaan' => $request->tersangka_pekerjaan[$key] ?? null,
+                        'alamat' => $request->tersangka_alamat[$key] ?? null,
+                        'jenis_identitas' => $request->tersangka_jenis_identitas[$key] ?? null,
+                        'nomor_identitas' => $request->tersangka_nomor_identitas[$key] ?? null,
+                        'pendidikan' => $request->tersangka_pendidikan[$key] ?? null,
+                        'no_sp2' => $request->no_sp2_tersangka[$key] ?? null,
+                        'tgl_sp2' => $request->tgl_sp2_tersangka[$key] ?? null,
+                        'pejabat_sp1' => $request->pejabat_tersangka_sp1[$key] ?? null,
+                        'pejabat_sp2' => $request->pejabat_tersangka_sp2[$key] ?? null,
+                        'status_panggilan_1' => $request->status_surat_panggilan_1_tersangka[$key] ?? null,
+                        'status_panggilan_2' => $request->status_surat_panggilan_2_tersangka[$key] ?? null,
+                        'tgl_panggilan_1' => $request->tgl_panggilan_1_tersangka[$key] ?? null,
+                        'tgl_panggilan_2' => $request->tgl_panggilan_2_tersangka[$key] ?? null,
+                        'no_spm' => $request->no_spm_tersangka[$key] ?? null,
+                        'tgl_spm' => $request->tgl_spm_tersangka[$key] ?? null,
+                        'pejabat_spm' => $pejabatSpm ? json_encode($pejabatSpm) : null,
+                    ];
+                }
             }
+
+            $requestData = $request->except([
+                'no_sp1_saksi',
+                'tgl_sp1_saksi',
+                'saksi_nama',
+                'saksi_ttl',
+                'saksi_kelamin',
+                'saksi_kewarganegaraan',
+                'saksi_agama',
+                'saksi_pekerjaan',
+                'saksi_alamat',
+                'no_sp2_saksi',
+                'tgl_sp2_saksi',
+                'pejabat_saksi_sp1',
+                'pejabat_saksi_sp2',
+                'status_surat_panggilan_1_saksi',
+                'status_surat_panggilan_2_saksi',
+                'tgl_panggilan_1_saksi',
+                'tgl_panggilan_2_saksi',
+                'no_spm_saksi',
+                'tgl_spm_saksi',
+                'pejabat_saksi_spm',
+
+                'no_sp1_tersangka',
+                'tgl_sp1_tersangka',
+                'tersangka_nama',
+                'tersangka_ttl',
+                'tersangka_agama',
+                'tersangka_kelamin',
+                'tersangka_kewarganegaraan',
+                'tersangka_pekerjaan',
+                'tersangka_alamat',
+                'tersangka_jenis_identitas',
+                'tersangka_nomor_identitas',
+                'tersangka_pendidikan',
+                'no_sp2_tersangka',
+                'tgl_sp2_tersangka',
+                'pejabat_tersangka_sp1',
+                'pejabat_tersangka_sp2',
+                'status_surat_panggilan_1_tersangka',
+                'status_surat_panggilan_2_tersangka',
+                'tgl_panggilan_1_tersangka',
+                'tgl_panggilan_2_tersangka',
+                'no_spm_tersangka',
+                'tgl_spm_tersangka',
+                'pejabat_tersangka_spm',
+            ]);
+
+
+            // Tambahkan data saksi dan tersangka dalam bentuk JSON
+            $requestData['data_saksi'] = json_encode($dataSaksi);
+            $requestData['data_tersangka'] = json_encode($dataTersangka);
+
+            // dd($requestData);
+            // dd($requestData);
+
+            // Simpan ke database
+            $unsurpenyidikan = TblPelanggaranUnsurPidanaPenyidikan::create($requestData);
+
+            // Update nomor referensi
+            $no_ref = TblNoRef::first();
+            $no_ref->no_lk += 1;
+            $no_ref->no_sptp += 1;
+            $no_ref->no_pdp += 1;
+            $no_ref->save();
+
+            DB::commit(); // Simpan transaksi
+
+            return redirect()->route('unsur-pidana-penyidikan.edit', $unsurpenyidikan->id)
+                ->with('success', 'Data berhasil disimpan, silakan lanjutkan edit.');
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback jika ada error
+
+            // Log detail error
+            Log::error("Error saat menyimpan data: " . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            // Redirect dengan pesan error
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi atau hubungi admin.');
         }
-
-        // Ambil semua input dari form kecuali field yang sudah diproses sebelumnya
-        $requestData = $request->except(array_keys($request->all()));
-
-        // Tambahkan data saksi dan tersangka dalam bentuk JSON
-        $requestData['data_saksi'] = json_encode($dataSaksi);
-        $requestData['data_tersangka'] = json_encode($dataTersangka);
-
-
-
-        // dd($requestData);
-
-        // Simpan ke database
-        TblPelanggaranUnsurPidanaPenyidikan::create($requestData);
-
-        // Update nomor referensi
-        $no_ref = TblNoRef::first();
-        $no_ref->no_lk += 1;
-        $no_ref->no_sptp += 1;
-        $no_ref->no_pdp += 1;
-        $no_ref->save();
-
-        return redirect()->route('unsur-pidana-penyidikan.index')
-            ->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
     }
+
 
 
 
@@ -268,9 +356,13 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $nama_negara = TblNegara::all()->groupBy('benua');
         $no_ref = TblNoRef::first();
 
-        // Decode JSON data saksi
+        
         $saksiData = json_decode($unsurpenyidikan->data_saksi ?? '[]', true);
         $tersangkaData = json_decode($unsurpenyidikan->data_tersangka ?? '[]', true);
+
+        $berkasBawBapSaksi = json_decode($unsurpenyidikan->berkas_baw_bap_saksi ?? '[]', true);
+        $berkasBawBapTersangka = json_decode($unsurpenyidikan->berkas_baw_bap_tersangka ?? '[]', true);
+
 
 
         return view('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.edit', compact(
@@ -283,24 +375,326 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'sbpData',
             'laporanInformasi',
             'saksiData', // Kirim data saksi ke view
-            'tersangkaData' // Kirim data saksi ke view
+            'tersangkaData', // Kirim data saksi ke view
+            'berkasBawBapSaksi',
+            'berkasBawBapTersangka'
         ));
     }
 
 
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        $data = request()->all();
+    try {
+        DB::beginTransaction();
 
+        $request->validate([
+            'no_sp1_saksi.*' => 'nullable|string',
+            'tgl_sp1_saksi.*' => 'nullable|date',
+            'saksi_nama.*' => 'nullable|string',
+            'saksi_ttl.*' => 'nullable|string',
+            'saksi_kelamin.*' => 'nullable|string',
+            'saksi_kewarganegaraan.*' => 'nullable|string',
+            'saksi_agama.*' => 'nullable|string',
+            'saksi_pekerjaan.*' => 'nullable|string',
+            'saksi_alamat.*' => 'nullable|string',
+            'no_sp2_saksi.*' => 'nullable|string',
+            'tgl_sp2_saksi.*' => 'nullable|string',
+            'pejabat_saksi_sp1.*' => 'nullable|string',
+            'pejabat_saksi_sp2.*' => 'nullable|string',
+            'status_surat_panggilan_1_saksi.*' => 'nullable|string',
+            'status_surat_panggilan_2_saksi.*' => 'nullable|string',
+            'tgl_panggilan_1_saksi.*' => 'nullable|string',
+            'tgl_panggilan_2_saksi.*' => 'nullable|string',
+            'no_spm_saksi.*' => 'nullable|string',
+            'tgl_spm_saksi.*' => 'nullable|string',
+            'pejabat_saksi_spm.*' => 'nullable|array',
+            'baw_bap_nama_saksi.*' => 'nullable|string',
+            'baw_saksi.*' => 'nullable|file|mimes:pdf,doc,docx',
+            'bap_saksi.*' => 'nullable|file|mimes:pdf,doc,docx',
+
+            'no_sp1_tersangka.*' => 'nullable|string',
+            'tgl_sp1_tersangka.*' => 'nullable|date',
+            'tersangka_nama.*' => 'nullable|string',
+            'tersangka_ttl.*' => 'nullable|string',
+            'tersangka_agama.*' => 'nullable|string',
+            'tersangka_kelamin.*' => 'nullable|string',
+            'tersangka_kewarganegaraan.*' => 'nullable|string',
+            'tersangka_pekerjaan.*' => 'nullable|string',
+            'tersangka_alamat.*' => 'nullable|string',
+            'tersangka_jenis_identitas.*' => 'nullable|string',
+            'tersangka_nomor_identitas.*' => 'nullable|string',
+            'tersangka_pendidikan.*' => 'nullable|string',
+            'no_sp2_tersangka.*' => 'nullable|string',
+            'tgl_sp2_tersangka.*' => 'nullable|string',
+            'pejabat_tersangka_sp1.*' => 'nullable|string',
+            'pejabat_tersangka_sp2.*' => 'nullable|string',
+            'status_surat_panggilan_1_tersangka.*' => 'nullable|string',
+            'status_surat_panggilan_2_tersangka.*' => 'nullable|string',
+            'tgl_panggilan_1_tersangka.*' => 'nullable|string',
+            'tgl_panggilan_2_tersangka.*' => 'nullable|string',
+            'no_spm_tersangka.*' => 'nullable|string',
+            'tgl_spm_tersangka.*' => 'nullable|string',
+            'pejabat_tersangka_spm.*' => 'nullable|array',
+            'baw_bap_nama_tersangka.*' => 'nullable|string',
+            'baw_tersangka.*' => 'nullable|file|mimes:pdf,doc,docx',
+            'bap_tersangka.*' => 'nullable|file|mimes:pdf,doc,docx',
+
+            'ahli_nama.*' => 'nullable|string',
+            'ahli_ttl.*' => 'nullable|string',
+            'ahli_kelamin.*' => 'nullable|string',
+            'ahli_agama.*' => 'nullable|string',
+            'ahli_pekerjaan.*' => 'nullable|string',
+            'ahli_alamat_domisili.*' => 'nullable|string',
+            'ahli_alamat_kantor.*' => 'nullable|string',
+        ]);
+
+        // Cari data yang akan diupdate
         $item = TblPelanggaranUnsurPidanaPenyidikan::find($id);
-        if ($item) {
-            $item->update($data);
-            return redirect()->route('unsur-pidana-penyidikan.index')->with('success', 'Data berhasil diperbarui.');
+        if (!$item) {
+            return redirect()->route('unsur-pidana-penyidikan.index')->with('error', 'Data tidak ditemukan.');
         }
 
-        return redirect()->route('unsur-pidana-penyidikan.index')->with('error', 'Data tidak ditemukan.');
+        // Proses data saksi
+        $dataSaksi = [];
+        if ($request->has('saksi_nama')) {
+            foreach ($request->saksi_nama as $key => $nama) {
+                $pejabatSpm = $request->input("pejabat_saksi_spm.$key", []);
+
+                $dataSaksi[] = [
+                    'no_sp1' => $request->no_sp1_saksi[$key] ?? null,
+                    'tgl_sp1' => $request->tgl_sp1_saksi[$key] ?? null,
+                    'nama' => $nama,
+                    'ttl' => $request->saksi_ttl[$key] ?? null,
+                    'jenis_kelamin' => $request->saksi_kelamin[$key] ?? null,
+                    'kewarganegaraan' => $request->saksi_kewarganegaraan[$key] ?? null,
+                    'agama' => $request->saksi_agama[$key] ?? null,
+                    'pekerjaan' => $request->saksi_pekerjaan[$key] ?? null,
+                    'alamat' => $request->saksi_alamat[$key] ?? null,
+                    'no_sp2' => $request->no_sp2_saksi[$key] ?? null,
+                    'tgl_sp2' => $request->tgl_sp2_saksi[$key] ?? null,
+                    'pejabat_sp1' => $request->pejabat_saksi_sp1[$key] ?? null,
+                    'pejabat_sp2' => $request->pejabat_saksi_sp2[$key] ?? null,
+                    'status_panggilan_1' => $request->status_surat_panggilan_1_saksi[$key] ?? null,
+                    'status_panggilan_2' => $request->status_surat_panggilan_2_saksi[$key] ?? null,
+                    'tgl_panggilan_1' => $request->tgl_panggilan_1_saksi[$key] ?? null,
+                    'tgl_panggilan_2' => $request->tgl_panggilan_2_saksi[$key] ?? null,
+                    'no_spm' => $request->no_spm_saksi[$key] ?? null,
+                    'tgl_spm' => $request->tgl_spm_saksi[$key] ?? null,
+                    'pejabat_spm' => !empty($pejabatSpm) ? json_encode($pejabatSpm) : null,
+                ];
+            }
+        }
+
+        // Proses data tersangka
+        $dataTersangka = [];
+        if ($request->has('tersangka_nama')) {
+            foreach ($request->tersangka_nama as $key => $nama) {
+                // Ambil data pejabat_spm jika ada dan pastikan dalam format array
+                $pejabatSpm = $request->input("pejabat_tersangka_spm.$key", []);
+
+                $dataTersangka[] = [
+                    'no_sp1' => $request->no_sp1_tersangka[$key] ?? null,
+                    'tgl_sp1' => $request->tgl_sp1_tersangka[$key] ?? null,
+                    'nama' => $nama,
+                    'ttl' => $request->tersangka_ttl[$key] ?? null,
+                    'agama' => $request->tersangka_agama[$key] ?? null,
+                    'jenis_kelamin' => $request->tersangka_kelamin[$key] ?? null,
+                    'kewarganegaraan' => $request->tersangka_kewarganegaraan[$key] ?? null,
+                    'pekerjaan' => $request->tersangka_pekerjaan[$key] ?? null,
+                    'alamat' => $request->tersangka_alamat[$key] ?? null,
+                    'jenis_identitas' => $request->tersangka_jenis_identitas[$key] ?? null,
+                    'nomor_identitas' => $request->tersangka_nomor_identitas[$key] ?? null,
+                    'pendidikan' => $request->tersangka_pendidikan[$key] ?? null,
+                    'no_sp2' => $request->no_sp2_tersangka[$key] ?? null,
+                    'tgl_sp2' => $request->tgl_sp2_tersangka[$key] ?? null,
+                    'pejabat_sp1' => $request->pejabat_tersangka_sp1[$key] ?? null,
+                    'pejabat_sp2' => $request->pejabat_tersangka_sp2[$key] ?? null,
+                    'status_panggilan_1' => $request->status_surat_panggilan_1_tersangka[$key] ?? null,
+                    'status_panggilan_2' => $request->status_surat_panggilan_2_tersangka[$key] ?? null,
+                    'tgl_panggilan_1' => $request->tgl_panggilan_1_tersangka[$key] ?? null,
+                    'tgl_panggilan_2' => $request->tgl_panggilan_2_tersangka[$key] ?? null,
+                    'no_spm' => $request->no_spm_tersangka[$key] ?? null,
+                    'tgl_spm' => $request->tgl_spm_tersangka[$key] ?? null,
+                    'pejabat_spm' => !empty($pejabatSpm) ? json_encode($pejabatSpm) : null,
+                ];
+            }
+        }
+
+        $dataAhli = [];
+if ($request->has('ahli_nama')) {
+    foreach ($request->ahli_nama as $key => $nama) {
+        $dataAhli[] = [
+            'nama' => $nama,
+            'ttl' => $request->ahli_ttl[$key] ?? null,
+            'jenis_kelamin' => $request->ahli_kelamin[$key] ?? null,
+            'agama' => $request->ahli_agama[$key] ?? null,
+            'pekerjaan' => $request->ahli_pekerjaan[$key] ?? null,
+            'alamat_domisili' => $request->ahli_alamat_domisili[$key] ?? null,
+            'alamat_kantor' => $request->ahli_alamat_kantor[$key] ?? null,
+        ];
     }
+}
+
+        // Proses data berkas BAW dan BAP saksi
+        $berkasBawBapSaksi = [];
+        if ($request->has('baw_bap_nama_saksi')) {
+            foreach ($request->baw_bap_nama_saksi as $key => $nama) {
+                $berkasBaw = null;
+                $berkasBap = null;
+                
+                // Upload berkas BAW saksi jika ada
+                if ($request->hasFile("baw_saksi.$key")) {
+                    $file = $request->file("baw_saksi.$key");
+                    $fileName = 'baw_saksi_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('berkas/saksi/baw', $fileName, 'public');
+                    $berkasBaw = $path;
+                }
+                
+                // Upload berkas BAP saksi jika ada
+                if ($request->hasFile("bap_saksi.$key")) {
+                    $file = $request->file("bap_saksi.$key");
+                    $fileName = 'bap_saksi_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('berkas/saksi/bap', $fileName, 'public');
+                    $berkasBap = $path;
+                }
+                
+                if ($nama || $berkasBaw || $berkasBap) {
+                    $berkasBawBapSaksi[] = [
+                        'nama' => $nama,
+                        'berkas_baw' => $berkasBaw,
+                        'berkas_bap' => $berkasBap,
+                        'tanggal_upload' => now()->format('Y-m-d H:i:s')
+                    ];
+                }
+            }
+        }
+        
+        // Proses data berkas BAW dan BAP tersangka
+        $berkasBawBapTersangka = [];
+        if ($request->has('baw_bap_nama_tersangka')) {
+            foreach ($request->baw_bap_nama_tersangka as $key => $nama) {
+                $berkasBaw = null;
+                $berkasBap = null;
+                
+                // Upload berkas BAW tersangka jika ada
+                if ($request->hasFile("baw_tersangka.$key")) {
+                    $file = $request->file("baw_tersangka.$key");
+                    $fileName = 'baw_tersangka_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('berkas/tersangka/baw', $fileName, 'public');
+                    $berkasBaw = $path;
+                }
+                
+                // Upload berkas BAP tersangka jika ada
+                if ($request->hasFile("bap_tersangka.$key")) {
+                    $file = $request->file("bap_tersangka.$key");
+                    $fileName = 'bap_tersangka_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('berkas/tersangka/bap', $fileName, 'public');
+                    $berkasBap = $path;
+                }
+                
+                if ($nama || $berkasBaw || $berkasBap) {
+                    $berkasBawBapTersangka[] = [
+                        'nama' => $nama,
+                        'berkas_baw' => $berkasBaw,
+                        'berkas_bap' => $berkasBap,
+                        'tanggal_upload' => now()->format('Y-m-d H:i:s')
+                    ];
+                }
+            }
+        }
+
+        $requestData = $request->except([
+            'no_sp1_saksi',
+            'tgl_sp1_saksi',
+            'saksi_nama',
+            'saksi_ttl',
+            'saksi_kelamin',
+            'saksi_kewarganegaraan',
+            'saksi_agama',
+            'saksi_pekerjaan',
+            'saksi_alamat',
+            'no_sp2_saksi',
+            'tgl_sp2_saksi',
+            'pejabat_saksi_sp1',
+            'pejabat_saksi_sp2',
+            'status_surat_panggilan_1_saksi',
+            'status_surat_panggilan_2_saksi',
+            'tgl_panggilan_1_saksi',
+            'tgl_panggilan_2_saksi',
+            'no_spm_saksi',
+            'tgl_spm_saksi',
+            'pejabat_saksi_spm',
+            'baw_bap_nama_saksi',
+            'baw_saksi',
+            'bap_saksi',
+
+            'no_sp1_tersangka',
+            'tgl_sp1_tersangka',
+            'tersangka_nama',
+            'tersangka_ttl',
+            'tersangka_agama',
+            'tersangka_kelamin',
+            'tersangka_kewarganegaraan',
+            'tersangka_pekerjaan',
+            'tersangka_alamat',
+            'tersangka_jenis_identitas',
+            'tersangka_nomor_identitas',
+            'tersangka_pendidikan',
+            'no_sp2_tersangka',
+            'tgl_sp2_tersangka',
+            'pejabat_tersangka_sp1',
+            'pejabat_tersangka_sp2',
+            'status_surat_panggilan_1_tersangka',
+            'status_surat_panggilan_2_tersangka',
+            'tgl_panggilan_1_tersangka',
+            'tgl_panggilan_2_tersangka',
+            'no_spm_tersangka',
+            'tgl_spm_tersangka',
+            'pejabat_tersangka_spm',
+            'baw_bap_nama_tersangka',
+            'baw_tersangka',
+            'bap_tersangka',
+
+            'ahli_nama',
+            'ahli_ttl',
+            'ahli_kelamin',
+            'ahli_agama',
+            'ahli_pekerjaan',
+            'ahli_alamat_domisili',
+            'ahli_alamat_kantor',
+        ]);
+
+        $requestData['data_saksi'] = json_encode($dataSaksi);
+        $requestData['data_tersangka'] = json_encode($dataTersangka);
+        $requestData['data_ahli'] = json_encode($dataAhli);
+        $requestData['berkas_baw_bap_saksi'] = json_encode($berkasBawBapSaksi);
+        $requestData['berkas_baw_bap_tersangka'] = json_encode($berkasBawBapTersangka);
+
+        // Hapus baris dd() yang digunakan untuk debugging
+        // dd($requestData);
+
+        // Update data
+        $item->update($requestData);
+
+        DB::commit(); // Simpan transaksi
+
+        return redirect()->route('unsur-pidana-penyidikan.index')
+            ->with('success', 'Data berhasil diperbarui.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        Log::error("Error saat memperbarui data: " . $e->getMessage(), [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString()
+        ]);
+
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
+    }
+}
 
     public function destroy($id)
     {
