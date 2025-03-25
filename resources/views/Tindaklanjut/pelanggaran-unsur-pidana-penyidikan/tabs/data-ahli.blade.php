@@ -117,13 +117,10 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Inisialisasi komponen
     initializeSelect2();
     
-    // Inisialisasi form berdasarkan data yang tersedia (jika ada)
     initializeFormDataAhli();
 
-    // Registrasi event handler untuk tombol tambah/hapus
     document.getElementById("add-ahli").addEventListener("click", function() {
         addEntry("ahli");
     });
@@ -136,14 +133,12 @@ document.addEventListener("DOMContentLoaded", function() {
     feather.replace();
 });
 
-// Data ahli (ini perlu diisi dari server jika ada data yang sudah disimpan)
-let data_ahli = []; // Ganti dengan data dari PHP jika tersedia
+let data_ahli = <?php echo json_encode($ahliData, JSON_PRETTY_PRINT); ?>; 
 
-// Inisialisasi form data ahli
 function initializeFormDataAhli() {
     if (typeof data_ahli !== "undefined" && data_ahli.length > 0) {
         let container = document.getElementById("dynamic-form-ahli");
-        container.innerHTML = ""; // Kosongkan sebelum mengisi ulang
+        container.innerHTML = ""; 
 
         data_ahli.forEach((ahli, index) => {
             let newEntry = generateAhliEntryHTML(ahli, index === 0, index);
@@ -155,9 +150,8 @@ function initializeFormDataAhli() {
     }
 }
 
-// Function untuk generate HTML entry ahli
+
 function generateAhliEntryHTML(ahli = {}, isFirst = false, index = 0) {
-    // Membuat wrapper div
     let entryDiv = document.createElement('div');
     entryDiv.className = 'entry-ahli text-black';
 
@@ -210,7 +204,6 @@ function generateAhliEntryHTML(ahli = {}, isFirst = false, index = 0) {
         <hr>
     `;
 
-    // Tambahkan event listener untuk tombol hapus
     let removeBtn = entryDiv.querySelector('.remove-btn');
     if (removeBtn) {
         removeBtn.addEventListener('click', function() {
@@ -222,37 +215,30 @@ function generateAhliEntryHTML(ahli = {}, isFirst = false, index = 0) {
     return entryDiv;
 }
 
-// Fungsi untuk menambahkan entry baru
 function addEntry(formType) {
     let formContainer = document.getElementById(`dynamic-form-${formType}`);
     let currentEntries = formContainer.querySelectorAll(`.entry-${formType}`);
     let newIndex = currentEntries.length;
     
-    // Buat entri baru
     let newEntry;
     if (formType === "ahli") {
         newEntry = generateAhliEntryHTML({}, false, newIndex);
     } 
     
     if (newEntry) {
-        // Hapus semua instance Select2 yang ada dalam container
         $(formContainer).find('.select2-hidden-accessible').select2('destroy');
         
-        // Tambahkan entri baru
         formContainer.appendChild(newEntry);
         
-        // Event listener untuk tombol hapus
         let removeBtn = newEntry.querySelector('.remove-btn');
         if (removeBtn) {
             removeBtn.addEventListener('click', function() {
                 newEntry.remove();
                 updateRemoveButtonVisibility(formType);
-                // Reinisialisasi select2 setelah menghapus entri
                 initializeSelect2ForContainer(formContainer);
             });
         }
         
-        // Inisialisasi semua Select2 dalam container
         initializeSelect2ForContainer(formContainer);
         
         if (typeof feather !== 'undefined') {
@@ -263,13 +249,11 @@ function addEntry(formType) {
     }
 }
 
-// Fungsi untuk menghapus entry terakhir
 function removeEntry(formType) {
     let entries = document.querySelectorAll(`#dynamic-form-${formType} .entry-${formType}`);
     if (entries.length > 1) {
         let lastEntry = entries[entries.length - 1];
 
-        // Hapus Select2 instances sebelum menghapus entry
         $(lastEntry).find(".select2-hidden-accessible").each(function() {
             $(this).select2("destroy");
         });
@@ -279,7 +263,6 @@ function removeEntry(formType) {
     }
 }
 
-// Fungsi untuk mengupdate visibilitas tombol hapus
 function updateRemoveButtonVisibility(formType) {
     let entries = document.querySelectorAll(`#dynamic-form-${formType} .entry-${formType}`);
     let removeButton = document.getElementById(`remove-${formType}`);
@@ -288,19 +271,16 @@ function updateRemoveButtonVisibility(formType) {
         removeButton.style.display = entries.length > 1 ? "block" : "none";
     }
 
-    // Update juga tombol hapus pada entry pertama (selalu sembunyikan)
     if (entries.length > 0) {
         entries[0].querySelector(".remove-btn").style.display = "none";
     }
     
-    // Tampilkan tombol hapus pada semua entry kecuali yang pertama
     for (let i = 1; i < entries.length; i++) {
         let btn = entries[i].querySelector(".remove-btn");
         if (btn) btn.style.display = "block";
     }
 }
 
-// Fungsi bantuan untuk inisialisasi semua Select2 dalam container
 function initializeSelect2ForContainer(container) {
     $(container).find('.select2:not(.select2-hidden-accessible)').each(function() {
         $(this).select2();

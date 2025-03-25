@@ -28,7 +28,6 @@
     <h5 class="fw-bold text-center">Berita Acara Sumpah
     </h5>
 
-
     <!-- Main Form -->
     <div class="card p-1">
         <div class="card-body">
@@ -38,7 +37,7 @@
 
 
                         <div class="mb-3 row">
-                            <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">Upload Dokumen Berita Wawancara dan Berita Acara Pemeriksaan</label>
+                            <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">Masukkan data BA SUMPAH</label>
                             <div class="col-md-1 col-sm-1 text-center mt-1 d-none d-sm-block">:</div>
                             <div class="col-md-8 col-sm-11">
 
@@ -48,25 +47,16 @@
                                         <option value="" selected disabled>Pilih</option>
                                         <option value="saksi">Saksi (PILIH BAGIAN INI UNTUK MENGISI DATA-DATA SAKSI)</option>
                                         <option value="tersangka">Tersangka (PILIH BAGIAN INI UNTUK MENGISI DATA-DATA TERSANGKA)</option>
+                                        <option value="ahli">Ahli (PILIH BAGIAN INI UNTUK MENGISI DATA-DATA BA SUMPAH)</option>
                                     </select>
                                 </div>
 
                                 <div id="form-saksi-ba-sumpah" style="display: none;">
-                                    <h5 class="fw-bold text-primary">Kumpulan sData Saksi</h5>
+                                    <h5 class="fw-bold text-primary">Kumpulan Data Saksi</h5>
                                     <div id="dynamic-form-saksi-ba-sumpah">
                                         @foreach($saksiData as $index => $saksi)
                                         <div class="entry-saksi text-black">
                                             <hr>
-                                            <div class="row mb-3">
-                                                <div class="col-md-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text">NO : SP-</span>
-                                                        <input type="text" class="form-control "  value="{{ $saksi['no_sp1'] ?? '' }}" readonly>
-                                                        <span class="input-group-text">/PPNS/</span>
-                                                        <input type="date" class="form-control "  value="{{ $saksi['tgl_sp1'] ?? '' }}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div class="row mb-3">
                                                 <div class="col-md-4 d-flex align-items-center">Nama Lengkap</div>
                                                 <div class="col-md-1 text-center">:</div>
@@ -106,144 +96,6 @@
                                                 <div class="col-md-1 text-center">:</div>
                                                 <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $saksi['alamat'] ?? '' }}" readonly></div>
                                             </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text">NO : SP-</span>
-                                                        <input type="text" class="form-control" placeholder="Nomor Surat Panggilan II"  value="{{ $saksi['no_sp2'] ?? '' }}" readonly>
-                                                        <span class="input-group-text">/PPNS/</span>
-                                                        <input type="date" class="form-control " placeholder="Tanggal Surat Panggilan II"  value="{{ $saksi['tgl_sp2'] ?? '' }}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-4 text-black d-flex align-items-center">SP I Menghadap Kepada</div>
-                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                <div class="col-md-7">
-                                                   @php
-                                                    $pejabatNamaSp1 = $users->where('id_admin', $saksi['pejabat_sp1'] ?? '')->first()->name ?? '';
-                                                @endphp
-                                                <input type="text" class="form-control border-0 py-1" value="{{ $pejabatNamaSp1 }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-4 text-black d-flex align-items-center">SP II Menghadap Kepada</div>
-                                                   <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                <div class="col-md-7">
-                                                   @php
-                                                    $pejabatNama = $users->where('id_admin', $saksi['pejabat_sp2'] ?? '')->first()->name ?? '';
-                                                @endphp
-                                                <input type="text" class="form-control border-0 py-1" value="{{ $pejabatNama }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-4 d-flex align-items-center">Status Surat Panggilan I</div>
-                                                <div class="col-md-1 text-center">:</div>
-                                                <div class="col-md-7">
-                                                   <input type="text" class="form-control border-0 py-1" value="{{ $saksi['status_panggilan_1'] ?? '' }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-4 text-black d-flex align-items-center">Waktu Surat Panggilan I</div>
-                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                <div class="col-md-7">
-                                                    <input type="text" class="form-control border-0" value="{{ $saksi['tgl_panggilan_1'] ?? '' }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-4 d-flex align-items-center">Status Surat Panggilan II</div>
-                                                <div class="col-md-1 text-center">:</div>
-                                                <div class="col-md-7">
-                                                    <input type="text" class="form-control border-0 py-1" value="{{ $saksi['status_panggilan_2'] ?? '' }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-4 text-black d-flex align-items-center">Waktu Surat Panggilan II</div>
-                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                <div class="col-md-7">
-                                                    <input type="text" class="form-control border-0"  value="{{ $saksi['tgl_panggilan_2'] ?? '' }}" readonly;>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text">NO : SPM-</span>
-                                                        <input type="text" class="form-control " placeholder="Nomor Surat Perintah Membawa"  value="{{ $saksi['no_spm'] ?? '' }}" readonly>
-                                                        <span class="input-group-text">/PPNS/</span>
-                                                        <input type="date" class="form-control " placeholder="Tanggal Surat Perintah Membawa"  value="{{ $saksi['tgl_spm'] ?? '' }}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-12">
-                                                    <div class="input-group flex-column">
-                                                        <span class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
-                                                            D I P E R I N T A H K A N
-                                                        </span>
-                                                       <select class="form-control border-0 mt-1 select2" multiple disabled>
-                                                        @foreach ($users as $user)
-                                                            <option value="{{ $user->id_admin }}" 
-                                                            {{ in_array($user->id_admin, (array) json_decode($saksi['pejabat_spm'] ?? '[]', true)) ? 'selected' : '' }}>
-                                                            {{ $user->name }}
-                                                            </option>
-                                                        @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-3"> 
-                                                    <div class="col-md-4 d-flex align-items-center">Upload BAW</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="file" class="form-control" name="baw_saksi[]" accept=".pdf,.doc,.docx">
-                                                        @php
-                                                            $berkasBAW = null;
-                                                            // Cari berkas berdasarkan nama
-                                                            foreach($berkasBawBapSaksi as $berkas) {
-                                                                if($berkas['nama'] == $saksi['nama'] && !empty($berkas['berkas_baw'])) {
-                                                                    $berkasBAW = $berkas['berkas_baw'];
-                                                                    break;
-                                                                }
-                                                            }
-                                                        @endphp
-                                                        
-                                                        
-                                                        @if($berkasBAW)
-                                                            <div class="mt-2">
-                                                                <a href="{{ asset('storage/'.$berkasBAW) }}" target="_blank" class="btn btn-sm btn-info">
-                                                                    <i class="fas fa-eye"></i> Lihat Berkas BAW
-                                                                </a>
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                            <div class="row mb-3">
-                                                <div class="col-md-4 d-flex align-items-center">Upload BAP</div>
-                                                <div class="col-md-1 text-center">:</div>
-                                                <div class="col-md-7">
-                                                    <input type="file" class="form-control" name="bap_saksi[]" accept=".pdf,.doc,.docx">
-                                                    @php
-                                                        $berkasBAP = null;
-                                                        // Cari berkas berdasarkan nama
-                                                        foreach($berkasBawBapSaksi as $berkas) {
-                                                            if($berkas['nama'] == $saksi['nama'] && !empty($berkas['berkas_bap'])) {
-                                                                $berkasBAP = $berkas['berkas_bap'];
-                                                                break;
-                                                            }
-                                                        }
-                                                    @endphp
-                                                    
-                                                    @if($berkasBAP)
-                                                        <div class="mt-2">
-                                                            <a href="{{ asset('storage/'.$berkasBAP) }}" target="_blank" class="btn btn-sm btn-info">
-                                                                <i class="fas fa-eye"></i> Lihat Berkas BAP
-                                                            </a>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
                                             <hr>
                                         </div>
                                         @endforeach
@@ -256,16 +108,6 @@
                                             @foreach($tersangkaData as $index => $tersangka)
                                             <div class="entry-tersangka text-black">
                                                 <hr>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">NO : SP-</span>
-                                                            <input type="text" class="form-control"  value="{{ $tersangka['no_sp1'] ?? '' }}" readonly>
-                                                            <span class="input-group-text">/PPNS/</span>
-                                                            <input type="date" class="form-control "  value="{{ $tersangka['tgl_sp1'] ?? '' }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="row mb-3">
                                                     <div class="col-md-4 d-flex align-items-center">Nama Lengkap</div>
                                                     <div class="col-md-1 text-center">:</div>
@@ -320,143 +162,57 @@
                                                     <div class="col-md-1 text-center">:</div>
                                                     <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $tersangka['pendidikan'] ?? '' }}" readonly></div>
                                                 </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">NO : SP-</span>
-                                                            <input type="text" class="form-control " placeholder="Nomor Surat Panggilan II"  value="{{ $tersangka['no_sp2'] ?? '' }}" readonly>
-                                                            <span class="input-group-text">/PPNS/</span>
-                                                            <input type="date" class="form-control " placeholder="Tanggal Surat Panggilan II"  value="{{ $tersangka['tgl_sp2'] ?? '' }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 text-black d-flex align-items-center">SP I Menghadap Kepada</div>
-                                                    <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                    <div class="col-md-7">
-                                                       @php
-                                                        $pejabatNamaSp1Tersangka = $users->where('id_admin', $tersangka['pejabat_sp1'] ?? '')->first()->name ?? '';
-                                                    @endphp
-                                                    <input type="text" class="form-control border-0 py-1" value="{{ $pejabatNamaSp1Tersangka }}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 text-black d-flex align-items-center">SP II Menghadap Kepada</div>
-                                                    <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                    <div class="col-md-7">
-                                                      @php
-                                                        $pejabatNamaSp2Tersangka = $users->where('id_admin', $tersangka['pejabat_sp2'] ?? '')->first()->name ?? '';
-                                                    @endphp
-                                                    <input type="text" class="form-control border-0 py-1" value="{{ $pejabatNamaSp2Tersangka }}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Status Surat Panggilan I</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control border-0 py-1" value="{{ $tersangka['status_panggilan_1'] ?? '' }}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 text-black d-flex align-items-center">Waktu Surat Panggilan I</div>
-                                                    <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control border-0"  id="datetime-datepicker-1" value="{{ $tersangka['tgl_panggilan_1'] ?? '' }}" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Status Surat Panggilan II</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control border-0 py-1" value="{{ $tersangka['status_panggilan_2'] ?? '' }}" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 text-black d-flex align-items-center">Waktu Surat Panggilan II</div>
-                                                    <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control border-0" id="datetime-datepicker-2" value="{{ $tersangka['tgl_panggilan_2'] ?? '' }}" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">NO : SPM-</span>
-                                                            <input type="text" class="form-control " placeholder="Nomor Surat Perintah Membawa"  value="{{ $tersangka['no_spm'] ?? '' }}" readonly>
-                                                            <span class="input-group-text">/PPNS/</span>
-                                                            <input type="date" class="form-control " placeholder="Tanggal Surat Perintah Membawa"  value="{{ $tersangka['tgl_spm'] ?? '' }}"readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group flex-column">
-                                                            <span class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
-                                                                D I P E R I N T A H K A N
-                                                            </span>
-                                                            <select class="form-control border-0 mt-1 select2"  multiple disabled>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}" 
-                                                                {{ in_array($user->id_admin, (array) json_decode($tersangka['pejabat_spm'] ?? '[]', true)) ? 'selected' : '' }}>
-                                                                {{ $user->name }}
-                                                                </option>
-                                                            @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <hr>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
 
+
+
+                                    <div id="form-ahli-ba-sumpah" style="display: none;">
+                                        <h5 class="fw-bold text-primary">Kumpulan Data Ahli</h5>
+                                        <div id="dynamic-form-ahli-ba-sumpah">
+                                            @foreach($ahliData as $index => $ahli)
+                                            <div class="entry-ahli text-black">
+                                                <hr>
                                                 <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Upload BAW</div>
+                                                    <div class="col-md-4 d-flex align-items-center">Nama Lengkap</div>
+                                                    <div class="col-md-1 text-center">:</div>
+                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['nama'] ?? '' }}" readonly></div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4 d-flex align-items-center">Tempat /Tanggal Lahir</div>
+                                                    <div class="col-md-1 text-center">:</div>
+                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['ttl'] ?? '' }}" readonly></div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4 d-flex align-items-center">Agama</div>
+                                                    <div class="col-md-1 text-center">:</div>
+                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['agama'] ?? '' }}" readonly></div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4 d-flex align-items-center">Jenis Kelamin</div>
                                                     <div class="col-md-1 text-center">:</div>
                                                     <div class="col-md-7">
-                                                        <input type="file" class="form-control" name="baw_tersangka[]" accept=".pdf,.doc,.docx">
-                                                        @php
-                                                            $berkasBAW = null;
-                                                            // Cari berkas berdasarkan nama
-                                                            foreach($berkasBawBapTersangka as $berkas) {
-                                                                if($berkas['nama'] == $tersangka['nama'] && !empty($berkas['berkas_baw'])) {
-                                                                    $berkasBAW = $berkas['berkas_baw'];
-                                                                    break;
-                                                                }
-                                                            }
-                                                        @endphp
-                                                        
-                                                        @if($berkasBAW)
-                                                            <div class="mt-2">
-                                                                <a href="{{ asset('storage/'.$berkasBAW) }}" target="_blank" class="btn btn-sm btn-info">
-                                                                    <i class="fas fa-eye"></i> Lihat Berkas BAW
-                                                                </a>
-                                                            </div>
-                                                        @endif
+                                                        <input type="text" class="form-control border-0 py-1" value="{{ $ahli['jenis_kelamin'] ?? '' }}" readonly>
                                                     </div>
                                                 </div>
-
                                                 <div class="row mb-3">
-                                                        <div class="col-md-4 d-flex align-items-center">Upload BAP</div>
-                                                        <div class="col-md-1 text-center">:</div>
-                                                        <div class="col-md-7">
-                                                            <input type="file" class="form-control" name="bap_tersangka[]" accept=".pdf,.doc,.docx">
-                                                            @php
-                                                                $berkasBAP = null;
-                                                                // Cari berkas berdasarkan nama
-                                                                foreach($berkasBawBapTersangka as $berkas) {
-                                                                    if($berkas['nama'] == $tersangka['nama'] && !empty($berkas['berkas_bap'])) {
-                                                                        $berkasBAP = $berkas['berkas_bap'];
-                                                                        break;
-                                                                    }
-                                                                }
-                                                            @endphp
-                                                            
-                                                            @if($berkasBAP)
-                                                                <div class="mt-2">
-                                                                    <a href="{{ asset('storage/'.$berkasBAP) }}" target="_blank" class="btn btn-sm btn-info">
-                                                                        <i class="fas fa-eye"></i> Lihat Berkas BAP
-                                                                    </a>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
+                                                    <div class="col-md-4 d-flex align-items-center">Pekerjaan</div>
+                                                    <div class="col-md-1 text-center">:</div>
+                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['pekerjaan'] ?? '' }}" readonly></div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4 d-flex align-items-center">Alamat Domisili</div>
+                                                    <div class="col-md-1 text-center">:</div>
+                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['alamat_domisili'] ?? '' }}" readonly></div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4 d-flex align-items-center">Alamat Kantor</div>
+                                                    <div class="col-md-1 text-center">:</div>
+                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['alamat_kantor'] ?? '' }}" readonly></div>
+                                                </div>
                                                 <hr>
                                             </div>
                                             @endforeach
@@ -480,12 +236,14 @@ document.addEventListener("DOMContentLoaded", function () {
     $('#kategoriBaSumpah').off('select2:select').on('select2:select', function (e) {
         let selectedValue = $(this).val();
 
-        $("#form-saksi-baw-bap, #form-tersangka-baw-bap").hide();
+        $("#form-saksi-ba-sumpah, #form-tersangka-ba-sumpah, #form-ahli-ba-sumpah").hide();
 
         if (selectedValue === "saksi") {
             $("#form-saksi-ba-sumpah").show();
         } else if (selectedValue === "tersangka") {
-            $("#form-tersangka-ba-sumpah-saksi, #form-tersangka-ba-sumpah").show();
+            $("#form-tersangka-ba-sumpah, #form-tersangka-ba-sumpah").show();
+        } else if (selectedValue === "ahli") {
+            $("#form-ahli-ba-sumpah, #form-ahli-ba-sumpah").show();
         }
     });
 });

@@ -359,9 +359,11 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         
         $saksiData = json_decode($unsurpenyidikan->data_saksi ?? '[]', true);
         $tersangkaData = json_decode($unsurpenyidikan->data_tersangka ?? '[]', true);
+        $ahliData = json_decode($unsurpenyidikan->data_ahli ?? '[]', true);
 
         $berkasBawBapSaksi = json_decode($unsurpenyidikan->berkas_baw_bap_saksi ?? '[]', true);
         $berkasBawBapTersangka = json_decode($unsurpenyidikan->berkas_baw_bap_tersangka ?? '[]', true);
+        $berkasBawBapAhli = json_decode($unsurpenyidikan->berkas_baw_bap_ahli ?? '[]', true);
 
 
 
@@ -376,8 +378,10 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'laporanInformasi',
             'saksiData', // Kirim data saksi ke view
             'tersangkaData', // Kirim data saksi ke view
+            'ahliData',
             'berkasBawBapSaksi',
-            'berkasBawBapTersangka'
+            'berkasBawBapTersangka',
+            'berkasBawBapAhli'
         ));
     }
 
@@ -447,6 +451,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'ahli_pekerjaan.*' => 'nullable|string',
             'ahli_alamat_domisili.*' => 'nullable|string',
             'ahli_alamat_kantor.*' => 'nullable|string',
+            'baw_bap_nama_ahli.*' => 'nullable|string',
+            'baw_ahli.*' => 'nullable|file|mimes:pdf,doc,docx',
+            'bap_ahli.*' => 'nullable|file|mimes:pdf,doc,docx',
         ]);
 
         // Cari data yang akan diupdate
@@ -522,28 +529,32 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         }
 
         $dataAhli = [];
-if ($request->has('ahli_nama')) {
-    foreach ($request->ahli_nama as $key => $nama) {
-        $dataAhli[] = [
-            'nama' => $nama,
-            'ttl' => $request->ahli_ttl[$key] ?? null,
-            'jenis_kelamin' => $request->ahli_kelamin[$key] ?? null,
-            'agama' => $request->ahli_agama[$key] ?? null,
-            'pekerjaan' => $request->ahli_pekerjaan[$key] ?? null,
-            'alamat_domisili' => $request->ahli_alamat_domisili[$key] ?? null,
-            'alamat_kantor' => $request->ahli_alamat_kantor[$key] ?? null,
-        ];
-    }
-}
+        if ($request->has('ahli_nama')) {
+                foreach ($request->ahli_nama as $key => $nama) {
+                    $dataAhli[] = [
+                        'nama' => $nama,
+                        'ttl' => $request->ahli_ttl[$key] ?? null,
+                        'jenis_kelamin' => $request->ahli_kelamin[$key] ?? null,
+                        'agama' => $request->ahli_agama[$key] ?? null,
+                        'pekerjaan' => $request->ahli_pekerjaan[$key] ?? null,
+                        'alamat_domisili' => $request->ahli_alamat_domisili[$key] ?? null,
+                        'alamat_kantor' => $request->ahli_alamat_kantor[$key] ?? null,
+                    ];
+                }
+            }
 
+        // Proses data berkas BAW dan BAP saksi
         // Proses data berkas BAW dan BAP saksi
         $berkasBawBapSaksi = [];
         if ($request->has('baw_bap_nama_saksi')) {
+            // Ambil data sebelumnya dari database
+            $dataSebelumnya = json_decode($item->berkas_baw_bap_saksi, true) ?? [];
+
             foreach ($request->baw_bap_nama_saksi as $key => $nama) {
                 $berkasBaw = null;
                 $berkasBap = null;
                 
-                // Upload berkas BAW saksi jika ada
+                // Proses upload file BAW
                 if ($request->hasFile("baw_saksi.$key")) {
                     $file = $request->file("baw_saksi.$key");
                     $fileName = 'baw_saksi_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
@@ -551,7 +562,7 @@ if ($request->has('ahli_nama')) {
                     $berkasBaw = $path;
                 }
                 
-                // Upload berkas BAP saksi jika ada
+                // Proses upload file BAP
                 if ($request->hasFile("bap_saksi.$key")) {
                     $file = $request->file("bap_saksi.$key");
                     $fileName = 'bap_saksi_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
@@ -559,25 +570,45 @@ if ($request->has('ahli_nama')) {
                     $berkasBap = $path;
                 }
                 
-                if ($nama || $berkasBaw || $berkasBap) {
+                // Cari indeks data yang sudah ada sebelumnya
+                $dataSebelumnyaIndex = array_search($nama, array_column($dataSebelumnya, 'nama'));
+                
+                // Logika update yang komprehensif
+                if ($dataSebelumnyaIndex !== false) {
+                    // Jika data sudah ada, update file yang baru diupload
+                    $entryLama = $dataSebelumnya[$dataSebelumnyaIndex];
+                    
                     $berkasBawBapSaksi[] = [
                         'nama' => $nama,
-                        'berkas_baw' => $berkasBaw,
-                        'berkas_bap' => $berkasBap,
+                        'berkas_baw' => $berkasBaw ?? $entryLama['berkas_baw'],
+                        'berkas_bap' => $berkasBap ?? $entryLama['berkas_bap'],
                         'tanggal_upload' => now()->format('Y-m-d H:i:s')
                     ];
+                } else {
+                    // Jika data baru, tambahkan entri baru
+                    if ($berkasBaw || $berkasBap) {
+                        $berkasBawBapSaksi[] = [
+                            'nama' => $nama,
+                            'berkas_baw' => $berkasBaw,
+                            'berkas_bap' => $berkasBap,
+                            'tanggal_upload' => now()->format('Y-m-d H:i:s')
+                        ];
+                    }
                 }
             }
-        }
+}
         
         // Proses data berkas BAW dan BAP tersangka
         $berkasBawBapTersangka = [];
         if ($request->has('baw_bap_nama_tersangka')) {
+            // Ambil data sebelumnya dari database
+            $dataSebelumnya = json_decode($item->berkas_baw_bap_tersangka, true) ?? [];
+        
             foreach ($request->baw_bap_nama_tersangka as $key => $nama) {
                 $berkasBaw = null;
                 $berkasBap = null;
                 
-                // Upload berkas BAW tersangka jika ada
+                // Proses upload file BAW
                 if ($request->hasFile("baw_tersangka.$key")) {
                     $file = $request->file("baw_tersangka.$key");
                     $fileName = 'baw_tersangka_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
@@ -585,7 +616,7 @@ if ($request->has('ahli_nama')) {
                     $berkasBaw = $path;
                 }
                 
-                // Upload berkas BAP tersangka jika ada
+                // Proses upload file BAP
                 if ($request->hasFile("bap_tersangka.$key")) {
                     $file = $request->file("bap_tersangka.$key");
                     $fileName = 'bap_tersangka_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
@@ -593,16 +624,88 @@ if ($request->has('ahli_nama')) {
                     $berkasBap = $path;
                 }
                 
-                if ($nama || $berkasBaw || $berkasBap) {
+                // Cari indeks data yang sudah ada sebelumnya
+                $dataSebelumnyaIndex = array_search($nama, array_column($dataSebelumnya, 'nama'));
+                
+                // Logika update yang komprehensif
+                if ($dataSebelumnyaIndex !== false) {
+                    // Jika data sudah ada, update file yang baru diupload
+                    $entryLama = $dataSebelumnya[$dataSebelumnyaIndex];
+                    
                     $berkasBawBapTersangka[] = [
                         'nama' => $nama,
-                        'berkas_baw' => $berkasBaw,
-                        'berkas_bap' => $berkasBap,
+                        'berkas_baw' => $berkasBaw ?? $entryLama['berkas_baw'],
+                        'berkas_bap' => $berkasBap ?? $entryLama['berkas_bap'],
                         'tanggal_upload' => now()->format('Y-m-d H:i:s')
                     ];
+                } else {
+                    // Jika data baru, tambahkan entri baru
+                    if ($berkasBaw || $berkasBap) {
+                        $berkasBawBapTersangka[] = [
+                            'nama' => $nama,
+                            'berkas_baw' => $berkasBaw,
+                            'berkas_bap' => $berkasBap,
+                            'tanggal_upload' => now()->format('Y-m-d H:i:s')
+                        ];
+                    }
                 }
             }
         }
+
+
+        $berkasBawBapAhli = [];
+        if ($request->has('baw_bap_nama_ahli')) {
+            // Ambil data sebelumnya dari database
+            $dataSebelumnya = json_decode($item->berkas_baw_bap_ahli, true) ?? [];
+        
+            foreach ($request->baw_bap_nama_ahli as $key => $nama) {
+                $berkasBaw = null;
+                $berkasBap = null;
+                
+                // Proses upload file BAW
+                if ($request->hasFile("baw_ahli.$key")) {
+                    $file = $request->file("baw_ahli.$key");
+                    $fileName = 'baw_ahli_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('berkas/ahli/baw', $fileName, 'public');
+                    $berkasBaw = $path;
+                }
+                
+                // Proses upload file BAP
+                if ($request->hasFile("bap_ahli.$key")) {
+                    $file = $request->file("bap_ahli.$key");
+                    $fileName = 'bap_ahli_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('berkas/ahli/bap', $fileName, 'public');
+                    $berkasBap = $path;
+                }
+                
+                // Cari indeks data yang sudah ada sebelumnya
+                $dataSebelumnyaIndex = array_search($nama, array_column($dataSebelumnya, 'nama'));
+                
+                // Logika update yang komprehensif
+                if ($dataSebelumnyaIndex !== false) {
+                    // Jika data sudah ada, update file yang baru diupload
+                    $entryLama = $dataSebelumnya[$dataSebelumnyaIndex];
+                    
+                    $berkasBawBapAhli[] = [
+                        'nama' => $nama,
+                        'berkas_baw' => $berkasBaw ?? $entryLama['berkas_baw'],
+                        'berkas_bap' => $berkasBap ?? $entryLama['berkas_bap'],
+                        'tanggal_upload' => now()->format('Y-m-d H:i:s')
+                    ];
+                } else {
+                    // Jika data baru, tambahkan entri baru
+                    if ($berkasBaw || $berkasBap) {
+                        $berkasBawBapAhli[] = [
+                            'nama' => $nama,
+                            'berkas_baw' => $berkasBaw,
+                            'berkas_bap' => $berkasBap,
+                            'tanggal_upload' => now()->format('Y-m-d H:i:s')
+                        ];
+                    }
+                }
+            }
+        }
+        
 
         $requestData = $request->except([
             'no_sp1_saksi',
@@ -663,6 +766,9 @@ if ($request->has('ahli_nama')) {
             'ahli_pekerjaan',
             'ahli_alamat_domisili',
             'ahli_alamat_kantor',
+            'baw_bap_nama_ahli',
+            'baw_ahli',
+            'bap_ahli',
         ]);
 
         $requestData['data_saksi'] = json_encode($dataSaksi);
@@ -670,6 +776,7 @@ if ($request->has('ahli_nama')) {
         $requestData['data_ahli'] = json_encode($dataAhli);
         $requestData['berkas_baw_bap_saksi'] = json_encode($berkasBawBapSaksi);
         $requestData['berkas_baw_bap_tersangka'] = json_encode($berkasBawBapTersangka);
+        $requestData['berkas_baw_bap_ahli'] = json_encode($berkasBawBapAhli);
 
         // Hapus baris dd() yang digunakan untuk debugging
         // dd($requestData);
