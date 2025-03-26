@@ -55,16 +55,16 @@
                                                 <span class="d-none d-sm-block">SURAT PANGGILAN I, II, SURAT PERINTAH MEMBAWA</span>
                                             </a>
                                         </li>
+                                            <li class="nav-item-penyidikan">
+                                            <a class="nav-link " id="navtabs2-data-ahli-tab" data-bs-toggle="tab" href="#navtabs2-data-ahli" role="tab" aria-controls="navtabs2-data-ahli" aria-selected="false">
+                                                <span class="d-block d-sm-none">(DATA AHLI)</span>
+                                                <span class="d-none d-sm-block">DATA AHLI</span>
+                                            </a>
+                                        </li>
                                         <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-baw-bap-tab" data-bs-toggle="tab" href="#navtabs2-baw-bap" role="tab" aria-controls="navtabs2-baw-bap" aria-selected="false">
                                                 <span class="d-block d-sm-none">(BAW & BAP)</span>
                                                 <span class="d-none d-sm-block">BERITA ACARA WAWANCARA & BERITA ACARA PEMERIKSAAN</span>
-                                            </a>
-                                        </li>
-                                         <li class="nav-item-penyidikan">
-                                            <a class="nav-link " id="navtabs2-data-ahli-tab" data-bs-toggle="tab" href="#navtabs2-data-ahli" role="tab" aria-controls="navtabs2-data-ahli" aria-selected="false">
-                                                <span class="d-block d-sm-none">(DATA AHLI)</span>
-                                                <span class="d-none d-sm-block">DATA AHLI</span>
                                             </a>
                                         </li>
                                         <li class="nav-item-penyidikan">
@@ -77,6 +77,12 @@
                                             <a class="nav-link " id="navtabs2-sppr-tab" data-bs-toggle="tab" href="#navtabs2-sppr" role="tab" aria-controls="navtabs2-sppr" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPPR)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH PENGGELEDAHAN RUMAH/BANGUNAN</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item-penyidikan">
+                                            <a class="nav-link " id="navtabs2-ba-penggeledahan-tab" data-bs-toggle="tab" href="#navtabs2-ba-penggeledahan" role="tab" aria-controls="navtabs2-ba-penggeledahan" aria-selected="false">
+                                                <span class="d-block d-sm-none">(BA PENGGELEDAHAN)</span>
+                                                <span class="d-none d-sm-block">BERITA ACARA PENGGELEDAHAN</span>
                                             </a>
                                         </li>
                                         <li class="nav-item-penyidikan">
@@ -186,6 +192,23 @@
                                         'nama_negara' => $nama_negara,
                                         'sbpData' => $sbpData,
                                         'users' => $users,
+                                        ])
+                                    </div>
+
+
+                                    <div class="tab-pane" id="navtabs2-sppr" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-perintah-penggeledahan', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-ba-penggeledahan" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-penggeledahan', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
                                         ])
                                     </div>
 

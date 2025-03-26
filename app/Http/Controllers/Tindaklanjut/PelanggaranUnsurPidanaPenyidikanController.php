@@ -601,14 +601,12 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         // Proses data berkas BAW dan BAP tersangka
         $berkasBawBapTersangka = [];
         if ($request->has('baw_bap_nama_tersangka')) {
-            // Ambil data sebelumnya dari database
             $dataSebelumnya = json_decode($item->berkas_baw_bap_tersangka, true) ?? [];
         
             foreach ($request->baw_bap_nama_tersangka as $key => $nama) {
                 $berkasBaw = null;
                 $berkasBap = null;
                 
-                // Proses upload file BAW
                 if ($request->hasFile("baw_tersangka.$key")) {
                     $file = $request->file("baw_tersangka.$key");
                     $fileName = 'baw_tersangka_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
@@ -616,7 +614,6 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                     $berkasBaw = $path;
                 }
                 
-                // Proses upload file BAP
                 if ($request->hasFile("bap_tersangka.$key")) {
                     $file = $request->file("bap_tersangka.$key");
                     $fileName = 'bap_tersangka_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
@@ -624,12 +621,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                     $berkasBap = $path;
                 }
                 
-                // Cari indeks data yang sudah ada sebelumnya
                 $dataSebelumnyaIndex = array_search($nama, array_column($dataSebelumnya, 'nama'));
                 
-                // Logika update yang komprehensif
                 if ($dataSebelumnyaIndex !== false) {
-                    // Jika data sudah ada, update file yang baru diupload
                     $entryLama = $dataSebelumnya[$dataSebelumnyaIndex];
                     
                     $berkasBawBapTersangka[] = [
@@ -639,7 +633,6 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                         'tanggal_upload' => now()->format('Y-m-d H:i:s')
                     ];
                 } else {
-                    // Jika data baru, tambahkan entri baru
                     if ($berkasBaw || $berkasBap) {
                         $berkasBawBapTersangka[] = [
                             'nama' => $nama,
@@ -655,14 +648,12 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
 
         $berkasBawBapAhli = [];
         if ($request->has('baw_bap_nama_ahli')) {
-            // Ambil data sebelumnya dari database
             $dataSebelumnya = json_decode($item->berkas_baw_bap_ahli, true) ?? [];
         
             foreach ($request->baw_bap_nama_ahli as $key => $nama) {
                 $berkasBaw = null;
                 $berkasBap = null;
                 
-                // Proses upload file BAW
                 if ($request->hasFile("baw_ahli.$key")) {
                     $file = $request->file("baw_ahli.$key");
                     $fileName = 'baw_ahli_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
@@ -670,7 +661,6 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                     $berkasBaw = $path;
                 }
                 
-                // Proses upload file BAP
                 if ($request->hasFile("bap_ahli.$key")) {
                     $file = $request->file("bap_ahli.$key");
                     $fileName = 'bap_ahli_' . time() . '_' . $key . '.' . $file->getClientOriginalExtension();
@@ -678,12 +668,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                     $berkasBap = $path;
                 }
                 
-                // Cari indeks data yang sudah ada sebelumnya
                 $dataSebelumnyaIndex = array_search($nama, array_column($dataSebelumnya, 'nama'));
                 
-                // Logika update yang komprehensif
                 if ($dataSebelumnyaIndex !== false) {
-                    // Jika data sudah ada, update file yang baru diupload
                     $entryLama = $dataSebelumnya[$dataSebelumnyaIndex];
                     
                     $berkasBawBapAhli[] = [
@@ -693,7 +680,6 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                         'tanggal_upload' => now()->format('Y-m-d H:i:s')
                     ];
                 } else {
-                    // Jika data baru, tambahkan entri baru
                     if ($berkasBaw || $berkasBap) {
                         $berkasBawBapAhli[] = [
                             'nama' => $nama,

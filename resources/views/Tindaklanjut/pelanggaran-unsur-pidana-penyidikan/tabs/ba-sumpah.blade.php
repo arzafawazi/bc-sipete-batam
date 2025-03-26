@@ -46,7 +46,6 @@
                                      <select class="form-select select2" id="kategoriBaSumpah">
                                         <option value="" selected disabled>Pilih</option>
                                         <option value="saksi">Saksi (PILIH BAGIAN INI UNTUK MENGISI DATA-DATA SAKSI)</option>
-                                        <option value="tersangka">Tersangka (PILIH BAGIAN INI UNTUK MENGISI DATA-DATA TERSANGKA)</option>
                                         <option value="ahli">Ahli (PILIH BAGIAN INI UNTUK MENGISI DATA-DATA BA SUMPAH)</option>
                                     </select>
                                 </div>
@@ -96,79 +95,44 @@
                                                 <div class="col-md-1 text-center">:</div>
                                                 <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $saksi['alamat'] ?? '' }}" readonly></div>
                                             </div>
+                                            <div class="row mb-3">
+                                                 <div class="col-md-4 text-black d-flex align-items-center">Waktu Pengambilan Sumpah</div>
+                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                 <div class="col-md-7">
+                                                     <input type="text" class="form-control" name="waktu_sumpah_saksi[]" id="datetime-datepicker" class="datetime-datepicker" value="{{ old('waktu_sumpah', isset($unsurpenyidikan) ? $unsurpenyidikan->waktu_sumpah : '') }}">
+                                                 </div>
+                                             </div>
+                                             <div class="row mb-3">
+                                                 <div class="col-md-4 text-black d-flex align-items-center">Saksi Pertama</div>
+                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                 <div class="col-md-7">
+                                                     <select class="form-control py-1 form-select select2" name="saksi_pertama_ba_sumpah_saksi[]">
+                                                         @foreach ($users as $user)
+                                                         <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, old('saksi_pertama_saksi', $unsurpenyidikan->saksi_pertama ?? [])) ? 'selected' : '' }}>
+                                                             {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                                         </option>
+                                                         @endforeach
+                                                     </select>
+                                                 </div>
+                                             </div>
+                                              <div class="row mb-3">
+                                                 <div class="col-md-4 text-black d-flex align-items-center">Saksi Kedua</div>
+                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                 <div class="col-md-7">
+                                                     <select class="form-control py-1 form-select select2" name="saksi_kedua_ba_sumpah_saksi[]">
+                                                         @foreach ($users as $user)
+                                                         <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, old('saksi_kedua_saksi', $unsurpenyidikan->saksi_kedua ?? [])) ? 'selected' : '' }}>
+                                                             {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                                         </option>
+                                                         @endforeach
+                                                     </select>
+                                                 </div>
+                                             </div>
                                             <hr>
                                         </div>
                                         @endforeach
                                     </div>
                                 </div>
-
-                                    <div id="form-tersangka-ba-sumpah" style="display: none;">
-                                        <h5 class="fw-bold text-primary">Kumpulan Data Tersangka</h5>
-                                        <div id="dynamic-form-tersangka-ba-sumpah">
-                                            @foreach($tersangkaData as $index => $tersangka)
-                                            <div class="entry-tersangka text-black">
-                                                <hr>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Nama Lengkap</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text" name="baw_bap_nama_tersangka[]"  class="form-control border-0 py-1"  value="{{ $tersangka['nama'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Tempat /Tanggal Lahir</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $tersangka['ttl'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Agama</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $tersangka['agama'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Jenis Kelamin</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control border-0 py-1" value="{{ $tersangka['jenis_kelamin'] ?? '' }}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Kewarganegaraan</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control border-0 py-1"  value="{{ $tersangka['kewarganegaraan'] ?? '' }}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Pekerjaan Saat Ini</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $tersangka['pekerjaan'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Alamat Sesuai Identitas</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $tersangka['alamat'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Jenis/Nomor Identitas</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control  py-1"  placeholder="Jenis Identitas" value="{{ $tersangka['jenis_identitas'] ?? '' }}" readonly>
-                                                            <input type="text" class="form-control  py-1"  placeholder="Nomor Identitas" value="{{ $tersangka['nomor_identitas'] ?? '' }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Pendidikan Terakhir</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $tersangka['pendidikan'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <hr>
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-
 
                                     <div id="form-ahli-ba-sumpah" style="display: none;">
                                         <h5 class="fw-bold text-primary">Kumpulan Data Ahli</h5>
@@ -213,6 +177,39 @@
                                                     <div class="col-md-1 text-center">:</div>
                                                     <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['alamat_kantor'] ?? '' }}" readonly></div>
                                                 </div>
+                                                <div class="row mb-3">
+                                                 <div class="col-md-4 text-black d-flex align-items-center">Waktu Pengambilan Sumpah</div>
+                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                 <div class="col-md-7">
+                                                     <input type="text" class="form-control" name="waktu_sumpah_ahli[]" id="datetime-datepicker" class="datetime-datepicker" value="{{ old('waktu_sumpah', isset($unsurpenyidikan) ? $unsurpenyidikan->waktu_sumpah : '') }}">
+                                                 </div>
+                                             </div>
+                                             <div class="row mb-3">
+                                                 <div class="col-md-4 text-black d-flex align-items-center">Saksi Pertama</div>
+                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                 <div class="col-md-7">
+                                                     <select class="form-control py-1 form-select select2" name="saksi_pertama_ba_sumpah_ahli[]">
+                                                         @foreach ($users as $user)
+                                                         <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, old('saksi_pertama_ahli', $unsurpenyidikan->saksi_pertama_ahli ?? [])) ? 'selected' : '' }}>
+                                                             {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                                         </option>
+                                                         @endforeach
+                                                     </select>
+                                                 </div>
+                                             </div>
+                                              <div class="row mb-3">
+                                                 <div class="col-md-4 text-black d-flex align-items-center">Saksi Kedua</div>
+                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                 <div class="col-md-7">
+                                                     <select class="form-control py-1 form-select select2" name="saksi_kedua_ba_sumpah_ahli[]">
+                                                         @foreach ($users as $user)
+                                                         <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, old('saksi_kedua_ahli', $unsurpenyidikan->saksi_kedua_ahli ?? [])) ? 'selected' : '' }}>
+                                                             {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                                         </option>
+                                                         @endforeach
+                                                     </select>
+                                                 </div>
+                                             </div>
                                                 <hr>
                                             </div>
                                             @endforeach
