@@ -365,6 +365,12 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $berkasBawBapTersangka = json_decode($unsurpenyidikan->berkas_baw_bap_tersangka ?? '[]', true);
         $berkasBawBapAhli = json_decode($unsurpenyidikan->berkas_baw_bap_ahli ?? '[]', true);
 
+        $baSumpahSaksi = json_decode($unsurpenyidikan->ba_sumpah_saksi ?? '[]', true);
+        $baSumpahAhli = json_decode($unsurpenyidikan->ba_sumpah_ahli ?? '[]', true);
+        
+
+
+
 
 
         return view('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.edit', compact(
@@ -381,7 +387,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'ahliData',
             'berkasBawBapSaksi',
             'berkasBawBapTersangka',
-            'berkasBawBapAhli'
+            'berkasBawBapAhli',
+            'baSumpahSaksi',
+            'baSumpahAhli'
         ));
     }
 
@@ -416,6 +424,10 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'baw_bap_nama_saksi.*' => 'nullable|string',
             'baw_saksi.*' => 'nullable|file|mimes:pdf,doc,docx',
             'bap_saksi.*' => 'nullable|file|mimes:pdf,doc,docx',
+            'ba_sumpah_nama_saksi.*' => 'nullable|string',
+            'waktu_sumpah_saksi.*' => 'nullable|string',
+            'saksi_pertama_ba_sumpah_saksi.*' => 'nullable|string',
+            'saksi_kedua_ba_sumpah_saksi.*' => 'nullable|string',
 
             'no_sp1_tersangka.*' => 'nullable|string',
             'tgl_sp1_tersangka.*' => 'nullable|date',
@@ -454,7 +466,20 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'baw_bap_nama_ahli.*' => 'nullable|string',
             'baw_ahli.*' => 'nullable|file|mimes:pdf,doc,docx',
             'bap_ahli.*' => 'nullable|file|mimes:pdf,doc,docx',
+            'ba_sumpah_nama_ahli.*' => 'nullable|string',
+            'waktu_sumpah_ahli.*' => 'nullable|string',
+            'saksi_pertama_ba_sumpah_ahli.*' => 'nullable|string',
+            'saksi_kedua_ba_sumpah_ahli.*' => 'nullable|string',
+            'no_sppr_tersangka.*' => 'nullable|string',
+            'tgl_sppr_tersangka.*' => 'nullable|string',
+            'penggeledahan_nama_tersangka.*' => 'nullable|string',
+            'pejabat_geledah.*' => 'nullable|array',
+            'waktu_surat_penggeledahan_tersangka.*' => 'nullable|string',
+            'pejabat_penerbit_surat_penggeledahan_tersangka.*' => 'nullable|string',
         ]);
+
+
+        // dd($request->all());
 
         // Cari data yang akan diupdate
         $item = TblPelanggaranUnsurPidanaPenyidikan::find($id);
@@ -543,7 +568,6 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                 }
             }
 
-        // Proses data berkas BAW dan BAP saksi
         // Proses data berkas BAW dan BAP saksi
         $berkasBawBapSaksi = [];
         if ($request->has('baw_bap_nama_saksi')) {
@@ -691,6 +715,50 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                 }
             }
         }
+
+
+
+        $dataBaSumpahSaksi = [];
+        if ($request->has('ba_sumpah_nama_saksi')) {
+            foreach ($request->ba_sumpah_nama_saksi as $key => $nama) {
+
+                $dataBaSumpahSaksi[] = [
+                    'nama' => $nama,
+                    'waktu_sumpah' => $request->waktu_sumpah_saksi[$key] ?? null,
+                    'saksi_pertama' => $request->saksi_pertama_ba_sumpah_saksi[$key] ?? null,
+                    'saksi_kedua' => $request->saksi_kedua_ba_sumpah_saksi[$key] ?? null,
+                ];
+            }
+        }
+
+        $dataBaSumpahAhli = [];
+        if ($request->has('ba_sumpah_nama_ahli')) {
+            foreach ($request->ba_sumpah_nama_ahli as $key => $nama) {
+
+                $dataBaSumpahAhli[] = [
+                    'nama' => $nama,
+                    'waktu_sumpah' => $request->waktu_sumpah_ahli[$key] ?? null,
+                    'saksi_pertama' => $request->saksi_pertama_ba_sumpah_ahli[$key] ?? null,
+                    'saksi_kedua' => $request->saksi_kedua_ba_sumpah_ahli[$key] ?? null,
+                ];
+            }
+        }
+
+        $dataGeledahTersangka = [];
+        if ($request->has('penggeledahan_nama_tersangka')) {
+            foreach ($request->penggeledahan_nama_tersangka as $key => $nama) {
+                $pejabatGeledah = $request->input("pejabat_geledah.$key", []);
+
+                $dataGeledahTersangka[] = [
+                    'nama' => $nama,
+                    'no_sppr' => $request->no_sppr_tersangka[$key] ?? null,
+                    'tgl_sppr' => $request->tgl_sppr_tersangka[$key] ?? null,
+                    'pejabat_geledah' => !empty($pejabatGeledah) ? json_encode($pejabatGeledah) : null,
+                    'waktu_berlaku_penggeledahan' => $request->waktu_surat_penggeledahan_tersangka[$key] ?? null,
+                    'pejabat_penerbit' => $request->pejabat_penerbit_surat_penggeledahan_tersangka[$key] ?? null,
+                ];
+            }
+        }
         
 
         $requestData = $request->except([
@@ -717,6 +785,10 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'baw_bap_nama_saksi',
             'baw_saksi',
             'bap_saksi',
+            'ba_sumpah_nama_saksi',
+            'waktu_sumpah_saksi',
+            'saksi_pertama_ba_sumpah_saksi',
+            'saksi_kedua_ba_sumpah_saksi',
 
             'no_sp1_tersangka',
             'tgl_sp1_tersangka',
@@ -755,6 +827,16 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'baw_bap_nama_ahli',
             'baw_ahli',
             'bap_ahli',
+            'ba_sumpah_nama_ahli',
+            'waktu_sumpah_ahli',
+            'saksi_pertama_ba_sumpah_ahli',
+            'saksi_kedua_ba_sumpah_ahli',
+            'no_sppr_tersangka',
+            'tgl_sppr_tersangka',
+            'penggeledahan_nama_tersangka',
+            'pejabat_geledah',
+            'waktu_surat_penggeledahan_tersangka',
+            'pejabat_penerbit_surat_penggeledahan_tersangka',
         ]);
 
         $requestData['data_saksi'] = json_encode($dataSaksi);
@@ -763,6 +845,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $requestData['berkas_baw_bap_saksi'] = json_encode($berkasBawBapSaksi);
         $requestData['berkas_baw_bap_tersangka'] = json_encode($berkasBawBapTersangka);
         $requestData['berkas_baw_bap_ahli'] = json_encode($berkasBawBapAhli);
+        $requestData['ba_sumpah_saksi'] = json_encode($dataBaSumpahSaksi);
+        $requestData['ba_sumpah_ahli'] = json_encode($dataBaSumpahAhli);
+        $requestData['penggeledahan_tersangka'] = json_encode($dataGeledahTersangka);
 
         // Hapus baris dd() yang digunakan untuk debugging
         // dd($requestData);

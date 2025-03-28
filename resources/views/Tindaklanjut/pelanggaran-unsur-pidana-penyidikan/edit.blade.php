@@ -85,7 +85,7 @@
                                                 <span class="d-none d-sm-block">BERITA ACARA PENGGELEDAHAN</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item-penyidikan">
+                                        {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-spp-tab" data-bs-toggle="tab" href="#navtabs2-spp" role="tab" aria-controls="navtabs2-spp" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPP)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH PENYITAAN</span>
@@ -139,7 +139,7 @@
                                                 <span class="d-none d-sm-block"> SURAT PERINTAH PENAHANAN
                                                 </span>
                                             </a>
-                                        </li>
+                                        </li> --}}
 
                                     </ul>
                                 </div>
@@ -204,13 +204,13 @@
                                         ])
                                     </div>
 
-                                    <div class="tab-pane" id="navtabs2-ba-penggeledahan" role="tabpanel">
+                                    {{-- <div class="tab-pane" id="navtabs2-ba-penggeledahan" role="tabpanel">
                                         @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-penggeledahan', [
                                         'sbpData' => $sbpData,
                                         'users' => $users,
                                         'no_ref' => $no_ref,
                                         ])
-                                    </div>
+                                    </div> --}}
 
                                     
 

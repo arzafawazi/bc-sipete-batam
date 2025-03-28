@@ -1,4 +1,4 @@
-<div class="container-fluid mt-4">
+ <div class="container-fluid mt-4">
     <!-- Header with Logo -->
     <div class="row mb-4 align-items-center text-black">
         <div class="col-md-2 col-sm-12 text-center mb-3 mb-md-0">
@@ -54,12 +54,16 @@
                                     <h5 class="fw-bold text-primary">Kumpulan Data Saksi</h5>
                                     <div id="dynamic-form-saksi-ba-sumpah">
                                         @foreach($saksiData as $index => $saksi)
+                                        @php
+                                        $saksiSumpah = $baSumpahSaksi[$index] ?? null;
+                                        $ahliSumpah = $baSumpahAhli[$index] ?? null;
+                                        @endphp
                                         <div class="entry-saksi text-black">
                                             <hr>
                                             <div class="row mb-3">
                                                 <div class="col-md-4 d-flex align-items-center">Nama Lengkap</div>
                                                 <div class="col-md-1 text-center">:</div>
-                                                <div class="col-md-7"><input type="text" name="baw_bap_nama_saksi[]" class="form-control border-0 py-1" value="{{ $saksi['nama'] ?? '' }}" readonly></div>
+                                                <div class="col-md-7"><input type="text" name="ba_sumpah_nama_saksi[]" class="form-control border-0 py-1" value="{{ $saksi['nama'] ?? '' }}" readonly></div>
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-md-4 d-flex align-items-center">Tempat /Tanggal Lahir</div>
@@ -95,39 +99,48 @@
                                                 <div class="col-md-1 text-center">:</div>
                                                 <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $saksi['alamat'] ?? '' }}" readonly></div>
                                             </div>
+
                                             <div class="row mb-3">
-                                                 <div class="col-md-4 text-black d-flex align-items-center">Waktu Pengambilan Sumpah</div>
-                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                 <div class="col-md-7">
-                                                     <input type="text" class="form-control" name="waktu_sumpah_saksi[]" id="datetime-datepicker" class="datetime-datepicker" value="{{ old('waktu_sumpah', isset($unsurpenyidikan) ? $unsurpenyidikan->waktu_sumpah : '') }}">
-                                                 </div>
-                                             </div>
-                                             <div class="row mb-3">
-                                                 <div class="col-md-4 text-black d-flex align-items-center">Saksi Pertama</div>
-                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                 <div class="col-md-7">
-                                                     <select class="form-control py-1 form-select select2" name="saksi_pertama_ba_sumpah_saksi[]">
-                                                         @foreach ($users as $user)
-                                                         <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, old('saksi_pertama_saksi', $unsurpenyidikan->saksi_pertama ?? [])) ? 'selected' : '' }}>
-                                                             {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
-                                                         </option>
-                                                         @endforeach
-                                                     </select>
-                                                 </div>
-                                             </div>
-                                              <div class="row mb-3">
-                                                 <div class="col-md-4 text-black d-flex align-items-center">Saksi Kedua</div>
-                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                 <div class="col-md-7">
-                                                     <select class="form-control py-1 form-select select2" name="saksi_kedua_ba_sumpah_saksi[]">
-                                                         @foreach ($users as $user)
-                                                         <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, old('saksi_kedua_saksi', $unsurpenyidikan->saksi_kedua ?? [])) ? 'selected' : '' }}>
-                                                             {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
-                                                         </option>
-                                                         @endforeach
-                                                     </select>
-                                                 </div>
-                                             </div>
+                                                <div class="col-md-4 text-black d-flex align-items-center">Waktu Pengambilan Sumpah</div>
+                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control datetime-datepicker"
+                                                        name="waktu_sumpah_saksi[]"
+                                                        value="{{ old('waktu_sumpah_saksi.' . $index, $saksiSumpah['waktu_sumpah'] ?? '') }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-4 text-black d-flex align-items-center">Saksi Pertama</div>
+                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                <div class="col-md-7">
+                                                    <select class="form-control py-1 form-select select2" name="saksi_pertama_ba_sumpah_saksi[]">
+                                                        <option value="" selected disabled>- Pilih -</option>
+                                                        @foreach ($users as $user)
+                                                            <option value="{{ $user->id_admin }}" 
+                                                                {{ old('saksi_pertama_ba_sumpah_saksi.' . $index, $saksiSumpah['saksi_pertama'] ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                                                {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-4 text-black d-flex align-items-center">Saksi Kedua</div>
+                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                <div class="col-md-7">
+                                                    <select class="form-control py-1 form-select select2" name="saksi_kedua_ba_sumpah_saksi[]">
+                                                        <option value="" selected disabled>- Pilih -</option>
+                                                        @foreach ($users as $user)
+                                                            <option value="{{ $user->id_admin }}" 
+                                                                {{ old('saksi_kedua_ba_sumpah_saksi.' . $index, $saksiSumpah['saksi_kedua'] ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                                                {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <hr>
                                         </div>
                                         @endforeach
@@ -143,7 +156,7 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-4 d-flex align-items-center">Nama Lengkap</div>
                                                     <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['nama'] ?? '' }}" readonly></div>
+                                                    <div class="col-md-7"><input type="text" class="form-control border-0 py-1" name="ba_sumpah_nama_ahli[]"  value="{{ $ahli['nama'] ?? '' }}" readonly></div>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <div class="col-md-4 d-flex align-items-center">Tempat /Tanggal Lahir</div>
@@ -177,39 +190,48 @@
                                                     <div class="col-md-1 text-center">:</div>
                                                     <div class="col-md-7"><input type="text" class="form-control border-0 py-1"  value="{{ $ahli['alamat_kantor'] ?? '' }}" readonly></div>
                                                 </div>
+
                                                 <div class="row mb-3">
-                                                 <div class="col-md-4 text-black d-flex align-items-center">Waktu Pengambilan Sumpah</div>
-                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                 <div class="col-md-7">
-                                                     <input type="text" class="form-control" name="waktu_sumpah_ahli[]" id="datetime-datepicker" class="datetime-datepicker" value="{{ old('waktu_sumpah', isset($unsurpenyidikan) ? $unsurpenyidikan->waktu_sumpah : '') }}">
-                                                 </div>
-                                             </div>
-                                             <div class="row mb-3">
-                                                 <div class="col-md-4 text-black d-flex align-items-center">Saksi Pertama</div>
-                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                 <div class="col-md-7">
-                                                     <select class="form-control py-1 form-select select2" name="saksi_pertama_ba_sumpah_ahli[]">
-                                                         @foreach ($users as $user)
-                                                         <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, old('saksi_pertama_ahli', $unsurpenyidikan->saksi_pertama_ahli ?? [])) ? 'selected' : '' }}>
-                                                             {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
-                                                         </option>
-                                                         @endforeach
-                                                     </select>
-                                                 </div>
-                                             </div>
-                                              <div class="row mb-3">
-                                                 <div class="col-md-4 text-black d-flex align-items-center">Saksi Kedua</div>
-                                                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
-                                                 <div class="col-md-7">
-                                                     <select class="form-control py-1 form-select select2" name="saksi_kedua_ba_sumpah_ahli[]">
-                                                         @foreach ($users as $user)
-                                                         <option value="{{ $user->id_admin }}" {{ in_array($user->id_admin, old('saksi_kedua_ahli', $unsurpenyidikan->saksi_kedua_ahli ?? [])) ? 'selected' : '' }}>
-                                                             {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
-                                                         </option>
-                                                         @endforeach
-                                                     </select>
-                                                 </div>
-                                             </div>
+                                                <div class="col-md-4 text-black d-flex align-items-center">Waktu Pengambilan Sumpah</div>
+                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control datetime-datepicker"
+                                                        name="waktu_sumpah_ahli[]"
+                                                        value="{{ old('waktu_sumpah_ahli.' . $index, $saksiSumpah['waktu_sumpah'] ?? '') }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-4 text-black d-flex align-items-center">Saksi Pertama</div>
+                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                <div class="col-md-7">
+                                                    <select class="form-control py-1 form-select select2" name="saksi_pertama_ba_sumpah_ahli[]">
+                                                        <option value="" selected disabled>- Pilih -</option>
+                                                        @foreach ($users as $user)
+                                                            <option value="{{ $user->id_admin }}" 
+                                                                {{ old('saksi_pertama_ba_sumpah_ahli.' . $index, $ahliSumpah['saksi_pertama'] ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                                                {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-4 text-black d-flex align-items-center">Saksi Kedua</div>
+                                                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
+                                                <div class="col-md-7">
+                                                    <select class="form-control py-1 form-select select2" name="saksi_kedua_ba_sumpah_ahli[]">
+                                                        <option value="" selected disabled>- Pilih -</option>
+                                                        @foreach ($users as $user)
+                                                            <option value="{{ $user->id_admin }}" 
+                                                                {{ old('saksi_kedua_ba_sumpah_ahli.' . $index, $ahliSumpah['saksi_kedua'] ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                                                {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
                                                 <hr>
                                             </div>
                                             @endforeach
@@ -244,6 +266,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".datetime-datepicker").forEach(function (element) {
+        flatpickr(element, {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true
+        });
+    });
+});
+
+
 </script>
 
   
