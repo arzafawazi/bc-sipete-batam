@@ -204,13 +204,13 @@
                                         ])
                                     </div>
 
-                                    {{-- <div class="tab-pane" id="navtabs2-ba-penggeledahan" role="tabpanel">
+                                    <div class="tab-pane" id="navtabs2-ba-penggeledahan" role="tabpanel">
                                         @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-penggeledahan', [
                                         'sbpData' => $sbpData,
                                         'users' => $users,
                                         'no_ref' => $no_ref,
                                         ])
-                                    </div> --}}
+                                    </div>
 
                                     
 
