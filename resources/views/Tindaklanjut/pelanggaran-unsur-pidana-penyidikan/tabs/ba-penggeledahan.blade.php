@@ -72,6 +72,9 @@
 
                          <p class="text-black"><b>Data Tersangka</b></p>
                          @foreach ($tersangkaData as $index => $tersangka)
+                             @php
+                                 $BaGeledahTersangka = $BaPenggeledahanTersangka[$index] ?? null;
+                             @endphp
                              <hr>
 
                              <div class="mb-3 row">
@@ -80,7 +83,7 @@
                                  <div class="col-md-8 col-sm-11">
                                      <input type="text" class="form-control datetime-datepicker"
                                          name="waktu_ba_geledah[]"
-                                         value="{{ old('waktu_ba_geledah.' . $index, $saksiSumpah['waktu_geledah'] ?? '') }}">
+                                         value="{{ old('waktu_ba_geledah.' . $index, $BaGeledahTersangka['waktu_geledah'] ?? '') }}">
                                  </div>
                              </div>
 
@@ -93,12 +96,12 @@
                                      <select class="form-control py-1 form-select select2"
                                          name="pejabat_penerbit_surat_penggeledahan_tersangka_ba[]">
                                          <option value="" disabled
-                                             {{ old('pejabat_penerbit_surat_penggeledahan_tersangka_ba.' . $index, $geledahTersangka['pejabat_penerbit_ba'] ?? '') == '' ? 'selected' : '' }}>
+                                             {{ old('pejabat_penerbit_surat_penggeledahan_tersangka_ba.' . $index, $BaGeledahTersangka['pejabat_penerbit_ba'] ?? '') == '' ? 'selected' : '' }}>
                                              - Pilih -</option>
 
                                          @foreach ($users as $user)
                                              <option value="{{ $user->id_admin }}"
-                                                 {{ old('pejabat_penerbit_surat_penggeledahan_tersangka_ba.' . $index, $geledahTersangka['pejabat_penerbit_ba'] ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                                 {{ old('pejabat_penerbit_surat_penggeledahan_tersangka_ba.' . $index, $BaGeledahTersangka['pejabat_penerbit_ba'] ?? '') == $user->id_admin ? 'selected' : '' }}>
                                                  {{ $user->name }} | {{ $user->pangkat }} |
                                                  {{ $user->jabatan }}
                                              </option>
@@ -113,7 +116,7 @@
                                  <div class="col-md-1 text-center mt-1 d-none d-sm-block">:</div>
                                  <div class="col-md-8 col-sm-11">
                                      <input type="text" name="ba_penggeledahan_izin_pengadilan[]"
-                                         class="form-control py-1" value="{{ $tersangka['izin_pengadilan'] ?? '' }}">
+                                         class="form-control py-1" value="{{ $BaGeledahTersangka['izin_pengadilan'] ?? '' }}">
                                  </div>
                              </div>
 
@@ -122,7 +125,7 @@
                                  <div class="col-md-1 text-center mt-1 d-none d-sm-block">:</div>
                                  <div class="col-md-8 col-sm-11">
                                      <input type="text" name="ba_penggeledahan_izin_lain[]" class="form-control py-1"
-                                         value="{{ $tersangka['izin_lainnya'] ?? '' }}">
+                                         value="{{ $BaGeledahTersangka['izin_lainnya'] ?? '' }}">
                                  </div>
                              </div>
 
@@ -131,17 +134,17 @@
                                  <div class="col-md-1 text-center mt-1 d-none d-sm-block">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <textarea name="diisi_ba_penggeledahan[]" class="form-control" rows="5"
-                                         placeholder="Diisi (Jl. No. RT, kelurahan) / (nama sarana pengangkut,nomor polisi/register) / (lokasi)">{{ $tersangka['isi_ba_geledah'] ?? '' }}</textarea>
+                                         placeholder="Diisi (Jl. No. RT, kelurahan) / (nama sarana pengangkut,nomor polisi/register) / (lokasi)">{{ $BaGeledahTersangka['isi_ba_geledah'] ?? '' }}</textarea>
                                  </div>
                              </div>
 
 
-                              <div class="mb-3 row">
+                             <div class="mb-3 row">
                                  <label class="col-md-3 col-sm-12 col-form-label">Diisi</label>
                                  <div class="col-md-1 text-center mt-1 d-none d-sm-block">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <textarea name="diisi_identitas_ba_penggeledahan[]" class="form-control" rows="5"
-                                         placeholder="Diisi Nama Tersangka/penghuni rumah/pemilik sarana pengangkut/pengemudi/nahkoda/pilot">{{ $tersangka['isi_ba_geledah_identitas'] ?? '' }}</textarea>
+                                         placeholder="Diisi Nama Tersangka/penghuni rumah/pemilik sarana pengangkut/pengemudi/nahkoda/pilot">{{ $BaGeledahTersangka['isi_ba_geledah_identitas'] ?? '' }}</textarea>
                                  </div>
                              </div>
 
@@ -210,14 +213,16 @@
                                  <div class="col-md-3 col-sm-12 col-form-label">1. Nama</div>
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
-                                     <input type="text" name="saksi1_geledah_nama[]" class="form-control py-1" value="{{ old('saksi1_geledah_nama.' . $index, $saksiSumpah['saksi_pertama_nama'] ?? '') }}">
+                                     <input type="text" name="saksi1_geledah_nama[]" class="form-control py-1"
+                                         value="{{ old('saksi1_geledah_nama.' . $index, $BaGeledahTersangka['saksi_pertama_nama'] ?? '') }}">
                                  </div>
                              </div>
                              <div class="row mb-1">
                                  <div class="col-md-3 col-sm-12 col-form-label">&nbsp;&nbsp;&nbsp;Alamat</div>
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
-                                     <input type="text" name="saksi1_geledah_alamat[]" class="form-control py-1" value="{{ old('saksi1_geledah_alamat.' . $index, $saksiSumpah['saksi_pertama_alamat'] ?? '') }}">
+                                     <input type="text" name="saksi1_geledah_alamat[]" class="form-control py-1"
+                                         value="{{ old('saksi1_geledah_alamat.' . $index, $BaGeledahTersangka['saksi_pertama_alamat'] ?? '') }}">
                                  </div>
                              </div>
                              <div class="row mb-2">
@@ -225,7 +230,8 @@
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <input type="text" name="saksi1_geledah_pekerjaan[]"
-                                         class="form-control py-1" value="{{ old('saksi1_geledah_pekerjaan.' . $index, $saksiSumpah['saksi_pertama_pekerjaan'] ?? '') }}">
+                                         class="form-control py-1"
+                                         value="{{ old('saksi1_geledah_pekerjaan.' . $index, $BaGeledahTersangka['saksi_pertama_pekerjaan'] ?? '') }}">
                                  </div>
                              </div>
 
@@ -234,14 +240,16 @@
                                  <div class="col-md-3 col-sm-12 col-form-label">2. Nama</div>
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
-                                     <input type="text" name="saksi2_geledah_nama[]" class="form-control py-1" value="{{ old('saksi2_geledah_nama.' . $index, $saksiSumpah['saksi_kedua_nama'] ?? '') }}"> 
+                                     <input type="text" name="saksi2_geledah_nama[]" class="form-control py-1"
+                                         value="{{ old('saksi2_geledah_nama.' . $index, $BaGeledahTersangka['saksi_kedua_nama'] ?? '') }}">
                                  </div>
                              </div>
                              <div class="row mb-1">
                                  <div class="col-md-3 col-sm-12 col-form-label">&nbsp;&nbsp;&nbsp;Alamat</div>
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
-                                     <input type="text" name="saksi2_geledah_alamat[]" class="form-control py-1" value="{{ old('saksi2_geledah_alamat.' . $index, $saksiSumpah['saksi_kedua_alamat'] ?? '') }}">
+                                     <input type="text" name="saksi2_geledah_alamat[]" class="form-control py-1"
+                                         value="{{ old('saksi2_geledah_alamat.' . $index, $BaGeledahTersangka['saksi_kedua_alamat'] ?? '') }}">
                                  </div>
                              </div>
                              <div class="row mb-2">
@@ -249,7 +257,8 @@
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <input type="text" name="saksi2_geledah_pekerjaan[]"
-                                         class="form-control py-1" value="{{ old('saksi2_geledah_nama.' . $index, $saksiSumpah['saksi_kedua_pekerjaan'] ?? '') }}">
+                                         class="form-control py-1"
+                                         value="{{ old('saksi2_geledah_nama.' . $index, $BaGeledahTersangka['saksi_kedua_pekerjaan'] ?? '') }}">
                                  </div>
                              </div>
 
@@ -261,7 +270,7 @@
                                  <div class="col-md-1 text-center mt-1 d-none d-sm-block">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <textarea name="uraian_penggeledahan[]" class="form-control" rows="5"
-                                         placeholder="Masukkan uraian singkat...">{{ $tersangka['uraian_penggeledahan'] ?? '' }}</textarea>
+                                         placeholder="Masukkan uraian singkat...">{{ $BaGeledahTersangka['uraian_penggeledahan'] ?? '' }}</textarea>
                                  </div>
                              </div>
                              <hr>

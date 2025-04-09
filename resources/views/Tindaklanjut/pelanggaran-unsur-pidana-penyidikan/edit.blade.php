@@ -85,55 +85,61 @@
                                                 <span class="d-none d-sm-block">BERITA ACARA PENGGELEDAHAN</span>
                                             </a>
                                         </li>
-                                        {{-- <li class="nav-item-penyidikan">
+                                        <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-spp-tab" data-bs-toggle="tab" href="#navtabs2-spp" role="tab" aria-controls="navtabs2-spp" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPP)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH PENYITAAN</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item-penyidikan">
+                                         <li class="nav-item-penyidikan">
+                                            <a class="nav-link " id="navtabs2-ba-penyitaan-tab" data-bs-toggle="tab" href="#navtabs2-ba-penyitaan" role="tab" aria-controls="navtabs2-ba-penyitaan" aria-selected="false">
+                                                <span class="d-block d-sm-none">(BA PENYITAAN)</span>
+                                                <span class="d-none d-sm-block">BERITA ACARA PENYITAAN</span>
+                                            </a>
+                                        </li>
+                                        {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppp-tab" data-bs-toggle="tab" href="#navtabs2-sppp" role="tab" aria-controls="navtabs2-sppp" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPPP)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH PEMOTRETAN DAN/ATAU PEREKAMAN MELALUI MEDIA AUDIOVISUAL
                                                 </span>
                                             </a>
-                                        </li>
-                                        <li class="nav-item-penyidikan">
+                                        </li> --}}
+                                        {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppsj-tab" data-bs-toggle="tab" href="#navtabs2-sppsj" role="tab" aria-controls="navtabs2-sppsj" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPPSJ)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH PENGAMBILAN SIDIK JARI
                                                 </span>
                                             </a>
-                                        </li>
-                                        <li class="nav-item-penyidikan">
+                                        </li> --}}
+                                        {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-spfd-tab" data-bs-toggle="tab" href="#navtabs2-spfd" role="tab" aria-controls="navtabs2-spfd" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPFD)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH FORENSIK DIGITAL
                                                 </span>
                                             </a>
-                                        </li>
-                                        <li class="nav-item-penyidikan">
+                                        </li> --}}
+                                        {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-staptsk-tab" data-bs-toggle="tab" href="#navtabs2-staptsk" role="tab" aria-controls="navtabs2-staptsk" aria-selected="false">
                                                 <span class="d-block d-sm-none">(S.TAPTSK)</span>
                                                 <span class="d-none d-sm-block">SURAT PENETAPAN TERSANGKA
                                                 </span>
                                             </a>
-                                        </li>
-                                        <li class="nav-item-penyidikan">
+                                        </li> --}}
+                                        {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-staptsk-tab" data-bs-toggle="tab" href="#navtabs2-staptsk" role="tab" aria-controls="navtabs2-staptsk" aria-selected="false">
                                                 <span class="d-block d-sm-none">(S.TAPTSK)</span>
                                                 <span class="d-none d-sm-block">SURAT PENETAPAN TERSANGKA
                                                 </span>
                                             </a>
-                                        </li>
-                                        <li class="nav-item-penyidikan">
+                                        </li> --}}
+                                        {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppenang-tab" data-bs-toggle="tab" href="#navtabs2-sppenang" role="tab" aria-controls="navtabs2-sppenang" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPP)</span>
                                                 <span class="d-none d-sm-block"> SURAT PERINTAH PENANGKAPAN
                                                 </span>
                                             </a>
-                                        </li>
-                                        <li class="nav-item-penyidikan">
+                                        </li> --}}
+                                        {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppenah-tab" data-bs-toggle="tab" href="#navtabs2-sppenah" role="tab" aria-controls="navtabs2-sppenah" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPP)</span>
                                                 <span class="d-none d-sm-block"> SURAT PERINTAH PENAHANAN
@@ -206,6 +212,22 @@
 
                                     <div class="tab-pane" id="navtabs2-ba-penggeledahan" role="tabpanel">
                                         @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-penggeledahan', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-spp" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-perintah-penyitaan', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                     <div class="tab-pane" id="navtabs2-ba-penyitaan" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-penyitaan', [
                                         'sbpData' => $sbpData,
                                         'users' => $users,
                                         'no_ref' => $no_ref,
