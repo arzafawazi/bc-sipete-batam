@@ -479,7 +479,7 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'saksi_kedua_ba_sumpah_ahli.*' => 'nullable|string',
 
             'waktu_ba_geledah.*' => 'nullable|string',
-            'pejabat_penerbit_surat_penggeledahan_tersangka.*' => 'nullable|string',
+            'pejabat_penerbit_surat_penggeledahan_tersangka_ba.*' => 'nullable|string',
             'ba_penggeledahan_izin_pengadilan.*' => 'nullable|string',
             'ba_penggeledahan_izin_lain.*' => 'nullable|string',
             'diisi_ba_penggeledahan.*' => 'nullable|string',
@@ -504,6 +504,24 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'pejabat_saksi_pertama.*' => 'nullable|string',
             'pejabat_saksi_kedua.*' => 'nullable|string',
             'ba_penyitaan_nama_tersangka.*' => 'nullable|string',
+
+            'no_sppp_tersangka.*' => 'nullable|string',
+            'tgl_sppp_tersangka.*' => 'nullable|string',
+            'pemotretan_nama_tersangka.*' => 'nullable|string',
+            'rincian_data.*' => 'nullable|string',
+            'waktu_surat_pemotretan_tersangka.*' => 'nullable|string',
+            'pejabat_penerbit_surat_pemotretan_tersangka.*' => 'nullable|string',
+
+            'waktu_ba_potret.*' => 'nullable|string',
+            'pejabat_pertama_surat_penggeledahan_tersangka_ba.*' => 'nullable|string',
+            'pejabat_kedua_surat_penggeledahan_tersangka_ba.*' => 'nullable|string',
+            'ba_pemotretan_nama_tersangka.*' => 'nullable|string',
+            'saksi1_potret_nama.*' => 'nullable|string',
+            'saksi1_potret_alamat.*' => 'nullable|string',
+            'saksi1_potret_pekerjaan.*' => 'nullable|string',
+            'saksi2_potret_nama.*' => 'nullable|string',
+            'saksi2_potret_alamat.*' => 'nullable|string',
+            'diisi_cara_pemotretan.*' => 'nullable|string',
         ]);
 
 
@@ -842,6 +860,44 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                 ];
             }
         }
+
+        $dataPemotretanTersangka = [];
+        if ($request->has('pemotretan_nama_tersangka')) {
+            foreach ($request->pemotretan_nama_tersangka as $key => $nama) {
+                $pejabatPemotretan = $request->input("pejabat_pemotretan.$key", []);
+
+                $dataPemotretanTersangka[] = [
+                    'nama' => $nama,
+                    'no_sppp' => $request->no_sppp_tersangka[$key] ?? null,
+                    'tgl_spp' => $request->tgl_sppp_tersangka[$key] ?? null,
+                    'pejabat_pemotretan' => !empty($pejabatPemotretan) ? json_encode($pejabatPemotretan) : null,
+                    'rincian_data' => $request->rincian_data[$key] ?? null,
+                    'waktu_berlaku_pemotretan' => $request->waktu_surat_pemotretan_tersangka[$key] ?? null,
+                    'pejabat_penerbit' => $request->pejabat_penerbit_surat_pemotretan_tersangka[$key] ?? null,
+                ];
+            }
+        }
+
+
+        $dataBaPemotretanTersangka = [];
+        if ($request->has('ba_pemotretan_nama_tersangka')) {
+            foreach ($request->ba_pemotretan_nama_tersangka as $key => $nama) {
+
+                $dataBaPemotretanTersangka[] = [
+                    'nama' => $nama,
+                    'waktu_potret' => $request->waktu_ba_potret[$key] ?? null,
+                    'pejabat_pertama_ba' => $request->pejabat_pertama_surat_pemotretan_tersangka_ba[$key] ?? null,
+                    'pejabat_kedua_ba' => $request->pejabat_kedua_surat_pemotretan_tersangka_ba[$key] ?? null,
+                    'saksi_pertama_nama' => $request->saksi1_potret_nama[$key] ?? null,
+                    'saksi_pertama_alamat' => $request->saksi1_potret_alamat[$key] ?? null,
+                    'saksi_pertama_pekerjaan' => $request->saksi1_potret_pekerjaan[$key] ?? null,
+                    'saksi_kedua_nama' => $request->saksi2_potret_nama[$key] ?? null,
+                    'saksi_kedua_alamat' => $request->saksi2_potret_alamat[$key] ?? null,
+                    'saksi_kedua_pekerjaan' => $request->saksi2_potret_pekerjaan[$key] ?? null,
+                    'cara_pemotretan' => $request->diisi_cara_pemotretan[$key] ?? null,
+                ];
+            }
+        }
         
 
         $requestData = $request->except([
@@ -949,20 +1005,45 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'pejabat_saksi_pertama',
             'pejabat_saksi_kedua',
             'ba_penyitaan_nama_tersangka',
+
+            'no_sppp_tersangka',
+            'tgl_sppp_tersangka',
+            'pemotretan_nama_tersangka',
+            'rincian_data',
+            'waktu_surat_pemotretan_tersangka',
+            'pejabat_penerbit_surat_pemotretan_tersangka',
+
+            'waktu_ba_potret',
+            'pejabat_pertama_surat_penggeledahan_tersangka_ba',
+            'pejabat_kedua_surat_penggeledahan_tersangka_ba',
+            'ba_pemotretan_nama_tersangka',
+            'saksi1_potret_nama',
+            'saksi1_potret_alamat',
+            'saksi1_potret_pekerjaan',
+            'saksi2_potret_nama',
+            'saksi2_potret_alamat',
+            'diisi_cara_pemotretan',
         ]);
 
         $requestData['data_saksi'] = json_encode($dataSaksi);
         $requestData['data_tersangka'] = json_encode($dataTersangka);
         $requestData['data_ahli'] = json_encode($dataAhli);
+
         $requestData['berkas_baw_bap_saksi'] = json_encode($berkasBawBapSaksi);
         $requestData['berkas_baw_bap_tersangka'] = json_encode($berkasBawBapTersangka);
         $requestData['berkas_baw_bap_ahli'] = json_encode($berkasBawBapAhli);
+
         $requestData['ba_sumpah_saksi'] = json_encode($dataBaSumpahSaksi);
         $requestData['ba_sumpah_ahli'] = json_encode($dataBaSumpahAhli);
+
         $requestData['penggeledahan_tersangka'] = json_encode($dataGeledahTersangka);
         $requestData['ba_penggeledahan_tersangka'] = json_encode($dataBaGeledahTersangka);
+
         $requestData['penyitaan_tersangka'] = json_encode($dataPenyitaanTersangka);
         $requestData['ba_penyitaan_tersangka'] = json_encode($dataBaPenyitaanTersangka);
+
+        $requestData['pemotretan_tersangka'] = json_encode($dataPemotretanTersangka);
+        $requestData['ba_pemotretan_tersangka'] = json_encode($dataBaPemotretanTersangka);
 
         // Hapus baris dd() yang digunakan untuk debugging
         // dd($requestData);

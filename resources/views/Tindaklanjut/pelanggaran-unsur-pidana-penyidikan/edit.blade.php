@@ -97,13 +97,19 @@
                                                 <span class="d-none d-sm-block">BERITA ACARA PENYITAAN</span>
                                             </a>
                                         </li>
-                                        {{-- <li class="nav-item-penyidikan">
+                                        <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppp-tab" data-bs-toggle="tab" href="#navtabs2-sppp" role="tab" aria-controls="navtabs2-sppp" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPPP)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH PEMOTRETAN DAN/ATAU PEREKAMAN MELALUI MEDIA AUDIOVISUAL
                                                 </span>
                                             </a>
-                                        </li> --}}
+                                        </li>
+                                        <li class="nav-item-penyidikan">
+                                            <a class="nav-link " id="navtabs2-ba-pemotretan-tab" data-bs-toggle="tab" href="#navtabs2-ba-pemotretan" role="tab" aria-controls="navtabs2-ba-pemotretan" aria-selected="false">
+                                                <span class="d-block d-sm-none">(BA PEMOTRETAN)</span>
+                                                <span class="d-none d-sm-block">BERITA ACARA PEMOTRETAN</span>
+                                            </a>
+                                        </li>
                                         {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppsj-tab" data-bs-toggle="tab" href="#navtabs2-sppsj" role="tab" aria-controls="navtabs2-sppsj" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPPSJ)</span>
@@ -228,6 +234,30 @@
 
                                      <div class="tab-pane" id="navtabs2-ba-penyitaan" role="tabpanel">
                                         @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-penyitaan', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-sppp" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-perintah-pemotretan-perekaman', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-sppp" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-perintah-pemotretan-perekaman', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-ba-pemotretan" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-pemotretan-perekaman', [
                                         'sbpData' => $sbpData,
                                         'users' => $users,
                                         'no_ref' => $no_ref,
