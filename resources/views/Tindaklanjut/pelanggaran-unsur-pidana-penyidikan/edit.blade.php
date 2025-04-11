@@ -110,20 +110,32 @@
                                                 <span class="d-none d-sm-block">BERITA ACARA PEMOTRETAN</span>
                                             </a>
                                         </li>
-                                        {{-- <li class="nav-item-penyidikan">
+                                        <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppsj-tab" data-bs-toggle="tab" href="#navtabs2-sppsj" role="tab" aria-controls="navtabs2-sppsj" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPPSJ)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH PENGAMBILAN SIDIK JARI
                                                 </span>
                                             </a>
-                                        </li> --}}
-                                        {{-- <li class="nav-item-penyidikan">
+                                        </li>
+                                        <li class="nav-item-penyidikan">
+                                            <a class="nav-link " id="navtabs2-ba-sidik-jari-tab" data-bs-toggle="tab" href="#navtabs2-ba-sidik-jari" role="tab" aria-controls="navtabs2-ba-sidik-jari" aria-selected="false">
+                                                <span class="d-block d-sm-none">(BA SIDIK JARI)</span>
+                                                <span class="d-none d-sm-block">BERITA ACARA PENGAMBILAN SIDIK JARI</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-spfd-tab" data-bs-toggle="tab" href="#navtabs2-spfd" role="tab" aria-controls="navtabs2-spfd" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPFD)</span>
                                                 <span class="d-none d-sm-block">SURAT PERINTAH FORENSIK DIGITAL
                                                 </span>
                                             </a>
-                                        </li> --}}
+                                        </li>
+                                        <li class="nav-item-penyidikan">
+                                            <a class="nav-link " id="navtabs2-ba-forensik-digital-tab" data-bs-toggle="tab" href="#navtabs2-ba-forensik-digital" role="tab" aria-controls="navtabs2-ba-forensik-digital" aria-selected="false">
+                                                <span class="d-block d-sm-none">(BA FORENSIK DIGITAL)</span>
+                                                <span class="d-none d-sm-block">BERITA ACARA FORENSIK DIGITAL</span>
+                                            </a>
+                                        </li>
                                         {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-staptsk-tab" data-bs-toggle="tab" href="#navtabs2-staptsk" role="tab" aria-controls="navtabs2-staptsk" aria-selected="false">
                                                 <span class="d-block d-sm-none">(S.TAPTSK)</span>
@@ -258,6 +270,40 @@
 
                                     <div class="tab-pane" id="navtabs2-ba-pemotretan" role="tabpanel">
                                         @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-pemotretan-perekaman', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+
+                                    <div class="tab-pane" id="navtabs2-sppsj" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-perintah-pengambilan-sidik-jari', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+
+                                    <div class="tab-pane" id="navtabs2-ba-sidik-jari" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-pengambilan-sidik-jari', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                     <div class="tab-pane" id="navtabs2-spfd" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-perintah-forensik-digital', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-ba-forensik-digital" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-forensik-digital', [
                                         'sbpData' => $sbpData,
                                         'users' => $users,
                                         'no_ref' => $no_ref,

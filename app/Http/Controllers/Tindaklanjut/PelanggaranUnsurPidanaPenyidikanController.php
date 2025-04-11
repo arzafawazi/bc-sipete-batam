@@ -374,6 +374,8 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $penyitaanTersangka = json_decode($unsurpenyidikan->penyitaan_tersangka ?? '[]', true);
         $BaPenyitaanTersangka = json_decode($unsurpenyidikan->ba_penyitaan_tersangka ?? '[]', true);
 
+        $sidikjariTersangka = json_decode($unsurpenyidikan->sidik_jari_tersangka ?? '[]', true);;
+
         
 
         return view('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.edit', compact(
@@ -397,6 +399,7 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'BaPenggeledahanTersangka',
             'penyitaanTersangka',
             'BaPenyitaanTersangka',
+            'sidikjariTersangka'
         ));
     }
 
@@ -522,6 +525,29 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'saksi2_potret_nama.*' => 'nullable|string',
             'saksi2_potret_alamat.*' => 'nullable|string',
             'diisi_cara_pemotretan.*' => 'nullable|string',
+
+            'no_sppsj_tersangka.*' => 'nullable|string',
+            'tgl_sppsj_tersangka.*' => 'nullable|string',
+            'sidikjari_nama_tersangka.*' => 'nullable|string',
+            'waktu_surat_sidikjari_tersangka.*' => 'nullable|string',
+            'pejabat_penerbit_surat_sidikjari_tersangka.*' => 'nullable|string',
+
+            'waktu_ba_sidik_jari.*' => 'nullable|string',
+            'pejabat_pertama_surat_sidikjari_tersangka_ba.*' => 'nullable|string',
+            'pejabat_kedua_surat_sidikjari_tersangka_ba.*' => 'nullable|string',
+            'ba_sidikjari_nama_tersangka.*' => 'nullable|string',
+            'saksi1_sidik_jari_nama.*' => 'nullable|string',
+            'saksi1_sidik_jari_alamat.*' => 'nullable|string',
+            'saksi1_sidik_jari_pekerjaan.*' => 'nullable|string',
+            'saksi2_sidik_jari_nama.*' => 'nullable|string',
+            'saksi2_sidik_jari_alamat.*' => 'nullable|string',
+
+            'no_spfd_tersangka.*' => 'nullable|string',
+            'tgl_spfd_tersangka.*' => 'nullable|string',
+            'forensik_nama_tersangka.*' => 'nullable|string',
+            'rincian_data_bukti.*' => 'nullable|string',
+            'waktu_surat_forensik_tersangka.*' => 'nullable|string',
+            'pejabat_penerbit_surat_forensik_tersangka.*' => 'nullable|string',
         ]);
 
 
@@ -564,11 +590,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             }
         }
 
-        // Proses data tersangka
         $dataTersangka = [];
         if ($request->has('tersangka_nama')) {
             foreach ($request->tersangka_nama as $key => $nama) {
-                // Ambil data pejabat_spm jika ada dan pastikan dalam format array
                 $pejabatSpm = $request->input("pejabat_tersangka_spm.$key", []);
 
                 $dataTersangka[] = [
@@ -869,7 +893,7 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                 $dataPemotretanTersangka[] = [
                     'nama' => $nama,
                     'no_sppp' => $request->no_sppp_tersangka[$key] ?? null,
-                    'tgl_spp' => $request->tgl_sppp_tersangka[$key] ?? null,
+                    'tgl_sppp' => $request->tgl_sppp_tersangka[$key] ?? null,
                     'pejabat_pemotretan' => !empty($pejabatPemotretan) ? json_encode($pejabatPemotretan) : null,
                     'rincian_data' => $request->rincian_data[$key] ?? null,
                     'waktu_berlaku_pemotretan' => $request->waktu_surat_pemotretan_tersangka[$key] ?? null,
@@ -895,6 +919,60 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                     'saksi_kedua_alamat' => $request->saksi2_potret_alamat[$key] ?? null,
                     'saksi_kedua_pekerjaan' => $request->saksi2_potret_pekerjaan[$key] ?? null,
                     'cara_pemotretan' => $request->diisi_cara_pemotretan[$key] ?? null,
+                ];
+            }
+        }
+
+
+        $dataSidikJariTersangka = [];
+        if ($request->has('sidikjari_nama_tersangka')) {
+            foreach ($request->sidikjari_nama_tersangka as $key => $nama) {
+                $pejabatSidikJari = $request->input("pejabat_sidik.$key", []);
+
+                $dataSidikJariTersangka[] = [
+                    'nama' => $nama,
+                    'no_sppsj' => $request->no_sppsj_tersangka[$key] ?? null,
+                    'tgl_sppsj' => $request->tgl_sppsj_tersangka[$key] ?? null,
+                    'pejabat_sidik' => !empty($pejabatSidikJari) ? json_encode($pejabatSidikJari) : null,
+                    'waktu_berlaku_sidikjari' => $request->waktu_surat_sidikjari_tersangka[$key] ?? null,
+                    'pejabat_penerbit' => $request->pejabat_penerbit_surat_sidikjari_tersangka[$key] ?? null,
+                ];
+            }
+        }
+
+        $dataBaSidikJariTersangka = [];
+        if ($request->has('ba_sidikjari_nama_tersangka')) {
+            foreach ($request->ba_sidikjari_nama_tersangka as $key => $nama) {
+
+                $dataBaSidikJariTersangka[] = [
+                    'nama' => $nama,
+                    'waktu_sidik_jari' => $request->waktu_ba_sidik_jari[$key] ?? null,
+                    'pejabat_pertama_ba' => $request->pejabat_pertama_surat_sidikjari_tersangka_ba[$key] ?? null,
+                    'pejabat_kedua_ba' => $request->pejabat_kedua_surat_sidikjari_tersangka_ba[$key] ?? null,
+                    'saksi_pertama_nama' => $request->saksi1_sidik_jari_nama[$key] ?? null,
+                    'saksi_pertama_alamat' => $request->saksi1_sidik_jari_alamat[$key] ?? null,
+                    'saksi_pertama_pekerjaan' => $request->saksi1_sidik_jari_pekerjaan[$key] ?? null,
+                    'saksi_kedua_nama' => $request->saksi2_sidik_jari_nama[$key] ?? null,
+                    'saksi_kedua_alamat' => $request->saksi2_sidik_jari_alamat[$key] ?? null,
+                    'saksi_kedua_pekerjaan' => $request->saksi2_sidik_jari_pekerjaan[$key] ?? null,    
+                ];
+            }
+        }
+
+
+        $dataForensikDigitalTersangka = [];
+        if ($request->has('forensik_nama_tersangka')) {
+            foreach ($request->forensik_nama_tersangka as $key => $nama) {
+                $pejabatForensik = $request->input("pejabat_forensik.$key", []);
+
+                $dataForensikDigitalTersangka[] = [
+                    'nama' => $nama,
+                    'no_spfd' => $request->no_sppp_tersangka[$key] ?? null,
+                    'tgl_spfd' => $request->tgl_sppp_tersangka[$key] ?? null,
+                    'pejabat_forensik' => !empty($pejabatForensik) ? json_encode($pejabatForensik) : null,
+                    'rincian_data_bukti' => $request->rincian_data_bukti[$key] ?? null,
+                    'waktu_berlaku_forensik' => $request->waktu_surat_forensik_tersangka[$key] ?? null,
+                    'pejabat_penerbit' => $request->pejabat_penerbit_surat_forensik_tersangka[$key] ?? null,
                 ];
             }
         }
@@ -1023,6 +1101,30 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'saksi2_potret_nama',
             'saksi2_potret_alamat',
             'diisi_cara_pemotretan',
+
+            'no_sppsj_tersangka',
+            'tgl_sppsj_tersangka',
+            'sidikjari_nama_tersangka',
+            'waktu_surat_sidikjari_tersangka',
+            'pejabat_penerbit_surat_sidikjari_tersangka',
+
+            
+            'waktu_ba_sidik_jari',
+            'pejabat_pertama_surat_sidikjari_tersangka_ba',
+            'pejabat_kedua_surat_sidikjari_tersangka_ba',
+            'ba_sidikjari_nama_tersangka',
+            'saksi1_sidik_jari_nama',
+            'saksi1_sidik_jari_alamat',
+            'saksi1_sidik_jari_pekerjaan',
+            'saksi2_sidik_jari_nama',
+            'saksi2_sidik_jari_alamat',
+
+            'no_spfd_tersangka',
+            'tgl_spfd_tersangka',
+            'forensik_nama_tersangka',
+            'rincian_data_bukti',
+            'waktu_surat_forensik_tersangka',
+            'pejabat_penerbit_surat_forensik_tersangka',
         ]);
 
         $requestData['data_saksi'] = json_encode($dataSaksi);
@@ -1044,6 +1146,11 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
 
         $requestData['pemotretan_tersangka'] = json_encode($dataPemotretanTersangka);
         $requestData['ba_pemotretan_tersangka'] = json_encode($dataBaPemotretanTersangka);
+
+        $requestData['sidik_jari_tersangka'] = json_encode($dataSidikJariTersangka);
+        $requestData['ba_sidik_jari_tersangka'] = json_encode($dataBaSidikJariTersangka);
+
+        $requestData['forensik_digital_tersangka'] = json_encode($dataForensikDigitalTersangka);
 
         // Hapus baris dd() yang digunakan untuk debugging
         // dd($requestData);

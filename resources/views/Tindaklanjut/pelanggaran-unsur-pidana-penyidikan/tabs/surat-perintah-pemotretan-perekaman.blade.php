@@ -100,7 +100,7 @@
                                                             <span class="input-group-text">/PPNS/</span>
                                                             <input type="date" class="form-control"
                                                                 name="tgl_sppp_tersangka[]"
-                                                                value="{{ old('tgl_sppp_tersangka.' . $index, $potretTersangka['tgl_spp'] ?? '') }}">
+                                                                value="{{ old('tgl_sppp_tersangka.' . $index, $potretTersangka['tgl_sppp'] ?? '') }}">
                                                         </div>
                                                     </div>
                                                 </div>
