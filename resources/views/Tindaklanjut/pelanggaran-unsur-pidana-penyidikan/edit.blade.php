@@ -142,27 +142,27 @@
                                                 <span class="d-none d-sm-block">BERITA ACARA GELAR PERKARA</span>
                                             </a>
                                         </li>
-                                        {{-- <li class="nav-item-penyidikan">
+                                        <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-staptsk-tab" data-bs-toggle="tab" href="#navtabs2-staptsk" role="tab" aria-controls="navtabs2-staptsk" aria-selected="false">
                                                 <span class="d-block d-sm-none">(S.TAPTSK)</span>
                                                 <span class="d-none d-sm-block">SURAT PENETAPAN TERSANGKA
                                                 </span>
                                             </a>
-                                        </li> --}}
-                                        {{-- <li class="nav-item-penyidikan">
-                                            <a class="nav-link " id="navtabs2-staptsk-tab" data-bs-toggle="tab" href="#navtabs2-staptsk" role="tab" aria-controls="navtabs2-staptsk" aria-selected="false">
+                                        </li>
+                                        <li class="nav-item-penyidikan">
+                                            <a class="nav-link " id="navtabs2-staptsk-pemberitahuan-tab" data-bs-toggle="tab" href="#navtabs2-staptsk-pemberitahuan" role="tab" aria-controls="navtabs2-staptsk-pemberitahuan" aria-selected="false">
                                                 <span class="d-block d-sm-none">(S.TAPTSK)</span>
-                                                <span class="d-none d-sm-block">SURAT PENETAPAN TERSANGKA
+                                                <span class="d-none d-sm-block">SURAT PEMBERITAHUAN PENETAPAN TERSANGKA
                                                 </span>
                                             </a>
-                                        </li> --}}
-                                        {{-- <li class="nav-item-penyidikan">
+                                        </li>
+                                        <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppenang-tab" data-bs-toggle="tab" href="#navtabs2-sppenang" role="tab" aria-controls="navtabs2-sppenang" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPP)</span>
                                                 <span class="d-none d-sm-block"> SURAT PERINTAH PENANGKAPAN
                                                 </span>
                                             </a>
-                                        </li> --}}
+                                        </li>
                                         {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-sppenah-tab" data-bs-toggle="tab" href="#navtabs2-sppenah" role="tab" aria-controls="navtabs2-sppenah" aria-selected="false">
                                                 <span class="d-block d-sm-none">(SPP)</span>
@@ -318,6 +318,30 @@
 
                                     <div class="tab-pane" id="navtabs2-ba-gelar-perkara" role="tabpanel">
                                         @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-gelar-perkara', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                     <div class="tab-pane" id="navtabs2-staptsk" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-penetapan-tersangka', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-staptsk-pemberitahuan" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-pemberitahuan-penetapan-tersangka', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-sppenang" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-perintah-penangkapan', [
                                         'sbpData' => $sbpData,
                                         'users' => $users,
                                         'no_ref' => $no_ref,

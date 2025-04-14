@@ -562,6 +562,20 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'kesimpulan_gelar_perkara.*' => 'nullable|string',
             'rencana_kegiatan_penyidikan.*' => 'nullable|string',
             'pejabat_gelar_perkara.*' => 'nullable|string',
+
+            'no_staptsk_tersangka.*' => 'nullable|string',
+            'tgl_staptsk_tersangka.*' => 'nullable|string',
+            'penetapan_nama_tersangka.*' => 'nullable|string',
+            'pejabat_penerbit_surat_penetapan_tersangka.*' => 'nullable|string',
+            'status_plh.*' => 'nullable|string',
+
+            'no_spp_penangkapan_tersangka.*' => 'nullable|string',
+            'tgl_spp_penangkapan_tersangka.*' => 'nullable|string',
+            'penangkapan_nama_tersangka.*' => 'nullable|string',
+            'pejabat_penerbit_surat_penangkapan_tersangka.*' => 'nullable|string',
+            'status_plh_spp.*' => 'nullable|string',
+            'pejabat_penerima_surat_penangkapan_tersangka.*' => 'nullable|string',
+            'pejabat_menyerahkan_surat_penangkapan_tersangka.*' => 'nullable|string',
         ]);
 
 
@@ -1023,6 +1037,37 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             }
         }
         
+        $dataSuratPenetapanTersangka = [];
+        if ($request->has('penetapan_nama_tersangka')) {
+            foreach ($request->penetapan_nama_tersangka as $key => $nama) {
+
+                $dataSuratPenetapanTersangka[] = [
+                    'nama' => $nama,
+                    'no_staptsk' => $request->no_staptsk_tersangka[$key] ?? null,
+                    'tgl_staptsk' => $request->tgl_staptsk_tersangka[$key] ?? null,
+                    'pejabat_penerbit' => $request->pejabat_penerbit_surat_penetapan_tersangka[$key] ?? null,
+                    'status_plh' => $request->status_plh[$key] ?? null,    
+                ];
+            }
+        }
+
+        $dataSuratPenangkapanTersangka = [];
+        if ($request->has('penangkapan_nama_tersangka')) {
+            foreach ($request->penangkapan_nama_tersangka as $key => $nama) {
+                $pejabatPenangkapan = $request->input("pejabat_penangkapan.$key", []);
+
+                $dataSuratPenangkapanTersangka[] = [
+                    'nama' => $nama,
+                    'no_spp_penangkapan' => $request->no_spp_penangkapan_tersangka[$key] ?? null,
+                    'tgl_spp_penangkapan' => $request->tgl_spp_penangkapan_tersangka[$key] ?? null,
+                    'pejabat_penerbit' => $request->pejabat_penerbit_surat_penangkapan_tersangka[$key] ?? null,
+                    'pejabat_penangkapan' => !empty($pejabatPenangkapan) ? json_encode($pejabatPenangkapan) : null,
+                    'status_plh_spp' => $request->status_plh_spp[$key] ?? null,    
+                    'pejabat_penerima' => $request->pejabat_penerima_surat_penangkapan_tersangka[$key] ?? null,    
+                    'pejabat_menyerahkan' => $request->pejabat_menyerahkan_surat_penangkapan_tersangka[$key] ?? null,    
+                ];
+            }
+        }
 
         $requestData = $request->except([
             'no_sp1_saksi',
@@ -1185,6 +1230,21 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'kesimpulan_gelar_perkara',
             'rencana_kegiatan_penyidikan',
             'pejabat_gelar_perkara',
+
+            'no_staptsk_tersangka',
+            'tgl_staptsk_tersangka',
+            'penetapan_nama_tersangka',
+            'pejabat_penerbit_surat_penetapan_tersangka',
+            'status_plh',
+
+            'no_spp_penangkapan_tersangka',
+            'tgl_spp_penangkapan_tersangka',
+            'pejabat_penangkapan',
+            'penangkapan_nama_tersangka',
+            'pejabat_penerbit_surat_penangkapan_tersangka',
+            'status_plh_spp',
+            'pejabat_penerima_surat_penangkapan_tersangka',
+            'pejabat_menyerahkan_surat_penangkapan_tersangka',
         ]);
 
         $requestData['data_saksi'] = json_encode($dataSaksi);
@@ -1214,6 +1274,10 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $requestData['ba_forensik_digital_tersangka'] = json_encode($dataBaForensikDigitalTersangka);
 
         $requestData['ba_gelar_perkara_tersangka'] = json_encode($dataBaGelarPerkaraTersangka);
+
+        $requestData['penetapan_tersangka'] = json_encode($dataSuratPenetapanTersangka);
+
+        $requestData['penangkapan_tersangka'] = json_encode($dataSuratPenangkapanTersangka);
 
         // Hapus baris dd() yang digunakan untuk debugging
         // dd($requestData);
