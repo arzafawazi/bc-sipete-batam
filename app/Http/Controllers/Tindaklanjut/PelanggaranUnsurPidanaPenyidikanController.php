@@ -548,6 +548,20 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'rincian_data_bukti.*' => 'nullable|string',
             'waktu_surat_forensik_tersangka.*' => 'nullable|string',
             'pejabat_penerbit_surat_forensik_tersangka.*' => 'nullable|string',
+
+            'no_ba_perolehan.*' => 'nullable|string',
+            'tgl_ba_perolehan.*' => 'nullable|string',
+            'ba_forensik_nama_tersangka.*' => 'nullable|string',
+            'surat_nota_dinas.*' => 'nullable|string',
+            'nama_forensik_digital.*' => 'nullable|string',
+            'pejabat_meminta_surat_forensik_tersangka_ba.*' => 'nullable|string',
+
+            'waktu_ba_gelar_perkara.*' => 'nullable|string',
+            'hasil_gelar_perkara.*' => 'nullable|string',
+            'ba_gelar_perkara_nama_tersangka.*' => 'nullable|string',
+            'kesimpulan_gelar_perkara.*' => 'nullable|string',
+            'rencana_kegiatan_penyidikan.*' => 'nullable|string',
+            'pejabat_gelar_perkara.*' => 'nullable|string',
         ]);
 
 
@@ -976,6 +990,38 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                 ];
             }
         }
+
+        $dataBaForensikDigitalTersangka = [];
+        if ($request->has('ba_forensik_nama_tersangka')) {
+            foreach ($request->ba_forensik_nama_tersangka as $key => $nama) {
+
+                $dataBaForensikDigitalTersangka[] = [
+                    'nama' => $nama,
+                    'ba_perolehan' => $request->no_ba_perolehan[$key] ?? null,
+                    'tgl_ba_perolehan' => $request->tgl_ba_perolehan[$key] ?? null,
+                    'waktu_forensik' => $request->waktu_ba_forensik[$key] ?? null,
+                    'nota_dinas' => $request->surat_nota_dinas[$key] ?? null,
+                    'nama_forensik_digital' => $request->nama_forensik_digital[$key] ?? null,
+                    'pejabat_meminta_ba' => $request->pejabat_meminta_surat_forensik_tersangka_ba[$key] ?? null,    
+                ];
+            }
+        }
+
+        $dataBaGelarPerkaraTersangka = [];
+        if ($request->has('ba_gelar_perkara_nama_tersangka')) {
+            foreach ($request->ba_gelar_perkara_nama_tersangka as $key => $nama) {
+                $pejabatPerkara = $request->input("pejabat_gelar_perkara.$key", []);
+
+                $dataBaGelarPerkaraTersangka[] = [
+                    'nama' => $nama,
+                    'waktu_gelar_perkara' => $request->waktu_ba_gelar_perkara[$key] ?? null,
+                    'hasil_gelar_perkara' => $request->hasil_gelar_perkara[$key] ?? null,
+                    'kesimpulan_gelar_perkara' => $request->kesimpulan_gelar_perkara[$key] ?? null,
+                    'pejabat_perkara' => !empty($pejabatPerkara) ? json_encode($pejabatPerkara) : null,
+                    'rencana_kegiatan_penyidikan' => $request->rencana_kegiatan_penyidikan[$key] ?? null,
+                ];
+            }
+        }
         
 
         $requestData = $request->except([
@@ -1125,6 +1171,20 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'rincian_data_bukti',
             'waktu_surat_forensik_tersangka',
             'pejabat_penerbit_surat_forensik_tersangka',
+
+            'no_ba_perolehan',
+            'tgl_ba_perolehan',
+            'ba_forensik_nama_tersangka',
+            'surat_nota_dinas',
+            'nama_forensik_digital',
+            'pejabat_meminta_surat_forensik_tersangka_ba',
+
+            'waktu_ba_gelar_perkara',
+            'hasil_gelar_perkara',
+            'ba_gelar_perkara_nama_tersangka',
+            'kesimpulan_gelar_perkara',
+            'rencana_kegiatan_penyidikan',
+            'pejabat_gelar_perkara',
         ]);
 
         $requestData['data_saksi'] = json_encode($dataSaksi);
@@ -1151,6 +1211,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $requestData['ba_sidik_jari_tersangka'] = json_encode($dataBaSidikJariTersangka);
 
         $requestData['forensik_digital_tersangka'] = json_encode($dataForensikDigitalTersangka);
+        $requestData['ba_forensik_digital_tersangka'] = json_encode($dataBaForensikDigitalTersangka);
+
+        $requestData['ba_gelar_perkara_tersangka'] = json_encode($dataBaGelarPerkaraTersangka);
 
         // Hapus baris dd() yang digunakan untuk debugging
         // dd($requestData);

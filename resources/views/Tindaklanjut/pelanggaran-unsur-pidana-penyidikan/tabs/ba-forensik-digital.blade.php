@@ -191,24 +191,6 @@
                              Demikian Berita Acara Perolehan Data Elektronik ini dibuat dengan sebenar-benarnya.
                          </p>
 
-                         <div class="mb-3 row">
-                             <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">Penyidik Yang
-                                 Meminta Bantuan Uji Forensik Digital</label>
-                             <div class="col-md-1 col-sm-1 text-center mt-1 d-none d-sm-block">:</div>
-                             <div class="col-md-8 col-sm-11">
-                                 <select class="form-control form-select select2" name="penyidik_uji_forensik">
-                                     <option value="" selected disabled>- Pilih -</option>
-                                     @foreach ($users as $user)
-                                         <option value="{{ $user->id_admin }}"
-                                             {{ old('penyidik_uji_forensik', isset($unsurpenyidikan) ? $unsurpenyidikan->penyidik_uji_forensik : '') == $user->id_admin ? 'selected' : '' }}>
-                                             {{ $user->name }} | {{ $user->jabatan }}
-                                         </option>
-                                     @endforeach
-                                 </select>
-                             </div>
-                         </div>
-
-
                      </div>
                  </div>
              </div>

@@ -136,6 +136,12 @@
                                                 <span class="d-none d-sm-block">BERITA ACARA FORENSIK DIGITAL</span>
                                             </a>
                                         </li>
+                                        <li class="nav-item-penyidikan">
+                                            <a class="nav-link" id="navtabs2-ba-gelar-perkara-tab" data-bs-toggle="tab" href="#navtabs2-ba-gelar-perkara" role="tab" aria-controls="navtabs2-ba-gelar-perkara" aria-selected="false">
+                                                <span class="d-block d-sm-none">(BA GELAR PERKARA)</span>
+                                                <span class="d-none d-sm-block">BERITA ACARA GELAR PERKARA</span>
+                                            </a>
+                                        </li>
                                         {{-- <li class="nav-item-penyidikan">
                                             <a class="nav-link " id="navtabs2-staptsk-tab" data-bs-toggle="tab" href="#navtabs2-staptsk" role="tab" aria-controls="navtabs2-staptsk" aria-selected="false">
                                                 <span class="d-block d-sm-none">(S.TAPTSK)</span>
@@ -304,6 +310,14 @@
 
                                     <div class="tab-pane" id="navtabs2-ba-forensik-digital" role="tabpanel">
                                         @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-forensik-digital', [
+                                        'sbpData' => $sbpData,
+                                        'users' => $users,
+                                        'no_ref' => $no_ref,
+                                        ])
+                                    </div>
+
+                                    <div class="tab-pane" id="navtabs2-ba-gelar-perkara" role="tabpanel">
+                                        @include('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-gelar-perkara', [
                                         'sbpData' => $sbpData,
                                         'users' => $users,
                                         'no_ref' => $no_ref,
