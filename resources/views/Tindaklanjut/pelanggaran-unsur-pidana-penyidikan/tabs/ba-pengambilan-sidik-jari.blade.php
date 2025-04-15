@@ -40,17 +40,6 @@
                              :
                          </p>
 
-                         <div class="fw-bold text-center">
-                             <select class="form-control form-select select2" name="pejabat_sidikjari">
-                                 <option value="" selected disabled>- Pilih -</option>
-                                 @foreach ($users as $user)
-                                     <option value="{{ $user->id_admin }}"
-                                         {{ old('pejabat_sidikjari', isset($unsurpenyidikan) ? $unsurpenyidikan->pejabat_sidikjari : '') == $user->id_admin ? 'selected' : '' }}>
-                                         {{ $user->name }} | {{ $user->pangkat }} | {{ $user->jabatan }}
-                                     </option>
-                                 @endforeach
-                             </select>
-                         </div>
 
                          <br>
 
@@ -85,7 +74,7 @@
                          <p class="text-black"><b>Data Tersangka</b></p>
                          @foreach ($tersangkaData as $index => $tersangka)
                              @php
-                                 $BaSidikJariTersangka = $BaSidikJariTersangka[$index] ?? null;
+                                 $baSidik = $BaSidikJariTersangka[$index] ?? null;
                              @endphp
                              <hr>
 
@@ -95,7 +84,7 @@
                                  <div class="col-md-8 col-sm-11">
                                      <input type="text" class="form-control datetime-datepicker"
                                          name="waktu_ba_sidik_jari[]"
-                                         value="{{ old('waktu_ba_sidik_jari.' . $index, $BaSidikJariTersangka['waktu_sidik_jari'] ?? '') }}">
+                                         value="{{ old('waktu_ba_sidik_jari.' . $index, $baSidik['waktu_sidik_jari'] ?? '') }}">
                                  </div>
                              </div>
 
@@ -108,12 +97,12 @@
                                      <select class="form-control py-1 form-select select2"
                                          name="pejabat_pertama_surat_sidikjari_tersangka_ba[]">
                                          <option value="" disabled
-                                             {{ old('pejabat_pertama_surat_sidikjari_tersangka_ba.' . $index, $BaSidikJariTersangka['pejabat_pertama_ba'] ?? '') == '' ? 'selected' : '' }}>
+                                             {{ old('pejabat_pertama_surat_sidikjari_tersangka_ba.' . $index, $baSidik['pejabat_pertama_ba'] ?? '') == '' ? 'selected' : '' }}>
                                              - Pilih -</option>
 
                                          @foreach ($users as $user)
                                              <option value="{{ $user->id_admin }}"
-                                                 {{ old('pejabat_pertama_surat_sidikjari_tersangka_ba.' . $index, $BaSidikJariTersangka['pejabat_pertama_ba'] ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                                 {{ old('pejabat_pertama_surat_sidikjari_tersangka_ba.' . $index, $baSidik['pejabat_pertama_ba'] ?? '') == $user->id_admin ? 'selected' : '' }}>
                                                  {{ $user->name }} | {{ $user->pangkat }} |
                                                  {{ $user->jabatan }}
                                              </option>
@@ -130,12 +119,12 @@
                                      <select class="form-control py-1 form-select select2"
                                          name="pejabat_kedua_surat_sidikjari_tersangka_ba[]">
                                          <option value="" disabled
-                                             {{ old('pejabat_kedua_surat_sidikjari_tersangka_ba.' . $index, $BaSidikJariTersangka['pejabat_kedua_ba'] ?? '') == '' ? 'selected' : '' }}>
+                                             {{ old('pejabat_kedua_surat_sidikjari_tersangka_ba.' . $index, $baSidik['pejabat_kedua_ba'] ?? '') == '' ? 'selected' : '' }}>
                                              - Pilih -</option>
 
                                          @foreach ($users as $user)
                                              <option value="{{ $user->id_admin }}"
-                                                 {{ old('pejabat_kedua_surat_sidikjari_tersangka_ba.' . $index, $BaSidikJariTersangka['pejabat_kedua_ba'] ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                                 {{ old('pejabat_kedua_surat_sidikjari_tersangka_ba.' . $index, $baSidik['pejabat_kedua_ba'] ?? '') == $user->id_admin ? 'selected' : '' }}>
                                                  {{ $user->name }} | {{ $user->pangkat }} |
                                                  {{ $user->jabatan }}
                                              </option>
@@ -211,7 +200,7 @@
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <input type="text" name="saksi1_sidik_jari_nama[]" class="form-control py-1"
-                                         value="{{ old('saksi1_sidik_jari_nama.' . $index, $BaSidikJariTersangka['saksi_pertama_nama'] ?? '') }}">
+                                         value="{{ old('saksi1_sidik_jari_nama.' . $index, $baSidik['saksi_pertama_nama'] ?? '') }}">
                                  </div>
                              </div>
                              <div class="row mb-1">
@@ -219,7 +208,7 @@
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <input type="text" name="saksi1_sidik_jari_alamat[]" class="form-control py-1"
-                                         value="{{ old('saksi1_sidik_jari_alamat.' . $index, $BaSidikJariTersangka['saksi_pertama_alamat'] ?? '') }}">
+                                         value="{{ old('saksi1_sidik_jari_alamat.' . $index, $baSidik['saksi_pertama_alamat'] ?? '') }}">
                                  </div>
                              </div>
                              <div class="row mb-2">
@@ -228,7 +217,7 @@
                                  <div class="col-md-8 col-sm-12">
                                      <input type="text" name="saksi1_sidik_jari_pekerjaan[]"
                                          class="form-control py-1"
-                                         value="{{ old('saksi1_sidik_jari_pekerjaan.' . $index, $BaSidikJariTersangka['saksi_pertama_pekerjaan'] ?? '') }}">
+                                         value="{{ old('saksi1_sidik_jari_pekerjaan.' . $index, $baSidik['saksi_pertama_pekerjaan'] ?? '') }}">
                                  </div>
                              </div>
 
@@ -238,7 +227,7 @@
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <input type="text" name="saksi2_sidik_jari_nama[]" class="form-control py-1"
-                                         value="{{ old('saksi2_sidik_jari_nama.' . $index, $BaSidikJariTersangka['saksi_kedua_nama'] ?? '') }}">
+                                         value="{{ old('saksi2_sidik_jari_nama.' . $index, $baSidik['saksi_kedua_nama'] ?? '') }}">
                                  </div>
                              </div>
                              <div class="row mb-1">
@@ -246,7 +235,7 @@
                                  <div class="col-md-1 text-center">:</div>
                                  <div class="col-md-8 col-sm-12">
                                      <input type="text" name="saksi2_sidik_jari_alamat[]" class="form-control py-1"
-                                         value="{{ old('saksi2_sidik_jari_alamat.' . $index, $BaSidikJariTersangka['saksi_kedua_alamat'] ?? '') }}">
+                                         value="{{ old('saksi2_sidik_jari_alamat.' . $index, $baSidik['saksi_kedua_alamat'] ?? '') }}">
                                  </div>
                              </div>
                              <div class="row mb-2">
@@ -255,7 +244,7 @@
                                  <div class="col-md-8 col-sm-12">
                                      <input type="text" name="saksi2_sidik_jari_pekerjaan[]"
                                          class="form-control py-1"
-                                         value="{{ old('saksi2_sidik_jari_nama.' . $index, $BaSidikJariTersangka['saksi_kedua_pekerjaan'] ?? '') }}">
+                                         value="{{ old('saksi2_sidik_jari_nama.' . $index, $baSidik['saksi_kedua_pekerjaan'] ?? '') }}">
                                  </div>
                              </div>
                              <hr>

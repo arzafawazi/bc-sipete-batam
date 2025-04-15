@@ -167,7 +167,7 @@
                                      <div class="col-md-12">
                                          @php
                                              $selectedPejabat = json_decode(
-                                                 $gelarPerkaraTersangka['pejabat_gelar_perkara'] ?? '[]',
+                                                 $BaPerkara['pejabat_perkara'] ?? '[]',
                                                  true,
                                              );
                                          @endphp
@@ -177,7 +177,7 @@
                                                  P E J A B A T | G E L A R | P E R K A R A
                                              </span>
                                              <select class="form-select select2 w-100 mt-1"
-                                                 name="pejabat_gelar_perkara[{{ $index }}][]" multiple>
+                                                 name="pejabat_perkara[{{ $index }}][]" multiple>
                                                  @foreach ($users as $user)
                                                      <option value="{{ $user->id_admin }}"
                                                          @if (in_array($user->id_admin, $selectedPejabat)) selected @endif>
@@ -229,23 +229,6 @@
                              jabatan, kemudian ditutup dan ditandatangani di Batam pada hari dan tanggal tersebut di
                              atas.
                          </p>
-
-                         <div class="mb-3 row">
-                             <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">Penyidik Yang
-                                 Meminta Bantuan Uji Forensik Digital</label>
-                             <div class="col-md-1 col-sm-1 text-center mt-1 d-none d-sm-block">:</div>
-                             <div class="col-md-8 col-sm-11">
-                                 <select class="form-control form-select select2" name="pejabat_gelar_perkara">
-                                     <option value="" selected disabled>- Pilih -</option>
-                                     @foreach ($users as $user)
-                                         <option value="{{ $user->id_admin }}"
-                                             {{ old('pejabat_gelar_perkara', isset($unsurpenyidikan) ? $unsurpenyidikan->pejabat_gelar_perkara : '') == $user->id_admin ? 'selected' : '' }}>
-                                             {{ $user->name }} | {{ $user->jabatan }}
-                                         </option>
-                                     @endforeach
-                                 </select>
-                             </div>
-                         </div>
 
 
                      </div>

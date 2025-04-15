@@ -134,7 +134,7 @@
                                  <label class="col-md-3 col-sm-12 col-form-label">Surat/Nota Dinas* nomor</label>
                                  <div class="col-md-1 text-center mt-1 d-none d-sm-block">:</div>
                                  <div class="col-md-8 col-sm-11">
-                                     <input type="text" class="form-control datetime-datepicker"
+                                     <input type="text" class="form-control "
                                          name="surat_nota_dinas[]"
                                          value="{{ old('surat_nota_dinas.' . $index, $BadigitalForensikTersangka['nota_dinas'] ?? '') }}">
                                  </div>
@@ -144,7 +144,7 @@
                                  <label class="col-md-3 col-sm-12 col-form-label">Nama Yang Melakukan Forensik Digital</label>
                                  <div class="col-md-1 text-center mt-1 d-none d-sm-block">:</div>
                                  <div class="col-md-8 col-sm-11">
-                                     <input type="text" class="form-control datetime-datepicker"
+                                     <input type="text" class="form-control"
                                          name="nama_forensik_digital[]"
                                          value="{{ old('nama_forensik_digital.' . $index, $BadigitalForensikTersangka['nama_forensik_digital'] ?? '') }}">
                                  </div>

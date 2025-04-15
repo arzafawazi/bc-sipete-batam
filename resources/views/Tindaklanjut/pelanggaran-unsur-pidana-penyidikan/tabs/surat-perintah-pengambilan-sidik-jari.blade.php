@@ -27,18 +27,6 @@
 
     <h5 class="fw-bold text-center"><u>SURAT PERINTAH PENGAMBILAN SIDIK JARI</u></h5>
 
-    <div class="mb-3 row align-items-center">
-        <div class="input-group flex-wrap">
-            <span class="input-group-text">NO : SPPSJ- </span>
-            <input type="text" class="form-control"
-                value="{{ old('no_sppsj', isset($unsurpenyidikan) ? $unsurpenyidikan->no_sppsj : $no_ref) }}"
-                name="no_sppr" readonly>
-            <span class="input-group-text">/PPNS/</span>
-            <input type="date" class="form-control" name="tgl_sppsj"
-                value="{{ old('tgl_sppsj', isset($unsurpenyidikan) ? $unsurpenyidikan->tgl_sppsj : '') }}">
-        </div>
-    </div>
-
 
     <!-- Main Form -->
     <div class="card p-1">
@@ -301,23 +289,6 @@
                             </div>
                         </div>
 
-
-                        <div class="mb-3 row">
-                            <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">PEJABAT YANG
-                                MENERBITKAN SURAT PERINTAH PENGAMBILAN SIDIK JARI</label>
-                            <div class="col-md-1 col-sm-1 text-center mt-1 d-none d-sm-block">:</div>
-                            <div class="col-md-8 col-sm-11">
-                                <select class="form-control form-select select2" name="pejabat_terbit_sppsj">
-                                    <option value="" selected disabled>- Pilih -</option>
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id_admin }}"
-                                            {{ old('pejabat_terbit_sppsj', isset($unsurpenyidikan) ? $unsurpenyidikan->pejabat_terbit_sppsj : '') == $user->id_admin ? 'selected' : '' }}>
-                                            {{ $user->name }} | {{ $user->jabatan }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
 
 
                     </div>

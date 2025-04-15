@@ -27,17 +27,6 @@
 
     <h5 class="fw-bold text-center"><u>SURAT PERINTAH PENANGKAPAN</u></h5>
 
-    <div class="mb-3 row align-items-center">
-        <div class="input-group flex-wrap">
-            <span class="input-group-text">NO : SPPSJ- </span>
-            <input type="text" class="form-control"
-                value="{{ old('no_spp', isset($unsurpenyidikan) ? $unsurpenyidikan->no_spp : $no_ref) }}" name="no_spp"
-                readonly>
-            <span class="input-group-text">/PPNS/</span>
-            <input type="date" class="form-control" name="tgl_spp"
-                value="{{ old('tgl_spp', isset($unsurpenyidikan) ? $unsurpenyidikan->tgl_spp : '') }}">
-        </div>
-    </div>
 
 
     <!-- Main Form -->
@@ -147,33 +136,6 @@
                                                             name="penangkapan_nama_tersangka[]"
                                                             class="form-control border-0 py-1"
                                                             value="{{ $tersangka['nama'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        @php
-                                                            $selectedPejabat = json_decode(
-                                                                $suratPenangkapanTersangka['pejabat_penangkapan'] ??
-                                                                    '[]',
-                                                                true,
-                                                            );
-                                                        @endphp
-                                                        <div class="input-group flex-column">
-                                                            <span
-                                                                class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
-                                                                D I P E R I N T A H K A N
-                                                            </span>
-                                                            <select class="form-select select2 w-100 mt-1"
-                                                                name="pejabat_penangkapan[{{ $index }}][]"
-                                                                multiple>
-                                                                @foreach ($users as $user)
-                                                                    <option value="{{ $user->id_admin }}"
-                                                                        @if (in_array($user->id_admin, $selectedPejabat)) selected @endif>
-                                                                        {{ $user->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <div class="col-md-4 text-black d-flex align-items-center">
