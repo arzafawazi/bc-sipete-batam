@@ -25,14 +25,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use App\Models\Barang;
 use App\Models\TblPelanggaranUnsurPidanaUr;
+use App\Models\TblPelanggaranUnsurPidanaPenyidikan;
 
 class PelanggaranUnsurPidanaUrController extends Controller
 {
-
     public function index()
     {
         $unsurpidana = TblPelanggaranUnsurPidanaUr::select('id')->get();
-
 
         // $unsurpidana = $unsurpidana->map(function ($item) {
         //     $item->tgl_bast_instansi_lain_pkl = $this->formatDates(['tgl_bast_instansi_lain_pkl' => $item->tgl_bast_instansi_lain_pkl])['tgl_bast_instansi_lain_pkl'];
@@ -55,6 +54,13 @@ class PelanggaranUnsurPidanaUrController extends Controller
                 return $item;
             });
 
+        $unsurPidanaPenyidikan = TblPelanggaranUnsurPidanaPenyidikan::select('id', 'id_pelanggaran_unsur_pidana_penyidikan', 'no_lk', 'tgl_lk')
+            ->get()
+            ->map(function ($item) {
+                $item->tgl_lk = $this->formatDates(['tgl_lk' => $item->tgl_lk])['tgl_lk'];
+                return $item;
+            });
+
         $sbpData = TblSbp::with('laporanInformasi')
             ->select('no_sbp', 'tgl_sbp', 'id_pra_penindakan_ref')
             ->get()
@@ -63,10 +69,51 @@ class PelanggaranUnsurPidanaUrController extends Controller
                 return $item;
             });
 
-        return view('Tindaklanjut.pelanggaran-unsur-pidana-ur.index', compact('unsurpidana', 'pascapenindakan', 'sbpData', 'penyidikan'));
+        return view('Tindaklanjut.pelanggaran-unsur-pidana-ur.index', compact('unsurpidana', 'pascapenindakan', 'sbpData', 'penyidikan', 'unsurPidanaPenyidikan'));
     }
 
+    public function create(Request $request)
+    {
+        $id_penyidikan = $request->query('id_penyidikan');
+        $id_unsur_pidana = $request->query('id_pelanggaran_unsur_pidana_penyidikan');
 
+        $users = User::all();
+        $no_ref = TblNoRef::first();
+        $nama_negara = TblNegara::all()->groupBy('benua');
+
+        $pascapenindakan = null;
+        $penyidikan = null;
+        $sbpData = null;
+        $laporanInformasi = collect(); // default collection kosong
+        $saksiData = [];
+        $tersangkaData = [];
+
+        // === JIKA YANG DIPILIH ADALAH DARI PENYIDIKAN ===
+        if ($id_penyidikan) {
+            $penyidikan = TblPenyidikan::where('id_penyidikan', $id_penyidikan)->first();
+
+            if ($penyidikan) {
+                $pascapenindakan = TblPascaPenindakan::where('id_pasca_penindakan', $penyidikan->id_pasca_penindakan_ref)->first();
+
+                $sbpData = TblSbp::with('laporanInformasi')->where('id_penindakan', $pascapenindakan->id_penindakan_ref)->first();
+
+                $laporanInformasi = TblLaporanInformasi::where('id_pra_penindakan', $sbpData->pluck('id_pra_penindakan_ref'))
+            ->get();
+            }
+        }
+
+        // === JIKA YANG DIPILIH ADALAH DARI UNSUR PIDANA ===
+        if ($id_unsur_pidana) {
+            $unsurpenyidikan = TblPelanggaranUnsurPidanaPenyidikan::find($id_unsur_pidana);
+
+            if ($unsurpenyidikan) {
+                $saksiData = json_decode($unsurpenyidikan->data_saksi ?? '[]', true);
+                $tersangkaData = json_decode($unsurpenyidikan->data_tersangka ?? '[]', true);
+            }
+        }
+
+        return view('Tindaklanjut.pelanggaran-unsur-pidana-ur.create', compact('users', 'no_ref', 'nama_negara', 'id_penyidikan', 'penyidikan', 'pascapenindakan', 'sbpData', 'laporanInformasi', 'saksiData', 'tersangkaData'));
+    }
 
     private function formatDates($data)
     {
@@ -82,15 +129,12 @@ class PelanggaranUnsurPidanaUrController extends Controller
             'September' => 'September',
             'October' => 'Oktober',
             'November' => 'November',
-            'December' => 'Desember'
+            'December' => 'Desember',
         ];
 
         Carbon::setLocale('id');
 
-        $dateFields = [
-            'tempus_lp',
-            ''
-        ];
+        $dateFields = ['tempus_lp', ''];
 
         foreach ($dateFields as $field) {
             if (!empty($data[$field])) {
@@ -104,8 +148,6 @@ class PelanggaranUnsurPidanaUrController extends Controller
                 }
             }
         }
-
-
 
         foreach ($data as $key => $value) {
             if (is_string($value) && $this->isValidDate($value)) {
@@ -127,7 +169,6 @@ class PelanggaranUnsurPidanaUrController extends Controller
 
         return $data;
     }
-
 
     private function angkaKeKata($angka)
     {
@@ -159,7 +200,7 @@ class PelanggaranUnsurPidanaUrController extends Controller
             60 => 'enam puluh',
             70 => 'tujuh puluh',
             80 => 'delapan puluh',
-            90 => 'sembilan puluh'
+            90 => 'sembilan puluh',
         ];
 
         $angka = (int) $angka;
@@ -180,9 +221,6 @@ class PelanggaranUnsurPidanaUrController extends Controller
             return $huruf[$ribuan] . ' ribu' . ($sisa ? ' ' . $this->angkaKeKata($sisa) : '');
         }
     }
-
-
-
 
     private function isValidDate($date)
     {

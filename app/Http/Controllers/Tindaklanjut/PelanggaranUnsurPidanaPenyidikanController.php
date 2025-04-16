@@ -392,6 +392,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $BaPenangkapanTersangka = json_decode($unsurpenyidikan->ba_penangkapan_tersangka ?? '[]', true);
         $penangkapanPemberitahuanTersangka = json_decode($unsurpenyidikan->pemberitahuan_penangkapan_tersangka ?? '[]', true);
 
+        $penahananTersangka = json_decode($unsurpenyidikan->penahanan_tersangka ?? '[]', true);
+        $BaPenahananTersangka = json_decode($unsurpenyidikan->ba_penahanan_tersangka ?? '[]', true);
+
         
 
         return view('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.edit', compact(
@@ -425,7 +428,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'penetapanTersangka',
             'penangkapanTersangka',
             'BaPenangkapanTersangka',
-            'penangkapanPemberitahuanTersangka'
+            'penangkapanPemberitahuanTersangka',
+            'penahananTersangka',
+            'BaPenahananTersangka'
         ));
     }
 
@@ -626,6 +631,22 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'penangkapan_pemberitahuan_nama_tersangka.*' => 'nullable|string',
             'pejabat_penerbit_surat_penangkapan_pemberitahuan_tersangka.*' => 'nullable|string',
             'status_plh_spp_pemberitahuan.*' => 'nullable|string',
+
+            'no_spp_penahanan_tersangka.*' => 'nullable|string',
+            'tgl_spp_penahanan_tersangka.*' => 'nullable|string',
+            'penahanan_nama_tersangka.*' => 'nullable|string',
+            'tempat_penahanan_tersangka.*' => 'nullable|string',
+            'lama_ditahan_tersangka.*' => 'nullable|string',
+            'waktu_penahanan_tersangka.*' => 'nullable|string',
+            'pejabat_penerbit_surat_penahanan_tersangka.*' => 'nullable|string',
+            'status_plh_spp_penahanan.*' => 'nullable|string',
+            'pejabat_penerima_surat_penahanan_tersangka.*' => 'nullable|string',
+            'pejabat_menyerahkan_surat_penahanan_tersangka.*' => 'nullable|string',
+
+            'waktu_ba_penahanan.*' => 'nullable|string',
+            'pejabat_pertama_penahanan.*' => 'nullable|string',
+            'pejabat_kedua_penahanan.*' => 'nullable|string',
+            'ba_penahanan_nama_tersangka.*' => 'nullable|string', 
         ]);
 
 
@@ -1139,9 +1160,43 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
                 $dataSuratPenangkapanPemberitahuanTersangka[] = [
                     'nama' => $nama,
                     'no_spp_penangkapan_pemberitahuan' => $request->no_spp_penangkapan_pemberitahuan_tersangka[$key] ?? null,
-                    'tgl_spp_penangkapan_pemberitahuan_tersangka' => $request->tgl_spp_penangkapan_pemberitahuan[$key] ?? null,
+                    'tgl_spp_penangkapan_pemberitahuan' => $request->tgl_spp_penangkapan_pemberitahuan_tersangka[$key] ?? null,
                     'pejabat_penerbit' => $request->pejabat_penerbit_surat_penangkapan_pemberitahuan_tersangka[$key] ?? null,    
                     'status_plh_spp_pemberitahuan' => $request->status_plh_spp_pemberitahuan[$key] ?? null,
+                ];
+            }
+        }
+
+        $dataSuratPenahananTersangka = [];
+        if ($request->has('penahanan_nama_tersangka')) {
+            foreach ($request->penahanan_nama_tersangka as $key => $nama) {
+                $pejabatPenahanan = $request->input("pejabat_penahanan.$key", []);
+
+                $dataSuratPenahananTersangka[] = [
+                    'nama' => $nama,
+                    'no_spp_penahanan' => $request->no_spp_penahanan_tersangka[$key] ?? null,
+                    'tgl_spp_penahanan' => $request->tgl_spp_penahanan_tersangka[$key] ?? null,
+                    'pejabat_penahanan' => !empty($pejabatPenahanan) ? json_encode($pejabatPenahanan) : null,
+                    'tempat_penahanan' => $request->tempat_penahanan_tersangka[$key] ?? null,
+                    'lama_ditahan' => $request->lama_ditahan_tersangka[$key] ?? null,
+                    'waktu_penahanan' => $request->waktu_penahanan_tersangka[$key] ?? null,
+                    'pejabat_penerbit' => $request->pejabat_penerbit_surat_penahanan_tersangka[$key] ?? null,
+                    'status_plh_spp_penahanan' => $request->status_plh_spp_penahanan[$key] ?? null,    
+                    'pejabat_penerima' => $request->pejabat_penerima_surat_penahanan_tersangka[$key] ?? null,    
+                    'pejabat_menyerahkan' => $request->pejabat_menyerahkan_surat_penahanan_tersangka[$key] ?? null,    
+                ];
+            }
+        }
+
+        $dataBaSuratPenahananTersangka = [];
+        if ($request->has('ba_penahanan_nama_tersangka')) {
+            foreach ($request->ba_penahanan_nama_tersangka as $key => $nama) {
+                
+                $dataBaSuratPenahananTersangka[] = [
+                    'nama' => $nama,
+                    'waktu_penahanan' => $request->waktu_ba_penahanan[$key] ?? null,
+                    'pejabat_pertama_penahanan' => $request->pejabat_pertama_penahanan[$key] ?? null,
+                    'pejabat_kedua_penahanan' => $request->pejabat_kedua_penahanan[$key] ?? null,    
                 ];
             }
         }
@@ -1342,6 +1397,23 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
             'penangkapan_pemberitahuan_nama_tersangka',
             'pejabat_penerbit_surat_penangkapan_pemberitahuan_tersangka',
             'status_plh_spp_pemberitahuan',
+
+            'no_spp_penahanan_tersangka',
+            'tgl_spp_penahanan_tersangka',
+            'penahanan_nama_tersangka',
+            'tempat_penahanan_tersangka',
+            'lama_ditahan_tersangka',
+            'waktu_penahanan_tersangka',
+            'pejabat_penerbit_surat_penahanan_tersangka',
+            'status_plh_spp_penahanan',
+            'pejabat_penerima_surat_penahanan_tersangka',
+            'pejabat_menyerahkan_surat_penahanan_tersangka',
+            'pejabat_penahanan',
+
+            'waktu_ba_penahanan',
+            'pejabat_pertama_penahanan',
+            'pejabat_kedua_penahanan',
+            'ba_penahanan_nama_tersangka',
         ]);
 
         $requestData['data_saksi'] = json_encode($dataSaksi);
@@ -1377,6 +1449,9 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $requestData['penangkapan_tersangka'] = json_encode($dataSuratPenangkapanTersangka);
         $requestData['ba_penangkapan_tersangka'] = json_encode($dataBaSuratPenangkapanTersangka);
         $requestData['pemberitahuan_penangkapan_tersangka'] = json_encode($dataSuratPenangkapanPemberitahuanTersangka);
+        
+        $requestData['penahanan_tersangka'] = json_encode($dataSuratPenahananTersangka);
+        $requestData['ba_penahanan_tersangka'] = json_encode($dataBaSuratPenahananTersangka);
 
         // Hapus baris dd() yang digunakan untuk debugging
         // dd($requestData);

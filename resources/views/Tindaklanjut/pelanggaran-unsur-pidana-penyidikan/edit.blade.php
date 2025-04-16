@@ -521,7 +521,7 @@
                                             )
                                         </div>
 
-                                        {{-- <div class="tab-pane" id="navtabs2-sppenah" role="tabpanel">
+                                        <div class="tab-pane" id="navtabs2-sppenah" role="tabpanel">
                                             @include(
                                                 'Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.surat-perintah-penahanan',
                                                 [
@@ -541,7 +541,7 @@
                                                     'no_ref' => $no_ref,
                                                 ]
                                             )
-                                        </div> --}}
+                                        </div>
 
                                         <div class="card-footer d-flex justify-content-end">
                                             <button type="submit" class="btn btn-success btn-sm me-2">

@@ -151,16 +151,16 @@
                                         <div class="col-md-7">
                                             <select class="form-control py-1 form-select select2"
                                                 name="status_plh_spp_pemberitahuan[]">
-                                                <option value="" disabled selected
-                                                    {{ old('status_plh_spp_pemberitahuan.' . $index, $SuratPenetapanTersangka['status_plh_spp_pemberitahuan'] ?? '') == '' ? 'selected' : '' }}>
+                                                <option value="" disabled
+                                                    {{ old('status_plh_spp_pemberitahuan.' . $index, $suratPenangkapanPemberitahuanTersangka['status_plh_spp_pemberitahuan'] ?? '') == '' ? 'selected' : '' }}>
                                                     - Pilih -
                                                 </option>
                                                 <option value="Plh."
-                                                    {{ old('status_plh_spp_pemberitahuan.' . $index, $SuratPenetapanTersangka['status_plh_spp_pemberitahuan'] ?? '') == 'Plh.' ? 'selected' : '' }}>
+                                                    {{ old('status_plh_spp_pemberitahuan.' . $index, $suratPenangkapanPemberitahuanTersangka['status_plh_spp_pemberitahuan'] ?? '') == 'Plh.' ? 'selected' : '' }}>
                                                     Plh.
                                                 </option>
                                                 <option value=""
-                                                    {{ old('status_plh_spp_pemberitahuan.' . $index, $SuratPenetapanTersangka['status_plh_spp_pemberitahuan'] ?? '') == '' ? 'selected' : '' }}>
+                                                    {{ old('status_plh_spp_pemberitahuan.' . $index, $suratPenangkapanPemberitahuanTersangka['status_plh_spp_pemberitahuan'] ?? '') == '' ? 'selected' : '' }}>
                                                     Tidak Plh.
                                                 </option>
                                             </select>

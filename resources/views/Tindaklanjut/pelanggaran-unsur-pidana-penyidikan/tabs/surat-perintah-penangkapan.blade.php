@@ -172,19 +172,20 @@
                                                     <div class="col-md-7">
                                                         <select class="form-control py-1 form-select select2"
                                                             name="status_plh_spp[]">
-                                                            <option value="" disabled selected
-                                                                {{ old('status_plh_spp.' . $index, $SuratPenetapanTersangka['status_plh_spp'] ?? '') == '' ? 'selected' : '' }}>
+                                                            <option value="" disabled
+                                                                {{ old('status_plh_spp.' . $index, $suratPenangkapanTersangka['status_plh_spp'] ?? '') == '' ? 'selected' : '' }}>
                                                                 - Pilih -
                                                             </option>
                                                             <option value="Plh."
-                                                                {{ old('status_plh_spp.' . $index, $SuratPenetapanTersangka['status_plh_spp'] ?? '') == 'Plh.' ? 'selected' : '' }}>
+                                                                {{ old('status_plh_spp.' . $index, $suratPenangkapanTersangka['status_plh_spp'] ?? '') == 'Plh.' ? 'selected' : '' }}>
                                                                 Plh.
                                                             </option>
                                                             <option value=""
-                                                                {{ old('status_plh_spp.' . $index, $SuratPenetapanTersangka['status_plh_spp'] ?? '') == '' ? 'selected' : '' }}>
+                                                                {{ old('status_plh_spp.' . $index, $suratPenangkapanTersangka['status_plh_spp'] ?? '') == '' ? 'selected' : '' }}>
                                                                 Tidak Plh.
                                                             </option>
                                                         </select>
+
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
