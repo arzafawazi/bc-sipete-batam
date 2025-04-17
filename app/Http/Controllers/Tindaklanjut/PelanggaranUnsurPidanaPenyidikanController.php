@@ -94,6 +94,7 @@ class PelanggaranUnsurPidanaPenyidikanController extends Controller
         $no_ref = TblNoRef::first();
         $nama_negara = TblNegara::all()->groupBy('benua');
         $saksiData = json_decode($unsurpenyidikan->data_saksi ?? '[]', true);
+        
         $tersangkaData = json_decode($unsurpenyidikan->data_tersangka ?? '[]', true);
 
 

@@ -246,7 +246,7 @@
                                                     </span>
                                                 </a>
                                             </li>
-                                             <li class="nav-item-penyidikan">
+                                            <li class="nav-item-penyidikan">
                                                 <a class="nav-link " id="navtabs2-ba-penahanan-tab" data-bs-toggle="tab"
                                                     href="#navtabs2-ba-penahanan" role="tab"
                                                     aria-controls="navtabs2-ba-penahanan" aria-selected="false">
@@ -255,7 +255,16 @@
                                                     </span>
                                                 </a>
                                             </li>
-
+                                            <li class="nav-item-penyidikan">
+                                                <a class="nav-link " id="navtabs2-tindak-lanjut-pidana-tab"
+                                                    data-bs-toggle="tab" href="#navtabs2-tindak-lanjut-pidana"
+                                                    role="tab" aria-controls="navtabs2-tindak-lanjut-pidana"
+                                                    aria-selected="false">
+                                                    <span class="d-block d-sm-none">(TINDAK LANJUT)</span>
+                                                    <span class="d-none d-sm-block"> TINDAK LANJUT UNSUR PIDANA PENYIDIKAN
+                                                    </span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -535,6 +544,17 @@
                                         <div class="tab-pane" id="navtabs2-ba-penahanan" role="tabpanel">
                                             @include(
                                                 'Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.ba-penahanan',
+                                                [
+                                                    'sbpData' => $sbpData,
+                                                    'users' => $users,
+                                                    'no_ref' => $no_ref,
+                                                ]
+                                            )
+                                        </div>
+
+                                        <div class="tab-pane" id="navtabs2-tindak-lanjut-pidana" role="tabpanel">
+                                            @include(
+                                                'Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.tabs.tindak-lanjut-pidana-penyidikan',
                                                 [
                                                     'sbpData' => $sbpData,
                                                     'users' => $users,

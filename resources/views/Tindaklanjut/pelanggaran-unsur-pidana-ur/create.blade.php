@@ -41,22 +41,6 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item-penyidikan-ur">
-                                                <a class="nav-link " id="navtabs2-permohonan-ur-tab" data-bs-toggle="tab"
-                                                    href="#navtabs2-permohonan-ur" role="tab"
-                                                    aria-controls="navtabs2-permohonan-ur" aria-selected="false">
-                                                    <span class="d-block d-sm-none">(SURAT PERMOHONAN UR)</span>
-                                                    <span class="d-none d-sm-block">SURAT PERMOHONAN UR</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item-penyidikan-ur">
-                                                <a class="nav-link " id="navtabs2-pengakuan-ur-tab" data-bs-toggle="tab"
-                                                    href="#navtabs2-pengakuan-ur" role="tab"
-                                                    aria-controls="navtabs2-pengakuan-ur" aria-selected="false">
-                                                    <span class="d-block d-sm-none">(SURAT PENGAKUAN BERSALAH UR)</span>
-                                                    <span class="d-none d-sm-block">SURAT PENGAKUAN BERSALAH UR</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item-penyidikan-ur">
                                                 <a class="nav-link " id="navtabs2-upload-form-ur-tab" data-bs-toggle="tab"
                                                     href="#navtabs2-upload-form-ur" role="tab"
                                                     aria-controls="navtabs2-upload-form-ur" aria-selected="false">
@@ -82,23 +66,9 @@
                                         @endif
 
 
-                                        <div class="tab-pane active" id="navtabs2-sprint-ur" role="tabpanel">
+                                        <div class="tab-pane fade show active" id="navtabs2-sprint-ur" role="tabpanel">
                                             @include(
                                                 'Tindaklanjut.pelanggaran-unsur-pidana-ur.tabs.surat-perintah-penelitian-ur',
-                                                ['no_ref' => $no_ref]
-                                            )
-                                        </div>
-
-                                        <div class="tab-pane fade" id="navtabs2-permohonan-ur" role="tabpanel">
-                                            @include(
-                                                'Tindaklanjut.pelanggaran-unsur-pidana-ur.tabs.surat-permohonan-ur',
-                                                ['no_ref' => $no_ref]
-                                            )
-                                        </div>
-
-                                        <div class="tab-pane fade" id="navtabs2-pengakuan-ur" role="tabpanel">
-                                            @include(
-                                                'Tindaklanjut.pelanggaran-unsur-pidana-ur.tabs.surat-pengakuan-bersalah-ur',
                                                 ['no_ref' => $no_ref]
                                             )
                                         </div>
@@ -149,7 +119,22 @@
         input[readonly] {
             color: black !important;
         }
+
+        .tab-pane:not(.active) {
+            display: none !important;
+        }
+
+
+        .tab-content>.tab-pane {
+            display: none;
+        }
+
+        .tab-content>.tab-pane.active {
+            display: block;
+        }
     </style>
+
+
 
     <script>
         document.getElementById("searchTab").addEventListener("keyup", function() {

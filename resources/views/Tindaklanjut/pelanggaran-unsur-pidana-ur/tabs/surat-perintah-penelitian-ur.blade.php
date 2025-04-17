@@ -82,253 +82,319 @@
                             <div class="col-md-8 col-sm-11">
                                 <div id="form-tersangka-penelitian">
                                     <div id="dynamic-form-tersangka-penelitian">
-                                        @foreach ($tersangkaData as $index => $tersangka)
-                                            @php
-                                                $geledahTersangka = $penelitianTersangka[$index] ?? null;
-                                            @endphp
-                                            <div class="entry-tersangka text-black">
-                                                <hr>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">NO : SPPR-</span>
-                                                            <input type="text" class="form-control"
-                                                                name="no_sppr_tersangka[]"
-                                                                value="{{ old('no_sppr_tersangka.' . $index, $geledahTersangka['no_sppr'] ?? '') }}">
-                                                            <span class="input-group-text">/PPNS/</span>
-                                                            <input type="date" class="form-control"
-                                                                name="tgl_sppr_tersangka[]"
-                                                                value="{{ old('tgl_sppr_tersangka.' . $index, $geledahTersangka['tgl_sppr'] ?? '') }}">
+                                        @if (count($tersangkaData) > 0)
+                                            @foreach ($tersangkaData as $index => $tersangka)
+                                                @php
+                                                    $perintahPenelitianTersangka = $penelitianTersangka[$index] ?? null;
+                                                @endphp
+                                                <div class="entry-tersangka text-black">
+                                                    <hr>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">NO : SPLIT-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_split_tersangka[]"
+                                                                    value="{{ old('no_split_tersangka.' . $index, $perintahPenelitianTersangka['no_split'] ?? '') }}">
+                                                                <span class="input-group-text">/PPNS/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_split_tersangka[]"
+                                                                    value="{{ old('tgl_split_tersangka.' . $index, $perintahPenelitianTersangka['tgl_split'] ?? '') }}">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Nama Lengkap</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text"
-                                                            name="penelitian_nama_tersangka[]"
-                                                            class="form-control border-0 py-1"
-                                                            value="{{ $tersangka['nama'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Tempat /Tanggal
-                                                        Lahir
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Nama Lengkap
+                                                        </div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <input type="text" name="penelitian_nama_tersangka[]"
+                                                                class="form-control border-0 py-1"
+                                                                value="{{ $tersangka['nama'] ?? '' }}" readonly>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text"
-                                                            class="form-control border-0 py-1"
-                                                            value="{{ $tersangka['ttl'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Agama</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text"
-                                                            class="form-control border-0 py-1"
-                                                            value="{{ $tersangka['agama'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Jenis Kelamin</div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control border-0 py-1"
-                                                            value="{{ $tersangka['jenis_kelamin'] ?? '' }}" readonly>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Tempat /Tanggal
+                                                            Lahir</div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <input type="text" class="form-control border-0 py-1"
+                                                                value="{{ $tersangka['ttl'] ?? '' }}" readonly>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Kewarganegaraan
+                                                    <!-- Rest of the form fields remain the same -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Agama</div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <input type="text" class="form-control border-0 py-1"
+                                                                value="{{ $tersangka['agama'] ?? '' }}" readonly>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control border-0 py-1"
-                                                            value="{{ $tersangka['kewarganegaraan'] ?? '' }}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Pekerjaan Saat Ini
-                                                    </div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text"
-                                                            class="form-control border-0 py-1"
-                                                            value="{{ $tersangka['pekerjaan'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Alamat Sesuai
-                                                        Identitas
-                                                    </div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text"
-                                                            class="form-control border-0 py-1"
-                                                            value="{{ $tersangka['alamat'] ?? '' }}" readonly></div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Jenis/Nomor
-                                                        Identitas
-                                                    </div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control  py-1"
-                                                                placeholder="Jenis Identitas"
-                                                                value="{{ $tersangka['jenis_identitas'] ?? '' }}"
-                                                                readonly>
-                                                            <input type="text" class="form-control  py-1"
-                                                                placeholder="Nomor Identitas"
-                                                                value="{{ $tersangka['nomor_identitas'] ?? '' }}"
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Jenis Kelamin
+                                                        </div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <input type="text" class="form-control border-0 py-1"
+                                                                value="{{ $tersangka['jenis_kelamin'] ?? '' }}"
                                                                 readonly>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 d-flex align-items-center">Pendidikan Terakhir
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Kewarganegaraan
+                                                        </div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <input type="text" class="form-control border-0 py-1"
+                                                                value="{{ $tersangka['kewarganegaraan'] ?? '' }}"
+                                                                readonly>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-1 text-center">:</div>
-                                                    <div class="col-md-7"><input type="text"
-                                                            class="form-control border-0 py-1"
-                                                            value="{{ $tersangka['pendidikan'] ?? '' }}" readonly>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Pekerjaan Saat
+                                                            Ini</div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <input type="text" class="form-control border-0 py-1"
+                                                                value="{{ $tersangka['pekerjaan'] ?? '' }}" readonly>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        @php
-                                                            $selectedPejabat = json_decode(
-                                                                $geledahTersangka['pejabat_geledah'] ?? '[]',
-                                                                true,
-                                                            );
-                                                        @endphp
-                                                        <div class="input-group flex-column">
-                                                            <span
-                                                                class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
-                                                                D I P E R I N T A H K A N
-                                                            </span>
-                                                            <select class="form-select select2 w-100 mt-1"
-                                                                name="pejabat_geledah[{{ $index }}][]"
-                                                                multiple>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Alamat Sesuai
+                                                            Identitas</div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <input type="text" class="form-control border-0 py-1"
+                                                                value="{{ $tersangka['alamat'] ?? '' }}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Jenis/Nomor
+                                                            Identitas</div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control py-1"
+                                                                    placeholder="Jenis Identitas"
+                                                                    value="{{ $tersangka['jenis_identitas'] ?? '' }}"
+                                                                    readonly>
+                                                                <input type="text" class="form-control py-1"
+                                                                    placeholder="Nomor Identitas"
+                                                                    value="{{ $tersangka['nomor_identitas'] ?? '' }}"
+                                                                    readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 d-flex align-items-center">Pendidikan
+                                                            Terakhir</div>
+                                                        <div class="col-md-1 text-center">:</div>
+                                                        <div class="col-md-7">
+                                                            <input type="text" class="form-control border-0 py-1"
+                                                                value="{{ $tersangka['pendidikan'] ?? '' }}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label class="col-md-4 d-flex align-items-center">Dugaan
+                                                            Pelanggaran</label>
+                                                        <div
+                                                            class="col-md-1 text-center d-flex align-items-center justify-content-center">
+                                                            :</div>
+                                                        <div class="col-md-7">
+                                                            <textarea name="dugaan_pelanggaran_tersangka[]" class="form-control" rows="5"
+                                                                placeholder="Dugaan Pelanggaran Tersangka">{{ old('dugaan_pelanggaran_tersangka.0', $dugaan_pelanggaran_tersangka ?? '') }}</textarea>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            @php
+                                                                $selectedPejabat = json_decode(
+                                                                    $perintahPenelitianTersangka[
+                                                                        'pejabat_penelitian'
+                                                                    ] ?? '[]',
+                                                                    true,
+                                                                );
+                                                            @endphp
+                                                            <div class="input-group flex-column">
+                                                                <span
+                                                                    class="input-group-text text-white bg-primary justify-content-center text-center w-100 rounded">
+                                                                    D I P E R I N T A H K A N
+                                                                </span>
+                                                                <select class="form-select select2 w-100 mt-1"
+                                                                    name="pejabat_penelitian[{{ $index }}][]"
+                                                                    multiple>
+                                                                    @foreach ($users as $user)
+                                                                        <option value="{{ $user->id_admin }}"
+                                                                            @if (in_array($user->id_admin, $selectedPejabat)) selected @endif>
+                                                                            {{ $user->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 text-black d-flex align-items-center">
+                                                            Pejabat Penerbit Surat Perintah Penelitian
+                                                        </div>
+                                                        <div
+                                                            class="col-md-1 text-center d-flex align-items-center justify-content-center">
+                                                            :</div>
+                                                        <div class="col-md-7">
+                                                            <select class="form-control py-1 form-select select2"
+                                                                name="pejabat_penerbit_surat_penelitian_tersangka[]">
+                                                                <option value="" disabled
+                                                                    {{ old('pejabat_penerbit_surat_penelitian_tersangka.' . $index, $perintahPenelitianTersangka['pejabat_penerbit'] ?? '') == '' ? 'selected' : '' }}>
+                                                                    - Pilih -</option>
+
                                                                 @foreach ($users as $user)
                                                                     <option value="{{ $user->id_admin }}"
-                                                                        @if (in_array($user->id_admin, $selectedPejabat)) selected @endif>
-                                                                        {{ $user->name }}
+                                                                        {{ old('pejabat_penerbit_surat_penelitian_tersangka.' . $index, $perintahPenelitianTersangka['pejabat_penerbit'] ?? '') == $user->id_admin ? 'selected' : '' }}>
+                                                                        {{ $user->name }} | {{ $user->pangkat }} |
+                                                                        {{ $user->jabatan }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
-
                                                     </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 text-black d-flex align-items-center">
-                                                        Waktu Berlaku Surat Perintah
-                                                    </div>
-                                                    <div
-                                                        class="col-md-1 text-center d-flex align-items-center justify-content-center">
-                                                        :</div>
-                                                    <div class="col-md-7">
-                                                        <input type="text" class="form-control datetime-datepicker"
-                                                            name="waktu_surat_penelitian_tersangka[]"
-                                                            value="{{ old('waktu_surat_penelitian_tersangka.' . $index, $geledahTersangka['waktu_berlaku_penelitian'] ?? '') }}">
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 text-black d-flex align-items-center">
-                                                        Penyidik Penerbit Surat Perintah Penggeledahan
-                                                    </div>
-                                                    <div
-                                                        class="col-md-1 text-center d-flex align-items-center justify-content-center">
-                                                        :</div>
-                                                    <div class="col-md-7">
-                                                        <select class="form-control py-1 form-select select2"
-                                                            name="pejabat_penerbit_surat_penelitian_tersangka[]">
-                                                            <option value="" disabled
-                                                                {{ old('pejabat_penerbit_surat_penelitian_tersangka.' . $index, $geledahTersangka['pejabat_penerbit'] ?? '') == '' ? 'selected' : '' }}>
-                                                                - Pilih -</option>
-
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}"
-                                                                    {{ old('pejabat_penerbit_surat_penelitian_tersangka.' . $index, $geledahTersangka['pejabat_penerbit'] ?? '') == $user->id_admin ? 'selected' : '' }}>
-                                                                    {{ $user->name }} | {{ $user->pangkat }} |
-                                                                    {{ $user->jabatan }}
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 text-black d-flex align-items-center">
+                                                            Status Plh. Pejabat Penerbit
+                                                        </div>
+                                                        <div
+                                                            class="col-md-1 text-center d-flex align-items-center justify-content-center">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <select class="form-control py-1 form-select select2"
+                                                                name="status_plh_split[]">
+                                                                <option value="" disabled
+                                                                    {{ old('status_plh_split.' . $index, $perintahPenelitianTersangka['status_plh_split'] ?? '') == '' ? 'selected' : '' }}>
+                                                                    - Pilih -
                                                                 </option>
-                                                            @endforeach
-                                                        </select>
+                                                                <option value="Plh."
+                                                                    {{ old('status_plh_split.' . $index, $perintahPenelitianTersangka['status_plh_split'] ?? '') == 'Plh.' ? 'selected' : '' }}>
+                                                                    Plh.
+                                                                </option>
+                                                                <option value=""
+                                                                    {{ old('status_plh_split.' . $index, $perintahPenelitianTersangka['status_plh_split'] ?? '') == '' ? 'selected' : '' }}>
+                                                                    Tidak Plh.
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 text-black d-flex align-items-center">
+                                                            Status Menyanggupi
+                                                        </div>
+                                                        <div
+                                                            class="col-md-1 text-center d-flex align-items-center justify-content-center">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <select class="form-control py-1 form-select select2"
+                                                                name="status_sanggup_split[]">
+                                                                <option value="" disabled
+                                                                    {{ old('status_sanggup_split.' . $index, $perintahPenelitianTersangka['status_sanggup_split'] ?? '') == '' ? 'selected' : '' }}>
+                                                                    - Pilih -
+                                                                </option>
+                                                                <option value="Menyanggupi UR"
+                                                                    {{ old('status_sanggup_split.' . $index, $perintahPenelitianTersangka['status_sanggup_split'] ?? '') == 'Menyanggupi UR' ? 'selected' : '' }}>
+                                                                    Menyanggupi UR
+                                                                </option>
+                                                                <option value="Tidak Menyanggupi UR"
+                                                                    {{ old('status_sanggup_split.' . $index, $perintahPenelitianTersangka['status_sanggup_split'] ?? '') == 'Tidak Menyanggupi UR' ? 'selected' : '' }}>
+                                                                    Tidak Menyanggupi UR
+                                                                </option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr>
-                                            </div>
-                                        @endforeach
                                     </div>
+                                    @endforeach
+                                @else
+                                    <div class="alert alert-info">
+                                        Tidak ada data tersangka yang tersedia.
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-
-                        <div class="mb-3 row">
-                            <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">U N T U K</label>
-                            <div class="col-md-1 col-sm-1 text-center mt-1 d-none d-sm-block">:</div>
-                            <div class="col-md-8 col-sm-11">
-                                <ol class="ps-3 text-black" start="1" style="line-height: 1.5;">
-                                    <li class="mb-2 ps-1">
-                                        Melakukan tugas penelitian dugaan pelanggaran di bidang Cukai pada Undang-Undang
-                                        Nomor 39 Tahun 2007 tentang Perubahan Atas Undang-Undang Nomor 11 Tahun 1995
-                                        tentang Cukai yang diduga dilakukan oleh:
-                                        <br><br>
-                                        <table class="table table-borderless table-sm w-auto">
-                                            <tr>
-                                                <td>Nama Lengkap</td>
-                                                <td>:</td>
-                                                <td><strong>..........</strong></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Tempat / Tanggal Lahir</td>
-                                                <td>:</td>
-                                                <td>..........</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agama</td>
-                                                <td>:</td>
-                                                <td>..........</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jenis kelamin</td>
-                                                <td>:</td>
-                                                <td>..........</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kewarganegaraan</td>
-                                                <td>:</td>
-                                                <td>..........</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Pekerjaan saat ini</td>
-                                                <td>:</td>
-                                                <td>..........</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Alamat sesuai Identitas</td>
-                                                <td>:</td>
-                                                <td>..........
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jenis/ Nomor Identitas</td>
-                                                <td>:</td>
-                                                <td>..........</td>
-                                            </tr>
-                                        </table>
-                                    </li>
-                                    <li class="mb-1 ps-1">
-                                        Setelah melaksanakan Surat Perintah ini agar melaporkan kepada yang memberi
-                                        perintah.
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-
-
-                        <p class="text-black">Demikian Surat perintah ini dibuat untuk dilaksanakan dengan penuh
-                            tanggung jawab</p>
-
-
                     </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-md-3 col-sm-12 col-form-label fw-bold text-md-start">U N T U K</label>
+                        <div class="col-md-1 col-sm-1 text-center mt-1 d-none d-sm-block">:</div>
+                        <div class="col-md-8 col-sm-11">
+                            <ol class="ps-3 text-black" start="1" style="line-height: 1.5;">
+                                <li class="mb-2 ps-1">
+                                    Melakukan tugas penelitian dugaan pelanggaran di bidang Cukai pada Undang-Undang
+                                    Nomor 39 Tahun 2007 tentang Perubahan Atas Undang-Undang Nomor 11 Tahun 1995
+                                    tentang Cukai yang diduga dilakukan oleh:
+                                    <br><br>
+                                    <table class="table table-borderless table-sm w-auto">
+                                        <tr>
+                                            <td>Nama Lengkap</td>
+                                            <td>:</td>
+                                            <td><strong>..........</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tempat / Tanggal Lahir</td>
+                                            <td>:</td>
+                                            <td>..........</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Agama</td>
+                                            <td>:</td>
+                                            <td>..........</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jenis kelamin</td>
+                                            <td>:</td>
+                                            <td>..........</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kewarganegaraan</td>
+                                            <td>:</td>
+                                            <td>..........</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pekerjaan saat ini</td>
+                                            <td>:</td>
+                                            <td>..........</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Alamat sesuai Identitas</td>
+                                            <td>:</td>
+                                            <td>..........
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jenis/ Nomor Identitas</td>
+                                            <td>:</td>
+                                            <td>..........</td>
+                                        </tr>
+                                    </table>
+                                </li>
+                                <li class="mb-1 ps-1">
+                                    Setelah melaksanakan Surat Perintah ini agar melaporkan kepada yang memberi
+                                    perintah.
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+
+                    <p class="text-black">Demikian Surat perintah ini dibuat untuk dilaksanakan dengan penuh
+                        tanggung jawab</p>
+
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
