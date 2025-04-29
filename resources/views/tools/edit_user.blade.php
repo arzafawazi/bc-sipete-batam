@@ -81,13 +81,13 @@
                         <div class="row mb-3">
                             <label class="col-md-3 col-form-label">Password</label>
                             <div class="col-md-9">
-                                <input type="password" class="form-control bg-light" name="password" id="password" oninput="validatePasswords()">
+                                <input type="password" class="form-control bg-light" id="password" oninput="validatePasswords()" value="{{ old('name', $user->password) }}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-md-3 col-form-label">Konfirmasi Password</label>
                             <div class="col-md-9">
-                                <input type="password" class="form-control bg-light" name="password_confirmation" id="password_confirmation" oninput="validatePasswords()">
+                                <input type="password" class="form-control bg-light" id="password_confirmation" oninput="validatePasswords()" value="{{ old('password', $user->password) }}">
                             </div>
                         </div>
                         <div class="row mb-3">

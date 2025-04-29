@@ -104,7 +104,7 @@
                     <div class="col-md-4 text-black d-flex align-items-center">Nama Lengkap</div>
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
-                      <input type="text" class="form-control py-1 border-0" value="{{ old('nama_saksi', $sbpData->nama_saksi) }}" readonly>
+                      <input type="text" class="form-control py-1 border-0" id="nama_tersangka_utama" value="{{ old('nama_saksi', $sbpData->nama_saksi) }}" readonly>
                     </div>
                   </div>
 
@@ -113,7 +113,7 @@
                     <div class="col-md-4 text-black d-flex align-items-center">Tempat /Tanggal Lahir</div>
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
-                      <input type="text" class="form-control py-1 border-0" value="{{ old('ttl_saksi', $sbpData->ttl_saksi) }}" readonly>
+                      <input type="text" class="form-control py-1 border-0" id="ttl_tersangka_utama" value="{{ old('ttl_saksi', $sbpData->ttl_saksi) }}" readonly>
                     </div>
                   </div>
 
@@ -121,7 +121,7 @@
                     <div class="col-md-4 text-black d-flex align-items-center">Agama</div>
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
-                      <input type="text" class="form-control py-1 border-0" value="{{ old('agama_saksi', $sbpData->agama_saksi) }}" readonly>
+                      <input type="text" class="form-control py-1 border-0" id="agama_tersangka_utama" value="{{ old('agama_saksi', $sbpData->agama_saksi) }}" readonly>
                     </div>
                   </div>
 
@@ -130,7 +130,7 @@
                     </div>
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
-                      <input type="text" class="form-control py-1 border-0" value="{{ old('jk_saksi', $sbpData->jk_saksi) }}" readonly>
+                      <input type="text" class="form-control py-1 border-0" id="jk_tersangka_utama" value="{{ old('jk_saksi', $sbpData->jk_saksi) }}" readonly>
                     </div>
                   </div>
 
@@ -138,7 +138,7 @@
                     <div class="col-md-4 text-black d-flex align-items-center">Kewarganegaraan</div>
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
-                      <input type="text" class="form-control py-1 border-0" value="{{ old('kewarganegaraan_saksi', $sbpData->kewarganegaraan_saksi) }}" readonly>
+                      <input type="text" class="form-control py-1 border-0" value="{{ old('kewarganegaraan_saksi', $sbpData->kewarganegaraan_saksi) }}" id="kewarganegaraan_tersangka_utama" readonly>
                     </div>
                   </div>
 
@@ -146,7 +146,7 @@
                     <div class="col-md-4 text-black d-flex align-items-center">Pekerjaan saat ini</div>
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
-                      <input type="text" class="form-control py-1 border-0" value="{{ old('pekerjaan_saksi', $sbpData->pekerjaan_saksi) }}" readonly>
+                      <input type="text" class="form-control py-1 border-0" value="{{ old('pekerjaan_saksi', $sbpData->pekerjaan_saksi) }}" id="pekerjaan_tersangka_utama" readonly>
                     </div>
                   </div>
 
@@ -154,7 +154,7 @@
                     <div class="col-md-4 text-black d-flex align-items-center">Alamat sesuai Identitas</div>
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
-                      <input type="text" class="form-control py-1 border-0" value="{{ old('alamat_saksi', $sbpData->alamat_saksi) }}" readonly>
+                      <input type="text" class="form-control py-1 border-0" value="{{ old('alamat_saksi', $sbpData->alamat_saksi) }}" id="alamat_tersangka_utama" readonly>
                     </div>
                   </div>
 
@@ -163,6 +163,8 @@
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
                       <input type="text" class="form-control py-1 border-0" value="{{ $sbpData->jenis_iden_saksi . ' / ' . $sbpData->no_identitas_saksi }}" readonly>
+                       <input type="hidden" class="form-control py-1 border-0" value="{{ $sbpData->jenis_iden_saksi }}" id="jenis_iden_tersangka_utama" readonly>
+                       <input type="hidden" class="form-control py-1 border-0" value="{{ $sbpData->no_identitas_saksi }}" id="no_iden_tersangka_utama" readonly>
                     </div>
                   </div>
 
@@ -171,7 +173,7 @@
                     <div class="col-md-4 text-black d-flex align-items-center">Pendidikan terakhir</div>
                     <div class="col-md-1 text-center d-flex align-items-center justify-content-center">:</div>
                     <div class="col-md-7">
-                      <input type="text" class="form-control py-1 border-0" value="{{ old('pendidikan_terakhir_saksi', $sbpData->pendidikan_terakhir_saksi) }}" readonly>
+                      <input type="text" class="form-control py-1 border-0" id="pendidikan_tersangka_utama" value="{{ old('pendidikan_terakhir_saksi', $sbpData->pendidikan_terakhir_saksi) }}" readonly>
                     </div>
                   </div>
 

@@ -184,9 +184,7 @@
                             <thead>
                                 <tr class="bg-light">
                                     <th class="text-center px-3 py-3" style="width: 5%">No</th>
-                                    <th class="text-center px-3 py-3" style="width: 5%">Nomor LK</th>
-                                    <th class="px-3 text-center py-3" style="width: 15%">Tanggal Kejadian Tindak Pidana
-                                        Penyidikan</th>
+                                    <th class="text-center px-3 py-3" style="width: 20%">Status</th>
                                     <th class="text-center px-3 py-3" style="width: 20%">Opsi</th>
                                 </tr>
                             </thead>
@@ -194,16 +192,29 @@
                                 @foreach ($unsurpidana as $index => $unsurpidana)
                                     <tr class="shadow-sm">
                                         <td class="text-center fw-medium">{{ $index + 1 }}.</td>
-                                        <td class="fw-medium">{{ $unsurpidana->no_lk }}</td>
-                                        <td class="fw-medium">{{ $unsurpidana->tgl_lk }}</td>
+                                        <td class="fw-medium">
+                                            @php
+                                                $fromUnsur = !empty($unsurpidana->id_pelanggaran_unsur_pidana_penyidikan_ref);
+                                                $fromPenyidikan = !empty($unsurpidana->id_penyidikan_ref);
+                                            @endphp
+
+                                            @if ($fromUnsur && $fromPenyidikan)
+                                                Berasal dari keduanya
+                                            @elseif ($fromUnsur)
+                                                Berasal dari unsur pidana penyidikan
+                                            @elseif ($fromPenyidikan)
+                                                Berasal dari Penyidikan
+                                            @else
+                                                Tidak diketahui
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="d-flex gap-1 justify-content-center">
-                                                <a href="{{ route('unsur-pidana-penyidikan.edit', ['unsur_pidana_penyidikan' => $unsurpidana->id]) }}"
+                                                <a href="{{ route('unsur-pidana-ur.edit', ['unsur_pidana_ur' => $unsurpidana->id]) }}"
                                                     class="btn btn-soft-success btn-icon btn-sm rounded-pill">
                                                     <i data-feather="edit" class="icon-sm"></i> Edit
                                                 </a>
-                                                <form
-                                                    action="{{ route('unsur-pidana-penyidikan.destroy', $unsurpidana->id) }}"
+                                                <form action="{{ route('unsur-pidana-ur.destroy', $unsurpidana->id) }}"
                                                     method="POST" class="d-inline delete-form">
                                                     @csrf
                                                     @method('DELETE')
@@ -213,7 +224,8 @@
                                                         <i data-feather="trash" class="icon-sm"></i> Delete
                                                     </button>
                                                 </form>
-                                                <a href="" class="btn btn-soft-info btn-icon btn-sm rounded-pill">
+                                                <a href="{{ route('tes.print', $unsurpidana->id) }}"
+                                                    class="btn btn-soft-info btn-icon btn-sm rounded-pill">
                                                     <i data-feather="printer" class="icon-sm"></i> Print
                                                 </a>
                                             </div>
@@ -232,24 +244,26 @@
     <!-- container-fluid -->
 
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.addEventListener('click', function (event) {
-            if (event.target.classList.contains('pilih-laporan')) {
-                const id = event.target.getAttribute('data-id');
-                const tipe = event.target.getAttribute('data-tipe');
+        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('pilih-laporan')) {
+                    const id = event.target.getAttribute('data-id');
+                    const tipe = event.target.getAttribute('data-tipe');
 
-                let url = '';
-                if (tipe === 'penyidikan') {
-                    url = `/Tindaklanjut/unsur-pidana-ur/create?id_penyidikan=${encodeURIComponent(id)}`;
-                } else if (tipe === 'unsurpidana') {
-                    url = `/Tindaklanjut/unsur-pidana-ur/create?id_pelanggaran_unsur_pidana_penyidikan=${encodeURIComponent(id)}`;
+                    let url = '';
+                    if (tipe === 'penyidikan') {
+                        url =
+                            `/Tindaklanjut/unsur-pidana-ur/create?id_penyidikan=${encodeURIComponent(id)}`;
+                    } else if (tipe === 'unsurpidana') {
+                        url =
+                            `/Tindaklanjut/unsur-pidana-ur/create?id_pelanggaran_unsur_pidana_penyidikan=${encodeURIComponent(id)}`;
+                    }
+
+                    window.location.href = url;
                 }
-
-                window.location.href = url;
-            }
+            });
         });
-    });
-</script>
+    </script>
 
 
 

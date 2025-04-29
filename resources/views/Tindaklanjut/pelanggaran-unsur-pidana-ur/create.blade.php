@@ -5,7 +5,7 @@
 @endsection
 @section('content')
     <div class="container-fluid">
-        <form action="{{ route('unsur-pidana-ur.store') }}" method="POST">
+        <form action="{{ route('unsur-pidana-ur.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card mb-3 mt-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -54,8 +54,8 @@
 
 
                                     <div class="tab-content p-3 text-muted">
-                                        <input type="hidden" id="id_pelanggaran_unsur_pidana_penyidikan_ur"
-                                            name="id_pelanggaran_unsur_pidana_penyidikan_ur" value="">
+                                        <input type="hidden" id="id_pelanggaran_unsur_pidana_ur"
+                                            name="id_pelanggaran_unsur_pidana_ur" value="">
                                         @if (request()->has('id_penyidikan'))
                                             <input type="hidden" name="id_penyidikan_ref" value="{{ $id_penyidikan }}"
                                                 readonly>
@@ -180,10 +180,10 @@
         function generateUniqueID() {
             const timestamp = Date.now();
             const randomNum = Math.floor(Math.random() * 1000000);
-            return `id_pelanggaran_unsur_pidana_penyidikan_ur${timestamp}_${randomNum}`;
+            return `id_pelanggaran_unsur_pidana_ur${timestamp}_${randomNum}`;
         }
 
-        document.getElementById('id_pelanggaran_unsur_pidana_penyidikan_ur').value = generateUniqueID();
+        document.getElementById('id_pelanggaran_unsur_pidana_ur').value = generateUniqueID();
     </script>
 @endsection
 

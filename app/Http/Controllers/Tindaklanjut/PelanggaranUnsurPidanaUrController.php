@@ -31,7 +31,7 @@ class PelanggaranUnsurPidanaUrController extends Controller
 {
     public function index()
     {
-        $unsurpidana = TblPelanggaranUnsurPidanaUr::select('id')->get();
+        $unsurpidana = TblPelanggaranUnsurPidanaUr::select('id', 'id_pelanggaran_unsur_pidana_penyidikan_ref','id_penyidikan_ref')->get();
 
         // $unsurpidana = $unsurpidana->map(function ($item) {
         //     $item->tgl_bast_instansi_lain_pkl = $this->formatDates(['tgl_bast_instansi_lain_pkl' => $item->tgl_bast_instansi_lain_pkl])['tgl_bast_instansi_lain_pkl'];
@@ -69,6 +69,8 @@ class PelanggaranUnsurPidanaUrController extends Controller
                 return $item;
             });
 
+        // dd($unsurpidana);
+
         return view('Tindaklanjut.pelanggaran-unsur-pidana-ur.index', compact('unsurpidana', 'pascapenindakan', 'sbpData', 'penyidikan', 'unsurPidanaPenyidikan'));
     }
 
@@ -81,14 +83,14 @@ class PelanggaranUnsurPidanaUrController extends Controller
         $no_ref = TblNoRef::first();
         $nama_negara = TblNegara::all()->groupBy('benua');
 
+        $unsurpenyidikan = null;
         $pascapenindakan = null;
         $penyidikan = null;
         $sbpData = null;
-        $laporanInformasi = collect(); // default collection kosong
+        $laporanInformasi = collect();
         $saksiData = [];
         $tersangkaData = [];
 
-        // Jika ada id_pelanggaran_unsur_pidana_penyidikan, prioritaskan
         if (!empty($id_unsur_pidana)) {
             $unsurpenyidikan = TblPelanggaranUnsurPidanaPenyidikan::where('id_pelanggaran_unsur_pidana_penyidikan', $id_unsur_pidana)->first();
 
@@ -96,13 +98,11 @@ class PelanggaranUnsurPidanaUrController extends Controller
                 $saksiData = json_decode($unsurpenyidikan->data_saksi ?? '[]', true);
                 $tersangkaData = json_decode($unsurpenyidikan->data_tersangka ?? '[]', true);
 
-                // Override id_penyidikan dari relasi unsur
                 $id_penyidikan = $unsurpenyidikan->id_penyidikan_ref ?? $id_penyidikan;
             }
         }
 
-        // Jika belum ada data tersangka dari unsur, coba ambil dari penyidikan
-        if (!empty($id_penyidikan) && empty($tersangkaData)) {
+        if (!empty($id_penyidikan)) {
             $penyidikan = TblPenyidikan::where('id_penyidikan', $id_penyidikan)->first();
 
             if ($penyidikan) {
@@ -111,7 +111,7 @@ class PelanggaranUnsurPidanaUrController extends Controller
 
                 $laporanInformasi = TblLaporanInformasi::whereIn('id_pra_penindakan', $sbpData ? [$sbpData->id_pra_penindakan_ref] : [])->get();
 
-                if ($sbpData) {
+                if ($sbpData && empty($tersangkaData)) {
                     $tersangkaData = [
                         [
                             'nama' => $sbpData->nama_saksi ?? '',
@@ -130,18 +130,11 @@ class PelanggaranUnsurPidanaUrController extends Controller
             }
         }
 
-        $dugaan_pelanggaran_tersangka = '';
-
-        // Cek prioritas: ambil dari penyidikan atau unsurpenyidikan
-        if (!empty($unsurpenyidikan) && isset($unsurpenyidikan->dugaan_pelanggaran_lpp)) {
-            $dugaan_pelanggaran_tersangka = $unsurpenyidikan->dugaan_pelanggaran_lpp;
-        } elseif (!empty($penyidikan) && isset($penyidikan->dugaan_pelanggaran_lpp)) {
-            $dugaan_pelanggaran_tersangka = $penyidikan->dugaan_pelanggaran_lpp;
-        }
+        // Ambil dari penyidikan apapun kondisinya
+        $dugaan_pelanggaran_tersangka = $penyidikan->dugaan_pelanggaran_lpp ?? '';
 
         return view('Tindaklanjut.pelanggaran-unsur-pidana-ur.create', compact('users', 'no_ref', 'nama_negara', 'id_penyidikan', 'penyidikan', 'pascapenindakan', 'sbpData', 'laporanInformasi', 'saksiData', 'tersangkaData', 'dugaan_pelanggaran_tersangka'));
     }
-
 
     public function store(Request $request)
     {
@@ -152,134 +145,91 @@ class PelanggaranUnsurPidanaUrController extends Controller
 
             // Validasi request
             $request->validate([
-                'no_sp1_tersangka.*' => 'nullable|string',
-                'tgl_sp1_tersangka.*' => 'nullable|date',
-                'tersangka_nama.*' => 'nullable|string',
-                'tersangka_ttl.*' => 'nullable|string',
-                'tersangka_agama.*' => 'nullable|string',
-                'tersangka_kelamin.*' => 'nullable|string',
-                'tersangka_kewarganegaraan.*' => 'nullable|string',
-                'tersangka_pekerjaan.*' => 'nullable|string',
-                'tersangka_alamat.*' => 'nullable|string',
-                'tersangka_jenis_identitas.*' => 'nullable|string',
-                'tersangka_nomor_identitas.*' => 'nullable|string',
-                'tersangka_pendidikan.*' => 'nullable|string',
-                'no_sp2_tersangka.*' => 'nullable|string',
-                'tgl_sp2_tersangka.*' => 'nullable|string',
-                'pejabat_tersangka_sp1.*' => 'nullable|string',
-                'pejabat_tersangka_sp2.*' => 'nullable|string',
-                'status_surat_panggilan_1_tersangka.*' => 'nullable|string',
-                'status_surat_panggilan_2_tersangka.*' => 'nullable|string',
-                'tgl_panggilan_1_tersangka.*' => 'nullable|string',
-                'tgl_panggilan_2_tersangka.*' => 'nullable|string',
-                'no_spm_tersangka.*' => 'nullable|string',
-                'tgl_spm_tersangka.*' => 'nullable|string',
-                'pejabat_tersangka_spm.*' => 'nullable',
+                'no_split_tersangka.*' => 'nullable|string',
+                'tgl_split_tersangka.*' => 'nullable|string',
+                'penelitian_nama_tersangka.*' => 'nullable|string',
+                'dugaan_pelanggaran_tersangka.*' => 'nullable|string',
+                'pejabat_penerbit_surat_penelitian_tersangka.*' => 'nullable|string',
+                'status_plh_split.*' => 'nullable|string',
+                'status_sanggup_split.*' => 'nullable|string',
+
+                'berita_acara.*' => 'nullable|file',
+                'surat_permohonan.*' => 'nullable|file',
+                'surat_pengakuan.*' => 'nullable|file',
+                'tanda_terima.*' => 'nullable|file',
+                'nd_permohonan.*' => 'nullable|file',
             ]);
 
-            // dd($request->all());
+            // Proses upload file
+            $fileUploads = [];
+            $uploadTypes = ['berita_acara', 'surat_permohonan', 'surat_pengakuan', 'tanda_terima', 'nd_permohonan'];
 
-            // Proses data saksi
+            foreach ($uploadTypes as $type) {
+                if ($request->hasFile($type)) {
+                    $fileUploads[$type] = [];
+                    foreach ($request->file($type) as $file) {
+                        $originalName = $file->getClientOriginalName();
+                        $extension = $file->getClientOriginalExtension();
+                        $uniqueId = uniqid() . '_' . time();
+                        $fileName = $type . '_' . $uniqueId . '.' . $extension;
+
+                        $filePath = $file->storeAs('ur_document/' . $type, $fileName, 'public');
+
+                        $fileUploads[$type][] = [
+                            'name' => $fileName,
+                            'path' => $filePath,
+                            'original_name' => $originalName,
+                        ];
+                    }
+                }
+            }
 
             // Proses data tersangka
-            $dataTersangka = [];
-            if ($request->has('tersangka_nama')) {
-                foreach ($request->tersangka_nama as $key => $nama) {
+            $dataSuratPenilitianTersangka = [];
+            if ($request->has('penelitian_nama_tersangka')) {
+                foreach ($request->penelitian_nama_tersangka as $key => $nama) {
+                    $pejabatPenelitian = $request->input("pejabat_penelitian.$key", []);
 
-                    $pejabatSpm = $request->pejabat_tersangka_spm[$key] ?? null;
-                    if ($pejabatSpm !== null && !is_array($pejabatSpm)) {
-                        $pejabatSpm = [$pejabatSpm];
-                    }
-
-                    $dataTersangka[] = [
-                        'no_sp1' => $request->no_sp1_tersangka[$key] ?? null,
-                        'tgl_sp1' => $request->tgl_sp1_tersangka[$key] ?? null,
+                    $dataSuratPenilitianTersangka[] = [
                         'nama' => $nama,
-                        'ttl' => $request->tersangka_ttl[$key] ?? null,
-                        'agama' => $request->tersangka_agama[$key] ?? null,
-                        'jenis_kelamin' => $request->tersangka_kelamin[$key] ?? null,
-                        'kewarganegaraan' => $request->tersangka_kewarganegaraan[$key] ?? null,
-                        'pekerjaan' => $request->tersangka_pekerjaan[$key] ?? null,
-                        'alamat' => $request->tersangka_alamat[$key] ?? null,
-                        'jenis_identitas' => $request->tersangka_jenis_identitas[$key] ?? null,
-                        'nomor_identitas' => $request->tersangka_nomor_identitas[$key] ?? null,
-                        'pendidikan' => $request->tersangka_pendidikan[$key] ?? null,
-                        'no_sp2' => $request->no_sp2_tersangka[$key] ?? null,
-                        'tgl_sp2' => $request->tgl_sp2_tersangka[$key] ?? null,
-                        'pejabat_sp1' => $request->pejabat_tersangka_sp1[$key] ?? null,
-                        'pejabat_sp2' => $request->pejabat_tersangka_sp2[$key] ?? null,
-                        'status_panggilan_1' => $request->status_surat_panggilan_1_tersangka[$key] ?? null,
-                        'status_panggilan_2' => $request->status_surat_panggilan_2_tersangka[$key] ?? null,
-                        'tgl_panggilan_1' => $request->tgl_panggilan_1_tersangka[$key] ?? null,
-                        'tgl_panggilan_2' => $request->tgl_panggilan_2_tersangka[$key] ?? null,
-                        'no_spm' => $request->no_spm_tersangka[$key] ?? null,
-                        'tgl_spm' => $request->tgl_spm_tersangka[$key] ?? null,
-                        'pejabat_spm' => $pejabatSpm ? json_encode($pejabatSpm) : null,
+                        'no_split' => $request->no_split_tersangka[$key] ?? null,
+                        'tgl_split' => $request->tgl_split_tersangka[$key] ?? null,
+                        'dugaan_pelanggaran_tersangka' => $request->dugaan_pelanggaran_tersangka[$key] ?? null,
+                        'pejabat_penelitian' => !empty($pejabatPenelitian) ? json_encode($pejabatPenelitian) : null,
+                        'pejabat_penerbit' => $request->pejabat_penerbit_surat_penelitian_tersangka[$key] ?? null,
+                        'status_plh_split' => $request->status_plh_split[$key] ?? null,
+                        'status_sanggup_split' => $request->status_sanggup_split[$key] ?? null,
                     ];
                 }
             }
 
-            $requestData = $request->except([
-                'no_sp1_tersangka',
-                'tgl_sp1_tersangka',
-                'tersangka_nama',
-                'tersangka_ttl',
-                'tersangka_agama',
-                'tersangka_kelamin',
-                'tersangka_kewarganegaraan',
-                'tersangka_pekerjaan',
-                'tersangka_alamat',
-                'tersangka_jenis_identitas',
-                'tersangka_nomor_identitas',
-                'tersangka_pendidikan',
-                'no_sp2_tersangka',
-                'tgl_sp2_tersangka',
-                'pejabat_tersangka_sp1',
-                'pejabat_tersangka_sp2',
-                'status_surat_panggilan_1_tersangka',
-                'status_surat_panggilan_2_tersangka',
-                'tgl_panggilan_1_tersangka',
-                'tgl_panggilan_2_tersangka',
-                'no_spm_tersangka',
-                'tgl_spm_tersangka',
-                'pejabat_tersangka_spm',
-            ]);
+            // Bersihkan requestData dari data yang sudah diproses
+            $requestData = $request->except(['no_split_tersangka', 'tgl_split_tersangka', 'penelitian_nama_tersangka', 'dugaan_pelanggaran_tersangka', 'pejabat_penerbit_surat_penelitian_tersangka', 'status_plh_split', 'status_sanggup_split', 'berita_acara', 'surat_permohonan', 'surat_pengakuan', 'tanda_terima', 'nd_permohonan', 'pejabat_penelitian']);
 
-
-            // Tambahkan data saksi dan tersangka dalam bentuk JSON
-            $requestData['data_tersangka'] = json_encode($dataTersangka);
-
-            // dd($requestData);
-            // dd($requestData);
+            // Tambahkan data tersangka dalam bentuk JSON
+            $requestData['surat_perintah_penelitian_ur_tersangka'] = json_encode($dataSuratPenilitianTersangka);
+            $requestData['upload_ur_tersangka'] = json_encode($fileUploads);
 
             // Simpan ke database
             $unsurpenyidikanur = TblPelanggaranUnsurPidanaUr::create($requestData);
 
-            // Update nomor referensi
-            // $no_ref = TblNoRef::first();
-            // $no_ref->no_lk += 1;
-            // $no_ref->no_sptp += 1;
-            // $no_ref->no_pdp += 1;
-            // $no_ref->save();
-
             DB::commit(); // Simpan transaksi
 
-            return redirect()->route('unsur-pidana-ur.edit', $unsurpenyidikanur->id)
-                ->with('success', 'Data berhasil disimpan, silakan lanjutkan edit.');
+            return redirect()->route('unsur-pidana-ur.edit', $unsurpenyidikanur->id)->with('success', 'Data berhasil disimpan, silakan lanjutkan edit.');
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback jika ada error
 
             // Log detail error
-            Log::error("Error saat menyimpan data: " . $e->getMessage(), [
+            Log::error('Error saat menyimpan data: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            // Redirect dengan pesan error
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->withInput()
-                ->with('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi atau hubungi admin.');
+                ->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
 
@@ -290,18 +240,266 @@ class PelanggaranUnsurPidanaUrController extends Controller
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
 
-        $penyidikan = TblPenyidikan::where('id_penyidikan', $unsurpenyidikanur->id_penyidikan_ref)->first();
-        $pascapenindakan = TblPascaPenindakan::where('id_pasca_penindakan', $penyidikan->id_pasca_penindakan_ref)->first();
-        $sbpData = TblSbp::with('laporanInformasi')->where('id_penindakan', $pascapenindakan->id_penindakan_ref)->first();
-        $laporanInformasi = TblLaporanInformasi::where('id_pra_penindakan', $sbpData->pluck('id_pra_penindakan_ref'))->get();
+        $penyidikan = null;
+        $unsurpenyidikan = null;
+
+        if ($unsurpenyidikanur->id_penyidikan_ref) {
+            $penyidikan = TblPenyidikan::where('id_penyidikan', $unsurpenyidikanur->id_penyidikan_ref)->first();
+        } elseif ($unsurpenyidikanur->id_pelanggaran_unsur_pidana_penyidikan_ref) {
+            $unsurpenyidikan = TblPelanggaranUnsurPidanaPenyidikan::where('id_pelanggaran_unsur_pidana_penyidikan', $unsurpenyidikanur->id_pelanggaran_unsur_pidana_penyidikan_ref)->first();
+            if (!$unsurpenyidikan) {
+                return redirect()->back()->with('error', 'Data penyidikan unsur tidak ditemukan.');
+            }
+
+            $penyidikan = TblPenyidikan::where('id_penyidikan', $unsurpenyidikan->id_penyidikan_ref)->first();
+        }
+
+        if (!$penyidikan) {
+            return redirect()->back()->with('error', 'Data penyidikan tidak ditemukan.');
+        }
+
+        // Ambil tersangka dari unsur penyidikan jika tersedia
+        if (!$unsurpenyidikan && $unsurpenyidikanur->id_pelanggaran_unsur_pidana_penyidikan_ref) {
+            $unsurpenyidikan = TblPelanggaranUnsurPidanaPenyidikan::where('id_pelanggaran_unsur_pidana_penyidikan', $unsurpenyidikanur->id_pelanggaran_unsur_pidana_penyidikan_ref)->first();
+        }
+
+        $tersangkaData = json_decode($unsurpenyidikan->data_tersangka ?? '[]', true);
+
+        // dd($tersangkaData);
+
+        $pascapenindakan = $penyidikan->id_pasca_penindakan_ref ? TblPascaPenindakan::where('id_pasca_penindakan', $penyidikan->id_pasca_penindakan_ref)->first() : null;
+        $sbpData = TblSbp::with('laporanInformasi')
+            ->where('id_penindakan', $pascapenindakan->id_penindakan_ref ?? null)
+            ->first();
+        $laporanInformasi = TblLaporanInformasi::whereIn('id_pra_penindakan', $sbpData ? $sbpData->pluck('id_pra_penindakan_ref') : [])->get();
 
         $users = User::all();
         $nama_negara = TblNegara::all()->groupBy('benua');
         $no_ref = TblNoRef::first();
+        $dugaan_pelanggaran_tersangka = $penyidikan->dugaan_pelanggaran_lpp ?? '';
 
-        $surat_penelitian = json_decode($unsurpenyidikanur->surat_perintah_penelitian_ur_tersangka ?? '[]', true);
+        $penelitianTersangka = json_decode($unsurpenyidikanur->surat_perintah_penelitian_ur_tersangka ?? '[]', true);
 
-        return view('Tindaklanjut.pelanggaran-unsur-pidana-penyidikan.edit', compact('unsurpenyidikanur', 'users', 'no_ref', 'penyidikan', 'nama_negara', 'pascapenindakan', 'sbpData', 'laporanInformasi', 'surat_penelitian'));
+        return view('Tindaklanjut.pelanggaran-unsur-pidana-ur.edit', compact('unsurpenyidikanur', 'users', 'no_ref', 'penyidikan', 'nama_negara', 'pascapenindakan', 'sbpData', 'laporanInformasi', 'penelitianTersangka', 'tersangkaData', 'dugaan_pelanggaran_tersangka'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction(); // Mulai transaksi database
+
+            $unsurpenyidikanur = TblPelanggaranUnsurPidanaUr::findOrFail($id);
+
+            $request->validate([
+                'no_split_tersangka.*' => 'nullable|string',
+                'tgl_split_tersangka.*' => 'nullable|string',
+                'penelitian_nama_tersangka.*' => 'nullable|string',
+                'dugaan_pelanggaran_tersangka.*' => 'nullable|string',
+                'pejabat_penerbit_surat_penelitian_tersangka.*' => 'nullable|string',
+                'status_plh_split.*' => 'nullable|string',
+                'status_sanggup_split.*' => 'nullable|string',
+
+                'berita_acara.*' => 'nullable|file',
+                'surat_permohonan.*' => 'nullable|file',
+                'surat_pengakuan.*' => 'nullable|file',
+                'tanda_terima.*' => 'nullable|file',
+                'nd_permohonan.*' => 'nullable|file',
+            ]);
+
+            // Proses upload file
+            $fileUploads = [];
+            $uploadTypes = ['berita_acara', 'surat_permohonan', 'surat_pengakuan', 'tanda_terima', 'nd_permohonan'];
+
+            foreach ($uploadTypes as $type) {
+                if ($request->hasFile($type)) {
+                    $fileUploads[$type] = [];
+                    foreach ($request->file($type) as $file) {
+                        $originalName = $file->getClientOriginalName();
+                        $extension = $file->getClientOriginalExtension();
+                        $uniqueId = uniqid() . '_' . time();
+                        $fileName = $type . '_' . $uniqueId . '.' . $extension;
+
+                        $filePath = $file->storeAs('ur_document/' . $type, $fileName, 'public');
+
+                        $fileUploads[$type][] = [
+                            'name' => $fileName,
+                            'path' => $filePath,
+                            'original_name' => $originalName,
+                        ];
+                    }
+                }
+            }
+
+            // Proses data tersangka
+            $dataSuratPenilitianTersangka = [];
+            if ($request->has('penelitian_nama_tersangka')) {
+                foreach ($request->penelitian_nama_tersangka as $key => $nama) {
+                    $pejabatPenelitian = $request->input("pejabat_penelitian.$key", []);
+
+                    $dataSuratPenilitianTersangka[] = [
+                        'nama' => $nama,
+                        'no_split' => $request->no_split_tersangka[$key] ?? null,
+                        'tgl_split' => $request->tgl_split_tersangka[$key] ?? null,
+                        'dugaan_pelanggaran_tersangka' => $request->dugaan_pelanggaran_tersangka[$key] ?? null,
+                        'pejabat_penelitian' => !empty($pejabatPenelitian) ? json_encode($pejabatPenelitian) : null,
+                        'pejabat_penerbit' => $request->pejabat_penerbit_surat_penelitian_tersangka[$key] ?? null,
+                        'status_plh_split' => $request->status_plh_split[$key] ?? null,
+                        'status_sanggup_split' => $request->status_sanggup_split[$key] ?? null,
+                    ];
+                }
+            }
+
+            // Ambil data inputan selain yang dikecualikan
+            $requestData = $request->except(['no_split_tersangka', 'tgl_split_tersangka', 'penelitian_nama_tersangka', 'dugaan_pelanggaran_tersangka', 'pejabat_penerbit_surat_penelitian_tersangka', 'status_plh_split', 'status_sanggup_split', 'berita_acara', 'surat_permohonan', 'surat_pengakuan', 'tanda_terima', 'nd_permohonan', 'pejabat_penelitian']);
+
+            // Gabungkan file baru dengan file lama
+            $existingUploads = json_decode($unsurpenyidikanur->upload_ur_tersangka, true) ?? [];
+            foreach ($uploadTypes as $type) {
+                if (!empty($fileUploads[$type])) {
+                    $existingUploads[$type] = array_merge($existingUploads[$type] ?? [], $fileUploads[$type]);
+                }
+            }
+
+            $requestData['surat_perintah_penelitian_ur_tersangka'] = json_encode($dataSuratPenilitianTersangka);
+            $requestData['upload_ur_tersangka'] = json_encode($existingUploads);
+
+            // Update data ke database
+            $unsurpenyidikanur->update($requestData);
+
+            DB::commit();
+            return redirect()->route('unsur-pidana-ur.edit', $unsurpenyidikanur->id)->with('success', 'Data berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error saat update data: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat update: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteFile(Request $request, $id)
+    {
+        try {
+            $unsurpenyidikanur = TblPelanggaranUnsurPidanaUr::findOrFail($id);
+            $type = $request->type;
+            $index = $request->index;
+
+            $uploadedFiles = json_decode($unsurpenyidikanur->upload_ur_tersangka, true);
+
+            if (isset($uploadedFiles[$type][$index])) {
+                // Hapus file dari storage
+                $filePath = $uploadedFiles[$type][$index]['path'];
+                if (Storage::disk('public')->exists($filePath)) {
+                    Storage::disk('public')->delete($filePath);
+                }
+
+                // Hapus data file dari array
+                array_splice($uploadedFiles[$type], $index, 1);
+
+                // Update database
+                $unsurpenyidikanur->upload_ur_tersangka = json_encode($uploadedFiles);
+                $unsurpenyidikanur->save();
+
+                return response()->json(['success' => true]);
+            }
+
+            return response()->json(['success' => false, 'message' => 'File tidak ditemukan']);
+        } catch (\Exception $e) {
+            Log::error('Error saat menghapus file: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $unsurpenyidikanur = TblPelanggaranUnsurPidanaUr::find($id);
+
+        if ($unsurpenyidikanur) {
+            // Hapus file dari storage
+            $uploadedFiles = json_decode($unsurpenyidikanur->upload_ur_tersangka, true);
+
+            if (is_array($uploadedFiles)) {
+                foreach ($uploadedFiles as $fileGroup) {
+                    foreach ($fileGroup as $file) {
+                        if (isset($file['path']) && Storage::disk('public')->exists($file['path'])) {
+                            Storage::disk('public')->delete($file['path']);
+                        }
+                    }
+                }
+            }
+
+            // Hapus data dari database
+            $unsurpenyidikanur->delete();
+
+            return redirect()->route('unsur-pidana-ur.index')->with('success', 'Data dan file berhasil dihapus.');
+        }
+
+        return redirect()->route('unsur-pidana-ur.index')->with('error', 'Data tidak ditemukan.');
+    }
+
+    public function printSuratPerTersangka($id)
+    {
+        $data = TblPelanggaranUnsurPidanaUr::findOrFail($id);
+
+        // Decode data tersangka dari JSON
+        $dataTersangka = json_decode($data->surat_perintah_penelitian_ur_tersangka, true);
+
+        $filePaths = [];
+
+        // Loop untuk setiap tersangka dan buat dokumen per tersangka
+        foreach ($dataTersangka as $tersangka) {
+            // Buat TemplateProcessor baru untuk setiap dokumen
+            $templateProcessor = new TemplateProcessor(resource_path('templates/Tindaklanjut/unsur-pidana-ur/tes.docx'));
+
+            // Set data untuk setiap tersangka
+            $templateProcessor->setValue('nama', $tersangka['nama']);
+            $templateProcessor->setValue('no_split', $tersangka['no_split']);
+            $templateProcessor->setValue('tgl_split', $tersangka['tgl_split']);
+            $templateProcessor->setValue('dugaan_pelanggaran_tersangka', $tersangka['dugaan_pelanggaran_tersangka']);
+            $templateProcessor->setValue('pejabat_penelitian', implode(', ', json_decode($tersangka['pejabat_penelitian'] ?? '[]')));
+            $templateProcessor->setValue('pejabat_penerbit', $tersangka['pejabat_penerbit']);
+            $templateProcessor->setValue('status_plh_split', $tersangka['status_plh_split']);
+            $templateProcessor->setValue('status_sanggup_split', $tersangka['status_sanggup_split']);
+
+            // Tentukan nama file untuk setiap surat per tersangka
+            $fileName = "Surat_UR_{$tersangka['no_split']}_{$tersangka['nama']}.docx";
+            $filePath = storage_path("app/public/{$fileName}");
+
+            // Simpan dokumen hasil template
+            $templateProcessor->saveAs($filePath);
+
+            // Simpan file path untuk nanti di-download
+            $filePaths[] = $filePath;
+        }
+
+        // Jika semua dokumen sudah dibuat, gabungkan dalam bentuk zip dan download
+        if (count($filePaths) > 0) {
+            $zipFilePath = storage_path('app/public/surat_ur.zip');
+            $zip = new \ZipArchive();
+
+            if ($zip->open($zipFilePath, \ZipArchive::CREATE) === true) {
+                foreach ($filePaths as $file) {
+                    $zip->addFile($file, basename($file));
+                }
+                $zip->close();
+
+                // Hapus file individual setelah zip
+                foreach ($filePaths as $file) {
+                    unlink($file);
+                }
+
+                // Return zip file untuk di-download
+                return response()->download($zipFilePath)->deleteFileAfterSend(true);
+            }
+        }
+
+        return response()->json(['error' => 'Tidak ada file yang dibuat.'], 404);
     }
 
     private function formatDates($data)

@@ -24,12 +24,12 @@
             </div>
 
             <div class="col-md-4 mb-3">
-              <label>No. B.A Buka Segel</label>
+              <label>No. B.A Segel CTP</label>
               <input type="text" class="form-control" name="passport_number" placeholder="Keyword">
             </div>
 
             <div class="col-md-4 mb-3">
-              <label>Tgl. B.A Buka Segel:</label>
+              <label>Tgl. B.A Segel CTP:</label>
               <input type="text" class="form-control" name="passenger_name" placeholder="Keyword">
             </div>
 
@@ -65,7 +65,7 @@
               </button>
 
               <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#laporanInfoModal">
-                <i data-feather="plus" style="width: 16px; height: 16px;" class="me-1"></i> Rekam Data B.A Buka Segel
+                <i data-feather="plus" style="width: 16px; height: 16px;" class="me-1"></i> Rekam Data B.A Segel CTP
               </button>
 
               <button type="button" class="btn btn-info btn-sm">
@@ -166,28 +166,30 @@
               <thead>
                 <tr class="bg-light">
                   <th class="text-center px-3 py-3" style="width: 5%">No</th>
-                  <th class="px-3 text-center py-3" style="width: 15%">Tanggal Pelanggaran Ketentuan Lain</th>
+                  <th class="px-3 text-center py-3" style="width: 10%">No BA Buka Segel</th>
+                  <th class="px-3 text-center py-3" style="width: 15%">Tanggal Ba Buka Segel</th>
                   <th class="text-center px-3 py-3" style="width: 20%">Opsi</th>
                 </tr>
               </thead>
               <tbody align="center">
-                @foreach ($pelanggaranlain as $index => $pelanggaranlain)
+                @foreach ($bukasegel as $index => $bukasegel)
                   <tr class="shadow-sm">
                     <td class="text-center fw-medium">{{ $index + 1 }}.</td>
-                    <td class="fw-medium">{{ $pelanggaranlain->tgl_bast_instansi_lain_pkl }}</td>
+                    <td class="fw-medium">{{ $bukasegel->no_ba_buka_segel }}</td>
+                    <td class="fw-medium">{{ $bukasegel->tgl_ba_buka_segel }}</td>
                     <td>
                       <div class="d-flex gap-1 justify-content-center">
-                        <a href="{{ route('pelanggaran-ketentuan-lain.edit', ['pelanggaran_ketentuan_lain' => $pelanggaranlain->id]) }}" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
+                        <a href="{{ route('ba-pembukaan-segel.edit', ['ba_pembukaan_segel' => $bukasegel->id]) }}" class="btn btn-soft-success btn-icon btn-sm rounded-pill">
                           <i data-feather="edit" class="icon-sm"></i> Edit
                         </a>
-                        <form action="{{ route('pelanggaran-ketentuan-lain.destroy', $pelanggaranlain->id) }}" method="POST" class="d-inline delete-form">
+                        <form action="{{ route('ba-pembukaan-segel.destroy', $bukasegel->id) }}" method="POST" class="d-inline delete-form">
                           @csrf
                           @method('DELETE')
                           <button type="submit" class="btn btn-soft-danger btn-icon btn-sm rounded-pill" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                             <i data-feather="trash" class="icon-sm"></i> Delete
                           </button>
                         </form>
-                        <a href="{{ route('surat-bast-instansi-lain-pkl.print', $pelanggaranlain->id) }}" class="btn btn-soft-info btn-icon btn-sm rounded-pill">
+                        <a href="{{ route('ba-pembukaan-segel.print', $bukasegel->id) }}" class="btn btn-soft-info btn-icon btn-sm rounded-pill">
                           <i data-feather="printer" class="icon-sm"></i> Print
                         </a>
                       </div>
@@ -211,7 +213,7 @@
         if (event.target.classList.contains('pilih-laporan')) {
           let nomorLaporan = event.target.getAttribute('data-nomor');
           let buttonLabel = event.target.getAttribute('data-label'); // Ambil label tombol dari data-label
-          let url = `/Tindaklanjut/pelanggaran-ketentuan-lain/create?id_penyidikan=${encodeURIComponent(nomorLaporan)}`;
+          let url = `/Pengawasanlain/ba-pembukaan-segel/create?id_penyidikan=${encodeURIComponent(nomorLaporan)}`;
           window.location.href = url;
         }
       });

@@ -122,14 +122,14 @@ document.addEventListener("DOMContentLoaded", function() {
     initializeFormDataAhli();
 
     document.getElementById("add-ahli").addEventListener("click", function() {
-        addEntry("ahli");
+        addEntryAhli("ahli");
     });
 
     document.getElementById("remove-ahli").addEventListener("click", function() {
-        removeEntry("ahli");
+        removeEntryAhli("ahli");
     });
 
-    updateRemoveButtonVisibility("ahli");
+    updateRemoveButtonVisibilityAhli("ahli");
     feather.replace();
 });
 
@@ -145,7 +145,7 @@ function initializeFormDataAhli() {
             container.appendChild(newEntry);
         });
 
-        updateRemoveButtonVisibility("ahli");
+        updateRemoveButtonVisibilityAhli("ahli");
         initializeSelect2();
     }
 }
@@ -208,14 +208,14 @@ function generateAhliEntryHTML(ahli = {}, isFirst = false, index = 0) {
     if (removeBtn) {
         removeBtn.addEventListener('click', function() {
             entryDiv.remove();
-            updateRemoveButtonVisibility("ahli");
+            updateRemoveButtonVisibilityAhli("ahli");
         });
     }
 
     return entryDiv;
 }
 
-function addEntry(formType) {
+function addEntryAhli(formType) {
     let formContainer = document.getElementById(`dynamic-form-${formType}`);
     let currentEntries = formContainer.querySelectorAll(`.entry-${formType}`);
     let newIndex = currentEntries.length;
@@ -234,7 +234,7 @@ function addEntry(formType) {
         if (removeBtn) {
             removeBtn.addEventListener('click', function() {
                 newEntry.remove();
-                updateRemoveButtonVisibility(formType);
+                updateRemoveButtonVisibilityAhli(formType);
                 initializeSelect2ForContainer(formContainer);
             });
         }
@@ -245,11 +245,11 @@ function addEntry(formType) {
             feather.replace();
         }
         
-        updateRemoveButtonVisibility(formType);
+        updateRemoveButtonVisibilityAhli(formType);
     }
 }
 
-function removeEntry(formType) {
+function removeEntryAhli(formType) {
     let entries = document.querySelectorAll(`#dynamic-form-${formType} .entry-${formType}`);
     if (entries.length > 1) {
         let lastEntry = entries[entries.length - 1];
@@ -259,11 +259,11 @@ function removeEntry(formType) {
         });
 
         lastEntry.remove();
-        updateRemoveButtonVisibility(formType);
+        updateRemoveButtonVisibilityAhli(formType);
     }
 }
 
-function updateRemoveButtonVisibility(formType) {
+function updateRemoveButtonVisibilityAhli(formType) {
     let entries = document.querySelectorAll(`#dynamic-form-${formType} .entry-${formType}`);
     let removeButton = document.getElementById(`remove-${formType}`);
 

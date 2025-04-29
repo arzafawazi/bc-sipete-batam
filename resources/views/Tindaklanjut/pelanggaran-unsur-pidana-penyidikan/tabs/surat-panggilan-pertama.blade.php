@@ -565,15 +565,15 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
                  , time_24hr: true
                  , locale: "id"
                  , onClose: function(selectedDates) {
-                     // console.log("Selected date:", selectedDates);
+                      console.log("Selected date:", selectedDates);
                  }
              , });
          });
      }
 
      let data_saksi = <?php echo json_encode($saksiData, JSON_PRETTY_PRINT); ?>;
-   // console.log("Data saksi dari PHP:", data_saksi);
-   // console.log("Jumlah saksi:", data_saksi.length);
+    console.log("Data saksi dari PHP:", data_saksi);
+    console.log("Jumlah saksi:", data_saksi.length);
 
 
    function initializeFormData() {
@@ -582,7 +582,7 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
        container.innerHTML = ""; // Kosongkan sebelum mengisi ulang
 
        data_saksi.forEach((saksi, index) => {
-         // console.log("Memproses saksi:", saksi);
+          console.log("Memproses saksi:", saksi);
          let newEntry = generateSaksiEntryHTML(saksi, index === 0, index);
          container.appendChild(newEntry);
        });
@@ -787,7 +787,7 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
 
      // Pastikan template entry ada
      if (!originalEntry) {
-       // console.error(`Elemen .entry-${formType} tidak ditemukan!`);
+         console.log(`Elemen .entry-${formType} tidak ditemukan!`);
        return null;
      }
 
@@ -828,7 +828,7 @@ bagian handle untuk change inputan select2 bagian tersangka dan saksi, serta pas
          updateRemoveButtonVisibility(formType);
        });
      } else {
-       // console.warn("Remove button tidak ditemukan dalam newEntry!");
+         console.log("Remove button tidak ditemukan dalam newEntry!");
      }
 
      return newEntry;
@@ -947,8 +947,8 @@ function initializeSelect2ForContainer(container) {
 
  <script>
      let data_tersangka = <?php echo json_encode($tersangkaData, JSON_PRETTY_PRINT); ?>;
-// console.log("Data tersangka dari PHP:", data_tersangka);
-// console.log("Jumlah tersangka:", data_tersangka ? data_tersangka.length : 0);
+ console.log("Data tersangka dari PHP:", data_tersangka);
+ console.log("Jumlah tersangka:", data_tersangka ? data_tersangka.length : 0);
 
 
 function initializeFormDataTersangka() {
@@ -957,7 +957,7 @@ function initializeFormDataTersangka() {
     container.innerHTML = ""; // Kosongkan sebelum mengisi ulang
 
     data_tersangka.forEach((tersangka, index) => {
-      // console.log("Memproses tersangka:", tersangka);
+       console.log("Memproses tersangka:", tersangka);
       let newEntry = generateTersangkaEntryHTML(tersangka, index === 0, index);
       container.appendChild(newEntry);
     });
@@ -1177,10 +1177,6 @@ document.addEventListener("DOMContentLoaded", function() {
   const ttlSaksi = document.getElementById('ttl_tersangka_utama').value;
   const agamaSaksi = document.getElementById('agama_tersangka_utama').value;
   
-  // Data tersembunyi yang perlu ditampilkan sementara
-  const dataLengkap = document.getElementById('data-lengkap');
-  const displayState = dataLengkap.style.display;
-  dataLengkap.style.display = "block"; // Tampilkan untuk mengambil nilai
   
   const jkSaksi = document.getElementById('jk_tersangka_utama').value;
   const kewarganegaraanSaksi = document.getElementById('kewarganegaraan_tersangka_utama').value;
@@ -1194,13 +1190,13 @@ document.addEventListener("DOMContentLoaded", function() {
   const pendidikanSaksi = document.getElementById('pendidikan_tersangka_utama').value;
   
   // Kembalikan display ke keadaan semula
-  dataLengkap.style.display = displayState;
+  //dataLengkap.style.display = displayState;
   
   // Cek apakah form tersangka sudah ada
   let container = document.getElementById("dynamic-form-tersangka");
   // Tambahkan pengecekan apakah container ada
   if (!container) {
-    // console.error("Container dynamic-form-tersangka tidak ditemukan");
+    console.log("Container dynamic-form-tersangka tidak ditemukan");
     return;
   }
   
@@ -1213,14 +1209,14 @@ document.addEventListener("DOMContentLoaded", function() {
       addEntryTersangka();
       entries = container.querySelectorAll('.entry-tersangka');
     } else {
-      // console.error("Fungsi addEntryTersangka tidak ditemukan");
+      console.log("Fungsi addEntryTersangka tidak ditemukan");
       return;
     }
   }
   
   // Cek lagi apakah entries sudah ada
   if (entries.length === 0) {
-    // console.error("Tidak dapat menambahkan entry tersangka");
+     console.log("Tidak dapat menambahkan entry tersangka");
     return;
   }
   
@@ -1233,7 +1229,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (element) {
       element.value = value;
     } else {
-      // console.warn(`Element dengan selector ${selector} tidak ditemukan`);
+        console.log(`Element dengan selector ${selector} tidak ditemukan`);
     }
   }
   
@@ -1262,7 +1258,7 @@ document.addEventListener("DOMContentLoaded", function() {
       jQuery(selectJK).trigger('change');
     }
   } else {
-    // console.warn("Select jenis kelamin tidak ditemukan");
+      console.log("Select jenis kelamin tidak ditemukan");
   }
   
   const selectKewarganegaraan = targetEntry.querySelector('select[name="tersangka_kewarganegaraan[]"]');
@@ -1280,10 +1276,10 @@ document.addEventListener("DOMContentLoaded", function() {
       jQuery(selectKewarganegaraan).trigger('change');
     }
   } else {
-    // console.warn("Select kewarganegaraan tidak ditemukan");
+      console.log("Select kewarganegaraan tidak ditemukan");
   }
   
-  // console.log("Data saksi berhasil disalin ke form tersangka");
+   console.log("Data saksi berhasil disalin ke form tersangka");
 }
 
 // Perbarui fungsi addEntryTersangka untuk memperbaiki kesalahan variabel formType
@@ -1378,7 +1374,7 @@ document.addEventListener("DOMContentLoaded", function() {
     try {
       salinDataSaksiKeTersangka();
     } catch (error) {
-      // console.error("Gagal menyalin data saksi:", error);
+        console.log("Gagal menyalin data saksi:", error);
     }
   }, 1000); // Tambah delay untuk memastikan semua elemen sudah dirender
 });

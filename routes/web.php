@@ -38,6 +38,8 @@ use App\Http\Controllers\Pengawasanlain\BaPembukaanSegelController;
 use App\Http\Controllers\Pengawasanlain\BaPengawasanBongkarController;
 use App\Http\Controllers\Pengawasanlain\BaSegelCtpController;
 use App\Http\Controllers\Pengawasanlain\BastSenjataApiController;
+use App\Http\Controllers\Pengawasanlain\PemasukanAmunisiSenjataApiController;
+use App\Http\Controllers\Pengawasanlain\KemasanBaBongkarController;
 
 
 
@@ -153,6 +155,10 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     //Tindak Lanjut Pelanggaran Unsur Pidana Route
     Route::resource('Tindaklanjut/unsur-pidana-penyidikan', PelanggaranUnsurPidanaPenyidikanController::class);
     Route::resource('Tindaklanjut/unsur-pidana-ur', PelanggaranUnsurPidanaUrController::class);
+    Route::post('TindakLanjut/unsur-pidana-ur/delete-file/{id}', [PelanggaranUnsurPidanaUrController::class, 'deleteFile'])->name('unsur-pidana-ur.delete-file');
+    Route::get('Tindaklanjut/unsur-pidana-ur/{id}/tes', [PelanggaranUnsurPidanaUrController::class, 'printSuratPerTersangka'])->name('tes.print');
+
+    
 
     //Barang Controller
     Route::resource('Dokpenyidikan/barang', BarangController::class);
@@ -196,11 +202,35 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 
     //Pengawasan lain routes
     Route::resource('Pengawasanlain/ba-pembukaan-segel', BaPembukaanSegelController::class);
+    Route::get('Pengawasanlain/ba-pembukaan-segel/{id}/print-ba-pembukaan-segel', [BaPembukaanSegelController::class, 'print_ba_pembukaan_segel'])->name('ba-pembukaan-segel.print');
+
     Route::resource('Pengawasanlain/ba-segel-ctp', BaSegelCtpController::class);
+    Route::get('Pengawasanlain/ba-segel-ctp/{id}/print-ba-segel-ctp', [BaSegelCtpController::class, 'print_ba_segel_ctp'])->name('ba-segel-ctp.print');
+
     Route::resource('Pengawasanlain/ba-buka-segel-ctp', BaBukaSegelCtpController::class);
+    Route::get('Pengawasanlain/ba-buka-segel-ctp/{id}/print-ba-buka-segel-ctp', [BaBukaSegelCtpController::class, 'print_ba_buka_segel_ctp'])->name('ba-buka-segel-ctp.print');
+
     Route::resource('Pengawasanlain/ba-pengawasan-bongkar', BaPengawasanBongkarController::class);
+    Route::get('Pengawasanlain/ba-pengawasan-bongkar/{id}/print-pengawasan-bongkar', [BaPengawasanBongkarController::class, 'print_ba_bongkar'])->name('ba-bongkar.print');
+    Route::get('Pengawasanlain/ba-pengawasan-bongkar/{id}/print-lpt-pengawasan-bongkar', [BaPengawasanBongkarController::class, 'print_lpt_ba_bongkar'])->name('lpt-ba-bongkar.print');
+    Route::get('Pengawasanlain/ba-pengawasan-bongkar/{id}/print-lpp-pengawasan-bongkar', [BaPengawasanBongkarController::class, 'print_lpp_ba_bongkar'])->name('lpp-ba-bongkar.print');
+    Route::resource('Pengawasanlain/kemasan', KemasanBaBongkarController::class);
+    Route::get('/Pengawasanlain/kemasan', [KemasanBaBongkarController::class, 'getKemasanData']);
+    Route::get('/kemasan/data', [KemasanBaBongkarController::class, 'getKemasanData'])->name('getKemasanData');
+    Route::get('/Pengawasanlain/kemasan/{id}/edit', [KemasanBaBongkarController::class, 'edit'])->name('kemasan.edit'); // Rute edit
+    Route::delete('/Pengawasanlain/kemasan/{id}', [KemasanBaBongkarController::class, 'destroy'])->name('kemasan.destroy'); // Rute
+    
     Route::resource('Pengawasanlain/ba-cacah-amunisi', BaCacahAmunisiController::class);
+    Route::get('Pengawasanlain/ba-cacah-amunisi/{id}/print-ba-cacah-amunisi', [BaCacahAmunisiController::class, 'print_ba_cacah_amunisi'])->name('ba-cacah-amunisi.print');
+    
     Route::resource('Pengawasanlain/bast-senjata-api', BastSenjataApiController::class);
+    Route::get('Pengawasanlain/bast-senjata-api/{id}/print-bast-senjata-api', [BastSenjataApiController::class, 'print_bast_senjata_api'])->name('bast-senjata-api.print');
+
+    Route::resource('Pengawasanlain/bast', PemasukanAmunisiSenjataApiController::class);
+    Route::get('/Pengawasanlain/bast', [PemasukanAmunisiSenjataApiController::class, 'getBastData']);
+    Route::get('/bast/data', [PemasukanAmunisiSenjataApiController::class, 'getBastData'])->name('getBastData');
+    Route::get('/Pengawasanlain/bast/{id}/edit', [PemasukanAmunisiSenjataApiController::class, 'edit'])->name('bast.edit'); // Rute edit
+    Route::delete('/Pengawasanlain/bast/{id}', [PemasukanAmunisiSenjataApiController::class, 'destroy'])->name('bast.destroy'); // Rute hapus
 });
 
 

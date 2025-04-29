@@ -203,7 +203,8 @@
                                                             :</div>
                                                         <div class="col-md-7">
                                                             <textarea name="dugaan_pelanggaran_tersangka[]" class="form-control" rows="5"
-                                                                placeholder="Dugaan Pelanggaran Tersangka">{{ old('dugaan_pelanggaran_tersangka.0', $dugaan_pelanggaran_tersangka ?? '') }}</textarea>
+                                                                placeholder="Dugaan Pelanggaran Tersangka">{{ old('dugaan_pelanggaran_tersangka.0', $dugaan_pelanggaran_tersangka) }}</textarea>
+
 
                                                         </div>
                                                     </div>

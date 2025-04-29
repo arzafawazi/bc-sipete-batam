@@ -189,9 +189,9 @@
                             <i data-feather="trash" class="icon-sm"></i> Delete
                           </button>
                         </form>
-                        <a href="" class="btn btn-soft-info btn-icon btn-sm rounded-pill">
+                        {{-- <a href="" class="btn btn-soft-info btn-icon btn-sm rounded-pill">
                           <i data-feather="printer" class="icon-sm"></i> Print
-                        </a>
+                        </a> --}}
                       </div>
 
                     </td>

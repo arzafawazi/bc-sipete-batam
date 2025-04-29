@@ -992,7 +992,6 @@
 
                               <div class="mb-3">
                                 <label class="form-label fw-bold">Pilih Kategori Lartas</label>
-
                                 <select class="form-select select2" name="kategori_lartas" id="edit-kategori-lartas" placeholder="Pilih Kategori Lartas">
                                   <option value="" selected disabled>- Pilih Kategori Lartas -</option>
                                   @foreach ($lartasedit as $item)
@@ -1823,6 +1822,7 @@
       });
     });
   </script>
+  
 @endsection
 @section('script')
   @vite(['resources/js/pages/datatable.init.js'])

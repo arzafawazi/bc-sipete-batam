@@ -178,7 +178,6 @@ class DaftarDokLppController extends Controller
         // Ambil data pasca penindakan berdasarkan ID
         $pascapenindakan = TblPascaPenindakan::where('id_pasca_penindakan', $id_pasca_penindakan)->first();
 
-
         // Ambil data SBP
         $sbpData = TblSbp::with('laporanInformasi')
             ->where('id_penindakan', $pascapenindakan->id_penindakan_ref)
