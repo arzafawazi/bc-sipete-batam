@@ -300,7 +300,7 @@ class DaftarDokLppController extends Controller
                 Log::info("File bukti_2 dihapus: " . $cleanBukti2Path);
             } else {
                 Log::warning("File bukti_2 tidak ditemukan di Storage: " . $cleanBukti2Path);
-            }
+            }x
 
             // Hapus data dari database
             $penyidikan->delete();

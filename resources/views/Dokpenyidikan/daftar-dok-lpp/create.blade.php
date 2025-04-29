@@ -813,7 +813,7 @@
                                             </div>
                                             <div class="col-md-12 mb-3">
                                               <label class="form-label fw-bold">Pita Cukai</label>
-                                              <input type="text" class="form-control" name="pita-cukai" id="pita-cukai" placeholder="Pita Cukai">
+                                              <input type="text" class="form-control" name="pita_cukai" id="pita-cukai" placeholder="Pita Cukai">
                                             </div>
                                           </div>
 

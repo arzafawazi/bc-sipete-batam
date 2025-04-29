@@ -6,7 +6,18 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\TblMenu;
 use App\Models\TblAksesMenu;
+use App\Models\TblLaporanInformasi;
+use App\Models\TblLaporanPengawasan;
+use App\Models\TblNoRef;
+use App\Models\TblPascaPenindakan;
+use App\Models\TblPelanggaranAdministrasi;
+use App\Models\TblPelanggaranUnsurPidanaPenyidikan;
+use App\Models\TblPelanggaranUnsurPidanaUr;
+use App\Models\TblPenyidikan;
+use App\Models\TblSbp;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use App\Observers\GenericObserver;
 
 
 
@@ -51,6 +62,18 @@ class AppServiceProvider extends ServiceProvider
 
         $view->with('menus', $menus);
     });
+
+    User::observe(GenericObserver::class);
+    TblAksesMenu::observe(GenericObserver::class);
+    TblNoRef::observe(GenericObserver::class);
+    TblLaporanPengawasan::observe(GenericObserver::class);
+    TblLaporanInformasi::observe(GenericObserver::class);
+    TblSbp::observe(GenericObserver::class);
+    TblPascaPenindakan::observe(GenericObserver::class);
+    TblPenyidikan::observe(GenericObserver::class);
+    TblPelanggaranAdministrasi::observe(GenericObserver::class);
+    TblPelanggaranUnsurPidanaPenyidikan::observe(GenericObserver::class);
+    TblPelanggaranUnsurPidanaUr::observe(GenericObserver::class);
 }
 
 }

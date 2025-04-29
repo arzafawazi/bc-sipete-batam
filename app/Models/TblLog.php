@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TblNoRef extends Model
+class TblLog extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_no_reff';
+    protected $table = 'tbl_log';
 
     // protected $primaryKey = 'id';
 
