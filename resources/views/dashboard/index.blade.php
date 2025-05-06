@@ -1,101 +1,393 @@
 @extends('layouts.vertical', ['title' => 'Beranda'])
 
 @section('content')
-
-<div class="container-fluid">
-    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-        <div class="flex-grow-1">
-            <h4 class="fs-18 fw-semibold m-0">Dashboard</h4>
+    <div class="container-fluid">
+        <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+            <div class="flex-grow-1">
+                <h4 class="fs-18 fw-semibold m-0">Dashboard</h4>
+            </div>
         </div>
-    </div>
 
-    <!-- start row -->
-    <div class="row">
-        
+        <!-- start row -->
+        <div class="row">
 
-        <div class="col-md-12 col-xl-8 ">
-            <div class="row g-3">
 
-                <div class="col-md-6 col-xl-6">
-                    <div class="card mb-0">
-                        <div class="card-body">
-                            <div class="widget-first">
+            <div class="col-md-12 col-xl-12">
+                <div class="row g-3">
 
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="p-2 border border-primary border-opacity-10 bg-primary-subtle rounded-pill me-2">
-                                        <div class="bg-primary rounded-circle widget-size text-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                                <!-- Ikon disesuaikan dengan tema pra-penindakan -->
-                                                <path fill="#ffffff" d="M5.574 4.691c-.833.692-1.052 1.862-1.491 4.203l-.75 4c-.617 3.292-.926 4.938-.026 6.022C4.207 20 5.88 20 9.23 20h5.54c3.35 0 5.025 0 5.924-1.084c.9-1.084.591-2.73-.026-6.022l-.75-4c-.439-2.34-.658-3.511-1.491-4.203C17.593 4 16.403 4 14.02 4H9.98c-2.382 0-3.572 0-4.406.691" opacity="0.5" />
-                                                <!-- Ikon yang lebih netral atau sesuai dengan konteks -->
-                                                <path fill="#7B5E31" d="M12 9.25a2.251 2.251 0 0 1-2.122-1.5a.75.75 0 1 0-1.414.5a3.751 3.751 0 0 0 7.073 0a.75.75 0 1 0-1.414-.5A2.251 2.251 0 0 1 12 9.25" />
-                                            </svg>
+                    <!-- Row 1: Cards untuk Dokumen Utama -->
+                    <div class="row g-3 mb-4">
+                        <!-- Card Dok. Pra Penindakan -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 shadow-sm hover-shadow-lg transition-300">
+                                <div class="card-body position-relative overflow-hidden">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="p-2 bg-primary bg-opacity-10 rounded-circle me-3 pulse-animation">
+                                            <i data-feather="file-text" class="text-primary"
+                                                style="width: 24px; height: 24px;"></i>
+                                        </div>
+                                        <h5 class="mb-0 fw-semibold">Dok. Pra Penindakan</h5>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <div>
+                                            <h2 class="mb-0 fw-bold counter-value">{{ $totalLaporanInformasi }}</h2>
+                                            <p class="text-muted fs-sm mb-0">Total Dokumen</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <span
+                                                    class="badge {{ $percentageChange < 0 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' }} rounded-pill px-2 py-1">
+                                                    <i
+                                                        class="bi {{ $percentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }} me-1"></i>
+                                                    {{ abs(round($percentageChange, 2)) }}%
+                                                </span>
+                                            </div>
+                                            <p class="text-muted fs-xs mb-0 mt-1">{{ $lastSevenDaysCount }} dalam 7 hari</p>
                                         </div>
                                     </div>
-                                    <p class="mb-0 text-dark fs-16 fw-bold">Dok. Pra-Penindakan</p>
-                                </div>
-
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h3 class="mb-0 fs-22 text-black me-3">{{ $totalLaporanInformasi }}</h3>
-                                    <div class="text-center">
-                                    <span class="{{ $percentageChange < 0 ? 'text-danger' : 'text-success' }} fs-14 me-2">
-                                    <i class="mdi {{ $percentageChange < 0 ? 'mdi-trending-down' : 'mdi-trending-up' }} fs-14"></i>
-                                    {{ abs(round($percentageChange, 2)) }}%
-                                    </span>    <p class="text-dark fs-13 mb-0">Last {{ $lastSevenDaysCount }} Day</p>
+                                    <div class="progress mt-3" style="height: 4px;">
+                                        <div class="progress-bar bg-primary" role="progressbar"
+                                            style="width: {{ min(100, ($lastSevenDaysCount / $totalLaporanInformasi) * 100) }}%"
+                                            aria-valuenow="{{ $lastSevenDaysCount }}" aria-valuemin="0"
+                                            aria-valuemax="{{ $totalLaporanInformasi }}"></div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
+                        <!-- Card Dok. Penindakan -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 shadow-sm hover-shadow-lg transition-300">
+                                <div class="card-body position-relative overflow-hidden">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="p-2 bg-danger bg-opacity-10 rounded-circle me-3 pulse-animation">
+                                            <i data-feather="file" class="text-danger"
+                                                style="width: 24px; height: 24px;"></i>
+                                        </div>
+                                        <h5 class="mb-0 fw-semibold">Dok. Penindakan</h5>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <div>
+                                            <h2 class="mb-0 fw-bold counter-value">{{ $totalDokPenindakan }}</h2>
+                                            <p class="text-muted fs-sm mb-0">Total Dokumen</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <span
+                                                    class="badge {{ $dokPenindakanPercentageChange < 0 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' }} rounded-pill px-2 py-1">
+                                                    <i
+                                                        class="bi {{ $dokPenindakanPercentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }} me-1"></i>
+                                                    {{ abs(round($dokPenindakanPercentageChange, 2)) }}%
+                                                </span>
+                                            </div>
+                                            <p class="text-muted fs-xs mb-0 mt-1">{{ $dokPenindakanLastSevenDays }} dalam 7
+                                                hari</p>
+                                        </div>
+                                    </div>
+                                    <div class="progress mt-3" style="height: 4px;">
+                                        <div class="progress-bar bg-danger" role="progressbar"
+                                            style="width: {{ min(100, ($dokPenindakanLastSevenDays / $totalDokPenindakan) * 100) }}%"
+                                            aria-valuenow="{{ $dokPenindakanLastSevenDays }}" aria-valuemin="0"
+                                            aria-valuemax="{{ $totalDokPenindakan }}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Pengawasan -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 shadow-sm hover-shadow-lg transition-300">
+                                <div class="card-body position-relative overflow-hidden">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="p-2 bg-success bg-opacity-10 rounded-circle me-3 pulse-animation">
+                                            <i data-feather="eye" class="text-success"
+                                                style="width: 24px; height: 24px;"></i>
+                                        </div>
+                                        <h5 class="mb-0 fw-semibold">Pengawasan</h5>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <div>
+                                            <h2 class="mb-0 fw-bold counter-value">{{ $totalPengawasan }}</h2>
+                                            <p class="text-muted fs-sm mb-0">Total Dokumen</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <span
+                                                    class="badge {{ $pengawasanPercentageChange < 0 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' }} rounded-pill px-2 py-1">
+                                                    <i
+                                                        class="bi {{ $pengawasanPercentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }} me-1"></i>
+                                                    {{ abs(round($pengawasanPercentageChange, 2)) }}%
+                                                </span>
+                                            </div>
+                                            <p class="text-muted fs-xs mb-0 mt-1">{{ $pengawasanLastSevenDays }} dalam 7
+                                                hari</p>
+                                        </div>
+                                    </div>
+                                    <div class="progress mt-3" style="height: 4px;">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                            style="width: {{ min(100, ($pengawasanLastSevenDays / $totalPengawasan) * 100) }}%"
+                                            aria-valuenow="{{ $pengawasanLastSevenDays }}" aria-valuemin="0"
+                                            aria-valuemax="{{ $totalPengawasan }}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Pasca Penindakan -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 shadow-sm hover-shadow-lg transition-300">
+                                <div class="card-body position-relative overflow-hidden">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="p-2 bg-info bg-opacity-10 rounded-circle me-3 pulse-animation">
+                                            <i data-feather="check-circle" class="text-info"
+                                                style="width: 24px; height: 24px;"></i>
+                                        </div>
+                                        <h5 class="mb-0 fw-semibold">Pasca Penindakan</h5>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <div>
+                                            <h2 class="mb-0 fw-bold counter-value">{{ $totalPascaPenindakan }}</h2>
+                                            <p class="text-muted fs-sm mb-0">Total Dokumen</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <span
+                                                    class="badge {{ $pascaPenindakanPercentageChange < 0 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' }} rounded-pill px-2 py-1">
+                                                    <i
+                                                        class="bi {{ $pascaPenindakanPercentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }} me-1"></i>
+                                                    {{ abs(round($pascaPenindakanPercentageChange, 2)) }}%
+                                                </span>
+                                            </div>
+                                            <p class="text-muted fs-xs mb-0 mt-1">{{ $pascaPenindakanLastSevenDays }} dalam
+                                                7 hari</p>
+                                        </div>
+                                    </div>
+                                    <div class="progress mt-3" style="height: 4px;">
+                                        <div class="progress-bar bg-info" role="progressbar"
+                                            style="width: {{ min(100, ($pascaPenindakanLastSevenDays / $totalPascaPenindakan) * 100) }}%"
+                                            aria-valuenow="{{ $pascaPenindakanLastSevenDays }}" aria-valuemin="0"
+                                            aria-valuemax="{{ $totalPascaPenindakan }}"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                
-
-               
-
-                <div class="col-md-6 col-xl-6">
-                    <div class="card mb-0">
-                        <div class="card-body">
-                            <div class="widget-first">
-
-                                <div class="d-flex align-items-center mb-2">
-                                <div class="p-2 border border-danger border-opacity-10 bg-danger-subtle rounded-pill me-2">
-                                    <div class="bg-danger rounded-circle widget-size text-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                            <!-- Ikon disesuaikan dengan tema penindakan -->
-                                            <path fill="#ffffff" d="M5.574 4.691c-.833.692-1.052 1.862-1.491 4.203l-.75 4c-.617 3.292-.926 4.938-.026 6.022C4.207 20 5.88 20 9.23 20h5.54c3.35 0 5.025 0 5.924-1.084c.9-1.084.591-2.73-.026-6.022l-.75-4c-.439-2.34-.658-3.511-1.491-4.203C17.593 4 16.403 4 14.02 4H9.98c-2.382 0-3.572 0-4.406.691" opacity="0.5" />
-                                            <!-- Ikon dengan warna lebih gelap untuk penindakan -->
-                                            <path fill="#C53A3A" d="M12 9.25a2.251 2.251 0 0 1-2.122-1.5a.75.75 0 1 0-1.414.5a3.751 3.751 0 0 0 7.073 0a.75.75 0 1 0-1.414-.5A2.251 2.251 0 0 1 12 9.25" />
-                                        </svg>
+                    <!-- Row 2: Cards untuk Dokumen Lainnya -->
+                    <div class="row g-3">
+                        <!-- Card Dok. Penyidikan -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 border-0 bg-gradient-primary text-white shadow">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0">Dok. Penyidikan</h5>
+                                        <div class="rounded-circle bg-white bg-opacity-25 p-2">
+                                            <i data-feather="file" class="text-white"
+                                                style="width: 24px; height: 24px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h2 class="display-6 mb-0 fw-bold">{{ $totalDokPenyidikan }}</h2>
+                                            <div class="text-end">
+                                                <span class="badge bg-white text-primary rounded-pill px-2 py-1">
+                                                    {{ $dokPenyidikanLastSevenDays }} baru
+                                                </span>
+                                                <div class="mt-1">
+                                                    <span
+                                                        class="badge {{ $dokPenyidikanPercentageChange < 0 ? 'bg-white text-danger' : 'bg-white text-success' }} rounded-pill">
+                                                        <i
+                                                            class="bi {{ $dokPenyidikanPercentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }}"></i>
+                                                        {{ abs(round($dokPenyidikanPercentageChange, 2)) }}%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <p class="mb-0 text-dark fs-16 fw-bold">Dok. Penindakan</p>
                             </div>
+                        </div>
 
-
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h3 class="mb-0 fs-22 text-black me-3">{{ $totalDokPenindakan }}</h3>
-
-                                    <div class="text-muted">
-                                         <span class="{{ $dokPenindakanPercentageChange < 0 ? 'text-danger' : 'text-success' }} fs-14 me-2">
-                                          <i class="mdi {{ $dokPenindakanPercentageChange < 0 ? 'mdi-trending-down' : 'mdi-trending-up' }} fs-14"></i>
-                                      {{ abs(round($dokPenindakanPercentageChange, 2)) }}%
-                                      </span>
-                        <p class="text-dark fs-13 mb-0">Last {{$dokPenindakanLastSevenDays}} day</p>
+                        <!-- Card Pelanggaran Administrasi -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 border-0 bg-gradient-warning shadow">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0">Pelanggaran Administrasi</h5>
+                                        <div class="rounded-circle bg-white bg-opacity-25 p-2">
+                                            <i data-feather="alert-triangle" class="text-dark"
+                                                style="width: 24px; height: 24px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h2 class="display-6 mb-0 fw-bold">{{ $totalPelanggaranAdministrasi }}</h2>
+                                            <div class="text-end">
+                                                <span class="badge bg-white text-warning rounded-pill px-2 py-1">
+                                                    {{ $pelanggaranAdministrasiLastSevenDays }} baru
+                                                </span>
+                                                <div class="mt-1">
+                                                    <span
+                                                        class="badge {{ $pelanggaranAdministrasiPercentageChange < 0 ? 'bg-white text-danger' : 'bg-white text-success' }} rounded-pill">
+                                                        <i
+                                                            class="bi {{ $pelanggaranAdministrasiPercentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }}"></i>
+                                                        {{ abs(round($pelanggaranAdministrasiPercentageChange, 2)) }}%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
+                        <!-- Card Pelanggaran Ketentuan Lain -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 border-0 bg-info bg-gradient text-white shadow">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0">Pelanggaran Ketentuan Lain</h5>
+                                        <div class="rounded-circle bg-white bg-opacity-25 p-2">
+                                            <i data-feather="clipboard" class="text-white"
+                                                style="width: 24px; height: 24px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h2 class="display-6 mb-0 fw-bold text-white">
+                                                {{ $totalPelanggaranKetentuanLain }}</h2>
+                                            <div class="text-end">
+                                                <span class="badge bg-white text-info rounded-pill px-2 py-1">
+                                                    {{ $pelanggaranKetentuanLainLastSevenDays }} baru
+                                                </span>
+                                                <div class="mt-1">
+                                                    <span
+                                                        class="badge {{ $pelanggaranKetentuanLainPercentageChange < 0 ? 'bg-white text-danger' : 'bg-white text-success' }} rounded-pill">
+                                                        <i
+                                                            class="bi {{ $pelanggaranKetentuanLainPercentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }}"></i>
+                                                        {{ abs(round($pelanggaranKetentuanLainPercentageChange, 2)) }}%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Card Unsur Pidana Penyidikan -->
+                        <div class="col-md-6 col-xl-6">
+                            <div
+                                class="card h-100 border-start-0 border-end-0 border-bottom-0 border-top-5 border-danger shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-box bg-danger-subtle text-danger rounded-3 me-3 d-flex align-items-center justify-content-center"
+                                            style="width: 48px; height: 48px;">
+                                            <i data-feather="shield" style="width: 32px; height: 32px;"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0 fw-semibold">Unsur Pidana Penyidikan</h5>
+                                            <p class="text-muted mb-0 fs-sm">Dokumen Pemeriksaan</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted fs-sm">Total Dokumen</span>
+                                                <span class="text-dark fw-medium">{{ $totalUnsurPidanaPenyidikan }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted fs-sm">7 Hari Terakhir</span>
+                                                <span
+                                                    class="text-dark fw-medium">{{ $unsurPidanaPenyidikanLastSevenDays }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted fs-sm">Perubahan</span>
+                                                <span
+                                                    class="{{ $unsurPidanaPenyidikanPercentageChange < 0 ? 'text-danger' : 'text-success' }} fw-medium">
+                                                    <i
+                                                        class="bi {{ $unsurPidanaPenyidikanPercentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }} me-1"></i>
+                                                    {{ abs(round($unsurPidanaPenyidikanPercentageChange, 2)) }}%
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="ms-4 chart-container" style="width: 100px; height: 60px;">
+                                            <!-- Chart placeholder. In a real implementation, you would insert a small chart here -->
+                                            <div class="progress-stacked" style="height: 50px;">
+                                                <div class="progress-bar bg-danger" role="progressbar"
+                                                    style="width: {{ $totalUnsurPidanaPenyidikan > 0 ? min(100, ($unsurPidanaPenyidikanLastSevenDays / $totalUnsurPidanaPenyidikan) * 100) : 0 }}%"
+                                                    aria-valuenow="{{ $unsurPidanaPenyidikanLastSevenDays }}"
+                                                    aria-valuemin="0" aria-valuemax="{{ $totalUnsurPidanaPenyidikan }}">
+                                                </div>
+                                                <div class="progress-bar bg-danger-subtle" role="progressbar"
+                                                    style="width: {{ $totalUnsurPidanaPenyidikan > 0 ? 100 - min(100, ($unsurPidanaPenyidikanLastSevenDays / $totalUnsurPidanaPenyidikan) * 100) : 100 }}%"
+                                                    aria-valuenow="{{ $totalUnsurPidanaPenyidikan - $unsurPidanaPenyidikanLastSevenDays }}"
+                                                    aria-valuemin="0" aria-valuemax="{{ $totalUnsurPidanaPenyidikan }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Unsur Pidana UR -->
+                        <div class="col-md-6 col-xl-6">
+                            <div
+                                class="card h-100 border-start-0 border-end-0 border-bottom-0 border-top-5 border-purple shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-box bg-purple-subtle text-purple rounded-3 me-3 d-flex align-items-center justify-content-center"
+                                            style="width: 48px; height: 48px;">
+                                            <i data-feather="file-text" style="width: 32px; height: 32px;"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0 fw-semibold">Unsur Pidana UR</h5>
+                                            <p class="text-muted mb-0 fs-sm">Dokumen Pemeriksaan</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted fs-sm">Total Dokumen</span>
+                                                <span class="text-dark fw-medium">{{ $totalUnsurPidanaUr }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="text-muted fs-sm">7 Hari Terakhir</span>
+                                                <span class="text-dark fw-medium">{{ $unsurPidanaUrLastSevenDays }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted fs-sm">Perubahan</span>
+                                                <span
+                                                    class="{{ $unsurPidanaUrPercentageChange < 0 ? 'text-danger' : 'text-success' }} fw-medium">
+                                                    <i
+                                                        class="bi {{ $unsurPidanaUrPercentageChange < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }} me-1"></i>
+                                                    {{ abs(round($unsurPidanaUrPercentageChange, 2)) }}%
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="ms-4 chart-container" style="width: 100px; height: 60px;">
+                                            <!-- Chart placeholder. In a real implementation, you would insert a small chart here -->
+                                            <div class="progress-stacked" style="height: 50px;">
+                                                <div class="progress-bar bg-purple" role="progressbar"
+                                                    style="width: {{ $totalUnsurPidanaUr > 0 ? min(100, ($unsurPidanaUrLastSevenDays / $totalUnsurPidanaUr) * 100) : 0 }}%"
+                                                    aria-valuenow="{{ $unsurPidanaUrLastSevenDays }}" aria-valuemin="0"
+                                                    aria-valuemax="{{ $totalUnsurPidanaUr }}"></div>
+                                                <div class="progress-bar bg-purple-subtle" role="progressbar"
+                                                    style="width: {{ $totalUnsurPidanaUr > 0 ? 100 - min(100, ($unsurPidanaUrLastSevenDays / $totalUnsurPidanaUr) * 100) : 100 }}%"
+                                                    aria-valuenow="{{ $totalUnsurPidanaUr - $unsurPidanaUrLastSevenDays }}"
+                                                    aria-valuemin="0" aria-valuemax="{{ $totalUnsurPidanaUr }}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                
 
-                {{-- <div class="col-md-6 col-xl-6">
+                    {{-- <div class="col-md-6 col-xl-6">
                     <div class="card">
                         <div class="card-body">
                             <div class="widget-first">
@@ -126,13 +418,13 @@
                     </div>
                 </div> --}}
 
+                </div>
             </div>
         </div>
-    </div>
-    <!-- end start -->
+        <!-- end start -->
 
-    <!-- Start Monthly Sales -->
-    {{-- <div class="row">
+        <!-- Start Monthly Sales -->
+        {{-- <div class="row">
         <div class="col-md-12 col-xl-6">
             <div class="card">
                 <div class="card-header">
@@ -403,9 +695,9 @@
             </div>
         </div>
     </div> --}}
-    <!-- End Monthly Sales -->
+        <!-- End Monthly Sales -->
 
-    {{-- <div class="row">
+        {{-- <div class="row">
         <div class="col-xl-4">
             <div class="card overflow-hidden">
                 <div class="card-header">
@@ -782,11 +1074,131 @@
         </div>
     </div> --}}
 
-</div> <!-- container-fluid -->
+    </div> <!-- container-fluid -->
+    <!-- CSS untuk memastikan tampilan responsive dan animasi -->
+    <style>
+        /* Definisi warna kustom */
+        :root {
+            --bs-purple: #6f42c1;
+            --bs-purple-rgb: 111, 66, 193;
+            --bs-purple-subtle: rgba(111, 66, 193, 0.1);
+        }
 
+        /* Animasi pulse untuk icon */
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Transisi untuk hover effect */
+        .transition-300 {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hover-shadow-lg:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
+        }
+
+        /* Ukuran font untuk responsivitas */
+        .fs-xs {
+            font-size: 0.75rem;
+        }
+
+        .fs-sm {
+            font-size: 0.875rem;
+        }
+
+        /* Background gradients */
+        .bg-gradient-primary {
+            background: linear-gradient(45deg, #0d6efd, #0a58ca);
+        }
+
+        .bg-gradient-warning {
+            background: linear-gradient(45deg, #ffc107, #fd7e14);
+        }
+
+        .bg-gradient-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+        }
+
+        /* Border top */
+        .border-top-5 {
+            border-top-width: 5px !important;
+        }
+
+        /* Kustomisasi warna untuk Unsur Pidana */
+        .bg-purple {
+            background-color: var(--bs-purple) !important;
+        }
+
+        .bg-purple-subtle {
+            background-color: var(--bs-purple-subtle) !important;
+        }
+
+        .text-purple {
+            color: var(--bs-purple) !important;
+        }
+
+        /* Counter animation */
+        .counter-value {
+            display: inline-block;
+            position: relative;
+        }
+
+        .counter-value::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: currentColor;
+            opacity: 0.2;
+        }
+    </style>
+
+    <!-- Optional JavaScript untuk animasi counter -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Counter animation
+            const counters = document.querySelectorAll('.counter-value');
+            counters.forEach(counter => {
+                const target = parseInt(counter.textContent);
+                const countTo = function() {
+                    const count = +counter.innerText;
+                    const speed = 200; // Kecepatan animasi (ms)
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(countTo, 1);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                countTo();
+            });
+
+            // Tambahkan script untuk handling animasi lainnya jika perlu
+        });
+    </script>
 @endsection
 
 @section('script-bottom')
-<script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
-@vite(['resources/js/pages/crm-dashboard.init.js'])
+    <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
+    @vite(['resources/js/pages/crm-dashboard.init.js'])
 @endsection

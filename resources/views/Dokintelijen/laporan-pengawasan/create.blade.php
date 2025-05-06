@@ -341,468 +341,494 @@
 
 
                                     <div class="tab-pane" id="lpti" role="tabpanel">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <h6><b>A. Data Laporan Pelaksanaan Tugas (LPT-1)</b></h6>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>No. LPT</label>
-                                                            <input type="text"
-                                                                class="form-control bg-primary text-white" name="no_lpt"
-                                                                value="{{ old('no_lpt', $no_ref->no_lpt) }}" readonly>
-                                                        </div>
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>Tgl. LPT</label>
-                                                            <input type="date"
-                                                                class="form-control bg-primary text-white" name="tgl_lpt">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="d-flex align-items-center">
-                                                            Uraian Tugas
-                                                            <button type="button" class="btn p-0 ms-1 text-primary"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                data-bs-custom-class="custom-tooltip"
-                                                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                                                <i data-feather="alert-circle"
-                                                                    style="width: 18px; height: 18px;"></i>
-                                                            </button>
-                                                        </label>
-                                                        <textarea class="form-control" name="uraian_tugas_lpt" rows="3" placeholder="Di Isi Uraian Tugas"></textarea>
-                                                    </div>
-
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Wilayah Penugasan</label>
-                                                        <input type="text" class="form-control"
-                                                            name="wilayah_penugasan_lpt" placeholder="Wilayah Penugasan">
-                                                    </div>
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Uraian Periode Penugasan</label>
-                                                        <input type="text" id="date-range-picker"
-                                                            name="uraian_periode_penugasan_lpt" class="form-control"
-                                                            placeholder="Pilih Uraian Periode Penugasan">
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-
-
-
-                                            <!-- Right Column (Pejabat Selection) -->
-                                            <div class="col-lg-6">
-                                                <h6><b>B. Uraian Pelaksanaan Tugas</b></h6>
-                                                <hr>
+                                        <div class="container-fluid my-4">
+                                            <div class="card">
                                                 <div class="card-body">
-                                                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseOne"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseOne">
-                                                                    1. Kegiatan Pengumpulan dan Penilaian Informasi
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseOne"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
-                                                                    <!-- Form Inputs -->
+                                                    <div class="row mb-4 align-items-center">
+                                                        <div class="col-2 text-center">
+                                                            <img src="/images/logocop.png" alt="Logo"
+                                                                class="img-fluid" style="max-height:170px;">
+                                                        </div>
+                                                        <div class="col-10 text-center">
+                                                            <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                                                            <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                                                            <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE
+                                                                B BATAM
+                                                            </p>
+                                                            <p class="small mb-0">
+                                                                JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                                                                TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                            </p>
+                                                            <p class="small mb-0">
+                                                                LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                PUSAT KONTAK LAYANAN 1500225;
+                                                                SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                KPBC.BATAM@KEMENKEU.GO.ID
+                                                            </p>
+                                                        </div>
+                                                    </div>
 
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            a. Tempat Pengumpulan Informasi
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="tempat_pengumpulan_informasi_lpt"
-                                                                                placeholder="Tempat Pengumpulan Informasi">
+                                                    <div class="text-center mb-4">
+                                                        <h5 class="fw-bold">LAPORAN PELAKSANAAN TUGAS</h5>
+                                                        <div class="input-group flex-wrap">
+                                                            <span class="input-group-text">NO : LPT-</span>
+                                                            <input type="text" class="form-control" name="no_lpt"
+                                                                value="{{ old('no_lpt', $no_ref->no_lpt) }}" readonly>
+                                                            <span class="input-group-text">/KPU.2061/</span>
+                                                            <input type="date" class="form-control" name="tgl_lpt">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Main Content -->
+                                                    <div class="row">
+                                                        <!-- Left Section: Data LPT -->
+                                                        <div class="col-12">
+                                                            <div class="mb-4">
+                                                                <h6 class="fw-bold border-bottom pb-2">I. Dasar</h6>
+                                                                <div class="ms-3 mb-3">
+                                                                    <div class="row mb-2">
+                                                                        <div class="col-md-3">
+                                                                            <label class="form-label">Surat Tugas
+                                                                                nomor</label>
+                                                                        </div>
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="Nomor Surat Tugas">
                                                                         </div>
                                                                     </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            b. Sumber Informasi
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="sumber_informasi_lpt"
-                                                                                placeholder="Sumber Informasi">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            c. Metode Pengumpulan Informasi
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="metode_pengumpulan_informasi_lpt"
-                                                                                placeholder="Metode Pengumpulan Informasi">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label
-                                                                            class="col-sm-4 col-form-label d-flex align-items-center">
-                                                                            d. Ikhtisar Informasi
-                                                                            <button type="button"
-                                                                                class="btn p-0 ms-1 text-primary"
-                                                                                data-bs-toggle="tooltip"
-                                                                                data-bs-placement="top"
-                                                                                data-bs-custom-class="custom-tooltip"
-                                                                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                                                                <i data-feather="alert-circle"
-                                                                                    style="width: 18px; height: 18px;"></i>
-                                                                            </button>
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <textarea class="form-control" placeholder="Ikhtisar Informasi" name="ikhtisar_informasi_lpt" rows="3"></textarea>
-                                                                        </div>
-                                                                    </div>
-
-
                                                                 </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseTwo"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseTwo">
-                                                                    2. Kegiatan Analisis Intelijen
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseTwo"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
+                                                            <div class="card mb-3">
+                                                                <div class="card-body">
+                                                                    <h6 class="fw-bold border-bottom pb-2">II. Tugas</h6>
+                                                                    <div class="ms-3">
+                                                                        <div class="form-group mb-3">
+                                                                            <textarea class="form-control" name="uraian_tugas_lpt" rows="6"
+                                                                                placeholder="1.(Nomor Satu Diisi Pada Bagian Ini)"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <ol class="ps-3" start="2"
+                                                                        style="line-height: 1.5;">
+                                                                        <li class="mb-1">Melakukan penggalangan informan
+                                                                            dalam hal diperlukan dalam proses pengumpulan
+                                                                            dan
+                                                                            pendalaman informasi.</li>
+                                                                        <li class="mb-1">Melakukan tindakan pengamanan
+                                                                            pertama apabila ditemukan adanya indikasi
+                                                                            pelanggaran di bidang kepabeanan dan/atau cukai.
+                                                                        </li>
+                                                                        <li class="mb-1">Melakukan tindakan lainnya dan
+                                                                            mengambil langkah-langkah sesuai peraturan
+                                                                            perundangan guna mengamankan hak-hak negara,
+                                                                            apabila
+                                                                            dalam pelaksanaan tugas ditemukan adanya
+                                                                            pelanggaran
+                                                                            ketentuan dan/atau
+                                                                            tindak pidana di bidang kepabeanan dan/atau
+                                                                            cukai.
+                                                                        </li>
+                                                                        <li class="mb-1">Melakukan koordinasi dengan
+                                                                            pihak
+                                                                            eksternal atau Bidang Penindakan dan Penyidikan
+                                                                            pada
+                                                                            Kantor Wilayah (Kanwil) DJBC setempat apabila
+                                                                            dipandang perlu.</li>
+                                                                        <li class="mb-1">Membuat laporan pelaksanaan
+                                                                            tugas.
+                                                                        </li>
+                                                                        <li class="mb-1">Melakukan tugas dan kewajiban
+                                                                            sesuai
+                                                                            dengan tugas pokok dan fungsinya masing-masing
+                                                                            serta
+                                                                            dilaksanakan dengan penuh rasa tanggung jawab.
+                                                                        </li>
+                                                                    </ol>
+                                                                </div>
+                                                            </div>
 
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">a. Jenis
-                                                                            Dokumen Kepabeanan </label>
-                                                                        <div class="col-sm-8">
-                                                                            <select
-                                                                                class="form-control form-select select2 "
-                                                                                name="jenis_dok_kepabeanan_lpt">
+                                                            <div class="mb-4">
+                                                                <h6 class="fw-bold border-bottom pb-2">III. Wilayah
+                                                                    Penugasan</h6>
+                                                                <div class="ms-3">
+                                                                    <div class="form-group mb-3">
+                                                                        <input type="text" class="form-control"
+                                                                            name="wilayah_penugasan_lpt"
+                                                                            value="Wilayah Pengawasan Kantor Pelayanan Utama Bea dan Cukai Tipe
+B Batam.
+"
+                                                                            placeholder="Wilayah Penugasan">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <h6 class="fw-bold border-bottom pb-2">IV. Periode
+                                                                    Penugasan</h6>
+                                                                <div class="ms-3">
+                                                                    <div class="form-group mb-3">
+                                                                        <input type="text" id="date-range-picker"
+                                                                            name="uraian_periode_penugasan_lpt"
+                                                                            class="form-control"
+                                                                            placeholder="Periode Penugasan">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <h6 class="fw-bold border-bottom pb-2">V. Uraian
+                                                                    Pelaksanaan Tugas</h6>
+                                                                <div class="ms-3">
+                                                                    <!-- 1. Kegiatan Pengumpulan dan Penilaian Informasi -->
+                                                                    <div class="mb-3">
+                                                                        <h6 class="fw-bold">1. Kegiatan Pengumpulan dan
+                                                                            Penilaian Informasi</h6>
+                                                                        <div class="ms-3">
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">a. Tempat
+                                                                                        Pengumpulan Informasi</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="tempat_pengumpulan_informasi_lpt"
+                                                                                        placeholder="Tempat Pengumpulan Informasi"
+                                                                                        value="Batam">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">b. Sumber
+                                                                                        Informasi</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="sumber_informasi_lpt"
+                                                                                        placeholder="Sumber Informasi">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">c. Metode
+                                                                                        Pengumpulan Informasi</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="metode_pengumpulan_informasi_lpt"
+                                                                                        placeholder="Metode Pengumpulan Informasi">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">d.
+                                                                                        Ikhtisar Informasi
+                                                                                        <button type="button"
+                                                                                            class="btn p-0 ms-1 text-primary"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-placement="top"
+                                                                                            data-bs-custom-class="custom-tooltip"
+                                                                                            data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                                                                            <i data-feather="alert-circle"
+                                                                                                style="width: 18px; height: 18px;"></i>
+                                                                                        </button></label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <textarea class="form-control" name="ikhtisar_informasi_lpt" rows="3" placeholder="Ikhtisar Informasi"></textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 2. Kegiatan Analisis Intelijen -->
+                                                                    <div class="mb-3">
+                                                                        <h6 class="fw-bold">2. Kegiatan Analisis
+                                                                            Intelijen</h6>
+                                                                        <div class="ms-3">
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">a. Jenis
+                                                                                        Dokumen Kepabeanan</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <select class="form-select select2"
+                                                                                        name="jenis_dok_kepabeanan_lpt">
+                                                                                        <option value="" selected
+                                                                                            disabled>- Pilih -</option>
+                                                                                        @foreach ($jenis_dok as $dok)
+                                                                                            <option
+                                                                                                value="{{ $dok->jenis_dok }}"
+                                                                                                {{ old('jenis_dok_kepabeanan_lpt') == $dok->jenis_dok ? 'selected' : '' }}>
+                                                                                                {{ $dok->jenis_dok }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">b. Nomor
+                                                                                        dan Tanggal Dokumen
+                                                                                        Kepabeanan</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="no_tgl_dok_kepabeanan_lpt"
+                                                                                        placeholder="Nomor dan Tanggal Dokumen Kepabeanan">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">c. Metode
+                                                                                        Analisis Intelijen</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="metode_analisis_intelijen_lpt"
+                                                                                        placeholder="Metode Analisis Intelijen">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">d.
+                                                                                        Ikhtisar Hasil Analisis
+                                                                                        Intelijen</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="ikhtisar_hasil_analisis_intelijen_lpt"
+                                                                                        placeholder="Ikhtisar Hasil Analisis Intelijen">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 3. Indikasi Pelanggaran -->
+                                                                    <div class="mb-3">
+                                                                        <h6 class="fw-bold">3. Indikasi Pelanggaran
+                                                                        </h6>
+                                                                        <div class="ms-3">
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">a. Jenis
+                                                                                        Pelanggaran</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <select class="form-select select2"
+                                                                                        name="jenis_pelanggaran_lpt">
+                                                                                        <option value="" selected
+                                                                                            disabled>- Pilih -</option>
+                                                                                        <option
+                                                                                            value="Pelanggaran di bidang Kepabeanan">
+                                                                                            Pelanggaran di bidang
+                                                                                            Kepabeanan</option>
+                                                                                        <option
+                                                                                            value="Pelanggaran di bidang Cukai">
+                                                                                            Pelanggaran di bidang Cukai
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">b. Modus
+                                                                                        Pelanggaran</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <select class="form-select select2"
+                                                                                        name="modus_pelanggaran_lpt">
+                                                                                        <option value="" selected
+                                                                                            disabled>- Pilih -</option>
+                                                                                        <option
+                                                                                            value="Memasukkan barang tanpa dokumen">
+                                                                                            Memasukkan barang tanpa
+                                                                                            dokumen</option>
+                                                                                        <option
+                                                                                            value="Memindahkan barang dari kawasan pabean tanpa izin">
+                                                                                            Memindahkan barang dari
+                                                                                            kawasan pabean tanpa izin
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">c.
+                                                                                        Perkiraan Tempat
+                                                                                        Pelanggaran</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <select class="form-select select2"
+                                                                                        name="perkiraan_tempat_pelanggaran_lpt"
+                                                                                        required>
+                                                                                        <option value="" selected
+                                                                                            disabled>- Pilih -</option>
+                                                                                        @foreach ($tempat as $locus)
+                                                                                            <option
+                                                                                                value="{{ $locus->locus }}"
+                                                                                                {{ old('perkiraan_tempat_pelanggaran_lpt') == $locus->locus ? 'selected' : '' }}>
+                                                                                                {{ $locus->locus }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">d.
+                                                                                        Perkiraan Waktu
+                                                                                        Pelanggaran</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="perkiraan_waktu_pelanggaran_lpt"
+                                                                                        id="datetime-datepicker"
+                                                                                        placeholder="Perkiraan Waktu Pelanggaran">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">e.
+                                                                                        Perkiraan Pelaku
+                                                                                        Pelanggaran</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="perkiraan_pelaku_pelanggaran_lpt"
+                                                                                        placeholder="Perkiraan Pelaku Pelanggaran">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 4. Dokumentasi Kegiatan Intelijen -->
+                                                                    <div class="mb-3">
+                                                                        <h6 class="fw-bold">4. Dokumentasi Kegiatan
+                                                                            Intelijen</h6>
+                                                                        <div class="ms-3">
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">a.
+                                                                                        Foto</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="file"
+                                                                                        class="form-control"
+                                                                                        name="dokumentasi_foto_lpt[]"
+                                                                                        multiple>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">b.
+                                                                                        Rekaman Audio</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="dokumentasi_audio_lpt"
+                                                                                        id="rekaman-audio"
+                                                                                        placeholder="Masukkan Link Audio">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">c.
+                                                                                        Rekaman Video</label>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="dokumentasi_video_lpt"
+                                                                                        id="rekaman-video"
+                                                                                        placeholder="Masukkan Link Video">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 5. Informasi Lainnya yang berkaitan -->
+                                                                    <div class="mb-3">
+                                                                        <h6 class="fw-bold">5. Informasi Lainnya yang
+                                                                            berkaitan</h6>
+                                                                        <div class="ms-3">
+                                                                            <div class="form-group mb-3">
+                                                                                <textarea class="form-control" name="info_lainnya_lpt" rows="3"
+                                                                                    placeholder="Informasi Lainnya yang Berkaitan"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <h6 class="fw-bold border-bottom pb-2">VI. Kesimpulan
+                                                                </h6>
+                                                                <div class="ms-3">
+                                                                    <div class="form-group mb-3">
+                                                                        <textarea class="form-control" name="kesimpulan_lpt" rows="3" placeholder="Kesimpulan"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <h6 class="fw-bold border-bottom pb-2">VII. Rekomendasi
+                                                                </h6>
+                                                                <div class="ms-3">
+                                                                    <div class="form-group mb-3">
+                                                                        <textarea class="form-control" name="rekomendasi_lpt" rows="3" placeholder="Rekomendasi"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label fw-bold">Ketua Tim
+                                                                                Pelaksanaan Tugas</label>
+                                                                            <select class="form-select select2"
+                                                                                id="ketua_tim" name="ketua_tim_lpt">
                                                                                 <option value="" selected disabled>-
                                                                                     Pilih -</option>
-                                                                                @foreach ($jenis_dok as $dok)
-                                                                                    <option value="{{ $dok->jenis_dok }}">
-                                                                                        {{ $dok->jenis_dok }}
+                                                                                @foreach ($users as $user)
+                                                                                    <option value="{{ $user->id_admin }}"
+                                                                                        {{ old('ketua_tim_lpt') == $user->id_admin ? 'selected' : '' }}>
+                                                                                        {{ $user->name }}
                                                                                     </option>
                                                                                 @endforeach
                                                                             </select>
+
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label fw-bold">Pegawai
+                                                                                Pembuat Laporan</label>
+                                                                            <select class="form-select select2"
+                                                                                name="pegawai_pembuat_lpt">
+                                                                                <option value="" selected disabled>-
+                                                                                    Pilih -</option>
+                                                                                @foreach ($users as $user)
+                                                                                    <option value="{{ $user->id_admin }}"
+                                                                                        {{ old('pegawai_pembuat_lpt') == $user->id_admin ? 'selected' : '' }}>
+                                                                                        {{ $user->name }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
 
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">b. Nomor dan
-                                                                            Tanggal Dokumen Kepabeanan </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="no_tgl_dok_kepabeanan_lpt"
-                                                                                placeholder="Nomor dan Tanggal Dokumen Kepabeanan">
                                                                         </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">c. Metode
-                                                                            Analisis Intelijen </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="metode_analisis_intelijen_lpt"
-                                                                                placeholder="Metode Analisis Intelijen">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">d. Ikhtisar
-                                                                            Hasil Analisis Intelijen </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="Ikhtisar Hasil Analisis Intelijen"
-                                                                                name="ikhtisar_hasil_analisis_intelijen_lpt">
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseThree"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseThree">
-                                                                        3. Indikasi Pelanggaran
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseThree"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-                                                                        <!-- Form Inputs -->
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">a. Jenis
-                                                                                Pelanggaran</label>
-                                                                            <div class="col-sm-8">
-                                                                                <select
-                                                                                    class="form-control form-select select2 "
-                                                                                    name="jenis_pelanggaran_lpt">
-                                                                                    <option value="" selected
-                                                                                        disabled>- Pilih -</option>
-                                                                                    @foreach ($jenis_pelanggaran as $pelanggaran)
-                                                                                        <option
-                                                                                            value="{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})">
-                                                                                            {{ $pelanggaran->alasan_penindakan }}
-                                                                                            ({{ $pelanggaran->jenis_pelanggaran }})
-                                                                                        </option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">b. Modus
-                                                                                Pelanggaran </label>
-                                                                            <div class="col-sm-8">
-                                                                                <select
-                                                                                    class="form-control form-select select2 "
-                                                                                    name="modus_pelanggaran_lpt">
-                                                                                    <option value="" selected
-                                                                                        disabled>- Pilih -</option>
-                                                                                    @foreach ($uraian_modus as $modus)
-                                                                                        <option
-                                                                                            value="{{ $modus->uraian_modus }}">
-                                                                                            {{ $modus->uraian_modus }}
-                                                                                        </option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">c.
-                                                                                Perkiraan Tempat Pelanggaran </label>
-                                                                            <div class="col-sm-8">
-                                                                                <select
-                                                                                    class="form-control form-select select2 "
-                                                                                    name="perkiraan_tempat_pelanggaran_lpt">
-                                                                                    <option value="" selected
-                                                                                        disabled>- Pilih -</option>
-                                                                                    @foreach ($tempat as $locus)
-                                                                                        <option
-                                                                                            value="{{ $locus->locus }}">
-                                                                                            {{ $locus->locus }}
-                                                                                        </option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">d.
-                                                                                Perkiraan Waktu Pelanggaran</label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text" class="form-control"
-                                                                                    name="perkiraan_waktu_pelanggaran_lpt"
-                                                                                    id="datetime-datepicker"
-                                                                                    placeholder="Perkiraan Waktu Pelanggaran">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">e.
-                                                                                Perkiraan Pelaku Pelanggaran </label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text"
-                                                                                    class="form-control form-input"
-                                                                                    name="perkiraan_pelaku_pelanggaran_lpt"
-                                                                                    placeholder="Perkiraan Pelaku Pelanggaran">
-                                                                            </div>
-                                                                        </div>
-
                                                                     </div>
                                                                 </div>
-                                                            </div>
-
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseFour"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseFour">
-                                                                        4. Dokumentasi Kegiatan Intelijen
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseFour"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label
-                                                                                class="col-sm-4 col-form-label">Dokumentasi
-                                                                                foto</label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="file"
-                                                                                    class="form-control form-input"
-                                                                                    name="dokumentasi_foto_lpt[]" multiple>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label
-                                                                                class="col-sm-4 col-form-label">Dokumentasi
-                                                                                Audio</label>
-                                                                            <div class="col-sm-8">
-                                                                                <input id="rekaman-audio"
-                                                                                    name="dokumentasi_audio_lpt"
-                                                                                    class="form-control"
-                                                                                    placeholder="Masukkan Link Audio">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">Rekaman
-                                                                                Video</label>
-                                                                            <div class="col-sm-8">
-                                                                                <input id="rekaman-video"
-                                                                                    name="dokumentasi_video_lpt"
-                                                                                    class="form-control"
-                                                                                    placeholder="Masukkan Link Video">
-                                                                            </div>
-                                                                        </div>
-
-
-
-
-
-
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-
-
-
-
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseFive"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseFive">
-                                                                        5. Informasi Lainnya yang berkaitan
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseFive"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label>
-                                                                                Informasi Lainnya yang Berkaitan
-                                                                            </label>
-                                                                            <textarea class="form-control" name="info_lainnya_lpt" rows="3"></textarea>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label for="Kesimpulan"
-                                                                                class="d-flex align-items-center">
-                                                                                Kesimpulan
-                                                                                <button type="button"
-                                                                                    class="btn p-0 ms-1 text-primary"
-                                                                                    data-bs-toggle="tooltip"
-                                                                                    data-bs-placement="top"
-                                                                                    data-bs-custom-class="custom-tooltip"
-                                                                                    data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                                                                    <i data-feather="alert-circle"
-                                                                                        style="width: 18px; height: 18px;"></i>
-                                                                                </button>
-                                                                            </label>
-                                                                            <textarea class="form-control" name="kesimpulan_lpt" rows="3"></textarea>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label for="Rekomendasi"
-                                                                                class="d-flex align-items-center">
-                                                                                Rekomendasi
-                                                                                <button type="button"
-                                                                                    class="btn p-0 ms-1 text-primary"
-                                                                                    data-bs-toggle="tooltip"
-                                                                                    data-bs-placement="top"
-                                                                                    data-bs-custom-class="custom-tooltip"
-                                                                                    data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                                                                    <i data-feather="alert-circle"
-                                                                                        style="width: 18px; height: 18px;"></i>
-                                                                                </button>
-                                                                            </label>
-                                                                            <textarea class="form-control" name="rekomendasi_lpt" rows="3"></textarea>
-                                                                        </div>
-
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-lg-12 mb-3 mt-3">
-                                                                <label for="ketua_tim">Ketua Tim Pelaksanaan Tugas</label>
-                                                                <select class="form-control form-select select2"
-                                                                    id="ketua_tim" name="ketua_tim_lpt">
-                                                                    <option value="" selected disabled>- Pilih -
-                                                                    </option>
-                                                                    @foreach ($users as $user)
-                                                                        <option value="{{ $user->id_admin }}">
-                                                                            {{ $user->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-lg-12 mb-3">
-                                                                <label for="pegawai_pembuat_laporan">Pegawai Pembuat
-                                                                    Laporan</label>
-                                                                <select class="form-control form-select select2"
-                                                                    id="pegawai_pembuat" name="pegawai_pembuat_lpt">
-                                                                    <option value="" selected disabled>- Pilih -
-                                                                    </option>
-                                                                    @foreach ($users as $user)
-                                                                        <option value="{{ $user->id_admin }}">
-                                                                            {{ $user->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3177,6 +3203,8 @@
 @section('script')
     @vite(['resources/js/pages/datatable.init.js'])
 @endsection
+@endsection
+
 @section('script')
     @vite(['resources/js/pages/datatable.init.js'])
 @endsection

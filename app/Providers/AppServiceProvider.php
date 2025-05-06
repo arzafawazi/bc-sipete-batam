@@ -2,10 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\Barang;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\TblMenu;
 use App\Models\TblAksesMenu;
+use App\Models\TblBaBukaSegelCtp;
+use App\Models\TblBaCacahAmunisi;
+use App\Models\TblBaPembukaanSegel;
+use App\Models\TblBaPengawasanBongkar;
+use App\Models\TblBaSegelCtp;
+use App\Models\TblBastSenjataApi;
+use App\Models\TblKemasanBaBongkar;
 use App\Models\TblLaporanInformasi;
 use App\Models\TblLaporanPengawasan;
 use App\Models\TblNoRef;
@@ -13,6 +21,7 @@ use App\Models\TblPascaPenindakan;
 use App\Models\TblPelanggaranAdministrasi;
 use App\Models\TblPelanggaranUnsurPidanaPenyidikan;
 use App\Models\TblPelanggaranUnsurPidanaUr;
+use App\Models\TblPemasukanAmunisiSenjataApi;
 use App\Models\TblPenyidikan;
 use App\Models\TblSbp;
 use Illuminate\Support\Facades\Log;
@@ -74,6 +83,17 @@ class AppServiceProvider extends ServiceProvider
     TblPelanggaranAdministrasi::observe(GenericObserver::class);
     TblPelanggaranUnsurPidanaPenyidikan::observe(GenericObserver::class);
     TblPelanggaranUnsurPidanaUr::observe(GenericObserver::class);
+    TblBaPembukaanSegel::observe(GenericObserver::class);
+    TblBaSegelCtp::observe(GenericObserver::class);
+    TblBaBukaSegelCtp::observe(GenericObserver::class);
+    TblBaPengawasanBongkar::observe(GenericObserver::class);
+    TblBaCacahAmunisi::observe(GenericObserver::class);
+    TblBastSenjataApi::observe(GenericObserver::class);;
+    // bagian dalam
+    Barang::observe(GenericObserver::class);
+    TblPemasukanAmunisiSenjataApi::observe(GenericObserver::class);
+    TblKemasanBaBongkar::observe(GenericObserver::class);
+    $this->app->singleton(GenericObserver::class);
 }
 
 }

@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Observers\GenericObserver;
+
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,10 +30,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-
+        // Autentikasi login
         $request->authenticate();
 
+        // Regenerasi session
         $request->session()->regenerate();
+
+        // Catat aktivitas login menggunakan GenericObserver
+        $observer = new GenericObserver();
+        $observer->login(Auth::user());
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

@@ -132,7 +132,8 @@ class PraPenindakanController extends Controller
             'users',
             'jenis_pelanggaran',
             'uraian_modus',
-            'tempat'
+            'tempat',
+            'laporanPengawasan'
         ));
     }
 

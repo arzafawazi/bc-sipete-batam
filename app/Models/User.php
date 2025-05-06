@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\TblAksesMenu;
 
-
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -17,26 +16,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'id_admin',
-        'name',
-        'nama_admin',
-        'nip',
-        'pangkat',
-        'jabatan',
-        'otoritas',
-        'password',
-    ];
+    protected $fillable = ['id_admin', 'name', 'nama_admin', 'nip', 'pangkat', 'jabatan', 'otoritas', 'password'];
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * The attributes that should be cast.
@@ -53,5 +40,10 @@ class User extends Authenticatable
     public function aksesMenu()
     {
         return $this->hasMany(TblAksesMenu::class, 'id_admin', 'id_admin');
+    }
+
+    public function logActivities()
+    {
+        return $this->hasMany(TblLogActivity::class, 'id_admin', 'id_admin');
     }
 }

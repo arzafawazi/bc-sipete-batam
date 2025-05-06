@@ -21,6 +21,42 @@ class GenericObserver
     {
         $this->logActivity($model, 'deleted');
     }
+    
+    /**
+     * Log user login event
+     * 
+     * @param User $user The user who logged in
+     * @return void
+     */
+    public function login($user)
+    {
+        Log::create([
+            'id_admin' => $user->id_admin,
+            'action' => 'user_login',
+            'description' => "User login: ID: {$user->id_admin}, Name: {$user->name}",
+            'url' => request()->fullUrl(),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->header('User-Agent'),
+        ]);
+    }
+    
+    /**
+     * Log user logout event
+     * 
+     * @param User $user The user who logged out
+     * @return void
+     */
+    public function logout($user)
+    {
+        Log::create([
+            'id_admin' => $user->id_admin,
+            'action' => 'user_logout',
+            'description' => "User logout: ID: {$user->id_admin}, Name: {$user->name}",
+            'url' => request()->fullUrl(),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->header('User-Agent'),
+        ]);
+    }
 
     private function logActivity(Model $model, $action)
     {
@@ -119,7 +155,7 @@ class GenericObserver
 
         return $description;
     }
-
+    
     private function extractModelName(Model $model)
     {
         $commonFields = ['name', 'nama', 'nama_lengkap', 'nama_user', 'title'];
@@ -150,24 +186,52 @@ class GenericObserver
 
             case 'TblSbp':
                 return "Jenis SBP: {$model->opsi_penindakan}, Nomor SBP: {$model->no_sbp}, Tanggal SBP: {$model->tgl_sbp}";
-           
+
             case 'TblPascaPenindakan':
                 return "NO LPHP: {$model->no_lphp}, Tanggal LPHP: {$model->tgl_lphp}, NO BAST Pemilik: {$model->no_bast_pemilik}";
 
             case 'TblPenyidikan':
                 return "NO LPP: {$model->no_lpp}, Tanggal LPP: {$model->tgl_lpp}, NO LPF: {$model->no_lpf}";
-            
+
             case 'TblPelanggaranAdministrasi':
                 return "Tanggal Pelanggaran Administrasi: {$model->tgl_pelanggaran_administrasi}, Jenis Pelanggaran: {$model->jenis_pelanggaran_administrasi}";
 
             case 'TblPelanggaranUnsurPidanaPenyidikan':
                 return "NO LK: {$model->no_lk}, Tanggal LK: {$model->tgl_lk}";
-            
+
             case 'TblPelanggaranUnsurPidanaUr':
                 return "Surat Perintah Penelitian Tersangka: {$model->surat_perintah_penelitian_ur_tersangka}";
-                
+
             case 'TblPelanggaranKetentuanLain':
                 return "NO BAST Instansi lain: {$model->no_bast_instansi_lain_pkl}, Tanggal BAST Instansi lain: {$model->tgl_bast_instansi_lain_pkl}";
+
+            case 'TblBaPembukaanSegel':
+                return "NO BA PEMBUKAAN SEGEL: {$model->no_ba_buka_segel}, Tanggal BA PEMBUKAAN SEGEL: {$model->tgl_ba_buka_segel}";
+
+            case 'TblBaSegelCtp':
+                return "NO BA SEGEL CTP: {$model->no_ba_segel_ctp}, Tanggal BA SEGEL CTP: {$model->tgl_ba_segel_ctp}";
+
+            case 'TblBaBukaSegelCtp':
+                return "NO BA BUKA SEGEL CTP: {$model->no_ba_buka_segel_ctp}, Tanggal BA BUKA SEGEL CTP: {$model->tgl_ba_buka_segel_ctp}";
+            
+            case 'TblBaPengawasanBongkar':
+                return "NO PENDAFTARAN BA BONGKAR: {$model->no_pendaftaran_ba_bongkar}, Tanggal PENDAFTARAN BA BONGKAR: {$model->tgl_pendaftaran_ba_bongkar}";
+
+            case 'TblBaCacahAmunisi':
+                return "NO BA CACAH AMUNISI: {$model->no_ba_cacah_amunisi}, Tanggal BA CACAH AMUNISI: {$model->tgl_ba_cacah_amunisi}";
+
+            case 'TblBastSenjataApi':
+                return "NO BAST SENJATA API: {$model->no_bast_senjata_api}, Tanggal BAST SENJATA API: {$model->tgl_bast_senjata_api}";
+
+            //dibawah ini bagian bagian dalamnya
+            case 'Barang':
+                return "Kategori Barang: {$model->kategori_barang}, Kode Komoditi: {$model->kode_komoditi}";
+            
+            case 'TblPemasukanAmunisiSenjataApi':
+                return "Kategori BAST: {$model->kategori_bast}, Senjata Api: {$model->senjata_api}";
+
+            case 'TblKemasanBaBongkar':
+                return "Jenis Kemasan: {$model->jenis_kemasan}, Jumlah Kemasan: {$model->jumlah_kemasan}";
 
             default:
                 // fallback semua field sebagai JSON

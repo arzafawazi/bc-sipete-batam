@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\TblAksesMenu;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-
-
+use App\Observers\GenericObserver;
 
 class UserController extends Controller
 {
@@ -23,7 +22,6 @@ class UserController extends Controller
         $users = User::all();
         return view('tools.users', compact('users'));
     }
-
 
     public function create()
     {
@@ -41,8 +39,7 @@ class UserController extends Controller
             // Cari akses menu berdasarkan id_admin
             $aksesMenu = TblAksesMenu::where('id_admin', $id_admin)->get();
 
-
-            // dd($aksesMenu); 
+            // dd($aksesMenu);
             // dd($aksesMenu->toArray());
 
             if ($aksesMenu->isNotEmpty()) {
@@ -53,7 +50,6 @@ class UserController extends Controller
                 foreach ($aksesMenu as $menu) {
                     $accessStatus[$menu['kode_menu']] = $menu['opsi']; // Pastikan menggunakan 'kode_menu'
                 }
-
 
                 // dd($accessStatus); // Pastikan ini menunjukkan array dengan kunci dan nilai yang benar
 
@@ -71,13 +67,6 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('error', 'ID Admin is required'); // Pesan jika id_admin tidak ada
     }
 
-
-
-
-
-
-
-
     // public function edit($id_admin)
     // {
     //     // Ambil detail pengguna berdasarkan ID
@@ -91,10 +80,6 @@ class UserController extends Controller
 
     //     return view('tools.edit_user', compact('user', 'menuItems', 'aksesMenu'));
     // }
-
-
-
-
 
     // public function edit($id)
     // {
@@ -125,10 +110,7 @@ class UserController extends Controller
             $user = User::where('id_admin', $id_admin)->firstOrFail();
 
             // Update user data
-            $user->update(array_merge(
-                $validated,
-                ['password' => $request->filled('password') ? Hash::make($request->password) : $user->password]
-            ));
+            $user->update(array_merge($validated, ['password' => $request->filled('password') ? Hash::make($request->password) : $user->password]));
 
             // Jika ada akses baru, hapus akses lama dan simpan yang baru
             if ($request->has('akses')) {
@@ -155,11 +137,6 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Data pengguna berhasil diperbarui.');
     }
 
-
-
-
-
-
     public function destroy($id)
     {
         // Temukan pengguna berdasarkan ID atau gagal jika tidak ditemukan
@@ -177,8 +154,6 @@ class UserController extends Controller
         // Redirect kembali ke halaman index dengan pesan sukses
         return redirect()->route('users.index')->with('success', 'User and related access permissions deleted successfully!');
     }
-
-
 
     public function toggleStatus(Request $request, $id)
     {
@@ -221,15 +196,24 @@ class UserController extends Controller
 
     public function logout(): RedirectResponse
     {
+        // Catat aktivitas logout menggunakan GenericObserver
+        $user = Auth::user(); // Simpan user sebelum logout
+        $observer = new GenericObserver();
+
+        // Pastikan user masih ada sebelum mencatat logout
+        if ($user) {
+            $observer->logout($user);
+        }
+
+        // Lakukan proses logout
         Auth::logout();
 
+        // Invalidasi session dan regenerasi token
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
         return redirect('/login')->with('message', 'Anda telah berhasil logout.');
     }
-
-
 
     public function store(Request $request)
     {
@@ -281,7 +265,8 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             Log::error('Error saving user: ' . $e->getMessage());
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->withInput()
                 ->with('error', 'Data gagal disimpan. Error: ' . $e->getMessage());
         }

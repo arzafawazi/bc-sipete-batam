@@ -199,7 +199,7 @@
                                           <option value="" selected disabled>- Pilih -</option>
                                           @foreach ($jenis_pelanggaran as $pelanggaran)
                                             <option value="{{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})"
-                                              {{ ($praPenindakan->dugaan_pelanggaran_mpp ?? $laporan->jenis_pelanggaran_lpt . ' (' . $laporan->jenis_pelanggaran . ')') == $pelanggaran->alasan_penindakan . ' (' . $pelanggaran->jenis_pelanggaran . ')' ? 'selected' : '' }}>
+                                              {{ ($praPenindakan->dugaan_pelanggaran_mpp ?? $laporanPengawasan->jenis_pelanggaran_lpt . ' (' . $laporanPengawasan->jenis_pelanggaran . ')') == $pelanggaran->alasan_penindakan . ' (' . $pelanggaran->jenis_pelanggaran . ')' ? 'selected' : '' }}>
                                               {{ $pelanggaran->alasan_penindakan }} ({{ $pelanggaran->jenis_pelanggaran }})
                                             </option>
                                           @endforeach
@@ -215,7 +215,7 @@
                                         <select class="form-control form-select select2" name="modus_pelanggaran_mpp">
                                           <option value="" selected disabled>- Pilih -</option>
                                           @foreach ($uraian_modus as $modus)
-                                            <option value="{{ $modus->uraian_modus }}" {{ ($praPenindakan->modus_pelanggaran_mpp ?? $laporan->modus_pelanggaran_lpt) == $modus->uraian_modus ? 'selected' : '' }}>
+                                            <option value="{{ $modus->uraian_modus }}" {{ ($praPenindakan->modus_pelanggaran_mpp ?? $laporanPengawasan->modus_pelanggaran_lpt) == $modus->uraian_modus ? 'selected' : '' }}>
                                               {{ $modus->uraian_modus }}
                                             </option>
                                           @endforeach
@@ -231,7 +231,7 @@
                                         <select class="form-control form-select select2" name="locus_pelanggaran_mpp">
                                           <option value="" selected disabled>- Pilih -</option>
                                           @foreach ($tempat as $locus)
-                                            <option value="{{ $locus->locus }}" {{ ($praPenindakan->locus_pelanggaran_mpp ?? $laporan->perkiraan_tempat_pelanggaran_lpt) == $locus->locus ? 'selected' : '' }}>
+                                            <option value="{{ $locus->locus }}" {{ ($praPenindakan->locus_pelanggaran_mpp ?? $laporanPengawasan->perkiraan_tempat_pelanggaran_lpt) == $locus->locus ? 'selected' : '' }}>
                                               {{ $locus->locus }}
                                             </option>
                                           @endforeach
@@ -245,7 +245,7 @@
                                       </label>
                                       <div class="col-sm-8">
                                         <input type="text" class="form-control" name="tempus_pelanggaran_mpp" id="datetime-datepicker" placeholder="Tempus Pelanggaran"
-                                          value="{{ $praPenindakan->tempus_pelanggaran_mpp ?? $laporan->perkiraan_waktu_pelanggaran_lpt }}">
+                                          value="{{ $praPenindakan->tempus_pelanggaran_mpp ?? $laporanPengawasan->perkiraan_waktu_pelanggaran_lpt }}">
                                       </div>
                                     </div>
 
@@ -469,7 +469,7 @@
                                           <select class="form-control form-select select2" name="keterangan_locus">
                                             <option value="" selected disabled>- Pilih -</option>
                                             @foreach ($tempat as $locus)
-                                              <option value="{{ $locus->locus }}" {{ ($praPenindakan->keterangan_locus ?? $laporan->perkiraan_tempat_pelanggaran_lpt) == $locus->locus ? 'selected' : '' }}>
+                                              <option value="{{ $locus->locus }}" {{ ($praPenindakan->keterangan_locus ?? $laporanPengawasan->perkiraan_tempat_pelanggaran_lpt) == $locus->locus ? 'selected' : '' }}>
                                                 {{ $locus->locus }}
                                               </option>
                                             @endforeach

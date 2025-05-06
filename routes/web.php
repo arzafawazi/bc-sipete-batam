@@ -14,6 +14,7 @@ use App\Http\Controllers\ResetPasswordController;
 
 use App\Http\Controllers\tools\SetNomorDokumenController;
 use App\Http\Controllers\tools\UserController;
+use App\Http\Controllers\tools\logActivityController;
 
 use App\Http\Controllers\Dokintelijen\LaporanPengawasanControllers;
 
@@ -92,6 +93,8 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
             'update' => 'tools.setNomorDokumen.update',
         ]
     ]);
+
+    Route::resource('tools/log-activity', logActivityController::class);
 
     // Rute untuk menampilkan halaman reset password
     Route::get('password/reset', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
