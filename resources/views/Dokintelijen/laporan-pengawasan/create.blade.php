@@ -231,13 +231,15 @@
                                                             <label
                                                                 class="form-label fw-semibold d-flex align-items-center">
                                                                 Melaksanakan Tugas
-                                                                <button type="button" class="btn btn-link p-0 ms-1"
+                                                                <button type="button" class="btn p-0 ms-1 text-primary"
                                                                     data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    data-bs-custom-class="custom-tooltip"
                                                                     title="1.Isi Bagian Nomor 1 Pada inputan ini">
-                                                                    <i class="bi bi-info-circle"></i>
+                                                                    <i data-feather="alert-circle"
+                                                                        style="width: 18px; height: 18px;"></i>
                                                                 </button>
                                                             </label>
-                                                            <textarea class="form-control" name="melaksanakan_tugas_st" rows="3"
+                                                            <textarea class="form-control" name="melaksanakan_tugas_st" id="melaksanakan_tugas_st" rows="3"
                                                                 placeholder="1.Isi Bagian Nomor 1 Pada inputan ini"></textarea>
                                                         </div>
 
@@ -393,7 +395,8 @@
                                                                         </div>
                                                                         <div class="col-md-9">
                                                                             <input type="text" class="form-control"
-                                                                                placeholder="Nomor Surat Tugas">
+                                                                                placeholder="Nomor Surat Tugas Sudah Mengikuti Bagian Sebelumnya"
+                                                                                readonly>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -404,7 +407,7 @@
                                                                     <h6 class="fw-bold border-bottom pb-2">II. Tugas</h6>
                                                                     <div class="ms-3">
                                                                         <div class="form-group mb-3">
-                                                                            <textarea class="form-control" name="uraian_tugas_lpt" rows="6"
+                                                                            <textarea class="form-control" name="uraian_tugas_lpt" id="uraian_tugas_lpt" rows="6"
                                                                                 placeholder="1.(Nomor Satu Diisi Pada Bagian Ini)"></textarea>
                                                                         </div>
                                                                     </div>
@@ -454,9 +457,7 @@
                                                                     <div class="form-group mb-3">
                                                                         <input type="text" class="form-control"
                                                                             name="wilayah_penugasan_lpt"
-                                                                            value="Wilayah Pengawasan Kantor Pelayanan Utama Bea dan Cukai Tipe
-B Batam.
-"
+                                                                            value="Wilayah Pengawasan Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam."
                                                                             placeholder="Wilayah Penugasan">
                                                                     </div>
                                                                 </div>
@@ -632,6 +633,11 @@ B Batam.
                                                                                             value="Pelanggaran di bidang Cukai">
                                                                                             Pelanggaran di bidang Cukai
                                                                                         </option>
+                                                                                        <option
+                                                                                            value="Pelanggaran di bidang Kepabeanan dan Cukai">
+                                                                                            Pelanggaran di bidang Kepabeanan
+                                                                                            dan Cukai
+                                                                                        </option>
                                                                                     </select>
                                                                                 </div>
                                                                             </div>
@@ -645,16 +651,14 @@ B Batam.
                                                                                         name="modus_pelanggaran_lpt">
                                                                                         <option value="" selected
                                                                                             disabled>- Pilih -</option>
-                                                                                        <option
-                                                                                            value="Memasukkan barang tanpa dokumen">
-                                                                                            Memasukkan barang tanpa
-                                                                                            dokumen</option>
-                                                                                        <option
-                                                                                            value="Memindahkan barang dari kawasan pabean tanpa izin">
-                                                                                            Memindahkan barang dari
-                                                                                            kawasan pabean tanpa izin
-                                                                                        </option>
+                                                                                        @foreach ($uraian_modus as $modus)
+                                                                                            <option
+                                                                                                value="{{ $modus->uraian_modus }}">
+                                                                                                {{ $modus->uraian_modus }}
+                                                                                            </option>
+                                                                                        @endforeach
                                                                                     </select>
+
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row mb-2">
@@ -665,8 +669,7 @@ B Batam.
                                                                                 </div>
                                                                                 <div class="col-md-8">
                                                                                     <select class="form-select select2"
-                                                                                        name="perkiraan_tempat_pelanggaran_lpt"
-                                                                                        required>
+                                                                                        name="perkiraan_tempat_pelanggaran_lpt">
                                                                                         <option value="" selected
                                                                                             disabled>- Pilih -</option>
                                                                                         @foreach ($tempat as $locus)
@@ -730,26 +733,44 @@ B Batam.
                                                                             <div class="row mb-2">
                                                                                 <div class="col-md-4">
                                                                                     <label class="form-label">b.
-                                                                                        Rekaman Audio</label>
+                                                                                        Rekaman Audio
+                                                                                        <button type="button"
+                                                                                            class="btn p-0 ms-1 text-primary"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-placement="top"
+                                                                                            data-bs-custom-class="custom-tooltip"
+                                                                                            data-bs-title="Diisi dengan link google drive atau penyimpanan apapun yang mengarah ke Rekaman Audio Yang Telah Dikumpulkan">
+                                                                                            <i data-feather="alert-circle"
+                                                                                                style="width: 18px; height: 18px;"></i>
+                                                                                        </button>
+                                                                                    </label>
                                                                                 </div>
                                                                                 <div class="col-md-8">
                                                                                     <input type="text"
                                                                                         class="form-control"
                                                                                         name="dokumentasi_audio_lpt"
-                                                                                        id="rekaman-audio"
                                                                                         placeholder="Masukkan Link Audio">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row mb-2">
                                                                                 <div class="col-md-4">
                                                                                     <label class="form-label">c.
-                                                                                        Rekaman Video</label>
+                                                                                        Rekaman Video
+                                                                                        <button type="button"
+                                                                                            class="btn p-0 ms-1 text-primary"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-placement="top"
+                                                                                            data-bs-custom-class="custom-tooltip"
+                                                                                            data-bs-title="Diisi dengan link google drive atau penyimpanan apapun yang mengarah ke Rekaman Video Yang Telah Dikumpulkan">
+                                                                                            <i data-feather="alert-circle"
+                                                                                                style="width: 18px; height: 18px;"></i>
+                                                                                        </button>
+                                                                                    </label>
                                                                                 </div>
                                                                                 <div class="col-md-8">
                                                                                     <input type="text"
                                                                                         class="form-control"
                                                                                         name="dokumentasi_video_lpt"
-                                                                                        id="rekaman-video"
                                                                                         placeholder="Masukkan Link Video">
                                                                                 </div>
                                                                             </div>
@@ -759,7 +780,8 @@ B Batam.
                                                                     <!-- 5. Informasi Lainnya yang berkaitan -->
                                                                     <div class="mb-3">
                                                                         <h6 class="fw-bold">5. Informasi Lainnya yang
-                                                                            berkaitan</h6>
+                                                                            berkaitan
+                                                                        </h6>
                                                                         <div class="ms-3">
                                                                             <div class="form-group mb-3">
                                                                                 <textarea class="form-control" name="info_lainnya_lpt" rows="3"
@@ -772,6 +794,14 @@ B Batam.
 
                                                             <div class="mb-4">
                                                                 <h6 class="fw-bold border-bottom pb-2">VI. Kesimpulan
+                                                                    <button type="button"
+                                                                        class="btn p-0 ms-1 text-primary"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                        data-bs-custom-class="custom-tooltip"
+                                                                        data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                                                        <i data-feather="alert-circle"
+                                                                            style="width: 18px; height: 18px;"></i>
+                                                                    </button>
                                                                 </h6>
                                                                 <div class="ms-3">
                                                                     <div class="form-group mb-3">
@@ -782,6 +812,14 @@ B Batam.
 
                                                             <div class="mb-4">
                                                                 <h6 class="fw-bold border-bottom pb-2">VII. Rekomendasi
+                                                                    <button type="button"
+                                                                        class="btn p-0 ms-1 text-primary"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                        data-bs-custom-class="custom-tooltip"
+                                                                        data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                                                        <i data-feather="alert-circle"
+                                                                            style="width: 18px; height: 18px;"></i>
+                                                                    </button>
                                                                 </h6>
                                                                 <div class="ms-3">
                                                                     <div class="form-group mb-3">
@@ -825,7 +863,6 @@ B Batam.
                                                                                     </option>
                                                                                 @endforeach
                                                                             </select>
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -838,2066 +875,1674 @@ B Batam.
                                     </div><!-- end tab pane -->
 
                                     <div class="tab-pane" id="lppi" role="tabpanel">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <h6><b>A. Lembar Pengumpulan Dan Penilaian Informasi</b></h6>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>No. LPPI</label>
-                                                        <input type="text" class="form-control bg-primary text-white"
-                                                            placeholder="No. LPPI"
-                                                            value="{{ old('no_lppi', $no_ref->no_lppi) }}" id="no_lppi"
-                                                            name="no_lppi" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Tgl. LPPI</label>
-                                                        <input type="date" class="form-control" id="tgl_lppi"
-                                                            value="" name="tgl_lppi">
-                                                    </div>
-
-                                                    <h6><b>B. Sumber Data Atau Informasi</b></h6>
-                                                    <div class="card-body">
-                                                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseOne"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseOne">
-                                                                        1. Internal
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseOne"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-                                                                        <div class="row mb-3">
-                                                                            <label class="col-sm-4 col-form-label">ISI
-                                                                                DATA</label>
-                                                                            <div class="col-sm-8">
-                                                                                <select id="internal" class="form-select"
-                                                                                    name="internal_lppi"
-                                                                                    onchange="toggleInputs(this, 'internalInputs')">
-                                                                                    <!-- Ubah ID di sini -->
-                                                                                    <option value="TIDAK">TIDAK</option>
-                                                                                    <option value="YA">Ya</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div id="internalInputs">
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">
-                                                                                    Media
-                                                                                </label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="text"
-                                                                                        class="form-control form-input"
-                                                                                        name="media_internal_lppi"
-                                                                                        placeholder="Media Internal"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">
-                                                                                    Tanggal Terima
-                                                                                </label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="date"
-                                                                                        class="form-control form-input"
-                                                                                        name="tanggal_terima_internal_lppi"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">
-                                                                                    No. Dokumen
-                                                                                </label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="text"
-                                                                                        class="form-control form-input"
-                                                                                        placeholder="No. Dokumen"
-                                                                                        name="no_dokumen_internal_lppi"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">
-                                                                                    Tanggal Dokumen
-                                                                                </label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="date"
-                                                                                        class="form-control form-input"
-                                                                                        name="tanggal_dokumen_internal_lppi"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseTwo"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseTwo">
-                                                                        2. Eksternal
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseTwo"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-                                                                        <div class="row mb-3">
-                                                                            <label for="eksternal"
-                                                                                class="col-sm-4 col-form-label">ISI
-                                                                                DATA</label>
-                                                                            <div class="col-sm-8">
-                                                                                <select id="eksternal" class="form-select"
-                                                                                    name="eksternal_lppi"
-                                                                                    onchange="toggleInputs(this, 'eksternalInputs')">
-                                                                                    <!-- Ubah ID di sini -->
-                                                                                    <option value="TIDAK">TIDAK</option>
-                                                                                    <option value="YA">Ya</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <!-- Form Inputs -->
-                                                                        <div id="eksternalInputs">
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label
-                                                                                    class="col-sm-4 col-form-label">Media</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="text"
-                                                                                        class="form-control form-input"
-                                                                                        name="media_eksternal_lppi"
-                                                                                        placeholder="Media Eksternal"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label
-                                                                                    class="col-sm-4 col-form-label">Tanggal
-                                                                                    Terima</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="date"
-                                                                                        class="form-control form-input"
-                                                                                        name="tanggal_terima_eksternal_lppi"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">No.
-                                                                                    Dokumen </label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="text"
-                                                                                        class="form-control form-input"
-                                                                                        name="no_dokumen_eksternal_lppi"
-                                                                                        placeholder="No. Dokumen" disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label
-                                                                                    class="col-sm-4 col-form-label">Tanggal
-                                                                                    Dokumen</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="date"
-                                                                                        class="form-control form-input"
-                                                                                        name="tanggal_dokumen_eksternal_lppi"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
+                                        <div class="container mt-4 mb-5">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <!-- Header -->
+                                                    <div class="row mb-4 align-items-center">
+                                                        <div class="col-2 text-center">
+                                                            <img src="/images/logocop.png" alt="Logo"
+                                                                class="img-fluid" style="max-height:170px;">
                                                         </div>
-
+                                                        <div class="col-10 text-center">
+                                                            <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                                                            <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                                                            <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE
+                                                                B BATAM
+                                                            </p>
+                                                            <p class="small mb-0">
+                                                                JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                                                                TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                            </p>
+                                                            <p class="small mb-0">
+                                                                LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                PUSAT KONTAK LAYANAN 1500225;
+                                                                SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                KPBC.BATAM@KEMENKEU.GO.ID
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <h6><b>C. Ikhtisar Data</b>&nbsp;&nbsp;&nbsp;<button type="button"
-                                                            class="btn btn-info" onclick="tambahIkhtisar()">+</button>
-                                                    </h6>
-                                                    <hr>
-                                                    <div class="container my-4">
-                                                        <div id="ikhtisar-container" class="col-lg-12 ">
+
+                                                    <!-- Form Title -->
+                                                    <div class="row">
+                                                        <div class="col-12 text-center mb-4">
+                                                            <h5 class="mb-0"><u>LEMBAR PENGUMPULAN DAN PENILAIAN
+                                                                    INFORMASI</u></h5>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Nomor dan Tanggal -->
+                                                    <div class="text-center mb-4">
+                                                        <div class="input-group flex-wrap">
+                                                            <span class="input-group-text">NO : LPPI-</span>
+                                                            <input type="text" class="form-control" id="no_lppi"
+                                                                name="no_lppi"
+                                                                value="{{ old('no_lppi', $no_ref->no_lppi) }}" readonly>
+                                                            <span class="input-group-text">/KPU.2061/</span>
+                                                            <input type="date" class="form-control" id="tgl_lppi"
+                                                                name="tgl_lppi">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Divider -->
+                                                    <div class="row mb-2">
+                                                        <div class="col-12">
+                                                            <h6 class="bg-light p-2"><b>SUMBER DATA ATAU INFORMASI
+                                                                </b></h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Sumber Data -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-6">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="internal_check"
+                                                                            onchange="toggleInternal()">
+                                                                        <label class="form-check-label fw-bold"
+                                                                            for="internal_check">
+                                                                            Internal
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-body" id="internal_form"
+                                                                    style="display: none;">
+                                                                    <div class="mb-2 row">
+                                                                        <label
+                                                                            class="col-sm-4 col-form-label">Media</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="........"
+                                                                                name="media_internal_lppi">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mb-2 row">
+                                                                        <label class="col-sm-4 col-form-label">Tanggal
+                                                                            terima</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="date" class="form-control"
+                                                                                name="tanggal_terima_internal_lppi">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mb-2 row">
+                                                                        <label class="col-sm-4 col-form-label">No.
+                                                                            Dokumen</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control"
+                                                                                name="no_dokumen_internal_lppi">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mb-2 row">
+                                                                        <label
+                                                                            class="col-sm-4 col-form-label">Tanggal</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="date" class="form-control"
+                                                                                name="tanggal_dokumen_internal_lppi">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="eksternal_check"
+                                                                            onchange="toggleEksternal()">
+                                                                        <label class="form-check-label fw-bold"
+                                                                            for="eksternal_check">
+                                                                            Eksternal
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-body" id="eksternal_form"
+                                                                    style="display: none;">
+                                                                    <div class="mb-2 row">
+                                                                        <label
+                                                                            class="col-sm-4 col-form-label">Media</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="........"
+                                                                                name="media_eksternal_lppi">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mb-2 row">
+                                                                        <label class="col-sm-4 col-form-label">Tanggal
+                                                                            terima</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="date" class="form-control"
+                                                                                name="tanggal_terima_eksternal_lppi">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mb-2 row">
+                                                                        <label class="col-sm-4 col-form-label">No.
+                                                                            Dokumen</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control"
+                                                                                name="no_dokumen_eksternal_lppi">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mb-2 row">
+                                                                        <label
+                                                                            class="col-sm-4 col-form-label">Tanggal</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="date" class="form-control"
+                                                                                name="tanggal_dokumen_eksternal_lppi">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Tabel Ikhtisar -->
+                                                    <div class="row mb-2">
+                                                        <div class="col-12">
+                                                            <h6 class="bg-light p-2"><b>IKHTISAR DATA ATAU
+                                                                    INFORMASI</b></h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <thead class="table-light">
+                                                                        <tr class="text-center">
+                                                                            <th style="width: 5%">NO.</th>
+                                                                            <th style="width: 55%">IKHTISAR DATA ATAU
+                                                                                INFORMASI</th>
+                                                                            <th style="width: 20%">SUMBER</th>
+                                                                            <th style="width: 20%">VALIDITAS</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="ikhtisar-container">
+                                                                        <!-- Baris ikhtisar akan ditambahkan disini -->
+                                                                    </tbody>
+                                                                </table>
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button type="button" class="btn btn-sm btn-primary"
+                                                                        onclick="tambahIkhtisar()">Tambah Baris</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Petugas Data dan Informasi -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-6">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="mb-2 row">
+                                                                        <label class="col-sm-4 col-form-label">Penerima
+                                                                            Data atau Informasi</label>
+                                                                        <div class="col-sm-8">
+                                                                            <select
+                                                                                class="form-control form-select select2"
+                                                                                id="penerima_informasi_lppi"
+                                                                                name="penerima_informasi_lppi">
+                                                                                <option value="" selected disabled>-
+                                                                                    Pilih -</option>
+                                                                                @foreach ($users as $user)
+                                                                                    <option value="{{ $user->id_admin }}">
+                                                                                        {{ $user->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="mb-2 row">
+                                                                        <label class="col-sm-4 col-form-label">Penilai
+                                                                            Data atau Informasi</label>
+                                                                        <div class="col-sm-8">
+                                                                            <select
+                                                                                class="form-control form-select select2"
+                                                                                id="penilai_informasi_lppi"
+                                                                                name="penilai_informasi_lppi">
+                                                                                <option value="" selected disabled>-
+                                                                                    Pilih -</option>
+                                                                                @foreach ($users as $user)
+                                                                                    <option value="{{ $user->id_admin }}">
+                                                                                        {{ $user->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Kesimpulan -->
+                                                    <div class="row mb-2">
+                                                        <div class="col-12">
+                                                            <h6 class="bg-light p-2"><b>KESIMPULAN</b></h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <textarea class="form-control" rows="3" placeholder="........" name="kesimpulan_lppi"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Disposisi -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Disposisi Kepada:</label>
+                                                                <select class="form-control form-select select2"
+                                                                    id="pegawai_lppi" name="pegawai_lppi">
+                                                                    <option value="" selected disabled>- Pilih -
+                                                                    </option>
+                                                                    @foreach ($users as $user)
+                                                                        <option value="{{ $user->id_admin }}">
+                                                                            {{ $user->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Tanggal Disposisi:</label>
+                                                                <input type="date" class="form-control"
+                                                                    name="tanggal_disposisi_lppi">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Tindak Lanjut -->
+                                                    <div class="row mb-2">
+                                                        <div class="col-12">
+                                                            <h6 class="bg-light p-2"><b>TINDAK LANJUT:</b></h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="tindak_lanjut_lppi" id="analisis"
+                                                                    value="Analisis">
+                                                                <label class="form-check-label"
+                                                                    for="analisis">Analisis</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="tindak_lanjut_lppi" id="arsip"
+                                                                    value="Arsip">
+                                                                <label class="form-check-label"
+                                                                    for="arsip">Arsip</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Catatan -->
+                                                    <div class="row mb-2">
+                                                        <div class="col-12">
+                                                            <h6 class="bg-light p-2"><b>CATATAN</b></h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-4">
+                                                        <div class="col-12">
+                                                            <textarea class="form-control" rows="3" placeholder="........" name="catatan_lppi"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Tanda Tangan -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-6"></div>
+                                                        <div class="col-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Pejabat Pengawas:</label>
+                                                                <select class="form-control form-select select2"
+                                                                    id="pejabat_lppi" name="pejabat_lppi">
+                                                                    <option value="" selected disabled>- Pilih -
+                                                                    </option>
+                                                                    @foreach ($users as $user)
+                                                                        <option value="{{ $user->id_admin }}">
+                                                                            {{ $user->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+
+                                                            </div>
                                                         </div>
                                                     </div>
 
                                                 </div>
                                             </div>
-
-                                            <!-- Right Column (Pejabat Selection) -->
-                                            <div class="col-lg-6">
-
-                                                <div class="row">
-                                                    <div class="col-lg-6 mb-3">
-                                                        <label>Penerima Informasi</label>
-                                                        <select class="form-control form-select select2"
-                                                            id="penerima_informasi_lppi" name="penerima_informasi_lppi">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-
-                                                    <div class="col-lg-6 mb-3">
-                                                        <label>Penilai Informasi</label>
-                                                        <select class="form-control form-select select2"
-                                                            id="penilai_informasi_lppi" name="penilai_informasi_lppi">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-                                                <h6><b>D. Kesimpulan</b></h6>
-                                                <hr>
-
-                                                <div class="col-md-12 mb-3">
-                                                    <label>Kesimpulan</label>
-                                                    <textarea class="form-control" rows="3" placeholder="Kesimpulan Lembar Pengumpulan Dan Penilaian Informasi"
-                                                        id="kesimpulan" name="kesimpulan_lppi"></textarea>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-lg-6 mb-3">
-                                                        <label for="pegawai_lppi">Pegawai Yang Menerima Disposisi</label>
-                                                        <select class="form-control form-select select2" id="pegawai_lppi"
-                                                            name="pegawai_lppi">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Tanggal Disposisi</label>
-                                                        <input type="date" class="form-control" id="tanggal_disposisi"
-                                                            name="tanggal_disposisi_lppi">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12 mb-3">
-                                                    <label class="col-sm-4 col-form-label">Tindak Lanjut</label>
-                                                    <select class="form-select" name="tindak_lanjut_lppi">
-                                                        <!-- Ubah ID di sini -->
-                                                        <option value="" selected disabled>- Pilih -</option>
-                                                        <option value="Analisis">Analisis</option>
-                                                        <option value="Arsip">Arsip</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-12 mb-3">
-                                                    <label>Catatan</label>
-                                                    <textarea class="form-control" rows="3" placeholder="Catatan Lembar Pengumpulan Dan Penilaian Informasi"
-                                                        id="catatan" name="catatan_lppi"></textarea>
-                                                </div>
-
-                                                <div class="col-lg-12 mb-3">
-                                                    <label for="pejabat_lppi">Pejabat Pengawas</label>
-                                                    <select class="form-control form-select select2" id="pejabat_lppi"
-                                                        name="pejabat_lppi">
-                                                        <option value="" selected disabled>- Pilih -</option>
-                                                        @foreach ($users as $user)
-                                                            <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                            </div>
-
                                         </div>
                                     </div><!-- end tab pane -->
-
-
 
 
                                     <div class="tab-pane" id="lkai" role="tabpanel">
-                                        <div class="row">
-                                            <!-- Left Column (Data Laporan Informasi) -->
-                                            <div class="col-lg-6">
-                                                <h6><b>A. Data Lembar Kerja Hasil intelijen</b></h6>
-                                                <hr>
-                                                <div class="row">
-                                                    <!-- No. LI / Tgl. LI -->
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>No. LKAI</label>
-                                                        <input type="text" name="no_lkai"
-                                                            value="{{ old('no_lkai', $no_ref->no_lkai) }}"
-                                                            class="form-control bg-primary text-white" readonly>
+                                        <div class="container my-4">
+                                            <!-- Kop Surat -->
+                                            <div class="row mb-4 align-items-center">
+                                                <div class="col-2 text-center">
+                                                    <img src="/images/logocop.png" alt="Logo" class="img-fluid"
+                                                        style="max-height:170px;">
+                                                </div>
+                                                <div class="col-10 text-center">
+                                                    <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                                                    <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                                                    <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE
+                                                        B BATAM
+                                                    </p>
+                                                    <p class="small mb-0">
+                                                        JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                                                        TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                    </p>
+                                                    <p class="small mb-0">
+                                                        LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                        PUSAT KONTAK LAYANAN 1500225;
+                                                        SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                        KPBC.BATAM@KEMENKEU.GO.ID
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Judul Dokumen -->
+                                            <div class="row mb-3">
+                                                <div class="col-12 text-center">
+                                                    <h5 class="fw-bold text-decoration-underline">LEMBAR KERJA ANALISIS
+                                                        INTELIJEN</h5>
+                                                </div>
+                                            </div>
+
+                                            <!-- Nomor dan Tanggal -->
+                                            <div class="text-center mb-4">
+                                                <div class="input-group flex-wrap">
+                                                    <span class="input-group-text">NO : LKAI-</span>
+                                                    <input type="text" class="form-control" id="no_lkai"
+                                                        name="no_lkai" value="{{ old('no_lkai', $no_ref->no_lkai) }}"
+                                                        readonly>
+                                                    <span class="input-group-text">/KPU.2061/</span>
+                                                    <input type="date" class="form-control" id="tgl_lkai"
+                                                        name="tgl_lkai">
+                                                </div>
+                                            </div>
+
+                                            <!-- Dokumen Sumber -->
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <label class="fw-bold">DOKUMEN SUMBER:</label>
+                                                </div>
+                                            </div>
+
+                                            <!-- LPPI -->
+                                            <div class="row mb-3">
+                                                <div class="col-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="lppi_check"
+                                                            onchange="toggleLppiInputs(this)">
+                                                        <label class="form-check-label" for="lppi_check">LPPI</label>
                                                     </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>tgl. LKAI</label>
-                                                        <input type="date" class="form-control bg-primary text-white"
-                                                            name="tgl_lkai">
+                                                </div>
+                                                <div class="col-3">
+                                                    <label>Nomor:</label>
+                                                    <input type="text" id="no_lppi_disabled" name="no_lppi"
+                                                        class="form-control form-input" placeholder="LPPI-(..)/.."
+                                                        disabled>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label>Tanggal:</label>
+                                                    <input type="date" id="tgl_lppi_disabled" name="tgl_lppi"
+                                                        class="form-control form-input" disabled>
+                                                </div>
+                                            </div>
+
+                                            <!-- NHI -->
+                                            <div class="row mb-3">
+                                                <div class="col-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="nhi_check"
+                                                            onchange="toggleNhiInputs(this)">
+                                                        <label class="form-check-label" for="nhi_check">NPI</label>
                                                     </div>
-                                                    <div class="card-body">
-                                                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseAA"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseAA">
-                                                                        LPPI
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseAA"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
+                                                </div>
+                                                <div class="col-3">
+                                                    <label>Nomor:</label>
+                                                    <input type="text" id="no_npi_disabled" name="no_npi"
+                                                        class="form-control form-input" placeholder="NPI-(..)/.."
+                                                        disabled>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label>Tanggal:</label>
+                                                    <input type="date" id="tgl_npi_disabled" name="tgl_npi"
+                                                        class="form-control form-input" disabled>
+                                                </div>
+                                            </div>
 
-                                                                        <div class="row mb-3">
-                                                                            <label class="col-sm-4 col-form-label">Sumber
-                                                                                LPPI</label>
-                                                                            <div class="col-sm-8">
-                                                                                <select class="form-select"
-                                                                                    name="sumber_lppi"
-                                                                                    onchange="toggleInputs(this, 'sumberLppiInputs')">
-                                                                                    <option value="TIDAK">TIDAK</option>
-                                                                                    <option value="YA">Ya</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div id="sumberLppiInputs">
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">No.
-                                                                                    LPPI </label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="text" value=""
-                                                                                        class="form-control form-input bg-primary text-white"
-                                                                                        placeholder="NO LPPI"
-                                                                                        id="no_lppi_disabled" disabled
-                                                                                        readonly>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label
-                                                                                    class="col-sm-4 col-form-label">Tanggal
-                                                                                    LPPI</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="date"
-                                                                                        id="tgl_lppi_disabled"
-                                                                                        class="form-control form-input bg-primary text-white"
-                                                                                        disabled readonly>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            {{-- <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                  <button class="accordion-button btn bg-light fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseBB" aria-expanded="false" aria-controls="flush-collapseBB">
-                                    NPI
-                                  </button>
-                                </h2>
-                                <div id="flush-collapseBB" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                  <div class="accordion-body bg-light">
-
-                                    <div class="row mb-3">
-                                      <label class="col-sm-4 col-form-label">Sumber NPI</label>
-                                      <div class="col-sm-8">
-                                        <select class="form-select" name="sumber_npi"> <!-- Ubah ID di sini -->
-                                          <option value="TIDAK">TIDAK</option>
-                                          <option value="YA">Ya</option>
-                                        </select>
-                                      </div>
-                                    </div>
-
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">No. NPI </label>
-                                      <div class="col-sm-8">
-                                        <input type="text" class="form-control form-input bg-primary text-white" placeholder="NO NPI">
-                                      </div>
-                                    </div>
-
-                                    <div class="row mb-3 form-group">
-                                      <label class="col-sm-4 col-form-label">Tanggal LPPI</label>
-                                      <div class="col-sm-8">
-                                        <input type="date" class="form-control bg-primary text-white">
-                                      </div>
-                                    </div>
-
-                                  </div>
-                                </div>
-                              </div> --}}
-
+                                            <!-- Ikhtisar Data -->
+                                            <div class="row mb-3 mt-4">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header text-black text-center fw-bold">
+                                                            IKHTISAR DATA ATAU INFORMASI
+                                                            <button type="button" class="btn p-0 ms-1 text-primary"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-custom-class="custom-tooltip"
+                                                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                                                <i data-feather="alert-circle"
+                                                                    style="width: 18px; height: 18px;"></i>
+                                                            </button>
                                                         </div>
-
-                                                    </div>
-                                                    <h6><b>B. Ikhtisar Data Informasi</b></h6>
-                                                    <hr>
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="d-flex align-items-center">
-                                                            Ikhtisar Data Atau Informasi
-                                                            <button type="button" class="btn p-0 ms-1 text-primary"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                data-bs-custom-class="custom-tooltip"
-                                                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                                                <i data-feather="alert-circle"
-                                                                    style="width: 18px; height: 18px;"></i>
-                                                            </button>
-                                                        </label>
-                                                        <textarea class="form-control" rows="2" placeholder="Ikhtisar Data Atau Informasi" id="ikhtisar_data_lkai"
-                                                            name="ikhtisar_data_lkai"></textarea>
-                                                    </div>
-
-
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="d-flex align-items-center">
-                                                            Prosedur Analisis
-                                                            <button type="button" class="btn p-0 ms-1 text-primary"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                data-bs-custom-class="custom-tooltip"
-                                                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                                                <i data-feather="alert-circle"
-                                                                    style="width: 18px; height: 18px;"></i>
-                                                            </button>
-                                                        </label>
-                                                        <textarea class="form-control" rows="2" placeholder="Prosedur Analisis" id="prosedur_analisis_lkai"
-                                                            name="prosedur_analisis_lkai"></textarea>
-                                                    </div>
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="d-flex align-items-center">
-                                                            Hasil Analisis
-                                                            <button type="button" class="btn p-0 ms-1 text-primary"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                data-bs-custom-class="custom-tooltip"
-                                                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
-                                                                <i data-feather="alert-circle"
-                                                                    style="width: 18px; height: 18px;"></i>
-                                                            </button>
-                                                        </label>
-                                                        <textarea class="form-control" rows="2" placeholder="Hasil Analisis" id="hasil_analisis_lkai"
-                                                            name="hasil_analisis_lkai"></textarea>
-                                                    </div>
-
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Kesimpulan</label>
-                                                        <textarea class="form-control" row="2" placeholder="Kesimpulan" id="kesimpulan" name="kesimpulan_lkai"></textarea>
+                                                        <div class="card-body">
+                                                            <textarea class="form-control" rows="5" id="ikhtisar_data_lkai" name="ikhtisar_data_lkai"
+                                                                placeholder="Isi Ikhtisar Data Atau Informasi Pada Bagian ini"></textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <!-- Right Column (Pejabat Selection) -->
-                                            <div class="col-lg-6">
-                                                <h6><b>C. Rekomendasi</b></h6>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <label for="nhi-select">NHI/NHI-HKI/NHI-N</label>
-                                                        <select id="nhi-select" class="form-select section-select"
-                                                            name="nhi" onchange="handleSelection(this)">
-                                                            <option value="TIDAK">TIDAK</option>
-                                                            <option value="YA">YA</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="ni-select">NI</label>
-                                                        <select id="ni-select" class="form-select section-select"
-                                                            name="ni" onchange="handleSelection(this)">
-                                                            <option value="TIDAK">TIDAK</option>
-                                                            <option value="YA">YA</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="card-body">
-                                                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseOO"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseOO">
-                                                                        Rekomendasi Lainnya
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseOO"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-                                                                        <div class="row mb-3">
-                                                                            <label class="col-sm-4 col-form-label">ISI
-                                                                                DATA</label>
-                                                                            <div class="col-sm-8">
-                                                                                <select id="rekomendasi_lainnya"
-                                                                                    class="form-select section-select"
-                                                                                    name="rekomendasi_lainnya"
-                                                                                    onchange="handleSelection(this)">
-                                                                                    <option value="TIDAK">TIDAK</option>
-                                                                                    <option value="YA">YA</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div id="rekomendasiLainnyaInputs">
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">Isi
-                                                                                    Rekomendasi Lainnya</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <textarea class="form-control form-input" row="2" placeholder="Isi Rekomendasi Lainnya"
-                                                                                        id="isi_rekomendasi_lainnya" name="isi_rekomendasi_lainnya" disabled></textarea>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseTT"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseTT">
-                                                                        Informasi Lainnya
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseTT"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-                                                                        <div class="row mb-3">
-                                                                            <label class="col-sm-4 col-form-label">ISI
-                                                                                DATA</label>
-                                                                            <div class="col-sm-8">
-                                                                                <select id="informasi_lainnya"
-                                                                                    class="form-select section-select"
-                                                                                    name="informasi_lainnya"
-                                                                                    onchange="handleSelection(this)">
-                                                                                    <option value="TIDAK">TIDAK</option>
-                                                                                    <option value="YA">YA</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div id="informasiLainnyaInputs">
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">Isi
-                                                                                    Informasi Lainnya</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <textarea class="form-control form-input" row="2" placeholder="Isi Informasi Lainnya"
-                                                                                        id="isi_informasi_lainnya" name="isi_informasi_lainnya" disabled></textarea>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                            <!-- Prosedur -->
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header text-black text-center fw-bold">
+                                                            PROSEDUR
+                                                            <button type="button" class="btn p-0 ms-1 text-primary"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-custom-class="custom-tooltip"
+                                                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                                                <i data-feather="alert-circle"
+                                                                    style="width: 18px; height: 18px;"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <textarea class="form-control" rows="5" id="prosedur_analisis_lkai" name="prosedur_analisis_lkai"
+                                                                placeholder="Isi Bagian Prosedur Pada Bagian Ini"></textarea>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
 
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Tujuan</label>
-                                                        <input type="text" class="form-control" placeholder="Tujuan"
-                                                            name="tujuan_lkai">
-                                                    </div>
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Pegawai Yang Melakukan Analisis</label>
-                                                        <select class="form-control form-select select2"
-                                                            id="id_pegawai_analisis" name="id_pegawai_analisis_lkai">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                                                    | {{ $user->jabatan }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="card-body">
-                                                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseEleven"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseEleven">
-                                                                        Keputusan Pertama
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseEleven"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-                                                                        <div class="row mb-3">
-                                                                            <label
-                                                                                class="col-sm-4 col-form-label">Keputusan
-                                                                                Pertama</label>
-                                                                            <div class="col-sm-8">
-                                                                                <select id="keputusan_pertama"
-                                                                                    class="form-select"
-                                                                                    name="keputusan_pertama_lkai"
-                                                                                    onchange="toggleInputs(this, 'keputusanPertamaInputs')">
-                                                                                    <!-- Ubah ID di sini -->
-                                                                                    <option value="TIDAK">Tidak Setuju
-                                                                                    </option>
-                                                                                    <option value="YA">Setuju</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <!-- Form Inputs -->
-                                                                        <div id="keputusanPertamaInputs">
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">
-                                                                                    Pejabat Pengawas
-                                                                                </label>
-                                                                                <div class="col-sm-8">
-                                                                                    <select
-                                                                                        class="form-control form-select form-input select2"
-                                                                                        id="id_pejabat_pengawas_lkai"
-                                                                                        name="id_pejabat_pengawas_lkai"
-                                                                                        disabled>
-                                                                                        <option value="" selected
-                                                                                            disabled>- Pilih -</option>
-                                                                                        @foreach ($users as $user)
-                                                                                            <option
-                                                                                                value="{{ $user->id_admin }}">
-                                                                                                {{ $user->name }} |
-                                                                                                {{ $user->jabatan }}
-                                                                                            </option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label
-                                                                                    class="col-sm-4 col-form-label">Catatan</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <textarea class="form-control form-input" row="2" placeholder="Catatan" id="catatan"
-                                                                                        name="catatan_keputusan_1_lkai" disabled></textarea>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label
-                                                                                    class="col-sm-4 col-form-label">Hasil
-                                                                                    Analisis Diterima Tanggal</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="date"
-                                                                                        class="form-control form-input"
-                                                                                        name="hasil_analisis_diterima_tanggal_1_lkai"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn bg-light fw-medium collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseTwelve"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseTwelve">
-                                                                        Keputusan Kedua
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseTwelve"
-                                                                    class="accordion-collapse collapse"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body bg-light">
-
-
-
-                                                                        <div class="row mb-3">
-                                                                            <label
-                                                                                class="col-sm-4 col-form-label">Keputusan
-                                                                                Kedua</label>
-                                                                            <div class="col-sm-8">
-                                                                                <select id="keputusan_kedua"
-                                                                                    class="form-select"
-                                                                                    name="keputusan_kedua_lkai"
-                                                                                    onchange="toggleInputs(this, 'keputusanKeduaInputs')">
-                                                                                    <!-- Ubah ID di sini -->
-                                                                                    <option value="TIDAK">Tidak Setuju
-                                                                                    </option>
-                                                                                    <option value="YA">Setuju</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <!-- Form Inputs -->
-                                                                        <div id="keputusanKeduaInputs">
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label class="col-sm-4 col-form-label">
-                                                                                    Pejabat Administrator
-                                                                                </label>
-                                                                                <div class="col-sm-8">
-                                                                                    <select
-                                                                                        class="form-control form-select select2"
-                                                                                        id="id_pejabat_administrator_lkai"
-                                                                                        name="id_pejabat_administrator_lkai"
-                                                                                        disabled>
-                                                                                        <option value="" selected
-                                                                                            disabled>- Pilih -</option>
-                                                                                        @foreach ($users as $user)
-                                                                                            <option
-                                                                                                value="{{ $user->id_admin }}">
-                                                                                                {{ $user->name }} |
-                                                                                                {{ $user->jabatan }}
-                                                                                            </option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label
-                                                                                    class="col-sm-4 col-form-label">Catatan</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <textarea class="form-control form-input" row="2" placeholder="Catatan" id="catatan"
-                                                                                        name="catatan_keputusan_2_lkai" disabled></textarea>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="row mb-3 form-group">
-                                                                                <label
-                                                                                    class="col-sm-4 col-form-label">Hasil
-                                                                                    Analisis Diterima Tanggal</label>
-                                                                                <div class="col-sm-8">
-                                                                                    <input type="date"
-                                                                                        class="form-control form-input"
-                                                                                        name="hasil_analisis_diterima_tanggal_2_lkai"
-                                                                                        disabled>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                            <!-- Hasil Analisis -->
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header text-black text-center fw-bold">
+                                                            HASIL ANALISIS
+                                                            <button type="button" class="btn p-0 ms-1 text-primary"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-custom-class="custom-tooltip"
+                                                                data-bs-title="Diisi dengan mengapit #isi# disetiap point, dan enter untuk baris baru untuk point baru">
+                                                                <i data-feather="alert-circle"
+                                                                    style="width: 18px; height: 18px;"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <textarea class="form-control" rows="5" id="hasil_analisis_lkai" name="hasil_analisis_lkai"
+                                                                placeholder="Isi Bagian Hasil Analisis Pada Bagian Ini"></textarea>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
 
+                                            <!-- Kesimpulan -->
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header text-black text-center fw-bold">
+                                                            KESIMPULAN
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <textarea class="form-control" rows="3" id="kesimpulan" name="kesimpulan_lkai"
+                                                                placeholder="Isi Kesimpulan Dibagian ini"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Rekomendasi -->
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <label class="fw-bold">REKOMENDASI :</label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Checkbox Rekomendasi -->
+                                            <div class="row mb-3">
+                                                <div class="col-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input section-select" type="checkbox"
+                                                            id="nhi-select" name="nhi" value="YA">
+                                                        <label class="form-check-label" for="nhi-select">NHI</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input section-select" type="checkbox"
+                                                            id="ni-select" name="ni" value="YA">
+                                                        <label class="form-check-label" for="ni-select">NI</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Rekomendasi Lainnya -->
+                                            <div class="row mb-3">
+                                                <div class="col-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input section-select" type="checkbox"
+                                                            id="rekomendasi_lainnya" name="rekomendasi_lainnya"
+                                                            value="YA" onchange="toggleRekomendasiLainnya(this)">
+                                                        <label class="form-check-label"
+                                                            for="rekomendasi_lainnya">Rekomendasi
+                                                            Lainnya:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-9">
+                                                    <textarea class="form-control" id="isi_rekomendasi_lainnya" name="isi_rekomendasi_lainnya" rows="3" disabled></textarea>
+                                                </div>
+                                            </div>
+
+                                            <!-- Informasi Lainnya -->
+                                            <div class="row mb-3">
+                                                <div class="col-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input section-select" type="checkbox"
+                                                            id="informasi_lainnya" name="informasi_lainnya"
+                                                            value="YA" onchange="toggleInformasiLainnya(this)">
+                                                        <label class="form-check-label" for="informasi_lainnya">Informasi
+                                                            Lainnya:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-9">
+                                                    <textarea class="form-control" id="isi_informasi_lainnya" name="isi_informasi_lainnya" rows="3" disabled></textarea>
+                                                </div>
+                                            </div>
+
+                                            <!-- Tujuan -->
+                                            <div class="row mb-3">
+                                                <div class="col-2">
+                                                    <label class="fw-bold">TUJUAN</label>
+                                                </div>
+                                                <div class="col-10">
+                                                    <input type="text" class="form-control" name="tujuan_lkai"
+                                                        placeholder="Tujuan">
+                                                </div>
+                                            </div>
+
+                                            <!-- Analis -->
+                                            <div class="row mb-5">
+                                                <div class="col-12">
+                                                    <label class="fw-bold">Analis</label>
+                                                </div>
+                                                <div class="col-12 mt-4">
+                                                    <select class="form-control form-select select2"
+                                                        id="id_pegawai_analisis" name="id_pegawai_analisis_lkai">
+                                                        <option value="" selected disabled>- Pilih -</option>
+                                                        @foreach ($users as $user)
+                                                            <option value="{{ $user->id_admin }}"
+                                                                {{ old('id_pegawai_analisis_lkai') == $user->id_admin ? 'selected' : '' }}>
+                                                                {{ $user->name }} | {{ $user->jabatan }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
 
                                                 </div>
                                             </div>
-                                        </div>
 
+                                            <!-- Keputusan Pertama -->
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <label class="fw-bold">Keputusan Pertama:</label>
+                                                    <select id="keputusan_pertama" class="form-select"
+                                                        name="keputusan_pertama_lkai"
+                                                        onchange="toggleKeputusanPertama(this)">
+                                                        <option value="TIDAK">Tidak Setuju</option>
+                                                        <option value="YA">Setuju</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-
-                                        {{-- <div class="card-footer d-flex justify-content-end">
-            
-           <button type="submit" class="btn btn-success btn-sm me-2">
-                <i data-feather="save"></i> Simpan Data LI
-            </button>
-        </div> --}}
-
-                                    </div><!-- end tab pane -->
-
-                                    <div class="tab-pane" id="nhi" role="tabpanel">
-                                        <div class="row">
-                                            <!-- Left Column (Data Laporan Informasi) -->
-                                            <div class="col-lg-6">
-                                                <h6><b>A. Data Nota Hasil Intelijen</b></h6>
-                                                <hr>
-                                                <div class="row">
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Tipe NHI</label>
-                                                        <select class="form-control" id="tipe_nhi" name="tipe_nhi">
-                                                            <option value="NHI">NHI</option>
-                                                            <option value="NHI-HKI">NHI-HKI</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <select class="form-control" id="deskripsi" name="deskripsi">
-                                                            <option value="diperintahkan">Diperintahkan</option>
-                                                            <option value="direkomendasikan">Direkomendasikan</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-6 mb-3 nhi-input" style="display: none;">
-                                                        <label>No. NHI</label>
-                                                        <input type="text" class="form-control bg-primary text-white"
-                                                            value="{{ old('no_nhi', $no_ref->no_nhi) }}"
-                                                            placeholder="No. NHI" id="no_nhi" name="no_nhi">
-                                                    </div>
-                                                    <div class="col-md-6 mb-3 nhi-input" style="display: none;">
-                                                        <label>Tanggal NHI</label>
-                                                        <input type="date" class="form-control bg-primary text-white"
-                                                            id="tgl_nhi" name="tgl_nhi">
-                                                    </div>
-
-                                                    <div class="col-md-6 mb-3 nhi-hki-input" style="display: none;">
-                                                        <label>No. NHI-HKI</label>
-                                                        <input type="text" class="form-control bg-primary text-white"
-                                                            value="{{ old('no_nhi_hki', $no_ref->no_nhi_hki) }}"
-                                                            placeholder="No. NHI-HKI" id="no_nhi_hki"
-                                                            name="no_nhi_hki">
-                                                    </div>
-                                                    <div class="col-md-6 mb-3 nhi-hki-input" style="display: none;">
-                                                        <label>Tanggal NHI-HKI</label>
-                                                        <input type="date" class="form-control bg-primary text-white"
-                                                            id="tgl_nhi_hki" name="tgl_nhi_hki">
-                                                    </div>
-
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Sifat NHI</label>
-                                                        <select class="form-control" id="sifat_nhi" name="sifat_nhi">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            <option value="Segera">Segera</option>
-                                                            <option value="Sangat Segera">Sangat Segera</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Klasifikasi NHI</label>
-                                                        <select class="form-control" id="klasifikasi_nhi"
-                                                            name="klasifikasi_nhi">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            <option value="Rahasia">Rahasia</option>
-                                                            <option value="Sangat Rahasia">Sangat Rahasia</option>
-                                                        </select>
-                                                    </div>
-                                                    <h6><b>B. Referensi</b></h6>
-                                                    <hr>
-
-                                                    {{-- <div class="col-md-6 mb-3">
-                            <label>No. LKAI</label>
-                            <input type="text" class="form-control" placeholder="No. LKAI" value="">
-                          </div>
-
-                          <div class="col-md-6 mb-3">
-                            <label>Tgl. LKAI</label>
-                            <input type="date" class="form-control" value="">
-                          </div> --}}
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Jabatan Penerima NHI</label>
-                                                        <select class="form-control form-select select2"
-                                                            id="id_penerima_nhi" name="id_penerima_nhi">
+                                            <div id="keputusanPertamaInputs" style="display: none;">
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <label>Pejabat Pengawas:</label>
+                                                        <select class="form-control form-input form-select select2"
+                                                            id="id_pejabat_pengawas_lkai" name="id_pejabat_pengawas_lkai"
+                                                            disabled>
                                                             <option value="" selected disabled>- Pilih -</option>
                                                             @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}">
+                                                                <option value="{{ $user->id_admin }}"
+                                                                    {{ old('id_pejabat_pengawas_lkai') == $user->id_admin ? 'selected' : '' }}>
                                                                     {{ $user->name }} | {{ $user->jabatan }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
+
                                                     </div>
-
-
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <label>Catatan:</label>
+                                                        <textarea class="form-control" row="2" placeholder="Catatan" id="catatan" name="catatan_keputusan_1_lkai"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <label>Hasil Analisis Diterima Tanggal:</label>
+                                                        <input type="date" class="form-control"
+                                                            name="hasil_analisis_diterima_tanggal_1_lkai">
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <!-- Right Column (Pejabat Selection) -->
-                                            <div class="col-lg-6">
-                                                <h6><b>B. Informasi NHI</b></h6>
-                                                <div class="card-body">
-                                                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                                            <!-- Keputusan Kedua -->
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <label class="fw-bold">Keputusan Kedua:</label>
+                                                    <select id="keputusan_kedua" class="form-select"
+                                                        name="keputusan_kedua_lkai"
+                                                        onchange="toggleKeputusanKedua(this)">
+                                                        <option value="TIDAK">Tidak Setuju</option>
+                                                        <option value="YA">Setuju</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseOne"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseOne">
-                                                                    A. Tempat
-                                                                </button>
-                                                            </h2>
-
-                                                            <div id="flush-collapseOne"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Nama Tempat
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nama_tempat_nhi"
-                                                                                placeholder="Nama Tempat">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseTwo"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseTwo">
-                                                                    B. Tanggal/Waktu
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseTwo"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
-
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label
-                                                                            class="col-sm-4 col-form-label">Tanggal/Waktu</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="date" class="form-control"
-                                                                                name="tgl_waktu_nhi">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseThree"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseThree">
-                                                                    C. Kantor Bea dan Cukai
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseThree"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Kantor Bea
-                                                                            dan Cukai</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="kantor_bc_nhi"
-                                                                                placeholder="Kantor Bea dan Cukai">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseFour"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseFour">
-                                                                    D. Kegiatan atas Barang Impor /Ekspor
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseFour"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">1. Nama/No.
-                                                                            Dokumen Kepabeanan</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nama_no_dokumen_kepabeanan_nhi"
-                                                                                placeholder="nama_no_dokumen_kepabeanan">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">2.
-                                                                            Eks/Untuk Kapal/Pesawat/Alat
-                                                                            Angkut/Lainnya</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="kapal_pesawat_nhi"
-                                                                                placeholder="Eks/Untuk Kapal/Pesawat/Alat Angkut/Lainnya">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nomor
-                                                                            voyage/Flight/Nomor Polisi</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="no_polisi_nhi"
-                                                                                placeholder="Nomor voyage/Flight/Nomor Polisi">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">3. No.
-                                                                            BL/AWB</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="no_bl_awb_nhi"
-                                                                                placeholder="No. BL/AWB">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">4. No.
-                                                                            kontainer/Merek Koli</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="no_kontainer_merk_koli_nhi"
-                                                                                placeholder="No. kontainer/Merek Koli">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">5.
-                                                                            Importir/Eksportir/PPJK</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="importir_eksportir_nhi"
-                                                                                placeholder="Importir/Eksportir/PPJK">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">6.
-                                                                            NPWP</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="npwp_nhi" placeholder="NPWP">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">7.
-                                                                            Jenis/Jumlah barang</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="jenis_jumlah_barang_nhi"
-                                                                                placeholder="Jenis/Jumlah barang">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">8. Data
-                                                                            Lainnya</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="data_lainnya_a"
-                                                                                placeholder="Data Lainnya">
-                                                                        </div>
-                                                                    </div>
-
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseFive"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseFive">
-                                                                    E. Kegiatan atas Barang Kena Cukai
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseFive"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">1. Eks
-                                                                            Pabrik/Tempat Penyimpanan/Tempat
-                                                                            Penimbunan</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="eks_pabrik"
-                                                                                placeholder="Eks Pabrik/Tempat Penyimpanan/Tempat Penimbunan">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">2.
-                                                                            Penyalur</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="penyalur" placeholder="penyalur">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">3. Tempat
-                                                                            Penjualan Eceran</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="tempat_penjualan_eceran"
-                                                                                placeholder="Tempat Penjualan Eceran">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">4.
-                                                                            NPPBKC</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nppbkc" placeholder="NPPBKC">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">5.
-                                                                            Eks/Untuk Kapal/Pesawat/Alat
-                                                                            Angkut/Lainnya</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="kapal_pesawat_b"
-                                                                                placeholder="Eks/Untuk Kapal/Pesawat/Alat Angkut/Lainnya">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nomor
-                                                                            voyage/Flight/Nomor Polisi</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="no_polisi_b"
-                                                                                placeholder="Nomor voyage/Flight/Nomor Polisi">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">6.
-                                                                            Jenis/Jumlah barang</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="jenis_jumlah_barang_b"
-                                                                                placeholder="Jenis/Jumlah barang">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">8. Data
-                                                                            Lainnya</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="data_lainnya_b"
-                                                                                placeholder="Data Lainnya">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseSix"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseSix">
-                                                                    F. Kegiatan atas Barang Tertentu
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseSix"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">1. Nama/No.
-                                                                            Dokumen</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nama_no_dok"
-                                                                                placeholder="Nama/No. Dokumen">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">2.
-                                                                            Eks/Untuk Kapal/Pesawat/Alat
-                                                                            Angkut/Lainnya</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="kapal_pesawat_c"
-                                                                                placeholder="Eks/Untuk Kapal/Pesawat/Alat Angkut/Lainnya">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nomor
-                                                                            voyage/Flight/Nomor Polisi</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control forxm-input"
-                                                                                name="no_polisi_c"
-                                                                                placeholder="Nomor voyage/Flight/Nomor Polisi">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">3. No.
-                                                                            BL/AWB</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="no_bl_awb_b"
-                                                                                placeholder="No. BL/AWB">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">4. No.
-                                                                            kontainer/Merek Koli</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="no_kontainer_merek_koli_b"
-                                                                                placeholder="No. kontainer/Merek Koli">
-                                                                        </div>
-                                                                    </div>
-
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">5. Orang
-                                                                            Pribadi/Badan Hukum</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="orang_pribadi_badan_hukum_nhi"
-                                                                                placeholder="Orang Pribadi/Badan Hukum">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">6.
-                                                                            Jenis/Jumlah barang</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="jenis_jumlah_barang_c"
-                                                                                placeholder="Jenis/Jumlah barang">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">8. Data
-                                                                            Lainnya</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="data_lainnya_c"
-                                                                                placeholder="Data Lainnya">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                            <div id="keputusanKeduaInputs" style="display: none;">
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <label>Pejabat Administrator:</label>
+                                                        <select class="form-control form-input form-select select2"
+                                                            id="id_pejabat_administrator_lkai"
+                                                            name="id_pejabat_administrator_lkai" disabled>
+                                                            <option value="" selected disabled>- Pilih -</option>
+                                                            @foreach ($users as $user)
+                                                                <option value="{{ $user->id_admin }}"
+                                                                    {{ old('id_pejabat_administrator_lkai') == $user->id_admin ? 'selected' : '' }}>
+                                                                    {{ $user->name }} | {{ $user->jabatan }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
 
                                                     </div>
                                                 </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <label>Catatan:</label>
+                                                        <textarea class="form-control" row="2" placeholder="Catatan" id="catatan"
+                                                            name="catatan_keputusan_2_lkai"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <label>Hasil Analisis Diterima Tanggal:</label>
+                                                        <input type="date" class="form-control"
+                                                            name="hasil_analisis_diterima_tanggal_2_lkai">
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                <div class="col-md-12 mb-3">
-                                                    <label>Indikasi</label>
-                                                    <textarea class="form-control" rows="4" placeholder="Indikasi" id="indikasi" name="indikasi_nhi"></textarea>
+                                        </div>
+
+                                    </div><!-- end tab pane -->
+
+                                    <div class="tab-pane" id="nhi" role="tabpanel">
+                                        <div class="container mt-4 mb-5">
+                                            <!-- Header -->
+                                            <div class="row mb-4 align-items-center">
+                                                <div class="col-2 text-center">
+                                                    <img src="/images/logocop.png" alt="Logo" class="img-fluid"
+                                                        style="max-height:170px;">
+                                                </div>
+                                                <div class="col-10 text-center">
+                                                    <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                                                    <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                                                    <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE
+                                                        B BATAM
+                                                    </p>
+                                                    <p class="small mb-0">
+                                                        JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                                                        TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                    </p>
+                                                    <p class="small mb-0">
+                                                        LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                        PUSAT KONTAK LAYANAN 1500225;
+                                                        SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                        KPBC.BATAM@KEMENKEU.GO.ID
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Title -->
+                                            <div class="row mb-4">
+                                                <div class="col-12 text-center">
+                                                    <h5 class="fw-bold text-decoration-underline">NOTA HASIL INTELIJEN
+                                                    </h5>
+                                                </div>
+                                            </div>
+
+                                            <!-- Main Form -->
+                                            <div class="row">
+                                                <!-- Left Side -->
+                                                <div class="col-md-6">
+                                                    <div class="mb-3 row">
+                                                        <label class="col-md-3 col-form-label">Nomor</label>
+                                                        <div class="col-md-9">
+                                                            <div class="input-group">
+                                                                <select class="form-select w-25" id="tipe_nhi"
+                                                                    name="tipe_nhi">
+                                                                    <option value="NHI">NHI</option>
+                                                                    <option value="NHI-HKI">NHI-HKI</option>
+                                                                </select>
+                                                                <span class="input-group-text">-</span>
+                                                                <input type="text" class="form-control nhi-input"
+                                                                    id="no_nhi"
+                                                                    value="{{ old('no_nhi', $no_ref->no_nhi) }}"
+                                                                    name="no_nhi" placeholder="Nomor NHI">
+                                                                <input type="text" class="form-control nhi-hki-input"
+                                                                    id="no_nhi_hki"
+                                                                    value="{{ old('no_nhi_hki', $no_ref->no_nhi_hki) }}"
+                                                                    name="no_nhi_hki" placeholder="Nomor NHI-HKI"
+                                                                    style="display: none;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3 row">
+                                                        <label class="col-md-3 col-form-label">Tanggal</label>
+                                                        <div class="col-md-9">
+                                                            <input type="date" class="form-control nhi-input"
+                                                                id="tgl_nhi" name="tgl_nhi">
+                                                            <input type="date" class="form-control nhi-hki-input"
+                                                                id="tgl_nhi_hki" name="tgl_nhi_hki"
+                                                                style="display: none;">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3 row">
+                                                        <label class="col-md-3 col-form-label">Sifat</label>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control" id="sifat_nhi"
+                                                                name="sifat_nhi">
+                                                                <option value="" selected disabled>- Pilih -
+                                                                </option>
+                                                                <option value="Segera">Segera</option>
+                                                                <option value="Sangat Segera">Sangat Segera</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3 row">
+                                                        <label class="col-md-3 col-form-label">Klasifikasi</label>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control" id="klasifikasi_nhi"
+                                                                name="klasifikasi_nhi">
+                                                                <option value="" selected disabled>- Pilih -
+                                                                </option>
+                                                                <option value="Rahasia">Rahasia</option>
+                                                                <option value="Sangat Rahasia">Sangat Rahasia</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3 row">
+                                                        <label class="col-md-3 col-form-label">Kepada</label>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control form-select select2"
+                                                                id="id_penerima_nhi" name="id_penerima_nhi">
+                                                                <option value="" selected disabled>- Pilih -
+                                                                </option>
+                                                                @foreach ($users as $user)
+                                                                    <option value="{{ $user->id_admin }}"
+                                                                        {{ old('id_penerima_nhi') == $user->id_admin ? 'selected' : '' }}>
+                                                                        {{ $user->name }} | {{ $user->jabatan }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3 row">
+                                                        <label class="col-md-3 col-form-label">Deskripsi</label>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control" id="deskripsi"
+                                                                name="deskripsi">
+                                                                <option value="diperintahkan">Diperintahkan</option>
+                                                                <option value="direkomendasikan">Direkomendasikan</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                <div class="col-lg-12 mb-3">
-                                                    <label>Pejabat Penerbit NHI</label>
-                                                    <select class="form-control form-select select2"
-                                                        id="id_pejabat_penerbit_nhi" name="id_pejabat_penerbit_nhi">
-                                                        <option value="" selected disabled>- Pilih -</option>
-                                                        @foreach ($users as $user)
-                                                            <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                <!-- Right Side - Referensi -->
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0">Referensi</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="mb-3 row">
+                                                                <label class="col-md-3 col-form-label">Nomor LKAI</label>
+                                                                <div class="col-md-9">
+                                                                    <input type="text" class="form-control"
+                                                                        placeholder="Hanya Tampilan Form, Data Sudah Terisi Berdasarkan Nomor LKAI Sebelumnya"
+                                                                        readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3 row">
+                                                                <label class="col-md-3 col-form-label">Tanggal
+                                                                    LKAI</label>
+                                                                <div class="col-md-9">
+                                                                    <input type="date"
+                                                                        placeholder="Hanya Tampilan Form, Data Sudah Terisi Berdasarkan Tanggal LKAI Sebelumnya"
+                                                                        class="form-control" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div>
+
+                                            <!-- Information Section -->
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p>Sehubungan dengan hasil analisis intelijen yang mengindikasikan
+                                                        adanya Pelanggaran kepabeanan dan/atau cukai, <span
+                                                            id="deskripsi-text">diperintahkan</span> kepada Saudara untuk
+                                                        melakukan penindakan terhadap barang/Sarana Pengangkut dengan
+                                                        informasi sebagai berikut:</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Sections A-F -->
+                                            <div class="row mt-3">
+                                                <div class="col-12">
+                                                    <div class="card mb-3">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0">A. Tempat</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="mb-3 row">
+                                                                <label class="col-md-3 col-form-label">Nama Tempat</label>
+                                                                <div class="col-md-9">
+                                                                    <input type="text" class="form-control"
+                                                                        name="nama_tempat_nhi"
+                                                                        placeholder="Nama Tempat">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card mb-3">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0">B. Tanggal/Waktu</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="mb-3 row">
+                                                                <label
+                                                                    class="col-md-3 col-form-label">Tanggal/Waktu</label>
+                                                                <div class="col-md-9">
+                                                                    <input type="date" class="form-control"
+                                                                        name="tgl_waktu_nhi">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card mb-3">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0">C. Kantor Bea dan Cukai</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="mb-3 row">
+                                                                <label class="col-md-3 col-form-label">Kantor Bea dan
+                                                                    Cukai</label>
+                                                                <div class="col-md-9">
+                                                                    <input type="text" class="form-control"
+                                                                        name="kantor_bc_nhi"
+                                                                        placeholder="Kantor Bea dan Cukai"
+                                                                        value="Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam"
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card mb-3">
+                                                            <div class="card-header bg-light">
+                                                                <h6 class="mb-0">D. Kegiatan atas Barang Impor/Ekspor
+                                                                </h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">1. Nama/No.
+                                                                        Dokumen
+                                                                        Kepabeanan</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="nama_no_dokumen_kepabeanan_nhi"
+                                                                            placeholder="Nama/No. Dokumen Kepabeanan">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">2. Eks/Untuk
+                                                                        Kapal/Pesawat/Alat Angkut/Lainnya</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="kapal_pesawat_nhi"
+                                                                            placeholder="Eks/Untuk Kapal/Pesawat/Alat Angkut/Lainnya">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">Nomor
+                                                                        voyage/Flight/Nomor Polisi</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="no_polisi_nhi"
+                                                                            placeholder="Nomor voyage/Flight/Nomor Polisi">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">3. No.
+                                                                        BL/AWB</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="no_bl_awb_nhi"
+                                                                            placeholder="No. BL/AWB">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">4. No.
+                                                                        kontainer/Merek Koli</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="no_kontainer_merk_koli_nhi"
+                                                                            placeholder="No. kontainer/Merek Koli">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">5.
+                                                                        Importir/Eksportir/PPJK</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="importir_eksportir_nhi"
+                                                                            placeholder="Importir/Eksportir/PPJK">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">6. NPWP</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="npwp_nhi" placeholder="NPWP">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">7. Jenis/Jumlah
+                                                                        barang</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="jenis_jumlah_barang_nhi"
+                                                                            placeholder="Jenis/Jumlah barang">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">8. Data
+                                                                        Lainnya</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="data_lainnya_a"
+                                                                            placeholder="Data Lainnya">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card mb-3">
+                                                            <div class="card-header bg-light">
+                                                                <h6 class="mb-0">E. Kegiatan atas Barang Kena Cukai</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">1. Eks
+                                                                        Pabrik/Tempat Penyimpanan/Tempat Penimbunan</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="eks_pabrik"
+                                                                            placeholder="Eks Pabrik/Tempat Penyimpanan/Tempat Penimbunan">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">2.
+                                                                        Penyalur</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="penyalur" placeholder="Penyalur">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">3. Tempat
+                                                                        Penjualan
+                                                                        Eceran</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="tempat_penjualan_eceran"
+                                                                            placeholder="Tempat Penjualan Eceran">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">4.
+                                                                        NPPBKC</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="nppbkc" placeholder="NPPBKC">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">5. Eks/Untuk
+                                                                        Kapal/Pesawat/Alat Angkut/Lainnya</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="kapal_pesawat_b"
+                                                                            placeholder="Eks/Untuk Kapal/Pesawat/Alat Angkut/Lainnya">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">Nomor
+                                                                        voyage/Flight/Nomor Polisi</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="no_polisi_b"
+                                                                            placeholder="Nomor voyage/Flight/Nomor Polisi">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">6. Jenis/Jumlah
+                                                                        barang</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="jenis_jumlah_barang_b"
+                                                                            placeholder="Jenis/Jumlah barang">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">7. Data
+                                                                        Lainnya</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="data_lainnya_b"
+                                                                            placeholder="Data Lainnya">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card mb-3">
+                                                            <div class="card-header bg-light">
+                                                                <h6 class="mb-0">F. Kegiatan atas Barang Tertentu</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">1. Nama/No.
+                                                                        Dokumen</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="nama_no_dok"
+                                                                            placeholder="Nama/No. Dokumen">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">2. Eks/Untuk
+                                                                        Kapal/Pesawat/Alat Angkut/Lainnya</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="kapal_pesawat_c"
+                                                                            placeholder="Eks/Untuk Kapal/Pesawat/Alat Angkut/Lainnya">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">Nomor
+                                                                        voyage/Flight/Nomor Polisi</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="no_polisi_c"
+                                                                            placeholder="Nomor voyage/Flight/Nomor Polisi">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">3. No.
+                                                                        BL/AWB</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="no_bl_awb_b" placeholder="No. BL/AWB">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">4. No.
+                                                                        kontainer/Merek Koli</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="no_kontainer_merek_koli_b"
+                                                                            placeholder="No. kontainer/Merek Koli">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">5. Orang
+                                                                        Pribadi/Badan Hukum</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="orang_pribadi_badan_hukum_nhi"
+                                                                            placeholder="Orang Pribadi/Badan Hukum">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">6. Jenis/Jumlah
+                                                                        barang</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="jenis_jumlah_barang_c"
+                                                                            placeholder="Jenis/Jumlah barang">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label class="col-md-3 col-form-label">7. Data
+                                                                        Lainnya</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control"
+                                                                            name="data_lainnya_c"
+                                                                            placeholder="Data Lainnya">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Indikasi -->
+                                                <div class="row mt-3">
+                                                    <div class="col-12">
+                                                        <div class="card">
+                                                            <div class="card-header bg-light">
+                                                                <h6 class="mb-0">Indikasi</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3">
+                                                                    <textarea class="form-control" rows="4" placeholder="Indikasi" id="indikasi" name="indikasi_nhi"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Closing and Signatures -->
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <p>Demikian disampaikan agar pelaksanaan Nota Hasil Intelijen ini
+                                                            dilaporkan pada kesempatan pertama.</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-4">
+                                                    <div class="col-6">
+                                                        <!-- Left empty for formatting -->
+                                                    </div>
+                                                    <div class="col-6 text-center">
+                                                        <p>Pejabat Penerbit NHI</p>
+                                                        <div class="mb-3">
+                                                            <select class="form-control form-select select2"
+                                                                id="id_pejabat_penerbit_nhi"
+                                                                name="id_pejabat_penerbit_nhi">
+                                                                <option value="" selected disabled>- Pilih -
+                                                                </option>
+                                                                @foreach ($users as $user)
+                                                                    <option value="{{ $user->id_admin }}"
+                                                                        {{ old('id_pejabat_penerbit_nhi') == $user->id_admin ? 'selected' : '' }}>
+                                                                        {{ $user->name }} | {{ $user->jabatan }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <p>.....................................</p>
+                                                        <p>*) coret yang tidak perlu</p>
+                                                    </div>
+                                                </div>
+
 
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane" id="ni" role="tabpanel">
-                                        <div class="row">
-                                            <!-- Left Column (Data Laporan Informasi) -->
-                                            <div class="col-lg-6">
-                                                <h6><b>A. Data Nota Informasi</b></h6>
-                                                <hr>
-                                                <div class="row">
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>No. NI</label>
-                                                        <input type="text" class="form-control bg-primary text-white"
-                                                            value="{{ old('no_ni', $no_ref->no_ni) }}"
-                                                            placeholder="No. NI" id="no_ni" name="no_ni"
-                                                            readonly>
+                                        <div class="tab-pane" id="ni" role="tabpanel">
+                                            <div class="container mt-4 mb-5">
+                                                <div class="row mb-4 align-items-center">
+                                                    <div class="col-2 text-center">
+                                                        <img src="/images/logocop.png" alt="Logo"
+                                                            class="img-fluid" style="max-height:170px;">
                                                     </div>
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Tgl. NI</label>
-                                                        <input type="date" class="form-control bg-primary text-white"
-                                                            id="tgl_ni" name="tgl_ni">
+                                                    <div class="col-10 text-center">
+                                                        <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                                                        <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                                                        <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE
+                                                            B BATAM
+                                                        </p>
+                                                        <p class="small mb-0">
+                                                            JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                                                            TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                        </p>
+                                                        <p class="small mb-0">
+                                                            LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                            PUSAT KONTAK LAYANAN 1500225;
+                                                            SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                            KPBC.BATAM@KEMENKEU.GO.ID
+                                                        </p>
                                                     </div>
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Sifat NI</label>
-                                                        <select class="form-control" id="sifat_ni" name="sifat_ni">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            <option value="Segera">Segera</option>
-                                                            <option value="Sangat Segera">Sangat Segera</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Klasifikasi NI</label>
-                                                        <select class="form-control" id="klasifikasi_ni"
-                                                            name="klasifikasi_ni">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            <option value="Rahasia">Rahasia</option>
-                                                            <option value="Sangat Rahasia">Sangat Rahasia</option>
-                                                        </select>
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-
-                                            <!-- Right Column (Pejabat Selection) -->
-                                            <div class="col-lg-6">
-                                                <h6><b>C. Pejabat Penerima NI</b></h6>
-                                                <hr>
-                                                <!-- Select Pejabat 1 -->
-                                                <div class="col-lg-12 mb-3">
-                                                    <label for="id_pejabat_penerima_ni">Pejabat Penerima NI</label>
-                                                    <select class="form-control form-select select2"
-                                                        id="id_pejabat_penerima_ni" name="id_pejabat_penerima_ni">
-                                                        <option value="" selected disabled>- Pilih -</option>
-                                                        @foreach ($users as $user)
-                                                            <option value="{{ $user->id_admin }}">{{ $user->name }} |
-                                                                {{ $user->jabatan }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
                                                 </div>
 
-                                                <h6><b>D. Uraian Informasi</b></h6>
-                                                <hr>
-                                                <div class="card-body">
-                                                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseqwe"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapseqwe">
-                                                                    1. Uraian Informasi Pertama
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseqwe"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-10">
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold border-bottom border-dark pb-2">NOTA
+                                                                INFORMASI
+                                                            </h5>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-md-6">
+                                                                <div class="row mb-2">
+                                                                    <label class="col-4 col-form-label">Nomor</label>
+                                                                    <div class="col-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text">NI-</span>
+                                                                            <input type="text" class="form-control"
+                                                                                id="no_ni"
+                                                                                value="{{ old('no_ni', $no_ref->no_ni) }}"
+                                                                                name="no_ni" placeholder="NI-">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb-2">
+                                                                    <label class="col-4 col-form-label">Tanggal</label>
+                                                                    <div class="col-8">
+                                                                        <input type="date" class="form-control"
+                                                                            id="tgl_ni" name="tgl_ni">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb-2">
+                                                                    <label class="col-4 col-form-label">Sifat</label>
+                                                                    <div class="col-8">
+                                                                        <select class="form-select" id="sifat_ni"
+                                                                            name="sifat_ni">
+                                                                            <option value="" selected disabled>-
+                                                                                Pilih -
+                                                                            </option>
+                                                                            <option value="Segera">Segera</option>
+                                                                            <option value="Sangat Segera">Sangat Segera
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb-2">
+                                                                    <label
+                                                                        class="col-4 col-form-label">Klasifikasi</label>
+                                                                    <div class="col-8">
+                                                                        <select class="form-select" id="klasifikasi_ni"
+                                                                            name="klasifikasi_ni">
+                                                                            <option value="" selected disabled>-
+                                                                                Pilih -
+                                                                            </option>
+                                                                            <option value="Rahasia">Rahasia</option>
+                                                                            <option value="Sangat Rahasia">Sangat Rahasia
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="row mb-2">
+                                                                    <label class="col-4 col-form-label">Referensi</label>
+                                                                </div>
+                                                                <div class="row mb-2">
+                                                                    <label class="col-4 col-form-label">Nomor LKAI</label>
+                                                                    <div class="col-8">
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Mengikuti Nomor LKAI sebelumnya"
+                                                                            readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb-2">
+                                                                    <label class="col-4 col-form-label">Tanggal
+                                                                        LKAI</label>
+                                                                    <div class="col-8">
+                                                                        <input type="date" class="form-control"
+                                                                            placeholder="Mengikuti Tanggal LKAI Sebelumnya"
+                                                                            readonly>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
+                                                        <div class="row mb-4">
+                                                            <div class="col-12">
+                                                                <p class="mb-2 fst-italic">Sehubungan dengan hasil
+                                                                    analisis
+                                                                    intelijen yang mengindikasikan adanya pelanggaran
+                                                                    ketentuan
+                                                                    dan/atau diduga adanya barang, di sampaikan informasi
+                                                                    agar
+                                                                    dapat dilakukan penelitian mendalam tentang informasi
+                                                                    sebagai berikut:</p>
 
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Komoditi
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold">A.</label>
+                                                                    <div class="row">
+                                                                        <div class="col-11 offset-1">
+                                                                            <input type="text" class="form-control"
                                                                                 name="komoditi_ni"
                                                                                 placeholder="Isi Komoditi">
                                                                         </div>
                                                                     </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Kantor Tujuan
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                placeholder="Isi Kantor Tujuan"
-                                                                                name="kantor_ni">
-                                                                        </div>
-                                                                    </div>
-
                                                                 </div>
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header">
-                                                                <button
-                                                                    class="accordion-button btn bg-light fw-medium collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapsebvc"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="flush-collapsebvc">
-                                                                    2. Uraian Informasi Kedua
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapsebvc"
-                                                                class="accordion-collapse collapse"
-                                                                data-bs-parent="#accordionFlushExample">
-                                                                <div class="accordion-body bg-light">
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nama
-                                                                            PPJK/Ekspedisi</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="ppjk_ni"
-                                                                                placeholder="Isi Nama PPJK/Ekspedisi">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">No.
-                                                                            Dokumen</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nodok_ni"
-                                                                                placeholder="Isi No. Dokumen">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nama
-                                                                            Pengirim</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nama_pengirim_ni"
-                                                                                placeholder="Isi Nama Pengirim">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nomor
-                                                                            Pengirim</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nomor_pengirim_ni"
-                                                                                placeholder="Isi Nomor Pengirim">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nama
-                                                                            Penerima</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nama_penerima_ni"
-                                                                                placeholder="Isi Nama Penerima">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nomor
-                                                                            Penerima</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nomor_penerima_ni"
-                                                                                placeholder="Isi Nomor Penerima">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Asal
-                                                                            Barang</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="asal_barang_ni"
-                                                                                placeholder="Isi Asal Barang">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Tujuan
-                                                                            Barang</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="tujuan_barang_ni"
-                                                                                placeholder="Isi Tujuan Barang">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Berat
-                                                                            Barang</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="berat_barang_ni"
-                                                                                placeholder="Isi Berat Barang">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label
-                                                                            class="col-sm-4 col-form-label">Pemberitahuan
-                                                                            Barang</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="pemberitahuan_barang_ni"
-                                                                                placeholder="Isi Pemberitahuan Barang">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Komoditi
-                                                                            Atensi</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="komoditi_atensi_ni"
-                                                                                placeholder="Isi Komoditi Atensi">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Nama Sarana
-                                                                            Pengangkut</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="sarkut_ni"
-                                                                                placeholder="Isi Nama Sarana Pengangkut">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Estimasi
-                                                                            Tiba</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text" class="form-control"
-                                                                                name="estimasi_tiba_ni"
-                                                                                id="datetime-datepicker"
-                                                                                placeholder="Isi Estimasi Tiba">
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-
-                                                <div class="col-lg-12 mb-3">
-                                                    <label>Pejabat Penerbit NI</label>
-                                                    <select class="form-control form-select select2"
-                                                        id="id_pejabat_penerbit_ni" name="id_pejabat_penerbit_ni">
-                                                        <option value="" selected disabled>- Pilih -</option>
-                                                        @foreach ($users as $user)
-                                                            <option value="{{ $user->id_admin }}">{{ $user->name }} |
-                                                                {{ $user->jabatan }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="tab-pane" id="nota-dinas-content" role="tabpanel">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <h6><b>A. Data Nota Dinas</b></h6>
-                                                <hr>
-                                                <div class="row">
-                                                    <input type="hidden" class="form-control" name="no_notdin">
-                                                    <input type="hidden" class="form-control" name="tgl_notdin">
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>YTH</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Yang Terhormat" id="yth_notdin"
-                                                            name="yth_notdin">
-                                                    </div>
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Dari</label>
-                                                        <input type="text" class="form-control" placeholder="Dari"
-                                                            id="dari_notdin" name="dari_notdin">
-                                                    </div>
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Sifat Nota Dinas</label>
-                                                        <select class="form-control" id="sifat_notdin"
-                                                            name="sifat_notdin">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            <option value="Biasa">Biasa</option>
-                                                            <option value="Rahasia">Rahasia</option>
-                                                            <option value="Sangat Rahasia">Sangat Rahasia</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label>Lampiran</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Lampiran Nota Dinas" name="lampiran_notdin">
-                                                    </div>
-
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Hal</label>
-                                                        <textarea class="form-control" rows="4" placeholder="Hal" id="hal" name="hal_notdin"></textarea>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <h6><b>C. Data Isi Nota Dinas</b></h6>
-                                                <hr>
-
-                                                <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                    <div class="accordion-item">
-                                                        <h2 class="accordion-header">
-                                                            <button
-                                                                class="accordion-button btn bg-light fw-medium collapsed"
-                                                                type="button" data-bs-toggle="collapse"
-                                                                data-bs-target="#flush-collapse19" aria-expanded="false"
-                                                                aria-controls="flush-collapse19">
-                                                                1. Data Pengangkut Laut
-                                                            </button>
-                                                        </h2>
-                                                        <div id="flush-collapse19" class="accordion-collapse collapse"
-                                                            data-bs-parent="#accordionFlushExample">
-                                                            <div class="accordion-body bg-light">
-
-                                                                {{-- <div class="row mb-3">
-                                  <label class="col-sm-4 col-form-label">ISI DATA</label>
-                                  <div class="col-sm-8">
-                                    <select id="internal" class="form-select" name="internal_lppi" onchange="toggleInputs(this, 'internalInputs')"> <!-- Ubah ID di sini -->
-                                      <option value="TIDAK">TIDAK</option>
-                                      <option value="YA">Ya</option>
-                                    </select>
-                                  </div>
-                                </div> --}}
-
-                                                                <div id="">
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Tanggal Daftar
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="date"
-                                                                                class="form-control form-input"
-                                                                                name="tanggal_daftar_notdin"
-                                                                                placeholder="Tanggal Daftar">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Nomor Pendaftaran
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nodaf_notdin"
-                                                                                placeholder="Nomor Pendafataran">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Nama Perusahaan
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="nama_perusahaan_notdin"
-                                                                                placeholder="Nama Perusahaan">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Nama Sarkut
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="sarkut_notdin"
-                                                                                placeholder="Nama Sarana Pengangkut">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            NPWP
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="npwp_notdin" placeholder="NPWP">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Alamat
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="alamat_notdin"
-                                                                                placeholder="Alamat">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            IMO
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="imo_notdin" placeholder="IMO">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Vessel Type
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="vessel_type_notdin"
-                                                                                placeholder="Vessel Type">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            MMSI
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="mmsi_notdin" placeholder="MMSI">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            CALL SIGN
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="call_sign_notdin"
-                                                                                placeholder="CALL SIGN">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label
-                                                                            class="col-sm-4 col-form-label">Flag</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="flag_notdin"
-                                                                                placeholder="Isi Flag">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Gross Tonnage
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="gross_tonnage_notdin"
-                                                                                placeholder="Gross Tonnage">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Lenght Overall
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="lenght_overall_notdin"
-                                                                                placeholder="Lenght Overall">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">
-                                                                            Year Built
-                                                                        </label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="year_built_notdin"
-                                                                                placeholder="Year Built">
-                                                                        </div>
-                                                                    </div>
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="accordion-item">
-                                                        <h2 class="accordion-header">
-                                                            <button
-                                                                class="accordion-button btn bg-light fw-medium collapsed"
-                                                                type="button" data-bs-toggle="collapse"
-                                                                data-bs-target="#flush-collapse199"
-                                                                aria-expanded="false" aria-controls="flush-collapse199">
-                                                                2. Detail
-                                                            </button>
-                                                        </h2>
-                                                        <div id="flush-collapse199" class="accordion-collapse collapse"
-                                                            data-bs-parent="#accordionFlushExample">
-                                                            <div class="accordion-body bg-light">
-
-                                                                {{-- <div class="row mb-3">
-                                  <label for="eksternal" class="col-sm-4 col-form-label">ISI DATA</label>
-                                  <div class="col-sm-8">
-                                    <select id="eksternal" class="form-select" name="eksternal_lppi" onchange="toggleInputs(this, 'eksternalInputs')"> <!-- Ubah ID di sini -->
-                                      <option value="TIDAK">TIDAK</option>
-                                      <option value="YA">Ya</option>
-                                    </select>
-                                  </div>
-                                </div> --}}
-
-                                                                <!-- Form Inputs -->
-                                                                <div id="">
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Rentang
-                                                                            Waktu Penelitian</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text" id="date-range-picker"
-                                                                                name="rentang_waktu_notdin"
-                                                                                class="form-control"
-                                                                                placeholder="Pilih Rentang Waktu Penelitian">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Pelabuhan
-                                                                            Asal</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="pelabuhan_asal_notdin"
-                                                                                placeholder="Pelabuhan Asal">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Pelabuhan
-                                                                            tujuan</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="pelabuhan_tujuan_notdin"
-                                                                                placeholder="Pelabuhan tujuan">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-3 form-group">
-                                                                        <label class="col-sm-4 col-form-label">Titik
-                                                                            Kordinat</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text"
-                                                                                class="form-control form-input"
-                                                                                name="titik_kordinat_notdin"
-                                                                                placeholder="Titik Kordinat">
-                                                                        </div>
-                                                                    </div>
-
-
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold">B.</label>
                                                                     <div class="row">
-                                                                        <div class="col-md-6 mb-3">
-                                                                            <div class="form-group">
-                                                                                <label class="col-form-label">Perkiraan
-                                                                                    Waktu Berangkat</label>
+                                                                        <div class="col-11 offset-1">
+                                                                            <input type="text"
+                                                                                class="form-control mb-2"
+                                                                                name="kantor_ni"
+                                                                                placeholder="Isi Kantor Tujuan">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold">C.</label>
+                                                                    <div class="row">
+                                                                        <div class="col-11 offset-1">
+                                                                            <input type="text"
+                                                                                class="form-control mb-2" name="ppjk_ni"
+                                                                                placeholder="Nama PPJK/Ekspedisi">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-11 offset-1">
+                                                                            <input type="text"
+                                                                                class="form-control mb-2"
+                                                                                name="nodok_ni"
+                                                                                placeholder="No. Dokumen">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold">D.
+                                                                        Pengirim/Penerima</label>
+                                                                    <div class="row mb-2">
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Nama
+                                                                                    Pengirim</span>
                                                                                 <input type="text"
                                                                                     class="form-control"
-                                                                                    name="perkiraan_keberangkatan_notdin"
-                                                                                    id="datetime-datepicker"
-                                                                                    placeholder="Perkiraan Waktu Keberangkatan">
+                                                                                    name="nama_pengirim_ni"
+                                                                                    placeholder="Nama Pengirim">
                                                                             </div>
                                                                         </div>
-
-                                                                        <div class="col-md-6 mb-3">
-                                                                            <div class="form-group">
-                                                                                <label class="col-form-label">Perkiraan
-                                                                                    Waktu Datang</label>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Nomor
+                                                                                    Pengirim</span>
                                                                                 <input type="text"
                                                                                     class="form-control"
-                                                                                    name="perkiraan_kedatangan_notdin"
-                                                                                    id="datetime-datepicker"
-                                                                                    placeholder="Perkiraan Waktu Kedatangan">
+                                                                                    name="nomor_pengirim_ni"
+                                                                                    placeholder="Nomor Pengirim">
                                                                             </div>
                                                                         </div>
                                                                     </div>
-
-                                                                    <div class="row mb-3 form-group" align="center">
-                                                                        <label class="col-form-label">Waktu
-                                                                            Penyampaian</label>
-                                                                        <div class="col-sm-12">
-                                                                            <input type="text" class="form-control"
-                                                                                id="datetime-datepicker"
-                                                                                name="waktu_penyampaian_notdin"
-                                                                                placeholder="Waktu Penyampaian">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Nama
+                                                                                    Penerima</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="nama_penerima_ni"
+                                                                                    placeholder="Nama Penerima">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Nomor
+                                                                                    Penerima</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="nomor_penerima_ni"
+                                                                                    placeholder="Nomor Penerima">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                </div>
 
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold">E. Detail
+                                                                        Barang</label>
+                                                                    <div class="row mb-2">
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Asal
+                                                                                    Barang</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="asal_barang_ni"
+                                                                                    placeholder="Asal Barang">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Tujuan
+                                                                                    Barang</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="tujuan_barang_ni"
+                                                                                    placeholder="Tujuan Barang">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-2">
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Berat
+                                                                                    Barang</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="berat_barang_ni"
+                                                                                    placeholder="Berat Barang">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Komoditi
+                                                                                    Atensi</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="komoditi_atensi_ni"
+                                                                                    placeholder="Komoditi Atensi">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-2">
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Pemberitahuan</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="pemberitahuan_barang_ni"
+                                                                                    placeholder="Pemberitahuan Barang">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Sarana
+                                                                                    Angkut</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="sarkut_ni"
+                                                                                    placeholder="Nama Sarana Pengangkut">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text"
+                                                                                    style="width: 120px;">Estimasi
+                                                                                    Tiba</span>
+                                                                                <input type="datetime-local"
+                                                                                    class="form-control"
+                                                                                    name="estimasi_tiba_ni"
+                                                                                    id="datetime-datepicker">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
+                                                        <div class="row mb-4">
+                                                            <div class="col-12">
+                                                                <p class="mb-3">Demikian disampaikan atas perhatian
+                                                                    Bapak/Ibu/Saudara *) diucapkan terima kasih untuk
+                                                                    mendapat
+                                                                    perhatian.</p>
+                                                            </div>
+                                                        </div>
 
+                                                        <div class="row mb-4">
+                                                            <div class="col-6">
+                                                                <p class="form-text">Tembusan : .....(12)......</p>
+                                                                <p class="form-text">*) coret yang tidak perlu</p>
+                                                            </div>
+                                                            <div class="col-6 text-center">
+                                                                <p>................(9)...............</p>
+                                                                <br><br><br>
+                                                                <p>................(10).............</p>
+                                                                <p>................(11).............</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-4">
+                                                            <div class="col-12">
+                                                                <h6 class="fw-bold">Pejabat Penerima dan Penerbit</h6>
+                                                                <hr>
+                                                                <div class="row mb-3">
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Pejabat Penerima
+                                                                            NI</label>
+                                                                        <select class="form-control form-select select2"
+                                                                            id="id_pejabat_penerima_ni"
+                                                                            name="id_pejabat_penerima_ni">
+                                                                            <option value="" selected disabled>-
+                                                                                Pilih -
+                                                                            </option>
+                                                                            @foreach ($users as $user)
+                                                                                <option value="{{ $user->id_admin }}"
+                                                                                    {{ old('id_pejabat_penerima_ni') == $user->id_admin ? 'selected' : '' }}>
+                                                                                    {{ $user->name }} |
+                                                                                    {{ $user->jabatan }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Pejabat Penerbit
+                                                                            NI</label>
+                                                                        <select class="form-control form-select select2"
+                                                                            id="id_pejabat_penerbit_ni"
+                                                                            name="id_pejabat_penerbit_ni">
+                                                                            <option value="" selected disabled>-
+                                                                                Pilih -
+                                                                            </option>
+                                                                            @foreach ($users as $user)
+                                                                                <option value="{{ $user->id_admin }}"
+                                                                                    {{ old('id_pejabat_penerbit_ni') == $user->id_admin ? 'selected' : '' }}>
+                                                                                    {{ $user->name }} |
+                                                                                    {{ $user->jabatan }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
-                                                <br>
-
-                                                <div class="col-lg-12 mb-3">
-                                                    <label>Pejabat Nota Dinas</label>
-                                                    <select class="form-control form-select select2"
-                                                        name="id_pejabat_notdin">
-                                                        <option value="" selected disabled>- Pilih -</option>
-                                                        @foreach ($users as $user)
-                                                            <option value="{{ $user->id_admin }}">{{ $user->name }} |
-                                                                {{ $user->jabatan }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-
                                             </div>
                                         </div>
+
+
+                                        <div class="tab-pane" id="nota-dinas-content" role="tabpanel">
+                                            <div class="row mb-4 align-items-center">
+                                                <div class="col-2 text-center">
+                                                    <img src="/images/logocop.png" alt="Logo" class="img-fluid"
+                                                        style="max-height:170px;">
+                                                </div>
+                                                <div class="col-10 text-center">
+                                                    <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                                                    <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                                                    <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B
+                                                        BATAM
+                                                    </p>
+                                                    <p class="small mb-0">
+                                                        JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
+                                                        TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                    </p>
+                                                    <p class="small mb-0">
+                                                        LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                        PUSAT KONTAK LAYANAN 1500225;
+                                                        SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                        KPBC.BATAM@KEMENKEU.GO.ID
+                                                    </p>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="mb-3">
+                                                <label for="notaDinasFile" class="form-label">Upload Surat Nota
+                                                    Dinas</label>
+                                                <input type="file" class="form-control" id="notaDinasFile"
+                                                    name="nota_dinas_file">
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success btn-sm me-2">
-                            <i data-feather="save"></i> Simpan Data
-                        </button>
+                        <div class="card-footer d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success btn-sm me-2">
+                                <i data-feather="save"></i> Simpan Data
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-    </div>
-    </form>
+        </form>
     </div>
 
 
@@ -2951,33 +2596,192 @@ B Batam.
     </style>
 
 
+    <script>
+        // Toggle internal form
+        function toggleInternal() {
+            const checkbox = document.getElementById('internal_check');
+            const form = document.getElementById('internal_form');
+
+            if (checkbox.checked) {
+                form.style.display = 'block';
+                document.getElementById('internal').value = 'YA';
+            } else {
+                form.style.display = 'none';
+                document.getElementById('internal').value = 'TIDAK';
+            }
+        }
+
+        // Toggle eksternal form
+        function toggleEksternal() {
+            const checkbox = document.getElementById('eksternal_check');
+            const form = document.getElementById('eksternal_form');
+
+            if (checkbox.checked) {
+                form.style.display = 'block';
+                document.getElementById('eksternal').value = 'YA';
+            } else {
+                form.style.display = 'none';
+                document.getElementById('eksternal').value = 'TIDAK';
+            }
+        }
+
+        let ikhtisarCount = 0;
+
+        // Fungsi untuk menambah baris ikhtisar
+        function tambahIkhtisar() {
+            ikhtisarCount++;
+            const container = document.getElementById('ikhtisar-container');
+            const rowCount = container.getElementsByTagName('tr').length + 1;
+
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('id', `ikhtisar-row-${ikhtisarCount}`);
+
+            newRow.innerHTML = `
+            <td class="text-center">${rowCount}.</td>
+            <td><textarea class="form-control" rows="2" name="ikhtisar[]" placeholder="Ikhtisar"></textarea></td>
+            <td><input type="text" class="form-control" name="sumber[]" placeholder="Sumber"></td>
+            <td>
+                <div class="d-flex">
+                    <input type="text" class="form-control" name="validitas[]" placeholder="Validitas">
+                    <button type="button" class="btn btn-danger btn-sm ms-1" onclick="document.getElementById('ikhtisar-row-${ikhtisarCount}').remove()">
+                        <i class="bi bi-trash"></i> Hapus
+                    </button>
+                </div>
+            </td>
+        `;
+
+            container.appendChild(newRow);
+        }
+
+        // Hidden fields for internal/eksternal
+        document.addEventListener('DOMContentLoaded', function() {
+            const internalField = document.createElement('input');
+            internalField.type = 'hidden';
+            internalField.id = 'internal';
+            internalField.name = 'internal_lppi';
+            internalField.value = 'TIDAK';
+            document.querySelector('form').appendChild(internalField);
+
+            const eksternalField = document.createElement('input');
+            eksternalField.type = 'hidden';
+            eksternalField.id = 'eksternal';
+            eksternalField.name = 'eksternal_lppi';
+            eksternalField.value = 'TIDAK';
+            document.querySelector('form').appendChild(eksternalField);
+        });
+    </script>
+
+
+
 
 
     <script>
+        function syncLppiValues() {
+            const inputSource = document.getElementById('no_lppi');
+            const inputSource2 = document.getElementById('tgl_lppi');
+            const inputTarget = document.getElementById('no_lppi_disabled');
+            const inputTarget2 = document.getElementById('tgl_lppi_disabled');
+
+            if (inputSource && inputTarget) {
+                inputTarget.value = inputSource.value;
+            }
+            if (inputSource2 && inputTarget2) {
+                inputTarget2.value = inputSource2.value;
+            }
+
+        }
+
+
+        function toggleLppiInputs(checkbox) {
+            const noLppiInput = document.getElementById('no_lppi_disabled');
+            const tglLppiInput = document.getElementById('tgl_lppi_disabled');
+
+            if (!noLppiInput || !tglLppiInput) return;
+
+            const isEnabled = checkbox.checked;
+
+            noLppiInput.disabled = !isEnabled;
+            tglLppiInput.disabled = !isEnabled;
+
+            if (isEnabled) {
+                syncLppiValues();
+            } else {
+                noLppiInput.value = '';
+                tglLppiInput.value = '';
+            }
+        }
+
+
+        // 🔁 Real-time update jika sumber input berubah
+        function attachInputListeners() {
+            const noLppi = document.getElementById('no_lppi');
+            const tglLppi = document.getElementById('tgl_lppi');
+
+            if (noLppi) noLppi.addEventListener('input', syncLppiValues);
+            if (tglLppi) tglLppi.addEventListener('input', syncLppiValues);
+        }
+
+        // 🚀 Init saat halaman siap
         document.addEventListener("DOMContentLoaded", function() {
-            const selects = [{
+            const lppiCheck = document.getElementById('lppi_check');
+
+            if (lppiCheck) {
+                lppiCheck.addEventListener('change', function() {
+                    toggleLppiInputs(this);
+                });
+                toggleLppiInputs(lppiCheck); // initial state
+            }
+
+
+            attachInputListeners(); // listen for real-time typing
+        });
+    </script>
+
+
+
+    <script>
+        function toggleRekomendasiLainnya(checkbox) {
+            document.getElementById('isi_rekomendasi_lainnya').disabled = !checkbox.checked;
+        }
+
+        function toggleInformasiLainnya(checkbox) {
+            document.getElementById('isi_informasi_lainnya').disabled = !checkbox.checked;
+        }
+
+        function toggleKeputusanPertama(select) {
+            document.getElementById('keputusanPertamaInputs').style.display = select.value === 'YA' ? 'block' : 'none';
+        }
+
+        function toggleKeputusanKedua(select) {
+            document.getElementById('keputusanKeduaInputs').style.display = select.value === 'YA' ? 'block' : 'none';
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const checkboxes = [{
                     id: "nhi-select",
-                    tab: "nhi-tab-item",
+                    tab: "nhi-tab-item"
                 },
                 {
                     id: "ni-select",
-                    tab: "ni-tab-item",
+                    tab: "ni-tab-item"
                 },
                 {
                     id: "rekomendasi_lainnya",
-                    tab: "nota-dinas-tab-item",
+                    tab: "nota-dinas-tab-item"
                 },
             ];
 
-            selects.forEach(({
+            checkboxes.forEach(({
                 id,
                 tab
             }) => {
-                const selectElement = document.getElementById(id);
+                const checkboxElement = document.getElementById(id);
                 const tabElement = document.getElementById(tab);
 
                 const handleTabVisibility = () => {
-                    if (selectElement.value === "YA") {
+                    if (checkboxElement.checked) {
                         tabElement.style.display = "block";
                         tabElement.classList.add("fade-in", "active");
 
@@ -3001,12 +2805,14 @@ B Batam.
                     }
                 };
 
-                selectElement.addEventListener("change", handleTabVisibility);
+                checkboxElement.addEventListener("change", handleTabVisibility);
 
+                // Inisialisasi saat halaman dimuat
                 handleTabVisibility();
             });
         });
     </script>
+
 
     <style>
         .nav-link.highlight {
@@ -3014,121 +2820,6 @@ B Batam.
             transition: background-color 0.5s ease;
         }
     </style>
-
-
-    <script>
-        let ikhtisarCount = 0;
-
-        function tambahIkhtisar() {
-            ikhtisarCount++;
-
-            const row = document.createElement('div');
-            row.classList.add('row', 'align-items-center', 'mb-2');
-            row.setAttribute('id', `ikhtisar-row-${ikhtisarCount}`);
-
-            const colIkhtisar = document.createElement('div');
-            colIkhtisar.classList.add('col-md-12', 'mb-2');
-            const inputIkhtisar = document.createElement('textarea');
-            inputIkhtisar.classList.add('form-control');
-            inputIkhtisar.placeholder = 'Ikhtisar';
-            inputIkhtisar.name = 'ikhtisar[]';
-            colIkhtisar.appendChild(inputIkhtisar);
-
-            const colSumber = document.createElement('div');
-            colSumber.classList.add('col-md-6', 'mb-2');
-            const inputSumber = document.createElement('input');
-            inputSumber.type = 'text';
-            inputSumber.classList.add('form-control');
-            inputSumber.placeholder = 'Sumber';
-            inputSumber.name = 'sumber[]';
-            colSumber.appendChild(inputSumber);
-
-            const colValiditas = document.createElement('div');
-            colValiditas.classList.add('col-md-6', 'mb-2');
-            const inputValiditas = document.createElement('input');
-            inputValiditas.type = 'text';
-            inputValiditas.classList.add('form-control');
-            inputValiditas.placeholder = 'Validitas';
-            inputValiditas.name = 'validitas[]';
-            colValiditas.appendChild(inputValiditas);
-
-            const colRemove = document.createElement('div');
-            colRemove.classList.add('col-md-12', 'mb-2');
-            const btnRemove = document.createElement('button');
-            btnRemove.type = 'button';
-            btnRemove.classList.add('btn', 'btn-danger', 'w-100');
-            btnRemove.textContent = 'Hapus';
-            btnRemove.onclick = () => row.remove();
-            colRemove.appendChild(btnRemove);
-
-            row.appendChild(colIkhtisar);
-            row.appendChild(colSumber);
-            row.appendChild(colValiditas);
-            row.appendChild(colRemove);
-
-            document.getElementById('ikhtisar-container').appendChild(row);
-        }
-    </script>
-
-
-
-
-
-    <script>
-        const inputSource = document.getElementById('no_lppi');
-        const inputSource2 = document.getElementById('tgl_lppi');
-        const inputTarget = document.getElementById('no_lppi_disabled');
-        const inputTarget2 = document.getElementById('tgl_lppi_disabled');
-        const sumberLppiSelect = document.querySelector('[name="sumber_lppi"]');
-
-        function syncValues() {
-            if (sumberLppiSelect.value === 'YA') {
-                inputTarget.value = inputSource ? inputSource.value : '';
-                inputTarget2.value = inputSource2 ? inputSource2.value : '';
-            }
-        }
-
-        function toggleSumberLppiInputs(selectElement) {
-            const container = document.getElementById('sumberLppiInputs');
-            const inputs = container.querySelectorAll('input, textarea, select');
-            const isEnabled = selectElement.value === 'YA';
-
-            inputs.forEach(input => {
-                input.disabled = !isEnabled;
-                if (!isEnabled) {
-                    input.value = '';
-                }
-            });
-
-            if (isEnabled) {
-                syncValues();
-            }
-        }
-
-        sumberLppiSelect.addEventListener('change', function() {
-            toggleSumberLppiInputs(this);
-        });
-
-        toggleSumberLppiInputs(sumberLppiSelect);
-
-        function toggleInputs(selectElement, inputContainerId) {
-            if (selectElement === sumberLppiSelect) {
-                toggleSumberLppiInputs(selectElement);
-                return;
-            }
-
-            const container = document.getElementById(inputContainerId);
-            const inputs = container.querySelectorAll('input, textarea, select');
-            const isEnabled = selectElement.value === 'YA';
-
-            inputs.forEach(input => {
-                input.disabled = !isEnabled;
-                if (!isEnabled) {
-                    input.value = '';
-                }
-            });
-        }
-    </script>
 
     <script>
         document.getElementById('tipe_nhi').addEventListener('change', function() {
@@ -3144,6 +2835,11 @@ B Batam.
             }
         });
 
+        document.getElementById('deskripsi').addEventListener('change', function() {
+            document.getElementById('deskripsi-text').textContent = this.value === 'diperintahkan' ?
+                'diperintahkan' : 'direkomendasikan';
+        });
+
         document.querySelector('form').addEventListener('submit', function(event) {
             const tipe = document.getElementById('tipe_nhi').value;
 
@@ -3153,7 +2849,56 @@ B Batam.
                 document.querySelectorAll('.nhi-input input').forEach(input => input.value = '');
             }
         });
+
+        // Initialize the display of the appropriate fields based on initial tipe_nhi value
+        window.addEventListener('DOMContentLoaded', function() {
+            const tipe = document.getElementById('tipe_nhi').value;
+            if (tipe === 'NHI') {
+                document.querySelectorAll('.nhi-input').forEach(el => el.style.display = 'block');
+            } else if (tipe === 'NHI-HKI') {
+                document.querySelectorAll('.nhi-hki-input').forEach(el => el.style.display = 'block');
+            }
+        });
     </script>
+
+    <script>
+        function handleSelection(selectedCheckbox) {
+            const allCheckboxes = document.querySelectorAll('.section-select');
+            allCheckboxes.forEach(checkbox => {
+                if (checkbox !== selectedCheckbox) {
+                    checkbox.disabled = selectedCheckbox.checked;
+                    if (checkbox.disabled) {
+                        checkbox.classList.add('text-muted');
+                    } else {
+                        checkbox.classList.remove('text-muted');
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const allCheckboxes = document.querySelectorAll('.section-select');
+            allCheckboxes.forEach(checkbox => {
+                // Panggil fungsi jika ada yang dicentang saat load
+                if (checkbox.checked) {
+                    handleSelection(checkbox);
+                }
+
+                // Tambahkan event listener
+                checkbox.addEventListener('change', function() {
+                    handleSelection(this);
+                });
+            });
+        });
+    </script>
+
+
+    <style>
+        .aa {
+            background-color: #e9ecef !important;
+            color: #6c757d !important;
+        }
+    </style>
 
     <script>
         function generateUniqueID() {
@@ -3165,44 +2910,12 @@ B Batam.
         document.getElementById('id_pengawasan').value = generateUniqueID();
     </script>
 
+    {{-- script bagian agar isi melaksanakan_tugas_st sama dengan uraian_tugas_lpt --}}
     <script>
-        function handleSelection(selectedElement) {
-
-            const allSelects = document.querySelectorAll('.section-select');
-            allSelects.forEach(select => {
-                if (select !== selectedElement) {
-                    select.disabled = selectedElement.value === 'YA';
-                    if (select.disabled) {
-                        select.classList.add('text-muted');
-                    } else {
-                        select.classList.remove('text-muted');
-                    }
-                }
-            });
-        }
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const allSelects = document.querySelectorAll('.section-select');
-            allSelects.forEach(select => {
-                if (select.value === 'YA') {
-                    handleSelection(select);
-                }
-            });
+        document.getElementById('melaksanakan_tugas_st').addEventListener('input', function() {
+            document.getElementById('uraian_tugas_lpt').value = this.value;
         });
     </script>
-
-    <style>
-        .aa {
-            background-color: #e9ecef !important;
-            color: #6c757d !important;
-        }
-    </style>
-@endsection
-
-@section('script')
-    @vite(['resources/js/pages/datatable.init.js'])
-@endsection
 @endsection
 
 @section('script')

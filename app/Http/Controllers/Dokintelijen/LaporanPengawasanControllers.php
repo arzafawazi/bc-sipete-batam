@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpWord\TemplateProcessor;
 
-
 class LaporanPengawasanControllers extends Controller
 {
     public function index()
@@ -35,13 +34,10 @@ class LaporanPengawasanControllers extends Controller
             $laporanData = $laporan->toArray();
             $laporanFormatted = $this->formatDates($laporanData);
 
-
             $laporan->tgl_st = $laporanFormatted['tgl_st'];
         }
 
         // dd($laporanpengawasan);
-
-
 
         return view('Dokintelijen.laporan-pengawasan.index', compact('laporanpengawasan'));
     }
@@ -62,10 +58,11 @@ class LaporanPengawasanControllers extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'dokumentasi_foto_lpt.*' => 'nullable|mimes:jpg,jpeg,png|max:1706',
+            'dokumentasi_foto_lpt.*' => 'nullable|mimes:jpg,jpeg,png',
             'dokumentasi_audio_lpt' => 'nullable|string',
             'dokumentasi_video_lpt' => 'nullable|string',
             'tipe_nhi' => 'nullable|in:NHI,NHI-HKI',
+            'nota_dinas_file' => 'nullable|file|mimes:pdf,doc,docx', // Validasi untuk file nota dinas
         ]);
 
         try {
@@ -73,6 +70,7 @@ class LaporanPengawasanControllers extends Controller
 
             $data = $request->all();
 
+            // Proses upload foto dokumentasi
             if ($request->hasFile('dokumentasi_foto_lpt')) {
                 $fotoPaths = [];
                 foreach ($request->file('dokumentasi_foto_lpt') as $foto) {
@@ -82,6 +80,13 @@ class LaporanPengawasanControllers extends Controller
                 $data['dokumentasi_foto_lpt'] = json_encode($fotoPaths);
             } else {
                 $data['dokumentasi_foto_lpt'] = json_encode([]);
+            }
+
+            // Proses upload file Nota Dinas
+            if ($request->hasFile('nota_dinas_file')) {
+                $notaDinasFile = $request->file('nota_dinas_file');
+                $notaDinasPath = $notaDinasFile->store('dokumen/nota_dinas', 'public');
+                $data['nota_dinas_file'] = $notaDinasPath;
             }
 
             $data['dokumentasi_audio_lpt'] = json_encode($request->input('dokumentasi_audio_lpt') ? array_filter(array_map('trim', explode(',', $request->input('dokumentasi_audio_lpt')))) : []);
@@ -128,7 +133,6 @@ class LaporanPengawasanControllers extends Controller
 
             // dd($data);
 
-
             TblLaporanPengawasan::create($data);
 
             \Log::info('Data successfully saved.');
@@ -150,6 +154,7 @@ class LaporanPengawasanControllers extends Controller
         $pengawasan = TblLaporanPengawasan::find($id);
 
         if ($pengawasan) {
+            // Hapus file dokumentasi foto
             $fotoPaths = json_decode($pengawasan->dokumentasi_foto_lpt, true);
             if ($fotoPaths && is_array($fotoPaths)) {
                 foreach ($fotoPaths as $fotoPath) {
@@ -160,6 +165,7 @@ class LaporanPengawasanControllers extends Controller
                 }
             }
 
+            // Hapus file dokumentasi audio
             if ($pengawasan->dokumentasi_audio_lpt) {
                 $cleanAudioPath = 'dokumen/audio/' . basename($pengawasan->dokumentasi_audio_lpt);
                 if (Storage::disk('public')->exists($cleanAudioPath)) {
@@ -167,10 +173,19 @@ class LaporanPengawasanControllers extends Controller
                 }
             }
 
+            // Hapus file dokumentasi video
             if ($pengawasan->dokumentasi_video_lpt) {
                 $cleanVideoPath = 'dokumen/video/' . basename($pengawasan->dokumentasi_video_lpt);
                 if (Storage::disk('public')->exists($cleanVideoPath)) {
                     Storage::disk('public')->delete($cleanVideoPath);
+                }
+            }
+
+            // Hapus file nota dinas
+            if ($pengawasan->nota_dinas_file) {
+                $notaDinasPath = 'dokumen/nota_dinas/' . basename($pengawasan->nota_dinas_file);
+                if (Storage::disk('public')->exists($notaDinasPath)) {
+                    Storage::disk('public')->delete($notaDinasPath);
                 }
             }
 
@@ -204,14 +219,13 @@ class LaporanPengawasanControllers extends Controller
         return view('Dokintelijen.laporan-pengawasan.edit', compact('pengawasan', 'tempat', 'jenis_dok', 'jenis_pelanggaran', 'uraian_modus', 'users', 'no_ref', 'audioDataRaw', 'videoDataRaw', 'nama_negara'));
     }
 
-
-
     public function update(Request $request, $id)
     {
         $request->validate([
             'dokumentasi_foto_lpt.*' => 'nullable|mimes:jpg,jpeg,png|max:1706',
             'dokumentasi_audio_lpt' => 'nullable|string',
             'dokumentasi_video_lpt' => 'nullable|string',
+            'nota_dinas_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048', 
         ]);
 
         try {
@@ -224,6 +238,7 @@ class LaporanPengawasanControllers extends Controller
                 $data['melaksanakan_tugas_st'] = null;
             }
 
+            // Penanganan file foto dokumentasi
             if ($request->hasFile('dokumentasi_foto_lpt')) {
                 $fotoPaths = [];
                 $oldFotos = json_decode($pengawasan->dokumentasi_foto_lpt, true);
@@ -240,6 +255,22 @@ class LaporanPengawasanControllers extends Controller
                     $fotoPaths[] = $fotoPath;
                 }
                 $data['dokumentasi_foto_lpt'] = json_encode($fotoPaths);
+            }
+
+            // Penanganan file Nota Dinas
+            if ($request->hasFile('nota_dinas_file')) {
+                // Hapus file nota dinas lama jika ada
+                if ($pengawasan->nota_dinas_file) {
+                    $oldNotaDinasPath = 'dokumen/nota_dinas/' . basename($pengawasan->nota_dinas_file);
+                    if (Storage::disk('public')->exists($oldNotaDinasPath)) {
+                        Storage::disk('public')->delete($oldNotaDinasPath);
+                    }
+                }
+
+                // Simpan file nota dinas baru
+                $notaDinasFile = $request->file('nota_dinas_file');
+                $notaDinasPath = $notaDinasFile->store('dokumen/nota_dinas', 'public');
+                $data['nota_dinas_file'] = $notaDinasPath;
             }
 
             if ($request->has('dokumentasi_audio_lpt')) {
@@ -295,16 +326,19 @@ class LaporanPengawasanControllers extends Controller
             unset($data['sumber'], $data['validitas']);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
-                return redirect()->back()->withInput()->with('error', 'Error encoding JSON: ' . json_last_error_msg());
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Error encoding JSON: ' . json_last_error_msg());
             }
 
             \Log::info('melaksanakan_tugas_st value:', ['value' => $request->input('melaksanakan_tugas_st')]);
-
 
             \Log::info('Updating data:', [
                 'melaksanakan_tugas_st' => $data['melaksanakan_tugas_st'],
                 'video' => $data['dokumentasi_video_lpt'],
                 'audio' => $data['dokumentasi_audio_lpt'],
+                'nota_dinas_file' => $data['nota_dinas_file'] ?? null,
             ]);
 
             // dd($data);
@@ -327,23 +361,7 @@ class LaporanPengawasanControllers extends Controller
         $pengawasan = TblLaporanPengawasan::findOrFail($id);
         $data = $pengawasan->toArray();
 
-        $pejabatKeys = [
-            'pengendali_operasi_st',
-            'tim_operasi_st',
-            'tim_dukungan_operasi_st',
-            'penerbit_st',
-            'ketua_tim_lpt',
-            'pegawai_pembuat_lpt',
-            'pegawai_lppi',
-            'pejabat_lppi',
-            'id_penerima_nhi',
-            'id_pejabat_penerima_nhi',
-            'id_pejabat_penerbit_ni',
-            'id_pegawai_analisis_lkai',
-            'id_pejabat_pengawas_lkai',
-            'id_pejabat_administrator_lkai',
-        ];
-
+        $pejabatKeys = ['pengendali_operasi_st', 'tim_operasi_st', 'tim_dukungan_operasi_st', 'penerbit_st', 'ketua_tim_lpt', 'pegawai_pembuat_lpt', 'pegawai_lppi', 'pejabat_lppi', 'id_penerima_nhi', 'id_pejabat_penerima_nhi', 'id_pejabat_penerbit_ni', 'id_pegawai_analisis_lkai', 'id_pejabat_pengawas_lkai', 'id_pejabat_administrator_lkai'];
 
         foreach ($pejabatKeys as $key) {
             if ($pengawasan->$key) {
@@ -359,7 +377,6 @@ class LaporanPengawasanControllers extends Controller
                 $data[$key . '_nip'] = '';
             }
         }
-
 
         $data['tim_operasi_st'] = [];
         if (!empty($pengawasan->tim_operasi_st)) {
@@ -389,15 +406,11 @@ class LaporanPengawasanControllers extends Controller
             }
         }
 
-
-
         $data['tahun_sekarang'] = date('Y');
 
         $data = $this->formatDates($data);
 
-
         $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
-
 
         $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-tugas.docx'));
 
@@ -407,12 +420,10 @@ class LaporanPengawasanControllers extends Controller
             }
         }
 
-
         if (!empty($data['tim_operasi_st'])) {
             $tempData = $data['tim_operasi_st'];
             $firstData = array_shift($tempData);
             array_unshift($tempData, $firstData);
-
 
             $templateProcessor->cloneBlock('tim_operasi_section', count($tempData), true, true);
             foreach ($tempData as $index => $tim) {
@@ -425,7 +436,6 @@ class LaporanPengawasanControllers extends Controller
         } else {
             $templateProcessor->deleteBlock('tim_operasi_section');
         }
-
 
         if (!empty($data['tim_dukungan_operasi_st'])) {
             $tempData = $data['tim_dukungan_operasi_st'];
@@ -445,8 +455,6 @@ class LaporanPengawasanControllers extends Controller
             $templateProcessor->deleteBlock('tim_dukungan_section');
         }
 
-
-
         $melaksanakan_tugas_st_raw = $pengawasan->melaksanakan_tugas_st;
         $melaksanakan_tugas_st_raw = preg_replace('/\s+/', ' ', trim($melaksanakan_tugas_st_raw));
         preg_match_all('/\#(.*?)\#/', $melaksanakan_tugas_st_raw, $matches);
@@ -460,28 +468,20 @@ class LaporanPengawasanControllers extends Controller
 
         $templateProcessor->cloneRowAndSetValues('i', $templateData);
 
-
-
         $fileName = 'Dokumen_Intelijen_Nomor_Surat_Tugas_' . $pengawasan->no_st . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_surat_lpt($id)
     {
         $pengawasan = TblLaporanPengawasan::findOrFail($id);
         $data = $pengawasan->toArray();
 
-        $pejabatKeys = [
-            'ketua_tim_lpt',
-            'pegawai_pembuat_lpt',
-        ];
-
+        $pejabatKeys = ['ketua_tim_lpt', 'pegawai_pembuat_lpt'];
 
         foreach ($pejabatKeys as $key) {
             if ($pengawasan->$key) {
@@ -517,7 +517,7 @@ class LaporanPengawasanControllers extends Controller
         $templateData = [];
         foreach (array_unique($matches[1]) as $index => $task) {
             $templateData[] = [
-                'no_uraian' => ($index + 1) . '.',
+                'no_uraian' => $index + 1 . '.',
                 'uraian_tugas' => trim($task),
             ];
         }
@@ -531,7 +531,7 @@ class LaporanPengawasanControllers extends Controller
         $templateData = [];
         foreach (array_unique($matches[1]) as $index => $task) {
             $templateData[] = [
-                'n' => ($index + 1) . ".",
+                'n' => $index + 1 . '.',
                 'ikhtisar_informasi' => trim($task),
             ];
         }
@@ -559,7 +559,7 @@ class LaporanPengawasanControllers extends Controller
                 $imagePath = public_path('storage/' . $fotoPath);
 
                 if (file_exists($imagePath)) {
-                    list($width, $height) = getimagesize($imagePath);
+                    [$width, $height] = getimagesize($imagePath);
 
                     $maxWidth = 400;
                     $maxHeight = 400;
@@ -575,7 +575,7 @@ class LaporanPengawasanControllers extends Controller
                     $templateProcessor->setImageValue("foto#$realIndex", [
                         'path' => $imagePath,
                         'width' => $widthCm . 'cm',
-                        'height' => $heightCm . 'cm'
+                        'height' => $heightCm . 'cm',
                     ]);
                 } else {
                     $templateProcessor->setValue("foto#$realIndex", '-');
@@ -592,7 +592,7 @@ class LaporanPengawasanControllers extends Controller
         $templateData = [];
         foreach (array_unique($matches[1]) as $index => $task) {
             $templateData[] = [
-                'k' => ($index + 1) . ".",
+                'k' => $index + 1 . '.',
                 'kesimpulan' => trim($task),
             ];
         }
@@ -606,20 +606,17 @@ class LaporanPengawasanControllers extends Controller
         $templateData = [];
         foreach (array_unique($matches[1]) as $index => $task) {
             $templateData[] = [
-                'r' => ($index + 1) . ".",
+                'r' => $index + 1 . '.',
                 'rekomendasi' => trim($task),
             ];
         }
 
         $templateProcessor->cloneRowAndSetValues('r', $templateData);
 
-
-
         $fileName = 'Dokumen_Intelijen_Nomor_Surat_LPT_' . $pengawasan->no_lpt . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
-
 
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
@@ -629,13 +626,7 @@ class LaporanPengawasanControllers extends Controller
         $pengawasan = TblLaporanPengawasan::findOrFail($id);
         $data = $pengawasan->toArray();
 
-        $pejabatKeys = [
-            'penerima_informasi_lppi',
-            'penilai_informasi_lppi',
-            'pegawai_lppi',
-            'pejabat_lppi',
-        ];
-
+        $pejabatKeys = ['penerima_informasi_lppi', 'penilai_informasi_lppi', 'pegawai_lppi', 'pejabat_lppi'];
 
         foreach ($pejabatKeys as $key) {
             if ($pengawasan->$key) {
@@ -698,7 +689,6 @@ class LaporanPengawasanControllers extends Controller
 
         $templateProcessor->setValue('tahun_surat_lppi', $tahunSuratLppi);
 
-
         $rawIkhtisar = $pengawasan->ikhtisar;
         $data = json_decode($rawIkhtisar, true);
         // dd($data);
@@ -716,29 +706,20 @@ class LaporanPengawasanControllers extends Controller
             $templateProcessor->deleteBlock('ikhtisar_section');
         }
 
-
-
         $fileName = 'Dokumen_Intelijen_Nomor_Surat_LPPI_' . $pengawasan->no_lppi . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_surat_lkai($id)
     {
         $pengawasan = TblLaporanPengawasan::findOrFail($id);
         $data = $pengawasan->toArray();
 
-        $pejabatKeys = [
-            'id_pegawai_analisis_lkai',
-            'id_pejabat_pengawas_lkai',
-            'id_pejabat_administrator_lkai',
-        ];
-
+        $pejabatKeys = ['id_pegawai_analisis_lkai', 'id_pejabat_pengawas_lkai', 'id_pejabat_administrator_lkai'];
 
         foreach ($pejabatKeys as $key) {
             if ($pengawasan->$key) {
@@ -799,7 +780,6 @@ class LaporanPengawasanControllers extends Controller
 
         $data = $this->formatDates($data);
 
-
         $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-lkai.docx'));
 
         foreach ($data as $key => $value) {
@@ -807,7 +787,6 @@ class LaporanPengawasanControllers extends Controller
                 $templateProcessor->setValue($key, $value);
             }
         }
-
 
         $tglLkai = $pengawasan->tgl_lkai;
 
@@ -818,7 +797,6 @@ class LaporanPengawasanControllers extends Controller
         }
 
         $templateProcessor->setValue('tahun_surat_lkai', $tahunSuratLkai);
-
 
         $ikhtisar_data_lkai_raw = $pengawasan->ikhtisar_data_lkai;
         $ikhtisar_data_lkai_raw = preg_replace('/\s+/', ' ', trim($ikhtisar_data_lkai_raw));
@@ -848,7 +826,6 @@ class LaporanPengawasanControllers extends Controller
 
         $templateProcessor->cloneRowAndSetValues('nop', $templateData);
 
-
         $hasil_analisis_lkai_raw = $pengawasan->hasil_analisis_lkai;
         $hasil_analisis_lkai_raw = preg_replace('/\s+/', ' ', trim($hasil_analisis_lkai_raw));
         preg_match_all('/\#(.*?)\#/', $hasil_analisis_lkai_raw, $matches);
@@ -863,27 +840,20 @@ class LaporanPengawasanControllers extends Controller
 
         $templateProcessor->cloneRowAndSetValues('noh', $templateData);
 
-
         $fileName = 'Dokumen_Intelijen_Nomor_Surat_LKAI_' . $pengawasan->no_lkai . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_surat_nhi($id)
     {
         $pengawasan = TblLaporanPengawasan::findOrFail($id);
         $data = $pengawasan->toArray();
 
-        $pejabatKeys = [
-            'id_penerima_nhi',
-            'id_pejabat_penerbit_nhi',
-        ];
-
+        $pejabatKeys = ['id_penerima_nhi', 'id_pejabat_penerbit_nhi'];
 
         foreach ($pejabatKeys as $key) {
             if ($pengawasan->$key) {
@@ -904,9 +874,6 @@ class LaporanPengawasanControllers extends Controller
 
         $data = $this->formatDates($data);
 
-
-
-
         $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-nhi.docx'));
 
         foreach ($data as $key => $value) {
@@ -914,7 +881,6 @@ class LaporanPengawasanControllers extends Controller
                 $templateProcessor->setValue($key, $value);
             }
         }
-
 
         if ($pengawasan->tipe_nhi === 'NHI') {
             $tglNhi = $pengawasan->tgl_nhi;
@@ -926,17 +892,11 @@ class LaporanPengawasanControllers extends Controller
 
         $tahunSuratNhi = !empty($tglNhi) ? date('Y', strtotime($tglNhi)) : '-';
 
-
-
         if ($pengawasan->tipe_nhi === 'NHI') {
-            $data['tipe_nhi'] = $pengawasan->no_nhi
-                ? 'NHI–' . $pengawasan->no_nhi . '/KPU.206/' . $tahunSuratNhi
-                : '-';
+            $data['tipe_nhi'] = $pengawasan->no_nhi ? 'NHI–' . $pengawasan->no_nhi . '/KPU.206/' . $tahunSuratNhi : '-';
             $data['tanggal_surat'] = $pengawasan->tgl_nhi ?: '-';
         } elseif ($pengawasan->tipe_nhi === 'NHI-HKI') {
-            $data['tipe_nhi'] = $pengawasan->no_nhi_hki
-                ? 'NHI–HKI-' . $pengawasan->no_nhi_hki . '/KPU.206/' . $tahunSuratNhi
-                : '-';
+            $data['tipe_nhi'] = $pengawasan->no_nhi_hki ? 'NHI–HKI-' . $pengawasan->no_nhi_hki . '/KPU.206/' . $tahunSuratNhi : '-';
             $data['tanggal_surat'] = $pengawasan->tgl_nhi_hki ?: '-';
         } else {
             $data['tipe_nhi'] = '-';
@@ -948,15 +908,12 @@ class LaporanPengawasanControllers extends Controller
         $templateProcessor->setValue('tanggal_surat', $data['tanggal_surat']);
         $templateProcessor->setValue('tahun', $tahunSuratNhi);
 
-
-
         // dd($data);
 
         $fileName = 'Dokumen_Intelijen_Nomor_Surat_NHI_' . $pengawasan->no_nhi . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
-
 
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
@@ -966,11 +923,7 @@ class LaporanPengawasanControllers extends Controller
         $pengawasan = TblLaporanPengawasan::findOrFail($id);
         $data = $pengawasan->toArray();
 
-        $pejabatKeys = [
-            'id_pejabat_penerima_ni',
-            'id_pejabat_penerbit_ni',
-        ];
-
+        $pejabatKeys = ['id_pejabat_penerima_ni', 'id_pejabat_penerbit_ni'];
 
         foreach ($pejabatKeys as $key) {
             if ($pengawasan->$key) {
@@ -997,10 +950,7 @@ class LaporanPengawasanControllers extends Controller
             $data['tgl_ni_hari'] = '-';
         }
 
-
         $data = $this->formatDates($data);
-
-
 
         $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-ni.docx'));
 
@@ -1009,7 +959,6 @@ class LaporanPengawasanControllers extends Controller
                 $templateProcessor->setValue($key, $value);
             }
         }
-
 
         $tglNi = $pengawasan->tgl_ni;
 
@@ -1026,7 +975,6 @@ class LaporanPengawasanControllers extends Controller
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
 
@@ -1035,10 +983,7 @@ class LaporanPengawasanControllers extends Controller
         $pengawasan = TblLaporanPengawasan::findOrFail($id);
         $data = $pengawasan->toArray();
 
-        $pejabatKeys = [
-            'id_pejabat_notdin',
-        ];
-
+        $pejabatKeys = ['id_pejabat_notdin'];
 
         foreach ($pejabatKeys as $key) {
             if ($pengawasan->$key) {
@@ -1060,13 +1005,9 @@ class LaporanPengawasanControllers extends Controller
         $data['perkiraan_waktu_tempuh'] = $this->calculateDuration($data['perkiraan_keberangkatan_notdin'], $data['perkiraan_kedatangan_notdin']);
         $data['selisih_waktu_penyampaian'] = $this->calculateDuration($data['perkiraan_kedatangan_notdin'], $data['waktu_penyampaian_notdin']);
 
-
         $data = $this->formatDates($data);
 
-
         // dd($data);
-
-
 
         $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpengawasan/surat-rekomendasi.docx'));
 
@@ -1086,17 +1027,13 @@ class LaporanPengawasanControllers extends Controller
 
         $templateProcessor->setValue('tahun_lkai', $tahunSuratLKAI);
 
-
-
         $fileName = 'Dokumen_Intelijen_Surat_Nota_Dinas_' . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     private function formatDates($data)
     {
@@ -1112,14 +1049,10 @@ class LaporanPengawasanControllers extends Controller
             'September' => 'September',
             'October' => 'Oktober',
             'November' => 'November',
-            'December' => 'Desember'
+            'December' => 'Desember',
         ];
 
-        $dateFields = [
-            'perkiraan_keberangkatan_notdin',
-            'perkiraan_kedatangan_notdin',
-            'waktu_penyampaian_notdin',
-        ];
+        $dateFields = ['perkiraan_keberangkatan_notdin', 'perkiraan_kedatangan_notdin', 'waktu_penyampaian_notdin'];
 
         foreach ($dateFields as $field) {
             if (!empty($data[$field])) {
