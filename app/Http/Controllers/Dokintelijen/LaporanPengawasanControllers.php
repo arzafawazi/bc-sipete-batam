@@ -59,8 +59,6 @@ class LaporanPengawasanControllers extends Controller
     {
         $request->validate([
             'dokumentasi_foto_lpt.*' => 'nullable|mimes:jpg,jpeg,png',
-            'dokumentasi_audio_lpt' => 'nullable|string',
-            'dokumentasi_video_lpt' => 'nullable|string',
             'tipe_nhi' => 'nullable|in:NHI,NHI-HKI',
             'nota_dinas_file' => 'nullable|file|mimes:pdf,doc,docx', // Validasi untuk file nota dinas
         ]);
@@ -89,9 +87,6 @@ class LaporanPengawasanControllers extends Controller
                 $data['nota_dinas_file'] = $notaDinasPath;
             }
 
-            $data['dokumentasi_audio_lpt'] = json_encode($request->input('dokumentasi_audio_lpt') ? array_filter(array_map('trim', explode(',', $request->input('dokumentasi_audio_lpt')))) : []);
-
-            $data['dokumentasi_video_lpt'] = json_encode($request->input('dokumentasi_video_lpt') ? array_filter(array_map('trim', explode(',', $request->input('dokumentasi_video_lpt')))) : []);
 
             $data['tim_operasi_st'] = json_encode($request->input('tim_operasi_st', []));
             $data['tim_dukungan_operasi_st'] = json_encode($request->input('tim_dukungan_operasi_st', []));
@@ -222,15 +217,15 @@ class LaporanPengawasanControllers extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'dokumentasi_foto_lpt.*' => 'nullable|mimes:jpg,jpeg,png|max:1706',
-            'dokumentasi_audio_lpt' => 'nullable|string',
-            'dokumentasi_video_lpt' => 'nullable|string',
-            'nota_dinas_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048', 
+            'dokumentasi_foto_lpt.*' => 'nullable|mimes:jpg,jpeg,png',
+            'nota_dinas_file' => 'nullable|file|mimes:pdf,doc,docx', 
         ]);
 
         try {
             $pengawasan = TblLaporanPengawasan::findOrFail($id);
             $data = $request->all();
+
+            // dd($data);
 
             if ($request->has('melaksanakan_tugas_st')) {
                 $data['melaksanakan_tugas_st'] = $request->input('melaksanakan_tugas_st');
@@ -273,39 +268,6 @@ class LaporanPengawasanControllers extends Controller
                 $data['nota_dinas_file'] = $notaDinasPath;
             }
 
-            if ($request->has('dokumentasi_audio_lpt')) {
-                $audioLinks = $request->input('dokumentasi_audio_lpt');
-
-                if (is_string($audioLinks)) {
-                    $audioLinks = array_filter(array_map('trim', explode(',', $audioLinks)));
-                }
-
-                if (is_array($audioLinks)) {
-                    $audioLinks = array_map('trim', $audioLinks);
-                    $audioLinks = array_filter($audioLinks);
-                }
-
-                $data['dokumentasi_audio_lpt'] = json_encode(array_values($audioLinks ?: []));
-            } else {
-                $data['dokumentasi_audio_lpt'] = json_encode([]);
-            }
-
-            if ($request->has('dokumentasi_video_lpt')) {
-                $videoLinks = $request->input('dokumentasi_video_lpt');
-
-                if (is_string($videoLinks)) {
-                    $videoLinks = array_filter(array_map('trim', explode(',', $videoLinks)));
-                }
-
-                if (is_array($videoLinks)) {
-                    $videoLinks = array_map('trim', $videoLinks);
-                    $videoLinks = array_filter($videoLinks);
-                }
-
-                $data['dokumentasi_video_lpt'] = json_encode(array_values($videoLinks ?: []));
-            } else {
-                $data['dokumentasi_video_lpt'] = json_encode([]);
-            }
 
             $data['tim_operasi_st'] = json_encode($request->input('tim_operasi_st', []));
             $data['tim_dukungan_operasi_st'] = json_encode($request->input('tim_dukungan_operasi_st', []));

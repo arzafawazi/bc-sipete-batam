@@ -934,109 +934,114 @@
 
                                                     <!-- Sumber Data -->
                                                     <div class="row mb-3">
-                                                        <div class="col-md-6">
-                                                            <div class="card">
-                                                                <div class="card-header">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                            id="internal_check"
-                                                                            onchange="toggleInternal()">
-                                                                        <label class="form-check-label fw-bold"
-                                                                            for="internal_check">
-                                                                            Internal
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-body" id="internal_form"
-                                                                    style="display: none;">
-                                                                    <div class="mb-2 row">
-                                                                        <label
-                                                                            class="col-sm-4 col-form-label">Media</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="........"
-                                                                                name="media_internal_lppi">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mb-2 row">
-                                                                        <label class="col-sm-4 col-form-label">Tanggal
-                                                                            terima</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="date" class="form-control"
-                                                                                name="tanggal_terima_internal_lppi">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mb-2 row">
-                                                                        <label class="col-sm-4 col-form-label">No.
-                                                                            Dokumen</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text" class="form-control"
-                                                                                name="no_dokumen_internal_lppi">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mb-2 row">
-                                                                        <label
-                                                                            class="col-sm-4 col-form-label">Tanggal</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="date" class="form-control"
-                                                                                name="tanggal_dokumen_internal_lppi">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="card">
-                                                                <div class="card-header">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                            id="eksternal_check"
-                                                                            onchange="toggleEksternal()">
-                                                                        <label class="form-check-label fw-bold"
-                                                                            for="eksternal_check">
-                                                                            Eksternal
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-body" id="eksternal_form"
-                                                                    style="display: none;">
-                                                                    <div class="mb-2 row">
-                                                                        <label
-                                                                            class="col-sm-4 col-form-label">Media</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="........"
-                                                                                name="media_eksternal_lppi">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mb-2 row">
-                                                                        <label class="col-sm-4 col-form-label">Tanggal
-                                                                            terima</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="date" class="form-control"
-                                                                                name="tanggal_terima_eksternal_lppi">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mb-2 row">
-                                                                        <label class="col-sm-4 col-form-label">No.
-                                                                            Dokumen</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="text" class="form-control"
-                                                                                name="no_dokumen_eksternal_lppi">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mb-2 row">
-                                                                        <label
-                                                                            class="col-sm-4 col-form-label">Tanggal</label>
-                                                                        <div class="col-sm-8">
-                                                                            <input type="date" class="form-control"
-                                                                                name="tanggal_dokumen_eksternal_lppi">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+        <!-- INTERNAL -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               id="internal_check"
+                               onchange="toggleInternal()"
+                               {{ old('internal_lppi') === 'YA' ? 'checked' : '' }}>
+                        <label class="form-check-label fw-bold" for="internal_check">
+                            Internal
+                        </label>
+                    </div>
+                </div>
+                <div class="card-body" id="internal_form" style="display: none;">
+                    <div class="mb-2 row">
+                        <label class="col-sm-4 col-form-label">Media</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control"
+                                   name="media_internal_lppi"
+                                   value="{{ old('media_internal_lppi') }}"
+                                   placeholder="........">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label class="col-sm-4 col-form-label">Tanggal terima</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control"
+                                   name="tanggal_terima_internal_lppi"
+                                   value="{{ old('tanggal_terima_internal_lppi') }}">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label class="col-sm-4 col-form-label">No. Dokumen</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control"
+                                   name="no_dokumen_internal_lppi"
+                                   value="{{ old('no_dokumen_internal_lppi') }}">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label class="col-sm-4 col-form-label">Tanggal</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control"
+                                   name="tanggal_dokumen_internal_lppi"
+                                   value="{{ old('tanggal_dokumen_internal_lppi') }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EKSTERNAL -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               id="eksternal_check"
+                               onchange="toggleEksternal()"
+                               {{ old('eksternal_lppi') === 'YA' ? 'checked' : '' }}>
+                        <label class="form-check-label fw-bold" for="eksternal_check">
+                            Eksternal
+                        </label>
+                    </div>
+                </div>
+                <div class="card-body" id="eksternal_form" style="display: none;">
+                    <div class="mb-2 row">
+                        <label class="col-sm-4 col-form-label">Media</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control"
+                                   name="media_eksternal_lppi"
+                                   value="{{ old('media_eksternal_lppi') }}"
+                                   placeholder="........">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label class="col-sm-4 col-form-label">Tanggal terima</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control"
+                                   name="tanggal_terima_eksternal_lppi"
+                                   value="{{ old('tanggal_terima_eksternal_lppi') }}">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label class="col-sm-4 col-form-label">No. Dokumen</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control"
+                                   name="no_dokumen_eksternal_lppi"
+                                   value="{{ old('no_dokumen_eksternal_lppi') }}">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label class="col-sm-4 col-form-label">Tanggal</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control"
+                                   name="tanggal_dokumen_eksternal_lppi"
+                                   value="{{ old('tanggal_dokumen_eksternal_lppi') }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HIDDEN INPUTS -->
+    <input type="hidden" id="internal" name="internal_lppi" value="{{ old('internal_lppi', 'TIDAK') }}">
+    <input type="hidden" id="eksternal" name="eksternal_lppi" value="{{ old('eksternal_lppi', 'TIDAK') }}">
 
                                                     <!-- Tabel Ikhtisar -->
                                                     <div class="row mb-2">
@@ -1809,7 +1814,7 @@
                                                                         name="kantor_bc_nhi"
                                                                         placeholder="Kantor Bea dan Cukai"
                                                                         value="Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam"
-                                                                        </div>
+                                                                        >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2599,31 +2604,38 @@
     <script>
         // Toggle internal form
         function toggleInternal() {
-            const checkbox = document.getElementById('internal_check');
-            const form = document.getElementById('internal_form');
+        const checkbox = document.getElementById('internal_check');
+        const form = document.getElementById('internal_form');
+        const hiddenInput = document.getElementById('internal');
 
-            if (checkbox.checked) {
-                form.style.display = 'block';
-                document.getElementById('internal').value = 'YA';
-            } else {
-                form.style.display = 'none';
-                document.getElementById('internal').value = 'TIDAK';
-            }
+        if (checkbox.checked) {
+            form.style.display = 'block';
+            hiddenInput.value = 'YA';
+        } else {
+            form.style.display = 'none';
+            hiddenInput.value = 'TIDAK';
         }
+    }
 
         // Toggle eksternal form
-        function toggleEksternal() {
-            const checkbox = document.getElementById('eksternal_check');
-            const form = document.getElementById('eksternal_form');
+         function toggleEksternal() {
+        const checkbox = document.getElementById('eksternal_check');
+        const form = document.getElementById('eksternal_form');
+        const hiddenInput = document.getElementById('eksternal');
 
-            if (checkbox.checked) {
-                form.style.display = 'block';
-                document.getElementById('eksternal').value = 'YA';
-            } else {
-                form.style.display = 'none';
-                document.getElementById('eksternal').value = 'TIDAK';
-            }
+        if (checkbox.checked) {
+            form.style.display = 'block';
+            hiddenInput.value = 'YA';
+        } else {
+            form.style.display = 'none';
+            hiddenInput.value = 'TIDAK';
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        toggleInternal();   
+        toggleEksternal();  
+        });
 
         let ikhtisarCount = 0;
 
@@ -2654,21 +2666,9 @@
         }
 
         // Hidden fields for internal/eksternal
-        document.addEventListener('DOMContentLoaded', function() {
-            const internalField = document.createElement('input');
-            internalField.type = 'hidden';
-            internalField.id = 'internal';
-            internalField.name = 'internal_lppi';
-            internalField.value = 'TIDAK';
-            document.querySelector('form').appendChild(internalField);
+       
 
-            const eksternalField = document.createElement('input');
-            eksternalField.type = 'hidden';
-            eksternalField.id = 'eksternal';
-            eksternalField.name = 'eksternal_lppi';
-            eksternalField.value = 'TIDAK';
-            document.querySelector('form').appendChild(eksternalField);
-        });
+        
     </script>
 
 
