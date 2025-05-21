@@ -17,6 +17,7 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\TblKesimpulanLappPraPenindakan;
 
 class PraPenindakanController extends Controller
 {
@@ -52,9 +53,6 @@ class PraPenindakanController extends Controller
         return view('Dokpenindakan.pra-penindakan.index', compact('praPenindakans', 'dokumenIntelijen'));
     }
 
-
-
-
     public function create(Request $request)
     {
         $no_laporan = $request->query('id_dokumen_intelijen');
@@ -74,21 +72,31 @@ class PraPenindakanController extends Controller
 
         // dd($dokumenIntelijen);
 
-
         return view('Dokpenindakan.pra-penindakan.create', compact('users', 'tempat', 'uraian_modus', 'jenis_pelanggaran', 'kapen', 'no_ref', 'no_laporan', 'laporan', 'dokumenIntelijen'));
     }
-
-
 
     public function store(Request $request)
     {
         $data = $request->all();
+
+        // dd($data);
+
+       
+        if ($request->filled('kesimpulan_lap')) {
+            TblKesimpulanLappPraPenindakan::firstOrCreate([
+                'kesimpulan_lapp_pra_penindakan' => $request->input('kesimpulan_lap'),
+            ]);
+        }
+
+        
         if ($request->has('id_pejabat_sp_1')) {
             $data['id_pejabat_sp_1'] = json_encode($request->input('id_pejabat_sp_1'));
         }
 
+        
         TblLaporanInformasi::create($data);
 
+        // Update nomor referensi
         $no_ref = TblNoRef::first();
         $no_ref->no_li += 1;
         $no_ref->no_mpp += 1;
@@ -100,7 +108,6 @@ class PraPenindakanController extends Controller
         return redirect()->route('pra-penindakan.index')->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
     }
 
-
     public function edit($id)
     {
         $praPenindakan = TblLaporanInformasi::findOrFail($id);
@@ -108,11 +115,12 @@ class PraPenindakanController extends Controller
         $laporanPengawasan = TblLaporanPengawasan::where('id_pengawasan', $praPenindakan->id_pengawasan_ref)->first();
 
         $praPenindakan->dugaan_pelanggaran_mpp = $praPenindakan->dugaan_pelanggaran_mpp ?? $laporanPengawasan->jenis_pelanggaran_lpt;
+
         $praPenindakan->modus_pelanggaran_mpp = $praPenindakan->modus_pelanggaran_mpp ?? $laporanPengawasan->modus_pelanggaran_lpt;
+        
         $praPenindakan->locus_pelanggaran_mpp = $praPenindakan->locus_pelanggaran_mpp ?? $laporanPengawasan->perkiraan_tempat_pelanggaran_lpt;
+        
         $praPenindakan->tempus_pelanggaran_mpp = $praPenindakan->tempus_pelanggaran_mpp ?? $laporanPengawasan->perkiraan_waktu_pelanggaran_lpt;
-
-
 
         $praPenindakan->keterangan_dugaan_pelanggaran = $praPenindakan->keterangan_dugaan_pelanggaran ?? $laporanPengawasan->jenis_pelanggaran_lpt;
         $praPenindakan->keterangan_locus = $praPenindakan->keterangan_locus ?? $laporanPengawasan->perkiraan_tempat_pelanggaran_lpt;
@@ -125,16 +133,7 @@ class PraPenindakanController extends Controller
         $uraian_modus = TblUraianModus::all();
         $tempat = TblLocus::all();
 
-        return view('Dokpenindakan.pra-penindakan.edit', compact(
-            'praPenindakan',
-            'kapen',
-            'no_ref',
-            'users',
-            'jenis_pelanggaran',
-            'uraian_modus',
-            'tempat',
-            'laporanPengawasan'
-        ));
+        return view('Dokpenindakan.pra-penindakan.edit', compact('praPenindakan', 'kapen', 'no_ref', 'users', 'jenis_pelanggaran', 'uraian_modus', 'tempat', 'laporanPengawasan'));
     }
 
     public function update($id)
@@ -162,16 +161,10 @@ class PraPenindakanController extends Controller
 
     public function print_laporan_informasi($id)
     {
-
         $praPenindakan = TblLaporanInformasi::findOrFail($id);
         $data = $praPenindakan->toArray();
 
-        $pejabatKeys = [
-            'id_pejabat_li_1',
-            'id_pejabat_li_2',
-            'id_pejabat_li_3',
-        ];
-
+        $pejabatKeys = ['id_pejabat_li_1', 'id_pejabat_li_2', 'id_pejabat_li_3'];
 
         foreach ($pejabatKeys as $key) {
             if ($praPenindakan->$key) {
@@ -190,9 +183,7 @@ class PraPenindakanController extends Controller
 
         $data['tahun_sekarang'] = date('Y');
 
-
         $data = $this->formatDates($data);
-
 
         // dd($data);
 
@@ -214,13 +205,10 @@ class PraPenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_li', $tahunSuratLi);
 
-
-
         $fileName = 'Dokumen_Pra_Penindakan_Laporan_Informasi_Nomor_' . $praPenindakan->no_li . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
-
 
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
@@ -285,15 +273,9 @@ class PraPenindakanController extends Controller
             }
         }
 
-
-
-
-        $pejabatKeys = [
-            'id_pejabat_npi',
-        ];
+        $pejabatKeys = ['id_pejabat_npi'];
 
         // dd($data);
-
 
         foreach ($pejabatKeys as $key) {
             if ($praPenindakan->$key) {
@@ -311,7 +293,6 @@ class PraPenindakanController extends Controller
         }
 
         $data['tahun_sekarang'] = date('Y');
-
 
         $data = $this->formatDates($data);
 
@@ -340,10 +321,8 @@ class PraPenindakanController extends Controller
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_surat_lapp($id)
     {
@@ -393,20 +372,14 @@ class PraPenindakanController extends Controller
                 }
 
                 $data['no'] = "LI-{$noLi}/KPU.206/{$tahunLi} tanggal {$formattedTglLi}";
-                $data['si'] = "LI-1";
+                $data['si'] = 'LI-1';
                 $data['tgl'] = "{$formattedTglLi}";
             }
         }
 
         // dd($data);
 
-
-        $pejabatKeys = [
-            'id_pejabat_lap_1',
-            'id_pejabat_lap_2',
-            'id_pejabat_lap_3',
-        ];
-
+        $pejabatKeys = ['id_pejabat_lap_1', 'id_pejabat_lap_2', 'id_pejabat_lap_3'];
 
         foreach ($pejabatKeys as $key) {
             if ($praPenindakan->$key) {
@@ -495,7 +468,6 @@ class PraPenindakanController extends Controller
 
         $data['tahun_sekarang'] = date('Y');
 
-
         $data = $this->formatDates($data);
 
         // dd($data);
@@ -525,7 +497,6 @@ class PraPenindakanController extends Controller
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
 
@@ -534,11 +505,7 @@ class PraPenindakanController extends Controller
         $praPenindakan = TblLaporanInformasi::findOrFail($id);
         $data = $praPenindakan->toArray();
 
-        $pejabatKeys = [
-            'id_pejabat_sp_1',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_sp_1', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($praPenindakan->$key) {
@@ -570,10 +537,7 @@ class PraPenindakanController extends Controller
             }
         }
 
-
-
         $data['tahun_sekarang'] = date('Y');
-
 
         $data = $this->formatDates($data);
 
@@ -597,7 +561,6 @@ class PraPenindakanController extends Controller
             foreach ($tempData as $index => $tim) {
                 $realIndex = $index + 1;
 
-
                 $templateProcessor->setValue("kepada#$realIndex", $index === 0 ? 'Kepada      :' : '');
 
                 $templateProcessor->setValue("i#$realIndex", "$realIndex.");
@@ -609,8 +572,6 @@ class PraPenindakanController extends Controller
         } else {
             $templateProcessor->deleteBlock('memberi_perintah_section');
         }
-
-
 
         $keterangan_perundang_raw = $praPenindakan->ket_perundang;
         $keterangan_perundang_raw = preg_replace('/\s+/', ' ', trim($keterangan_perundang_raw));
@@ -637,7 +598,6 @@ class PraPenindakanController extends Controller
         }
 
         $templateProcessor->cloneRowAndSetValues('is', $templateData);
-
 
         $perintah_sp_raw = $praPenindakan->perintah_sp;
         $perintah_sp_raw = preg_replace('/\s+/', ' ', trim($perintah_sp_raw));
@@ -704,16 +664,13 @@ class PraPenindakanController extends Controller
 
         // dd($data);
 
-
         $fileName = 'Dokumen_Pra_Penindakan_Surat_Perintah_Nomor_' . $praPenindakan->no_print . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_surat_mpp($id)
     {
@@ -730,11 +687,7 @@ class PraPenindakanController extends Controller
             $data['pasal'] = '';
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_mpp',
-        ];
-
+        $pejabatKeys = ['id_pejabat_mpp'];
 
         foreach ($pejabatKeys as $key) {
             if ($praPenindakan->$key) {
@@ -752,7 +705,6 @@ class PraPenindakanController extends Controller
         }
 
         $data['tahun_sekarang'] = date('Y');
-
 
         $data = $this->formatDates($data);
 
@@ -783,11 +735,8 @@ class PraPenindakanController extends Controller
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
-
 
     private function formatDates($data)
     {
@@ -803,15 +752,12 @@ class PraPenindakanController extends Controller
             'September' => 'September',
             'October' => 'Oktober',
             'November' => 'November',
-            'December' => 'Desember'
+            'December' => 'Desember',
         ];
 
         Carbon::setLocale('id');
 
-        $dateFields = [
-            'keterangan_tempus',
-            'berakhirnya_tempus'
-        ];
+        $dateFields = ['keterangan_tempus', 'berakhirnya_tempus'];
 
         foreach ($dateFields as $field) {
             if (!empty($data[$field])) {
@@ -846,8 +792,6 @@ class PraPenindakanController extends Controller
 
         return $data;
     }
-
-
 
     private function isValidDate($date)
     {

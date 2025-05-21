@@ -20,6 +20,7 @@ use App\Http\Controllers\Dokintelijen\LaporanPengawasanControllers;
 
 use App\Http\Controllers\Dokpenindakan\PenindakanController;
 use App\Http\Controllers\Dokpenindakan\PraPenindakanController;
+use App\Http\Controllers\Dokpenindakan\KesimpulanDokpenindakan\KesimpulanLappPraPenindakanController;
 use App\Http\Controllers\Dokpenindakan\PascaPenindakanController;
 use App\Http\Controllers\Dokpenindakan\PascaPenindakanNppController;
 use App\Http\Controllers\Dokpenindakan\PraPenindakanNppController;
@@ -73,6 +74,8 @@ require __DIR__ . '/auth.php';
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+ Route::get('/api/kesimpulan', [KesimpulanLappPraPenindakanController::class, 'search']);
 
 // Protected routes with menu access checking
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {

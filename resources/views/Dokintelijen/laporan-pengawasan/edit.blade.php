@@ -127,7 +127,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Main Form -->
                                             <div class="card">
                                                 <p class="fw-bold">
                                                     Dalam rangka pelaksanaan Undang-Undang Nomor 10 Tahun 1995 tentang

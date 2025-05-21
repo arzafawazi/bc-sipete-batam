@@ -140,11 +140,81 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 
-const textarea = document.querySelector("textarea.auto-expand");
-textarea.addEventListener("input", function () {
-    this.style.height = "auto";
-    this.style.height = this.scrollHeight + "px";
-});
+// const textarea = document.querySelector("textarea.auto-expand");
+// textarea.addEventListener("input", function () {
+//     this.style.height = "auto";
+//     this.style.height = this.scrollHeight + "px";
+// });
 
 // footer
+
+
+
+
+$(document).ready(function () {
+    // Trigger saat tab aktif
+    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        const target = $(e.target).attr("href");
+
+        if (target === '#navtabs2-profile') {
+            setTimeout(function () {
+                const $el = $('#kesimpulan_lap');
+
+                if ($el.length === 0) {
+                    // console.warn('#kesimpulan_lap tidak ditemukan');
+                    return;
+                }
+
+                if ($el.hasClass('select2-hidden-accessible')) {
+                    // console.log('Select2 sudah diinisialisasi, skip...');
+                    return; // Hindari duplikat inisialisasi
+                }
+
+                console.log('Inisialisasi select2...');
+                $el.select2({
+                    placeholder: 'Cari atau ketik kesimpulan...',
+                    allowClear: true,
+                    tags: true,
+                    ajax: {
+                        url: '/api/kesimpulan',
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            // console.log('Kirim ke server:', params.term);
+                            return { term: params.term };
+                        },
+                        processResults: function (data) {
+                            // console.log('Dari server:', data);
+                            return { results: data };
+                        },
+                        cache: true
+                    },
+                    createTag: function (params) {
+                        return {
+                            id: params.term,
+                            text: params.term,
+                            newOption: true
+                        };
+                    },
+                    insertTag: function (data, tag) {
+                        data.push(tag);
+                    }
+                });
+
+                // Paksa fokus ke input select2
+                // setTimeout(function () {
+                //     $el.select2('open');
+                //     $('.select2-search__field').focus();
+                // }, 500);
+            }, 300); // Delay cukup supaya DOM siap
+        }
+    });
+});
+
+
+
+
+
+
+
 
