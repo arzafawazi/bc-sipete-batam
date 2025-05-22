@@ -1109,10 +1109,11 @@
                                                         style="max-height:170px;">
                                                 </div>
                                                 <div class="col-10 text-center">
-                                                    <h5 class="mb-0 fw-bold">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                                                    <h5 class="mb-0 fw-bold">KEMENTERIAN KEUANGAN REPUBLIK
+                                                        INDONESIA</h5>
                                                     <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
-                                                    <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM
-                                                    </p>
+                                                    <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE
+                                                        B BATAM</p>
                                                     <p class="small mb-0">
                                                         JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432;
                                                         TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
@@ -1128,16 +1129,29 @@
 
                                             <div class="border-top border-dark border-1 mb-3"></div>
 
+                                            <!-- Pilihan Tipe Surat -->
+                                            <div class="mb-3">
+                                                <label class="form-label">Tipe Surat Perintah</label>
+                                                <select class="form-control form-select select2"
+                                                    id="tipe_surat_perintah_pra_penindakan"
+                                                    name="tipe_surat_perintah_pra_penindakan">
+                                                    <option value="" selected disabled>- Pilih -</option>
+                                                    <option value="Surat Perintah NHI">Surat Perintah NHI</option>
+                                                    <option value="Surat Perintah OC">Surat Perintah OC</option>
+                                                    <option value="Surat Perintah Patroli Laut">Surat Perintah Patroli Laut
+                                                    </option>
+                                                    <option value="Surat Perintah Bulanan">Surat Perintah Bulanan</option>
+                                                </select>
+                                            </div>
+
                                             <!-- Judul Surat -->
                                             <div class="row mb-4">
                                                 <div class="col-12 text-center">
                                                     <h5 class="fw-bold">SURAT PERINTAH</h5>
-                                                    <div class="d-flex justify-content-center">
+                                                    <div class="d-flex justify-content-center align-items-center">
                                                         <span>Nomor PRIN- </span>
                                                         <input type="text" class="form-control form-control-sm mx-2"
-                                                            style="width: 50px;"
-                                                            value="{{ old('no_sprint', $no_ref->no_sprint) }}"
-                                                            name="no_print" readonly>
+                                                            style="width: 50px;" name="no_print" value="001" readonly>
                                                         <span>/</span>
                                                         <span>KPU.206</span>
                                                         <span>/</span>
@@ -1148,32 +1162,27 @@
                                             </div>
 
                                             <!-- Isi Surat -->
+                                            <!-- Bagian Menimbang -->
                                             <div class="row">
                                                 <div class="col-2 fw-bold">Menimbang</div>
                                                 <div class="col-1 text-center">:</div>
                                                 <div class="col-9">
-                                                    <div class="d-flex">
-                                                        <span>a.</span>
-                                                        <div class="ms-2">
-                                                            Bahwa guna mengamankan hak-hak negara dan agar dipatuhinya
-                                                            ketentuan perundang-undangan yang berlaku;
-                                                            <textarea class="form-control mt-2" rows="2" id="pertimbangan_surat_perintah" name="ket_perundang"
-                                                                placeholder="Pertimbangan Diterbitkannya Surat Perintah"></textarea>
-                                                        </div>
+                                                    <div id="content-menimbang" class="content-section">
+                                                        <p class="text-muted">Pilih tipe surat perintah untuk melihat
+                                                            konten</p>
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Dasar -->
                                             <div class="row mt-3">
                                                 <div class="col-2 fw-bold">Dasar</div>
                                                 <div class="col-1 text-center">:</div>
                                                 <div class="col-9">
-                                                    <ol>
-                                                        <li>
-                                                            <textarea class="form-control mt-1" rows="2" id="dasar_sp" name="dasar_sp"
-                                                                placeholder="Dasar Hukum Yang Mendasari Diterbitkannya Surat Perintah"></textarea>
-                                                        </li>
-                                                    </ol>
+                                                    <div id="content-dasar" class="content-section">
+                                                        <p class="text-muted">Pilih tipe surat perintah untuk melihat
+                                                            konten</p>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -1183,6 +1192,7 @@
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Kepada (Tidak berubah) -->
                                             <div class="row mt-3">
                                                 <div class="col-2 fw-bold">Kepada</div>
                                                 <div class="col-1 text-center">:</div>
@@ -1191,23 +1201,27 @@
                                                         <select class="form-select select2" id="id_pejabat_sp_1"
                                                             name="id_pejabat_sp_1[]" multiple>
                                                             @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                                                </option>
+                                                                <option value="{{ $user->id_admin }}">
+                                                                    {{ $user->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Untuk -->
                                             <div class="row mt-3">
                                                 <div class="col-2 fw-bold">Untuk</div>
                                                 <div class="col-1 text-center">:</div>
                                                 <div class="col-9">
-                                                    <textarea class="form-control" rows="2" id="perintah_sp" name="perintah_sp"
-                                                        placeholder="Perintah Yang Diberikan Kepada Pejabat Bea dan Cukai"></textarea>
+                                                    <div id="content-untuk" class="content-section">
+                                                        <p class="text-muted">Pilih tipe surat perintah untuk melihat
+                                                            konten</p>
+                                                    </div>
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Wilayah (Tidak berubah) -->
                                             <div class="row mt-3">
                                                 <div class="col-2 fw-bold">Wilayah</div>
                                                 <div class="col-1 text-center">:</div>
@@ -1217,6 +1231,7 @@
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Waktu (Tidak berubah) -->
                                             <div class="row mt-3">
                                                 <div class="col-2 fw-bold">Waktu</div>
                                                 <div class="col-1 text-center">:</div>
@@ -1233,34 +1248,29 @@
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Ketentuan -->
                                             <div class="row mt-3">
                                                 <div class="col-2 fw-bold">Ketentuan</div>
                                                 <div class="col-1 text-center">:</div>
                                                 <div class="col-9">
-                                                    <select class="form-control" id="ketentuan_baju"
-                                                        name="ketentuan_baju">
-                                                        <option value="" selected disabled>- Pilih -</option>
-                                                        <option value="Berpakaian PDH">Berpakaian PDH</option>
-                                                        <option value="Berpakaian Non PDH">Berpakaian Non PDH</option>
-                                                        <option value="Berpakaian PDL">Berpakaian PDL</option>
-                                                    </select>
-                                                    <textarea class="form-control mt-2" rows="2" id="ketentuan_lain" name="ketentuan_lain"
-                                                        placeholder="Ketentuan Lain"></textarea>
+                                                    <div id="content-ketentuan" class="content-section">
+                                                        <p class="text-muted">Pilih tipe surat perintah untuk melihat
+                                                            konten</p>
+                                                    </div>
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Tambahan di bawah Ketentuan -->
                                             <div class="row mt-3">
                                                 <div class="col-12">
-                                                    <p class="small">Kepada yang bersangkutan/berwenang/terkait, sesuai
-                                                        dengan ketentuan dalam Pasal 75 Undang-Undang Nomor 17 Tahun 2006
-                                                        tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 tentang
-                                                        Kepabeanan dan Pasal 34 Undang-Undang Nomor 39 Tahun 2007 tentang
-                                                        Perubahan atas Undang-Undang Nomor 11 Tahun 1995 tentang Cukai dan
-                                                        peraturan pelaksanaannya, atau ketentuan lainnya, agar memberikan
-                                                        bantuan sepenuhnya.</p>
+                                                    <div id="content-tambahan" class="content-section">
+                                                        <p class="text-muted">Pilih tipe surat perintah untuk melihat
+                                                            konten</p>
+                                                    </div>
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Penandatangan (Tidak berubah) -->
                                             <div class="row mt-4">
                                                 <div class="col-6"></div>
                                                 <div class="col-6 text-center">
@@ -1268,24 +1278,25 @@
                                                         <div>
                                                             <select class="form-control form-select mb-2" id="plh"
                                                                 name="plh">
-                                                                <option value="" selected disabled>- Pilih Plh -</option>
+                                                                <option value="" selected disabled>- Pilih Plh -
+                                                                </option>
                                                                 <option value="Plh">Pelaksana Harian</option>
                                                                 <option value="">Tidak Ada Pelaksana Harian</option>
                                                             </select>
                                                         </div>
                                                         <select class="form-control form-select mb-3" id="id_pejabat_sp_2"
                                                             name="id_pejabat_sp_2">
-                                                            <option value="" selected disabled>- Pilih Pejabat Yang Menandatangani -</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id_admin }}">{{ $user->name }}
-                                                                </option>
-                                                            @endforeach
+                                                            <option value="" selected disabled>- Pilih Pejabat Yang
+                                                                Menandatangani -</option>
+                                                            <option value="1">Kepala Kantor</option>
+                                                            <option value="2">Wakil Kepala Kantor</option>
                                                         </select>
                                                         <p class="mb-0">NIP. ..............................</p>
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            <!-- Bagian Tembusan (Tidak berubah) -->
                                             <div class="row mt-4">
                                                 <div class="col-12">
                                                     <p class="fw-bold">Tembusan:</p>
@@ -1293,12 +1304,12 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Form Pengaturan Tambahan tidak terlihat di surat -->
+                                            <!-- Form Pengaturan Tambahan (Tidak berubah) -->
                                             <div class="row mt-5 pt-5 border-top">
                                                 <div class="col-lg-6">
                                                     <h6><b>Data Input Tambahan</b></h6>
                                                     <div class="mb-3">
-                                                        <label>Penentuan Skema Penindakan</label>
+                                                        <label class="form-label">Penentuan Skema Penindakan</label>
                                                         <select class="form-control form-select"
                                                             name="skema_penindakan_perintah">
                                                             <option value="" selected disabled>- Pilih -</option>
@@ -1309,7 +1320,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label>Dilakukannya Patroli</label>
+                                                        <label class="form-label">Dilakukannya Patroli</label>
                                                         <select class="form-control form-select"
                                                             name="dilakukannya_patroli">
                                                             <option value="" selected disabled>- Pilih -</option>
@@ -1344,39 +1355,43 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const selectKegiatan = document.getElementById("pilihan_kegiatan");
-            const selectSkema = document.getElementById("skema_penindakan");
+            const skemaPenindakan = document.getElementById("skema_penindakan");
+            const skemaPatroli = document.getElementById("skema_patroli");
 
             function updateTabs() {
-                const selectedKegiatan = selectKegiatan.value;
-                const selectedSkema = selectSkema.value;
+                const kegiatan = selectKegiatan.value;
+                const skemaP = skemaPenindakan.value;
+                const skemaPat = skemaPatroli.value;
 
+                // Sembunyikan semua section dulu
                 document.getElementById("penindakan_section").classList.add("d-none");
                 document.getElementById("patroli_section").classList.add("d-none");
                 document.getElementById("tidak_layak_section").classList.add("d-none");
 
-                if (selectedKegiatan === "penindakan") {
+                if (kegiatan === "penindakan") {
                     document.getElementById("penindakan_section").classList.remove("d-none");
-                } else if (selectedKegiatan === "patroli") {
+                } else if (kegiatan === "patroli") {
                     document.getElementById("patroli_section").classList.remove("d-none");
-                } else if (selectedKegiatan === "tidak_layak") {
+                } else if (kegiatan === "tidak_layak") {
                     document.getElementById("tidak_layak_section").classList.remove("d-none");
                 }
 
+                // Atur tab
                 const tabsConfig = [{
                         id: "navtabs2-messages-tab-item",
                         linkId: "navtabs2-messages-tab",
-                        condition: selectedKegiatan === "tidak_layak",
+                        condition: kegiatan === "tidak_layak",
                     },
                     {
                         id: "navtabs2-mpp-tab-item",
                         linkId: "navtabs2-mpp-tab",
-                        condition: (selectedKegiatan === "penindakan" || selectedKegiatan === "patroli") &&
-                            selectedSkema === "PELIMPAHAN",
+                        condition: (kegiatan === "penindakan" && skemaP === "PELIMPAHAN") ||
+                            (kegiatan === "patroli" && skemaPat === "PELIMPAHAN"),
                     },
                     {
                         id: "navtabs2-settings-tab-item",
                         linkId: "navtabs2-settings-tab",
-                        condition: selectedKegiatan === "penindakan" || selectedKegiatan === "patroli",
+                        condition: kegiatan === "penindakan" || kegiatan === "patroli",
                     },
                 ];
 
@@ -1388,28 +1403,29 @@
                     const tabElement = document.getElementById(id);
                     const tabLinkElement = document.getElementById(linkId);
 
-                    if (condition) {
-                        tabElement.style.display = "block";
+                    if (tabElement) {
+                        tabElement.style.display = condition ? "block" : "none";
 
-                        if (tabLinkElement) {
+                        if (tabLinkElement && condition) {
                             tabLinkElement.classList.add("highlight");
                             setTimeout(() => tabLinkElement.classList.remove("highlight"), 1000);
                         }
-                    } else {
-                        tabElement.style.display = "none";
                     }
                 });
             }
 
             selectKegiatan.addEventListener("change", updateTabs);
-            selectSkema.addEventListener("change", updateTabs);
+            skemaPenindakan.addEventListener("change", updateTabs);
+            skemaPatroli.addEventListener("change", updateTabs);
 
+            // Reset semua section dan tab saat load
             document.getElementById("penindakan_section").classList.add("d-none");
             document.getElementById("patroli_section").classList.add("d-none");
             document.getElementById("tidak_layak_section").classList.add("d-none");
+
             ["navtabs2-messages", "navtabs2-mpp", "navtabs2-settings"].forEach((id) => {
                 const tabElement = document.getElementById(id);
-                tabElement.classList.remove("active", "show");
+                if (tabElement) tabElement.classList.remove("active", "show");
             });
 
             updateTabs();
@@ -1484,6 +1500,398 @@
             }
         });
     </script> --}}
+
+    <script>
+        // Definisikan data konten di luar event listener
+        const kontenSurat = {
+            'Surat Perintah NHI': {
+                menimbang: `
+                Guna mengamankan hak-hak negara dan agar dipatuhinya ketentuan
+                perundang-undangan yang berlaku, dipandang perlu untuk menugaskan
+                pegawai.
+        `,
+                dasar: `
+            <ol>
+            <li>Undang-Undang Nomor 10 Tahun 1995 tentang Kepabeanan (Lembar Negara Tahun 1995 Nomor 75, Tambahan Lembaran Negara Republik Indonesia Nomor 3612);</li>
+            <li>Peraturan Pemerintah Nomor 21 Tahun 1996 tentang Penindakan di Bidang Kepabeanan (Lembaran Negara Tahun 1996 Nomor 36, Tambahan Lembaran Negara Republik Indonesia Nomor 3626);</li>
+            <li>Keputusan Menteri Keuangan Republik Indonesia Nomor: 30/KMK.05/1997 tentang Tata Laksana Penindakan di Bidang Kepabeanan;</li>
+            <li>Keputusan Direktur Jenderal Bea dan Cukai Nomor: KEP-08/BC/1997 tanggal 30 Januari 1997 tentang Penghentian, Pemeriksaan dan Penegahan Sarana Pengangkut dan Barang Diatasnya serta Penghentian Pembongkaran dan Penegahan Barang;</li>
+            <li>Keputusan Menteri Keuangan Republik Indonesia Nomor: 759/KMK.01/1993 tanggal 3 Agustus 1993 tentang Organisasi dan Tata Kerja Direktorat Jenderal Bea dan Cukai;</li>
+            <li>Instruksi Menteri Keuangan Republik Indonesia Nomor INS01/MK/III/2/1976 tentang Pemberantasan Penyelundupan;</li>
+            </ol>
+
+        `,
+                untuk: `
+                <ol>
+  <li>
+    Melakukan pembukaan segel tindak pengamanan, melakukan penegahan dan penyegelan terhadap party barang dengan data sebagai berikut:
+    <table class="table-borderless" style="margin-left: 10px; margin-top: 8px; width: 100%;">
+      <tr>
+        <td style="width: 30%; vertical-align: top;"><strong>Nama Perusahaan</strong></td>
+        <td style="width: 2%; vertical-align: top;">:</td>
+        <td>
+          <input type="text" name="nama_perusahaan" class="form-control" placeholder="Masukkan nama perusahaan" required>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;"><strong>Jenis/ No dan Tgl. Dokumen</strong></td>
+        <td style="vertical-align: top;">:</td>
+        <td>
+          <input type="text" name="jenis_dokumen" class="form-control" placeholder="Contoh: PPFTZ-01 Nomor 660733 Tanggal 18 Oktober 2024" required>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;"><strong>Jumlah dan Jenis Barang</strong></td>
+        <td style="vertical-align: top;">:</td>
+        <td>
+          <textarea name="jumlah_jenis_barang" class="form-control" rows="4" placeholder="Contoh:
+- 668 Vacuum Sealer Merek Harvest Keeper;
+- 4800 Sarung Tangan/Smooth Nitrile Gloves merek Growers Edge;
+- 1152 Paper/Ink Ribbon set merek Mitsubishi Electric (item 4)." required></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;"><strong>Tempat/ Lokasi Penindakan</strong></td>
+        <td style="vertical-align: top;">:</td>
+        <td>
+          <input type="text" name="lokasi_penindakan" class="form-control" placeholder="Masukkan lokasi penindakan" required>
+        </td>
+      </tr>
+    </table>
+  </li>
+  <li style="margin-top: 10px;">
+    Mengambil tindakan yang diperlukan dalam upaya pengamanan hak-hak negara dan pencegahan pelanggaran ketentuan perundang-undangan yang berlaku.
+  </li>
+</ol>
+        `,
+                ketentuan: `
+            <ol>
+            <li>Menggunakan sarana peralatan pemeriksaan fisik;</li>
+            <li>Berpakaian PDH/Non PDH;</li>
+            <li>Membuat laporan selambat-lambatnya 3 (tiga) hari sejak selesainya pelaksanaan tugas.</li>
+            </ol>
+        `,
+                tambahan: `
+            <p class="hidden"></p>
+        `
+            },
+            'Surat Perintah OC': {
+                menimbang: `
+            <ol type="a">
+            <li>Bahwa adanya indikasi terjadinya pelanggaran di bidang cukai yang berkaitan pada wilayah kerja dan/atau daerah wewenang Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam, dipandang perlu memperpanjang periode Tim Operasi Pengawasan di bidang Cukai (Gempur II) Tahun 2024;</li>
+            <li>Bahwa dalam rangka optimalisasi penerimaan di bidang cukai, diperlukan peningkatan pengawasan terhadap barang kena cukai, sehingga dipandang perlu segera melakukan langkah-langkah dan upaya nyata untuk melakukan penindakan terhadap pelanggaran ketentuan di bidang cukai;</li>
+            <li>Bahwa peningkatan pengawasan bertujuan untuk meningkatkan kepatuhan pengusahaan barang kena cukai dan menekan peredaran barang kena cukai ilegal, sehingga memberikan situasi kondusif terhadap peredaran barang kena cukai yang telah memenuhi ketentuan di bidang cukai;</li>
+            <li>Bahwa untuk menjaga rutinitas pelaksanaan operasi pengawasan yang telah dilakukan sebelumnya, dipandang perlu untuk melanjutkan dan meningkatkan operasi pengawasan di bidang cukai terhadap seluruh barang kena cukai;</li>
+            <li>Bahwa berdasarkan pertimbangan sebagaimana dimaksud dalam huruf a, b, c, dan d di atas, perlu diterbitkan Surat Perintah Kepala Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam untuk melakukan operasi pengawasan di bidang cukai tahun 2024 dengan call sign “Gempur II”;</li>
+            </ol>
+        `,
+                dasar: `
+            <ol>
+                <li>Undang-Undang Nomor 11 Tahun 1995 tentang Cukai (Lembaran
+                Negara Republik Indonesia Tahun 1996 Nomor 76, Tambahan
+                Lembaran Negara Republik Indonesia Nomor 3613) sebagaimana telah
+                dirubah dengan Undang-Undang Nomor 39 Tahun 2007 tentang
+                Perubahan atas Undang-Undang Nomor 11 Tahun 1995 tentang Cukai
+                (Lembaran Negara Republik Indonesia Tahun 2007 Nomor 105,
+                Tambahan Lembaran Negara Nomor 4755) dan Peraturan-Peraturan
+                Pelaksanaannya;</li>
+            </ol>
+        `,
+                untuk: `
+                        <ol>
+            <li>Melakukan pengawasan secara mendalam terhadap kegiatan produksi, pengangkutan, dan peredaran Barang Kena Cukai (BKC) di wilayah administrasi pengawasan Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam, baik yang berasal dari produksi dalam negeri maupun impor guna mencegah terjadinya pelanggaran di bidang cukai, yaitu:
+                <ol type="a">
+                <li>Pabrik, Tempat Penyimpanan atau tempat lainnya yang digunakan untuk menyimpan BKC atau barang lainnya terkait dengan BKC yang belum dilunasi cukainya, tempat usaha importir, gudang penyalur atau tempat penjualan eceran BKC tanpa NPPBKC;</li>
+                <li>Produksi, distribusi dan peredaran BKC yang pelunasannya dengan pelekatan pita cukai dengan modus pelanggaran:
+                    <ol type="1">
+                    <li>tanpa dilekati pita cukai;</li>
+                    <li>dilekati pita cukai palsu;</li>
+                    <li>dilekati pita cukai bekas pakai;</li>
+                    <li>dilekati pita cukai yang bukan haknya; atau</li>
+                    <li>dilekati pita cukai yang tidak sesuai peruntukannya;</li>
+                    </ol>
+                </li>
+                <li>Peredaran/perdagangan pita cukai secara illegal;</li>
+                <li>Pelanggaran lainnya di bidang cukai;</li>
+                </ol>
+            </li>
+            <li>Melakukan pengawasan secara mendalam terhadap seluruh kegiatan administrasi dan sistem pelayanan cukai, serta kegiatan-kegiatan lainnya yang terkait dengan pelayanan di bidang cukai;</li>
+            <li>Melakukan penindakan di bidang cukai terhadap orang, sarana pengangkut, barang, bangunan, tempat penimbunan dan tempat lainnya serta hal-hal yang terkait dengan pelanggaran ketentuan dan/atau tindak pidana di bidang cukai;</li>
+            <li>Melakukan tindakan lainnya dan mengambil langkah-langkah sesuai peraturan perundangan yang berlaku guna mengamankan hak-hak negara, apabila dalam pelaksanaan tugas ditemukan adanya dugaan pelanggaran ketentuan dan/atau tindak pidana di bidang cukai;</li>
+            <li>Melakukan koordinasi antar unit pengawasan pada satuan kerja vertikal DJBC yang meliputi Kantor Wilayah DJBC, Kantor Wilayah DJBC Khusus, KPU BC, KPPBC Tipe Madya Pabean/ Madya Pabean A/ Madya Pabean B/ Madya Pabean C dan/atau KPPBC Tipe Madya Cukai setempat apabila dipandang perlu dalam melakukan semua kegiatan tersebut di atas;</li>
+            <li>Melakukan pembinaan dan bimbingan (asistensi) serta penyuluhan atau sosialisasi terkait ketentuan peraturan perundang-undangan di bidang cukai;</li>
+            <li>Melaksanakan tugas ini dengan penuh rasa tanggung jawab dan melaporkan pelaksanaannya kepada Kepala Bidang Penindakan dan Penyidikan KPU BC Tipe B Batam secara periodik atau sewaktu-waktu apabila diperlukan.</li>
+            </ol>
+        `,
+                ketentuan: `
+            <ol>
+                <li>Menggunakan sarana peralatan pemeriksaan fisik;</li>
+                <li>Berpakaian PDH/ Non PDH;</li>
+                <li>Membuat laporan selambat-lambatnya 3 (tiga) hari sejak selesainya pelaksanaan tugas.</li>
+            </ol>
+        `,
+                tambahan: `
+            <p style="text-align: justify;">
+            &nbsp;&nbsp;&nbsp;Biaya yang digunakan untuk pelaksanaan operasi pengawasan ini dibebankan pada DIPA Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam.
+            </p>
+            <p style="text-align: justify;">
+            &nbsp;&nbsp;&nbsp;Kepada pihak berwajib/berwenang/terkait, sesuai dengan ketentuan dalam Pasal 34 Undang-Undang Nomor 39 Tahun 2007 tentang perubahan atas Undang-Undang Nomor 11 Tahun 1995 tentang Cukai, diminta bantuan seperlunya demi kelancaran pelaksanaan tugas tersebut.
+            </p>
+            <p style="text-align: justify; margin-top: 1em;">
+            <em><strong>&nbsp;&nbsp;&nbsp;KPU BC Batam senantiasa berkomitmen menjaga kepentingan negara secara profesional,</strong> 
+            bersinergi dengan seluruh pemangku kepentingan dengan 
+            <span style="font-style: italic; font-weight: bold;">integritas</span>, 
+            <span style="font-style: italic; font-weight: bold;">responsif</span> melayani, dan 
+            <span style="font-style: italic; font-weight: bold;">berkinerja cemerlang</span>.
+            </em>
+            </p>
+
+        `
+            },
+            'Surat Perintah Patroli Laut': {
+                menimbang: `
+            <ol type="a">
+                <li>untuk mengamankan hak-hak negara dan agar dipatuhinya ketentuan perundang-undangan yang berlaku; dan </li>
+                <li>Buntuk melaksanakan kegiatan pencegahan dan penindakan pelanggaran di bidang kepabeanan dan cukai, perlu melaksanakan Patroli Laut Bea dan Cukai;</li>
+            </ol>
+        `,
+                dasar: `
+            <ol>
+            <li>Undang-Undang Nomor 10 Tahun 1995 tentang Kepabeanan (Lembaran Negara RI Tahun 1995 Nomor 75, Tambahan Lembaran Negara Nomor 3612) sebagaimana telah dirubah dengan Undang-Undang Nomor 17 Tahun 2006 tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 tentang Kepabeanan (Lembaran Negara RI Tahun 2006 Nomor 93) dan Peraturan-Peraturan Pelaksanaannya;</li>
+            <li>Undang-Undang Nomor 11 Tahun 1995 tentang Cukai (Lembaran Negara Republik Indonesia Tahun 1996 Nomor 76, Tambahan Lembaran Negara Nomor 3613) sebagaimana telah dirubah dengan Undang-Undang Nomor 39 Tahun 2007 tentang Perubahan atas Undang-Undang Nomor 11 Tahun 1995 tentang Cukai (Lembaran Negara Republik Indonesia Tahun 2007 Nomor 105, Tambahan Lembaran Negara Nomor 4755) dan Peraturan-Peraturan pelaksanaannya;</li>
+            <li>Peraturan Pemerintah Nomor 21 Tahun 1996 tentang Penindakan Di Bidang Kepabeanan (Lembaran Negara Tahun 1996 Nomor 36, Tambahan Lembaran Negara Republik Indonesia Nomor 3626);</li>
+            <li>Peraturan Pemerintah Nomor 49 Tahun 2009 tentang Tata Cara Penindakan di Bidang Cukai (Lembaran Negara Republik Indonesia Tahun 2009 Nomor 114, Tambahan Lembaran Negara Republik Indonesia Nomor 5040);</li>
+            <li>Keputusan Menteri Keuangan Republik Indonesia Nomor: 30/KMK.05/1997 tentang Tata Laksana Penindakan Di Bidang Kepabeanan;</li>
+            <li>Peraturan Menteri Keuangan Nomor 238/PMK.04/2009 tentang Tata Cara Penghentian, Pemeriksaan, Penegahan, Penyegelan, Tindakan Berupa Tidak Melayani Pemesanan Pita Cukai Atau Tanda Pelunasan Cukai Lainnya dan Bentuk Surat Perintah Penindakan;</li>
+            <li>Peraturan Menteri Keuangan Nomor 179/PMK.04/2019 tentang Patroli Laut Direktorat Jenderal Bea dan Cukai Dalam Rangka Penindakan di Bidang Kepabeanan dan Cukai;</li>
+            <li>Peraturan Direktur Jenderal Bea dan Cukai Nomor PER-21/BC/2023 tentang Petunjuk Pelaksanaan Patroli Laut Direktorat Jenderal Bea dan Cukai;</li>
+            <li>Peraturan Direktur Jenderal Bea dan Cukai Nomor PER-8/BC/2024 tentang Tata Laksana Pengawasan Di Bidang Kepabeanan dan Cukai;</li>
+        </ol>
+
+        `,
+                untuk: `
+            <p>Melaksanakan Patroli Laut Bea dan Cukai</p>
+        `,
+                ketentuan: `
+            <ol>
+            <li>Berpakaian PDH / PDL / Pakaian dengan atribut Bea dan Cukai.</li>
+            <li>Melaksanakan apel keberangkatan kapal patroli sesuai Peraturan Direktur Jenderal Bea dan Cukai Nomor PER-12/BC/2021.</li>
+            <li>Pengendali Operasi adalah Kepala Bidang Penindakan dan Penyidikan KPUBC Tipe B Batam.</li>
+            <li>Pengendali Taktis adalah Kepala Seksi Penindakan KPUBC Tipe B Batam.</li>
+            <li>Rute ditentukan oleh Pengendali Taktis.</li>
+            <li>Navigasi dan tata tertib di atas kapal tanggung jawab Nakhoda.</li>
+            <li>Petugas dilengkapi dengan Senjata Api Dinas, penggunaan sesuai dengan ketentuan mengenai penggunaan Senjata Api Dinas di Lingkungan Direktorat Jenderal Bea dan Cukai.</li>
+            <li>Penggunaan Senjata Mesin Berat (SMB) 12.7 mm oleh petugas sesuai dengan aturan yang berlaku.</li>
+            <li>Mengutamakan keselamatan awak kapal dan kapal patroli.</li>
+            <li>Memberi bantuan pencarian dan penyelamatan / Search and Rescue (SAR) jika dibutuhkan.</li>
+            <li>Penjagaan di atas kapal secara terus menerus, diatur oleh Kopat / Nakhoda.</li>
+            <li>Log book diisi secara tertib.</li>
+            <li>Melapor kepada Kepala KWBC / KPUBC / KPPBC setempat apabila kapal patrol sandar dalam wilayah kerjanya.</li>
+            <li>Radio kapal agar stand by selama 24 jam dan Radio Operator melaporkan posisi setiap 2 jam sekali atau pada kesempatan pertama.</li>
+            <li>Agar perintah ini dilaksanakan dengan penuh rasa tanggung jawab.</li>
+            <li>Segala biaya kebutuhan patroli dan pegawai PSO BC Batam dibebankan pada DIPA satuan kerja PSO Bea dan Cukai Tipe B Batam 2024.</li>
+        </ol>
+        `,
+                tambahan: `
+            <p style="text-align: justify;">
+            &nbsp;&nbsp;&nbsp;Kepada yang berwajib/berwenang/terkait, sesuai dengan ketentuan dalam Pasal 76
+            Undang-Undang Nomor 17 Tahun 2006 tentang Perubahan atas Undang-Undang Nomor 10
+            Tahun 1995 tentang Kepabeanan dan Pasal 34 Undang-Undang Nomor 39 Tahun 2007 tentang
+            Perubahan atas Undang-Undang Nomor 11 Tahun 1995 tentang Cukai, diminta bantuan
+            seperlunya.
+            </p>
+            <p style="text-align: justify; margin-top: 1em;">
+            <em><strong>&nbsp;&nbsp;&nbsp;KPU BC Batam senantiasa berkomitmen menjaga kepentingan negara secara profesional,</strong> 
+            bersinergi dengan seluruh pemangku kepentingan dengan 
+            <span style="font-style: italic; font-weight: bold;">integritas</span>, 
+            <span style="font-style: italic; font-weight: bold;">responsif</span> melayani, dan 
+            <span style="font-style: italic; font-weight: bold;">berkinerja cemerlang</span>.
+            </em>
+            </p>
+        `
+            },
+            'Surat Perintah Bulanan': {
+                menimbang: `
+            Bahwa dalam rangka menjalankan tugas dan fungsi pengawasan pada
+            Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam dipandang perlu
+            untuk mengatur penempatan dan penugasan (pemeriksa dan pelaksana)
+            Seksi Penindakan Bidang Penindakan dan Penyidikan di wilayah kerja
+            Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam beserta ketentuan
+            kerja lembur, pemakaian seragam, dan ketentuan lainnya sebagaimana
+            tersebut dalam lampiran Surat Perintah ini;
+        `,
+                dasar: `
+            <ol>
+            <li>Undang – Undang Nomor 10 tahun 1995 tentang Kepabeanan (Lembar Tahun 1995 Nomor 75, Tambahan Lembaran Negara Republik Indonesia Nomor 3612) sebagaimana telah dirubah dengan Undang-Undang Nomor 17 Tahun 2006 tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 tentang Kepabeanan (Lembaran Negara RI Tahun 2006 Nomor 93); sebagaimana telah diubah dengan Undang – Undang Nomor 17 Tahun 2006 dan peraturan pelaksanaanya;</li>
+            <li>Undang-Undang Nomor 11 Tahun 1995 tentang Cukai (Lembaran Negara Republik Indonesia Tahun 1996 Nomor 76, Tambahan Lembaran Negara Republik Indonesia Nomor 3613) sebagaimana telah dirubah dengan Undang-Undang Nomor 39 Tahun 2007 tentang Perubahan atas Undang-Undang Nomor 11 Tahun 1995 tentang Cukai (Lembaran Negara Republik Indonesia Tahun 2007 Nomor 105, Tambahan Lembaran Negara Nomor 4755) dan Peraturan-Peraturan Pelaksanaannya;</li>
+            <li>Peraturan Pemerintah Nomor 21 Tahun 1996 tentang Penindakan di Bidang Kepabeanan (Lembaran Negara Tahun 1996 Nomor 36, Tambahan Lembaran Negara Republik Indonesia Nomor 3626);</li>
+            <li>Peraturan Pemerintah Nomor 49 Tahun 2009 tentang Penindakan di Bidang Cukai (Lembaran Negara Republik Indonesia Tahun 2009 Nomor 114, Tambahan Lembaran Negara Republik Indonesia Nomor 35040);</li>
+            <li>Peraturan Pemerintah Nomor 41 Tahun 2021 tentang Penyelenggaraan Kawasan Perdagangan Bebas dan Pelabuhan Bebas (Lembaran Negara Republik Indonesia Tahun 2021 Nomor 51, Tambahan Lembaran Negara Republik Indonesia Nomor 6653);</li>
+            <li>Peraturan Menteri Keuangan Nomor 34/PMK.04/2021 tentang Pemasukan dan Pengeluaran Barang Ke dan Dari Kawasan yang Telah Ditetapkan Sebagai Kawasan Perdagangan Bebas dan Pelabuhan Bebas;</li>
+            <li>Peraturan Direktur Jenderal Bea dan Cukai nomor PER-8/BC/2024 tentang Tata Laksana Pengawasan di Bidang Kepabeanan dan Cukai;</li>
+        </ol>
+        `,
+                untuk: `
+            <ol>
+            <li>Melakukan pemantauan dan pengawasan terhadap kegiatan kepabeanan dan/atau cukai serta kegiatan-kegiatan lainnya yang terkait dengan kegiatan kepabeanan dan/atau cukai di wilayah Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam;</li>
+            <li>Melakukan penindakan di Bidang Kepabeanan dan/atau Cukai sesuai peraturan terhadap pelanggaran ketentuan dan/atau tindak pidana di bidang kepabeanan dan/atau cukai;</li>
+            <li>Melakukan tindakan lainnya dan mengambil langkah – langkah sesuai peraturan perundangan guna mengamankan hak - hak negara, apabila dalam pelaksanaan tugas ditemukan adanya pelanggaran ketentuan dan/atau tindak pidana di bidang kepabeanan dan/atau cukai;</li>
+            <li>Melakukan pemeriksaan terhadap sarana pengangkut (boatzoeking), meneliti dokumen kapal, melakukan tindakan sesuai ketentuan peraturan perundang-undangan yang berlaku;</li>
+            <li>Menjalankan pemeriksaan secara tertib /teratur dan waspada terhadap kemungkinan pemasukan/pengeluaran barang-barang larangan (senjata api, narkoba, uang palsu, dll);</li>
+            <li>Melakukan pengawasan pembongkaran barang dari sarana pengangkut dan melaporkan hasilnya pada form BCL 1.2;</li>
+            <li>Membuat laporan pelaksanaan tugas secara periodik atau sewaktu-waktu;</li>
+            <li>Melaksanakan perintah ini dengan penuh rasa tanggung jawab.</li>
+        </ol>
+        `,
+                ketentuan: `
+            <ol>
+            <li>Menggunakan sarana peralatan pemeriksaan fisik;</li>
+            <li>Berpakaian PDH/ Non PDH;</li>
+            <li>Membuat laporan pelaksanaan tugas kepaad Pejabat Penerbit Surat Perintah setelah selesai pelaksanaan tugas.</li>
+            </ol>
+        `,
+                tambahan: `
+            <p style="text-align: justify;">
+            &nbsp;&nbsp;&nbsp;Biaya yang digunakan untuk pelaksanaan operasi pengawasan ini dibebankan pada DIPA Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam.
+            </p>
+            <p style="text-align: justify;">
+            &nbsp;&nbsp;&nbsp;Kepada pihak berwajib/berwenang/terkait, sesuai dengan ketentuan dalam Pasal 34 Undang-Undang Nomor 39 Tahun 2007 tentang perubahan atas Undang-Undang Nomor 11 Tahun 1995 tentang Cukai, diminta bantuan seperlunya demi kelancaran pelaksanaan tugas tersebut.
+            </p>
+            <p style="text-align: justify; margin-top: 1em;">
+            <em><strong>&nbsp;&nbsp;&nbsp;KPU BC Batam senantiasa berkomitmen menjaga kepentingan negara secara profesional,</strong> 
+            bersinergi dengan seluruh pemangku kepentingan dengan 
+            <span style="font-style: italic; font-weight: bold;">integritas</span>, 
+            <span style="font-style: italic; font-weight: bold;">responsif</span> melayani, dan 
+            <span style="font-style: italic; font-weight: bold;">berkinerja cemerlang</span>.
+            </em>
+            </p>
+        `
+            }
+        };
+
+        // Fungsi untuk mengubah konten berdasarkan tipe surat
+        function updateKontenSurat() {
+            const selectElement = document.getElementById('tipe_surat_perintah_pra_penindakan');
+            const tipe = selectElement.value;
+
+            //console.log('Tipe surat dipilih:', tipe); // Untuk debugging
+
+            if (tipe && kontenSurat[tipe]) {
+                // Update konten yang berubah
+                const menimbangEl = document.getElementById('content-menimbang');
+                const dasarEl = document.getElementById('content-dasar');
+                const untukEl = document.getElementById('content-untuk');
+                const ketentuanEl = document.getElementById('content-ketentuan');
+                const tambahanEl = document.getElementById('content-tambahan');
+
+                if (menimbangEl) menimbangEl.innerHTML = kontenSurat[tipe].menimbang;
+                if (dasarEl) dasarEl.innerHTML = kontenSurat[tipe].dasar;
+                if (untukEl) untukEl.innerHTML = kontenSurat[tipe].untuk;
+                if (ketentuanEl) ketentuanEl.innerHTML = kontenSurat[tipe].ketentuan;
+                if (tambahanEl) tambahanEl.innerHTML = kontenSurat[tipe].tambahan;
+
+                // console.log('Konten berhasil diupdate'); // Untuk debugging
+            } else {
+                // Reset ke konten default jika tidak ada pilihan
+                const defaultText = '<p class="text-muted">Pilih tipe surat perintah untuk melihat konten</p>';
+
+                const menimbangEl = document.getElementById('content-menimbang');
+                const dasarEl = document.getElementById('content-dasar');
+                const untukEl = document.getElementById('content-untuk');
+                const ketentuanEl = document.getElementById('content-ketentuan');
+                const tambahanEl = document.getElementById('content-tambahan');
+
+                if (menimbangEl) menimbangEl.innerHTML = defaultText;
+                if (dasarEl) dasarEl.innerHTML = defaultText;
+                if (untukEl) untukEl.innerHTML = defaultText;
+                if (ketentuanEl) ketentuanEl.innerHTML = defaultText;
+                if (tambahanEl) tambahanEl.innerHTML = defaultText;
+
+                //  console.log('Konten direset ke default'); // Untuk debugging
+            }
+        }
+
+        // Event listener ketika DOM sudah siap
+        document.addEventListener('DOMContentLoaded', function() {
+            //console.log('DOM Content Loaded'); // Untuk debugging
+
+            // PERBAIKAN UNTUK SELECT2 - METODE 1: Menggunakan jQuery dan event select2:select
+            if (typeof $ !== 'undefined') {
+                // Jika jQuery tersedia, gunakan event khusus Select2
+                $('#tipe_surat_perintah_pra_penindakan').on('select2:select', function(e) {
+                    //console.log('Select2 event triggered'); // Untuk debugging
+                    updateKontenSurat();
+                });
+
+                // Alternatif: gunakan event change dengan jQuery
+                $('#tipe_surat_perintah_pra_penindakan').on('change', function() {
+                    //console.log('jQuery change event triggered'); // Untuk debugging
+                    updateKontenSurat();
+                });
+
+                //console.log('Event listener Select2 berhasil ditambahkan dengan jQuery');
+            } else {
+                // PERBAIKAN UNTUK SELECT2 - METODE 2: Fallback tanpa jQuery
+                // Gunakan MutationObserver untuk mendeteksi perubahan DOM
+                const tipeSuratSelect = document.getElementById('tipe_surat_perintah_pra_penindakan');
+
+                if (tipeSuratSelect) {
+                    // Event listener biasa (untuk fallback)
+                    tipeSuratSelect.addEventListener('change', updateKontenSurat);
+
+                    // MutationObserver untuk mendeteksi perubahan value (untuk Select2)
+                    const observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.type === 'attributes' && mutation.attributeName ===
+                                'value') {
+                                console.log('Value changed detected by MutationObserver');
+                                updateKontenSurat();
+                            }
+                        });
+                    });
+
+                    // Mulai observasi
+                    observer.observe(tipeSuratSelect, {
+                        attributes: true,
+                        attributeFilter: ['value']
+                    });
+
+                    // Tambahan: Polling untuk memastikan perubahan terdeteksi
+                    let lastValue = tipeSuratSelect.value;
+                    setInterval(function() {
+                        if (tipeSuratSelect.value !== lastValue) {
+                            //console.log('Value change detected by polling');
+                            lastValue = tipeSuratSelect.value;
+                            updateKontenSurat();
+                        }
+                    }, 500); // Cek setiap 500ms
+
+                    // console.log('Event listener dan MutationObserver berhasil ditambahkan');
+                } else {
+                    // console.error('Element dengan ID tipe_surat_perintah_pra_penindakan tidak ditemukan!');
+                }
+            }
+        });
+
+        // PERBAIKAN UNTUK SELECT2 - METODE 3: Callback setelah Select2 diinisialisasi
+        // Tambahkan ini setelah inisialisasi Select2 di kode Anda
+        function initSelect2Callback() {
+            if (typeof $ !== 'undefined') {
+                // Pastikan Select2 sudah terinisialisasi
+                setTimeout(function() {
+                    $('#tipe_surat_perintah_pra_penindakan').on('select2:select', function(e) {
+                        console.log('Select2 callback event triggered');
+                        updateKontenSurat();
+                    });
+                }, 100);
+            }
+        }
+
+        // Panggil fungsi ini setelah Select2 diinisialisasi
+        // Contoh: setelah $('.select2').select2();
+        // initSelect2Callback();
+    </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

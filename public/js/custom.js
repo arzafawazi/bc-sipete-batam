@@ -170,7 +170,7 @@ $(document).ready(function () {
                     return; // Hindari duplikat inisialisasi
                 }
 
-                console.log('Inisialisasi select2...');
+                // console.log('Inisialisasi select2...');
                 $el.select2({
                     placeholder: 'Cari atau ketik kesimpulan...',
                     allowClear: true,
@@ -210,6 +210,8 @@ $(document).ready(function () {
         }
     });
 });
+
+
 
 
 
