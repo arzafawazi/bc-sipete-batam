@@ -360,7 +360,7 @@
                                                                 </div>
                                                                 <div class="col-md-8">
                                                                     <select class="form-control form-select select2"
-                                                                        name="keterangan_locus" required>
+                                                                        name="keterangan_locus"  >
                                                                         <option value="" disabled>- Pilih -</option>
                                                                         @foreach ($tempat as $locus)
                                                                             <option value="{{ $locus->locus }}"
@@ -773,7 +773,7 @@
                                                                 <td colspan="4">
                                                                     <select
                                                                         class="form-select border-0 border-bottom select2"
-                                                                        name="dugaan_pelanggaran_mpp" required>
+                                                                        name="dugaan_pelanggaran_mpp"  >
                                                                         <option value="" selected disabled>- Pilih -
                                                                         </option>
                                                                         @foreach ($jenis_pelanggaran as $pelanggaran)
@@ -793,7 +793,7 @@
                                                                 <td>:</td>
                                                                 <td colspan="4">
                                                                     <select class="form-control form-select select2"
-                                                                        name="modus_pelanggaran_mpp" required>
+                                                                        name="modus_pelanggaran_mpp"  >
                                                                         <option value="" disabled
                                                                             {{ old('modus_pelanggaran_lpt', $laporan->modus_pelanggaran_lpt) ? '' : 'selected' }}>
                                                                             - Pilih -</option>
@@ -812,7 +812,7 @@
                                                                 <td>:</td>
                                                                 <td colspan="4">
                                                                     <select class="form-control form-select select2"
-                                                                        name="locus_pelanggaran_mpp" required>
+                                                                        name="locus_pelanggaran_mpp"  >
                                                                         <option value="" disabled
                                                                             {{ old('locus_pelanggaran_mpp', $laporan->perkiraan_tempat_pelanggaran_lpt) ? '' : 'selected' }}>
                                                                             - Pilih -</option>
@@ -1497,7 +1497,7 @@
             } else {
                 document.querySelector('input[name="nomor_segel"]').value = '';
                 document.querySelector('input[name="nomor_segel"]').disabled = true;
-            }
+            } 
         });
     </script> --}}
 
@@ -1523,46 +1523,46 @@
         `,
                 untuk: `
                 <ol>
-  <li>
-    Melakukan pembukaan segel tindak pengamanan, melakukan penegahan dan penyegelan terhadap party barang dengan data sebagai berikut:
-    <table class="table-borderless" style="margin-left: 10px; margin-top: 8px; width: 100%;">
-      <tr>
-        <td style="width: 30%; vertical-align: top;"><strong>Nama Perusahaan</strong></td>
-        <td style="width: 2%; vertical-align: top;">:</td>
-        <td>
-          <input type="text" name="nama_perusahaan" class="form-control" placeholder="Masukkan nama perusahaan" required>
-        </td>
-      </tr>
-      <tr>
-        <td style="vertical-align: top;"><strong>Jenis/ No dan Tgl. Dokumen</strong></td>
-        <td style="vertical-align: top;">:</td>
-        <td>
-          <input type="text" name="jenis_dokumen" class="form-control" placeholder="Contoh: PPFTZ-01 Nomor 660733 Tanggal 18 Oktober 2024" required>
-        </td>
-      </tr>
-      <tr>
-        <td style="vertical-align: top;"><strong>Jumlah dan Jenis Barang</strong></td>
-        <td style="vertical-align: top;">:</td>
-        <td>
-          <textarea name="jumlah_jenis_barang" class="form-control" rows="4" placeholder="Contoh:
-- 668 Vacuum Sealer Merek Harvest Keeper;
-- 4800 Sarung Tangan/Smooth Nitrile Gloves merek Growers Edge;
-- 1152 Paper/Ink Ribbon set merek Mitsubishi Electric (item 4)." required></textarea>
-        </td>
-      </tr>
-      <tr>
-        <td style="vertical-align: top;"><strong>Tempat/ Lokasi Penindakan</strong></td>
-        <td style="vertical-align: top;">:</td>
-        <td>
-          <input type="text" name="lokasi_penindakan" class="form-control" placeholder="Masukkan lokasi penindakan" required>
-        </td>
-      </tr>
-    </table>
-  </li>
-  <li style="margin-top: 10px;">
-    Mengambil tindakan yang diperlukan dalam upaya pengamanan hak-hak negara dan pencegahan pelanggaran ketentuan perundang-undangan yang berlaku.
-  </li>
-</ol>
+            <li>
+                Melakukan pembukaan segel tindak pengamanan, melakukan penegahan dan penyegelan terhadap party barang dengan data sebagai berikut:
+                <table class="table-borderless" style="margin-left: 10px; margin-top: 8px; width: 100%;">
+                <tr>
+                    <td style="width: 30%; vertical-align: top;"><strong>Nama Perusahaan</strong></td>
+                    <td style="width: 2%; vertical-align: top;">:</td>
+                    <td>
+                    <input type="text" name="nama_perusahaan" class="form-control" placeholder="Masukkan nama perusahaan"  >
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><strong>Jenis/ No dan Tgl. Dokumen</strong></td>
+                    <td style="vertical-align: top;">:</td>
+                    <td>
+                    <input type="text" name="jenis_dokumen" class="form-control" placeholder="Contoh: PPFTZ-01 Nomor 660733 Tanggal 18 Oktober 2024">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><strong>Jumlah dan Jenis Barang</strong></td>
+                    <td style="vertical-align: top;">:</td>
+                    <td>
+                    <textarea name="jumlah_jenis_barang" class="form-control" rows="4" placeholder="Contoh:
+            - 668 Vacuum Sealer Merek Harvest Keeper;
+            - 4800 Sarung Tangan/Smooth Nitrile Gloves merek Growers Edge;
+            - 1152 Paper/Ink Ribbon set merek Mitsubishi Electric (item 4)."  ></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><strong>Tempat/ Lokasi Penindakan</strong></td>
+                    <td style="vertical-align: top;">:</td>
+                    <td>
+                    <input type="text" name="lokasi_penindakan" class="form-control" placeholder="Masukkan lokasi penindakan"  >
+                    </td>
+                </tr>
+                </table>
+            </li>
+            <li style="margin-top: 10px;">
+                Mengambil tindakan yang diperlukan dalam upaya pengamanan hak-hak negara dan pencegahan pelanggaran ketentuan perundang-undangan yang berlaku.
+            </li>
+            </ol>
         `,
                 ketentuan: `
             <ol>
@@ -1916,11 +1916,6 @@
             updateTextarea();
         });
     </script>
-
-
-
-
-
 
 
     <script>

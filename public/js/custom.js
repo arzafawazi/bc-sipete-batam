@@ -140,15 +140,9 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 
-// const textarea = document.querySelector("textarea.auto-expand");
-// textarea.addEventListener("input", function () {
-//     this.style.height = "auto";
-//     this.style.height = this.scrollHeight + "px";
-// });
+
 
 // footer
-
-
 
 
 $(document).ready(function () {

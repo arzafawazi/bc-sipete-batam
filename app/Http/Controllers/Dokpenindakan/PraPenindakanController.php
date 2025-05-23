@@ -136,18 +136,24 @@ class PraPenindakanController extends Controller
         return view('Dokpenindakan.pra-penindakan.edit', compact('praPenindakan', 'kapen', 'no_ref', 'users', 'jenis_pelanggaran', 'uraian_modus', 'tempat', 'laporanPengawasan'));
     }
 
-    public function update($id)
-    {
-        $data = request()->all();
+   public function update($id)
+{
+    $data = request()->all();
 
-        $item = TblLaporanInformasi::find($id);
-        if ($item) {
-            $item->update($data);
-            return redirect()->route('pra-penindakan.index')->with('success', 'Data berhasil diperbarui.');
-        }
-
-        return redirect()->route('pra-penindakan.index')->with('error', 'Data tidak ditemukan.');
+    // Konversi array ke JSON
+    if (isset($data['id_pejabat_sp_1']) && is_array($data['id_pejabat_sp_1'])) {
+        $data['id_pejabat_sp_1'] = json_encode($data['id_pejabat_sp_1']);
     }
+
+    $item = TblLaporanInformasi::find($id);
+    if ($item) {
+        $item->update($data);
+        return redirect()->route('pra-penindakan.index')->with('success', 'Data berhasil diperbarui.');
+    }
+
+    return redirect()->route('pra-penindakan.index')->with('error', 'Data tidak ditemukan.');
+}
+
 
     public function destroy($id)
     {
