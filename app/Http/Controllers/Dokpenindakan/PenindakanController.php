@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-
 class PenindakanController extends Controller
 {
     public function index()
@@ -37,10 +36,8 @@ class PenindakanController extends Controller
                 return $item;
             });
 
-
         return view('Dokpenindakan.penindakan.index', compact('laporanInformasi', 'penindakans'));
     }
-
 
     public function create(Request $request)
     {
@@ -68,26 +65,67 @@ class PenindakanController extends Controller
         $jenisPelanggaran = TblJenisPelanggaran::all();
         $loggedInUserId = auth()->user()->id_admin;
 
-
-        return view('Dokpenindakan.penindakan.create', compact(
-            'users',
-            'segels',
-            'kemasans',
-            'jenisPelanggaran',
-            'no_ref',
-            'laporan',
-            'id_pra_penindakan',
-            'kategori',
-            'nama_negara',
-            'loggedInUserId'
-        ));
+        return view('Dokpenindakan.penindakan.create', compact('users', 'segels', 'kemasans', 'jenisPelanggaran', 'no_ref', 'laporan', 'id_pra_penindakan', 'kategori', 'nama_negara', 'loggedInUserId'));
     }
-
-
 
     public function store(Request $request)
     {
-        TblSbp::create($request->all());
+        $pemberitahuan = [];
+        if ($request->has('pemberitahuan_uraian_barang')) {
+            foreach ($request->pemberitahuan_uraian_barang as $i => $uraian) {
+                if (isset($request->pemberitahuan_jml[$i]) && isset($request->pemberitahuan_kondisi[$i])) {
+                    $pemberitahuan[] = [
+                        'uraian_barang' => $uraian,
+                        'jml' => (int) $request->pemberitahuan_jml[$i],
+                        'kondisi' => $request->pemberitahuan_kondisi[$i],
+                    ];
+                }
+            }
+        }
+
+        $kedapatan = [];
+        if ($request->has('kedapatan_uraian_barang')) {
+            foreach ($request->kedapatan_uraian_barang as $i => $uraian) {
+                if (isset($request->kedapatan_jml[$i]) && isset($request->kedapatan_kondisi[$i])) {
+                    $kedapatan[] = [
+                        'uraian_barang' => $uraian,
+                        'jml' => (int) $request->kedapatan_jml[$i],
+                        'kondisi' => $request->kedapatan_kondisi[$i],
+                    ];
+                }
+            }
+        }
+
+        $data = $request->except(['pemberitahuan_uraian_barang', 'pemberitahuan_jml', 'pemberitahuan_kondisi', 'kedapatan_uraian_barang', 'kedapatan_jml', 'kedapatan_kondisi', 'dokumentasi_gambar', 'dokumentasi_caption']);
+
+        $data['hasil_pemeriksaan_barang'] = json_encode([
+            'pemberitahuan' => $pemberitahuan,
+            'kedapatan' => $kedapatan,
+        ]);
+
+        $dokumentasi = [];
+
+        if ($request->hasFile('dokumentasi_gambar')) {
+            foreach ($request->file('dokumentasi_gambar') as $i => $file) {
+                if ($file && $file->isValid()) {
+                    $path = $file->store('dokumentasi_pemeriksaan', 'public');
+                    $caption = $request->dokumentasi_caption[$i] ?? '';
+
+                    $dokumentasi[] = [
+                        'caption' => $caption,
+                        'image' => 'storage/' . $path,
+                    ];
+                }
+            }
+        }
+
+        $data['dokumentasi_pemeriksaan'] = json_encode($dokumentasi);
+
+        // dd($data);
+
+        TblSbp::create($data);
+
+        // Update nomor referensi
         $no_ref = TblNoRef::first();
         $no_ref->no_sbp += 1;
         $no_ref->no_ba_henti += 1;
@@ -106,7 +144,6 @@ class PenindakanController extends Controller
         return redirect()->route('penindakan.index')->with('success', 'Data berhasil disimpan dan nomor referensi telah diperbarui.');
     }
 
-
     public function edit($id)
     {
         $penindakans = TblSbp::findOrFail($id);
@@ -117,24 +154,10 @@ class PenindakanController extends Controller
         $nama_negara = TblNegara::all()->groupBy('benua');
         $jenisPelanggaran = TblJenisPelanggaran::all();
 
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakans->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print']);
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakans->id_pra_penindakan_ref)->first(['no_print', 'tgl_print']);
 
-
-
-        return view('Dokpenindakan.penindakan.edit', compact(
-            'penindakans',
-            'users',
-            'segels',
-            'kemasans',
-            'jenisPelanggaran',
-            'no_ref',
-            'laporan',
-            'nama_negara'
-        ));
+        return view('Dokpenindakan.penindakan.edit', compact('penindakans', 'users', 'segels', 'kemasans', 'jenisPelanggaran', 'no_ref', 'laporan', 'nama_negara'));
     }
-
-
 
     public function update($id)
     {
@@ -159,14 +182,11 @@ class PenindakanController extends Controller
         return redirect()->route('penindakan.index')->with('error', 'Data tidak ditemukan.');
     }
 
-
-
     public function getNomorSegel($id)
     {
         $segel = TblSegel::find($id);
         return response()->json(['nomor_segel' => $segel->nomor_segel ?? '']);
     }
-
 
     public function print_surat_sbp($id)
     {
@@ -174,16 +194,11 @@ class PenindakanController extends Controller
 
         $data = $penindakan->toArray();
 
-        $pejabatKeys = [
-            'id_petugas_1_sbp',
-            'id_petugas_2_sbp',
-        ];
+        $pejabatKeys = ['id_petugas_1_sbp', 'id_petugas_2_sbp'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
                 $pejabat = $penindakan->getPejabat($key)->first();
-
-
 
                 if ($pejabat) {
                     $data[$key . '_nama'] = $pejabat->nama_admin;
@@ -201,27 +216,22 @@ class PenindakanController extends Controller
 
         // dd($data);
 
-        $kode_kantor = "KPU.2";
+        $kode_kantor = 'KPU.2';
 
-        $no_sprint = $penindakan->no_print . " tanggal " . $this->formatDates(['tgl_print' => $penindakan->tgl_print])['tgl_print'];
+        $no_sprint = $penindakan->no_print . ' tanggal ' . $this->formatDates(['tgl_print' => $penindakan->tgl_print])['tgl_print'];
         $data['no_sprint'] = $no_sprint;
 
-        $ba_pemeriksaan = $penindakan->no_ba_riksa != "" ? "BA-" . ltrim($penindakan->no_ba_riksa, '0') . "/Riksa/" . $kode_kantor . "/" . date('Y') : "--";
+        $ba_pemeriksaan = $penindakan->no_ba_riksa != '' ? 'BA-' . ltrim($penindakan->no_ba_riksa, '0') . '/Riksa/' . $kode_kantor . '/' . date('Y') : '--';
         $data['ba_pemeriksaan'] = $ba_pemeriksaan;
 
-
-        $ba_penegahan = $penindakan->no_ba_tegah != "" ? "BA-" . ltrim($penindakan->no_ba_tegah, '0') . "/Tegah/" . $kode_kantor . "/" . date('Y') : "--";
+        $ba_penegahan = $penindakan->no_ba_tegah != '' ? 'BA-' . ltrim($penindakan->no_ba_tegah, '0') . '/Tegah/' . $kode_kantor . '/' . date('Y') : '--';
         $data['ba_penegahan'] = $ba_penegahan;
 
-
-        $ba_penyegelan = $penindakan->no_ba_segel != "" ? "BA-" . ltrim($penindakan->no_ba_segel, '0') . "/Segel/" . $kode_kantor . "/" . date('Y') : "--";
+        $ba_penyegelan = $penindakan->no_ba_segel != '' ? 'BA-' . ltrim($penindakan->no_ba_segel, '0') . '/Segel/' . $kode_kantor . '/' . date('Y') : '--';
         $data['ba_penyegelan'] = $ba_penyegelan;
 
-
-        $tindakan_lain = $penindakan->no_ba_lainnya != "" ? "BA-" . ltrim($penindakan->no_ba_lainnya, '0') . "/Lainnya/" . $kode_kantor . "/" . date('Y') : "--";
+        $tindakan_lain = $penindakan->no_ba_lainnya != '' ? 'BA-' . ltrim($penindakan->no_ba_lainnya, '0') . '/Lainnya/' . $kode_kantor . '/' . date('Y') : '--';
         $data['tindakan_lain'] = $tindakan_lain;
-
-
 
         $data = $this->formatDates($data);
 
@@ -230,8 +240,6 @@ class PenindakanController extends Controller
         }, $data);
 
         $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/surat-bukti-penindakan.docx'));
-
-
 
         $tglSbp = $penindakan->tgl_sbp;
 
@@ -245,14 +253,12 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_sbp', $tahunSbp);
 
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         if (!empty($laporan->skema_penindakan_perintah)) {
             $tipePenindakan = strtoupper($laporan->skema_penindakan_perintah);
             $nosbp = $data['no_sbp'];
-            $tahunSbp  = $data['tahun_sbp'];
+            $tahunSbp = $data['tahun_sbp'];
 
             switch ($tipePenindakan) {
                 case 'MANDIRI':
@@ -307,7 +313,6 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
         // dd($data);
 
         $templateProcessor->setValues($data);
@@ -320,8 +325,6 @@ class PenindakanController extends Controller
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
 
-
-
     public function print_ba_riksa($id)
     {
         $penindakan = TblSbp::findOrFail($id);
@@ -329,10 +332,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -368,18 +368,11 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_riksa',
-            'id_pejabat_2_ba_riksa',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_riksa', 'id_pejabat_2_ba_riksa', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -408,14 +401,9 @@ class PenindakanController extends Controller
             $data['formatBaRiksa'] = '';
         }
 
-
-
         $data = $this->formatDates($data);
 
-
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
-
-
 
         // dd($data);
 
@@ -426,7 +414,6 @@ class PenindakanController extends Controller
                 $templateProcessor->setValue($key, $value);
             }
         }
-
 
         $tglRiksa = $penindakan->tgl_ba_riksa;
 
@@ -440,19 +427,15 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_riksa', $tahunBaRiksa);
 
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Pemeriksaan_Nomor_' . $penindakan->no_ba_riksa . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_ba_riksa_badan($id)
     {
@@ -461,10 +444,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -500,18 +480,11 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_riksa_badan',
-            'id_pejabat_2_ba_riksa_badan',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_riksa_badan', 'id_pejabat_2_ba_riksa_badan', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -540,10 +513,7 @@ class PenindakanController extends Controller
             $data['formatBaRiksaBadan'] = '';
         }
 
-
-
         $data = $this->formatDates($data);
-
 
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
 
@@ -557,7 +527,6 @@ class PenindakanController extends Controller
             }
         }
 
-
         $tglRiksaBadan = $penindakan->tgl_ba_riksa_badan;
 
         if (!empty($tglRiksaBadan)) {
@@ -570,15 +539,12 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_riksa_badan', $tahunBaRiksaBadan);
 
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Pemeriksaan_Badan_Nomor_' . $penindakan->no_ba_riksa_badan . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
-
 
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
@@ -590,10 +556,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -629,18 +592,11 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_sarkut',
-            'id_pejabat_2_ba_sarkut',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_sarkut', 'id_pejabat_2_ba_sarkut', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -669,8 +625,6 @@ class PenindakanController extends Controller
             $data['formatBaSarkut'] = '';
         }
 
-
-
         if (!empty($data['waktu_berangkat']) && Carbon::hasFormat($data['waktu_berangkat'], 'Y-m-d H:i')) {
             $waktuBerangkat = Carbon::parse($data['waktu_berangkat']);
             $tanggal = $waktuBerangkat->translatedFormat('d');
@@ -695,13 +649,9 @@ class PenindakanController extends Controller
             $data['waktuTiba'] = '-';
         }
 
-
         // dd($data['waktu_berangkat'], $data['waktu_tiba']);
 
-
-
         $data = $this->formatDates($data);
-
 
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
 
@@ -715,7 +665,6 @@ class PenindakanController extends Controller
             }
         }
 
-
         $tglSarkut = $penindakan->tgl_ba_sarkut;
 
         if (!empty($tglSarkut)) {
@@ -728,19 +677,15 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_sarkut', $tahunBaSarkut);
 
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Membawa_Sarana_Pengangkut_Nomor_' . $penindakan->no_ba_sarkut . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_ba_contoh($id)
     {
@@ -749,10 +694,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -788,18 +730,11 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_contoh',
-            'id_pejabat_2_ba_contoh',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_contoh', 'id_pejabat_2_ba_contoh', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -828,16 +763,9 @@ class PenindakanController extends Controller
             $data['formatBaContoh'] = '';
         }
 
-
-
-
-
         // dd($data['waktu_berangkat'], $data['waktu_tiba']);
 
-
-
         $data = $this->formatDates($data);
-
 
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
 
@@ -851,7 +779,6 @@ class PenindakanController extends Controller
             }
         }
 
-
         $tglContoh = $penindakan->tgl_ba_contoh;
 
         if (!empty($tglContoh)) {
@@ -864,19 +791,15 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_contoh', $tahunBaContoh);
 
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Pengambilan_Contoh_Barang_Nomor_' . $penindakan->no_ba_contoh . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_ba_dokumentasi($id)
     {
@@ -885,10 +808,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -924,18 +844,11 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_dokumentasi',
-            'id_pejabat_2_ba_dokumentasi',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_dokumentasi', 'id_pejabat_2_ba_dokumentasi', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -964,16 +877,9 @@ class PenindakanController extends Controller
             $data['formatBaDokumentasi'] = '';
         }
 
-
-
-
-
         // dd($data['waktu_berangkat'], $data['waktu_tiba']);
 
-
-
         $data = $this->formatDates($data);
-
 
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
 
@@ -987,7 +893,6 @@ class PenindakanController extends Controller
             }
         }
 
-
         $tglDokumentasi = $penindakan->tgl_ba_dok;
 
         if (!empty($tglDokumentasi)) {
@@ -1000,19 +905,15 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_dokumentasi', $tahunBaDokumentasi);
 
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Pengambilan_Contoh_Barang_Nomor_' . $penindakan->no_ba_contoh . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
 
     public function print_ba_segel($id)
     {
@@ -1021,10 +922,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -1060,18 +958,11 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_segel',
-            'id_pejabat_2_ba_segel',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_segel', 'id_pejabat_2_ba_segel', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -1100,14 +991,9 @@ class PenindakanController extends Controller
             $data['formatBaSegel'] = '';
         }
 
-
-
         // dd($data['waktu_berangkat'], $data['waktu_tiba']);
 
-
-
         $data = $this->formatDates($data);
-
 
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
 
@@ -1121,7 +1007,6 @@ class PenindakanController extends Controller
             }
         }
 
-
         $tglSegel = $penindakan->tgl_ba_segel;
 
         if (!empty($tglSegel)) {
@@ -1134,15 +1019,12 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_segel', $tahunBaSegel);
 
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Penyegelan_Nomor_' . $penindakan->no_ba_segel . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
-
 
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
@@ -1154,10 +1036,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -1193,18 +1072,11 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_titip',
-            'id_pejabat_2_ba_titip',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_titip', 'id_pejabat_2_ba_titip', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -1240,12 +1112,9 @@ class PenindakanController extends Controller
             $data['formatBaSegel'] = '-';
         }
 
-
         // dd($data['waktu_berangkat'], $data['waktu_tiba']);
 
-
         $data = $this->formatDates($data);
-
 
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
 
@@ -1259,7 +1128,6 @@ class PenindakanController extends Controller
             }
         }
 
-
         $tglTitip = $penindakan->tgl_ba_titip;
 
         if (!empty($tglTitip)) {
@@ -1272,19 +1140,12 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_titip', $tahunBaTitip);
 
-
-
-
-
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Penitipan_Nomor_' . $penindakan->no_ba_titip . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
-
 
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
@@ -1296,10 +1157,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -1335,8 +1193,6 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
-
         $tglsbp = $penindakan->tgl_sbp;
 
         if (!empty($tglsbp)) {
@@ -1370,20 +1226,11 @@ class PenindakanController extends Controller
             $data['formatSbp'] = "Nomor SBP-{$data['no_sbp']}/UNKNOWN/KPU.206/{$data['tahun_sbp']}";
         }
 
-
-
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_tolak1',
-            'id_pejabat_2_ba_tolak1',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_tolak1', 'id_pejabat_2_ba_tolak1', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -1412,14 +1259,9 @@ class PenindakanController extends Controller
             $data['formatBaTolak1'] = '';
         }
 
-
-
-
         // dd($data['waktu_berangkat'], $data['waktu_tiba']);
 
-
         $data = $this->formatDates($data);
-
 
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
 
@@ -1433,7 +1275,6 @@ class PenindakanController extends Controller
             }
         }
 
-
         $tglTolak1 = $penindakan->tgl_ba_tolak_1;
 
         if (!empty($tglTolak1)) {
@@ -1446,15 +1287,12 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_tolak1', $tahunBaTolak1);
 
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Penolakan_Tanda_Tangan_Surat_Bukti_Penindakan_Nomor_' . $penindakan->no_ba_tolak_1 . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
-
 
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
@@ -1466,10 +1304,7 @@ class PenindakanController extends Controller
         $data = $penindakan->toArray();
         Carbon::setLocale('id');
 
-
-        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)
-            ->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
-
+        $laporan = TblLaporanInformasi::where('id_pra_penindakan', $penindakan->id_pra_penindakan_ref)->first(['no_print', 'tgl_print', 'id_pejabat_sp_2', 'skema_penindakan_perintah']);
 
         $data['no_print'] = $laporan->no_print ?? '';
         $data['tgl_print'] = $laporan->tgl_print ?? '';
@@ -1505,8 +1340,6 @@ class PenindakanController extends Controller
             $data['formatPrint'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.206/{$data['tahun_print']}";
         }
 
-
-
         $tglsbp = $penindakan->tgl_sbp;
 
         if (!empty($tglsbp)) {
@@ -1540,20 +1373,11 @@ class PenindakanController extends Controller
             $data['formatSbp'] = "Nomor SBP-{$data['no_sbp']}/UNKNOWN/KPU.206/{$data['tahun_sbp']}";
         }
 
-
-
-
         if ($laporan && $laporan->id_pejabat_sp_2) {
             $penindakan->id_pejabat_sp_2 = $laporan->id_pejabat_sp_2;
         }
 
-
-        $pejabatKeys = [
-            'id_pejabat_1_ba_tolak2',
-            'id_pejabat_2_ba_tolak2',
-            'id_pejabat_sp_2',
-        ];
-
+        $pejabatKeys = ['id_pejabat_1_ba_tolak2', 'id_pejabat_2_ba_tolak2', 'id_pejabat_sp_2'];
 
         foreach ($pejabatKeys as $key) {
             if ($penindakan->$key) {
@@ -1582,14 +1406,9 @@ class PenindakanController extends Controller
             $data['formatBaTolak2'] = '';
         }
 
-
-
-
         // dd($data['waktu_berangkat'], $data['waktu_tiba']);
 
-
         $data = $this->formatDates($data);
-
 
         $data = array_map(fn($value) => is_null($value) ? '-' : $value, $data);
 
@@ -1603,7 +1422,6 @@ class PenindakanController extends Controller
             }
         }
 
-
         $tglTolak1 = $penindakan->tgl_ba_tolak_1;
 
         if (!empty($tglTolak2)) {
@@ -1616,20 +1434,15 @@ class PenindakanController extends Controller
 
         $templateProcessor->setValue('tahun_tolak2', $tahunBaTolak2);
 
-
         // dd($data);
-
 
         $fileName = 'Dokumen_Penindakan_Berita_Acara_Penolakan_Tanda_Tangan_Surat_Bukti_Penindakan_Nomor_' . $penindakan->no_ba_tolak_2 . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);
 
-
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
-
-
 
     private function formatDates($data)
     {
@@ -1645,14 +1458,12 @@ class PenindakanController extends Controller
             'September' => 'September',
             'October' => 'Oktober',
             'November' => 'November',
-            'December' => 'Desember'
+            'December' => 'Desember',
         ];
 
         Carbon::setLocale('id');
 
-        $dateFields = [
-            'tempus_pelanggaran_mpp'
-        ];
+        $dateFields = ['tempus_pelanggaran_mpp'];
 
         foreach ($dateFields as $field) {
             if (!empty($data[$field])) {
@@ -1694,9 +1505,6 @@ class PenindakanController extends Controller
 
         return $data;
     }
-
-
-
 
     private function isValidDate($date)
     {

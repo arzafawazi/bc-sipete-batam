@@ -112,33 +112,33 @@ if (form) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Inisialisasi Quill.js
-    var quill = new Quill("#editor-container", {
-        theme: "snow",
-        modules: {
-            toolbar: [
-                ["bold", "italic", "underline"],
-                [{ list: "ordered" }, { list: "bullet" }],
-                [{ align: [] }],
-                ["clean"],
-            ],
-        },
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+        // Inisialisasi Quill.js
+        var quill = new Quill("#editor-container", {
+            theme: "snow",
+            modules: {
+                toolbar: [
+                    ["bold", "italic", "underline"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ align: [] }],
+                    ["clean"],
+                ],
+            },
+        });
 
-    var hiddenInput = document.querySelector("#melaksanakan_tugas_st");
+        var hiddenInput = document.querySelector("#melaksanakan_tugas_st");
 
-    hiddenInput.value = quill.root.innerHTML;
-
-    quill.on("text-change", function () {
         hiddenInput.value = quill.root.innerHTML;
-    });
 
-    var form = document.querySelector("form");
-    form.onsubmit = function () {
-        hiddenInput.value = quill.root.innerHTML;
-    };
-});
+        quill.on("text-change", function () {
+            hiddenInput.value = quill.root.innerHTML;
+        });
+
+        var form = document.querySelector("form");
+        form.onsubmit = function () {
+            hiddenInput.value = quill.root.innerHTML;
+        };
+    });
 
 
 

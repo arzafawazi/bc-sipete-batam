@@ -81,19 +81,20 @@ class PraPenindakanController extends Controller
 
         // dd($data);
 
-       
         if ($request->filled('kesimpulan_lap')) {
             TblKesimpulanLappPraPenindakan::firstOrCreate([
                 'kesimpulan_lapp_pra_penindakan' => $request->input('kesimpulan_lap'),
             ]);
         }
 
-        
+        if ($request->has('pejabat_bulanan')) {
+            $data['pejabat_bulanan'] = json_encode($request->input('pejabat_bulanan'));
+        }
+
         if ($request->has('id_pejabat_sp_1')) {
             $data['id_pejabat_sp_1'] = json_encode($request->input('id_pejabat_sp_1'));
         }
 
-        
         TblLaporanInformasi::create($data);
 
         // Update nomor referensi
@@ -117,9 +118,9 @@ class PraPenindakanController extends Controller
         $praPenindakan->dugaan_pelanggaran_mpp = $praPenindakan->dugaan_pelanggaran_mpp ?? $laporanPengawasan->jenis_pelanggaran_lpt;
 
         $praPenindakan->modus_pelanggaran_mpp = $praPenindakan->modus_pelanggaran_mpp ?? $laporanPengawasan->modus_pelanggaran_lpt;
-        
+
         $praPenindakan->locus_pelanggaran_mpp = $praPenindakan->locus_pelanggaran_mpp ?? $laporanPengawasan->perkiraan_tempat_pelanggaran_lpt;
-        
+
         $praPenindakan->tempus_pelanggaran_mpp = $praPenindakan->tempus_pelanggaran_mpp ?? $laporanPengawasan->perkiraan_waktu_pelanggaran_lpt;
 
         $praPenindakan->keterangan_dugaan_pelanggaran = $praPenindakan->keterangan_dugaan_pelanggaran ?? $laporanPengawasan->jenis_pelanggaran_lpt;
@@ -136,24 +137,28 @@ class PraPenindakanController extends Controller
         return view('Dokpenindakan.pra-penindakan.edit', compact('praPenindakan', 'kapen', 'no_ref', 'users', 'jenis_pelanggaran', 'uraian_modus', 'tempat', 'laporanPengawasan'));
     }
 
-   public function update($id)
-{
-    $data = request()->all();
+    public function update($id)
+    {
+        $data = request()->all();
 
-    // Konversi array ke JSON
-    if (isset($data['id_pejabat_sp_1']) && is_array($data['id_pejabat_sp_1'])) {
-        $data['id_pejabat_sp_1'] = json_encode($data['id_pejabat_sp_1']);
+        // Konversi array ke JSON
+        if (isset($data['pejabat_bulanan']) && is_array($data['pejabat_bulanan'])) {
+            $data['pejabat_bulanan'] = json_encode($data['pejabat_bulanan']);
+        }
+
+
+        if (isset($data['id_pejabat_sp_1']) && is_array($data['id_pejabat_sp_1'])) {
+            $data['id_pejabat_sp_1'] = json_encode($data['id_pejabat_sp_1']);
+        }
+
+        $item = TblLaporanInformasi::find($id);
+        if ($item) {
+            $item->update($data);
+            return redirect()->route('pra-penindakan.index')->with('success', 'Data berhasil diperbarui.');
+        }
+
+        return redirect()->route('pra-penindakan.index')->with('error', 'Data tidak ditemukan.');
     }
-
-    $item = TblLaporanInformasi::find($id);
-    if ($item) {
-        $item->update($data);
-        return redirect()->route('pra-penindakan.index')->with('success', 'Data berhasil diperbarui.');
-    }
-
-    return redirect()->route('pra-penindakan.index')->with('error', 'Data tidak ditemukan.');
-}
-
 
     public function destroy($id)
     {
@@ -506,178 +511,6 @@ class PraPenindakanController extends Controller
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
 
-    public function print_surat_perintah($id)
-    {
-        $praPenindakan = TblLaporanInformasi::findOrFail($id);
-        $data = $praPenindakan->toArray();
-
-        $pejabatKeys = ['id_pejabat_sp_1', 'id_pejabat_sp_2'];
-
-        foreach ($pejabatKeys as $key) {
-            if ($praPenindakan->$key) {
-                $pejabat = $praPenindakan->pejabat($key)->first();
-                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
-                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
-                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
-                $data[$key . '_nip'] = $pejabat->nip ?? '';
-            } else {
-                $data[$key . '_nama'] = '';
-                $data[$key . '_pangkat'] = '';
-                $data[$key . '_jabatan'] = '';
-                $data[$key . '_nip'] = '';
-            }
-        }
-
-        $data['id_pejabat_sp_1'] = [];
-        if (!empty($praPenindakan->id_pejabat_sp_1)) {
-            $pejabatsp = json_decode($praPenindakan->id_pejabat_sp_1, true) ?? [];
-            foreach ($pejabatsp as $index => $id) {
-                $user = User::where('id_admin', $id)->first();
-                $data['id_pejabat_sp_1'][] = [
-                    'no' => $index + 1,
-                    'nama' => $user->nama_admin ?? '',
-                    'pangkat' => $user->pangkat ?? '',
-                    'jabatan' => $user->jabatan ?? '',
-                    'nip' => $user->nip ?? '',
-                ];
-            }
-        }
-
-        $data['tahun_sekarang'] = date('Y');
-
-        $data = $this->formatDates($data);
-
-        $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
-
-        // dd($data);
-
-        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/surat-print.docx'));
-
-        foreach ($data as $key => $value) {
-            if (!is_array($value)) {
-                $templateProcessor->setValue($key, $value);
-            }
-        }
-
-        if (!empty($data['id_pejabat_sp_1'])) {
-            $tempData = $data['id_pejabat_sp_1'];
-
-            $templateProcessor->cloneBlock('memberi_perintah_section', count($tempData), true, true);
-
-            foreach ($tempData as $index => $tim) {
-                $realIndex = $index + 1;
-
-                $templateProcessor->setValue("kepada#$realIndex", $index === 0 ? 'Kepada      :' : '');
-
-                $templateProcessor->setValue("i#$realIndex", "$realIndex.");
-                $templateProcessor->setValue("memberi_perintah_nama#$realIndex", $tim['nama']);
-                $templateProcessor->setValue("memberi_perintah_pangkat#$realIndex", $tim['pangkat']);
-                $templateProcessor->setValue("memberi_perintah_nip#$realIndex", $tim['nip']);
-                $templateProcessor->setValue("memberi_perintah_jabatan#$realIndex", $tim['jabatan']);
-            }
-        } else {
-            $templateProcessor->deleteBlock('memberi_perintah_section');
-        }
-
-        $keterangan_perundang_raw = $praPenindakan->ket_perundang;
-        $keterangan_perundang_raw = preg_replace('/\s+/', ' ', trim($keterangan_perundang_raw));
-        preg_match_all('/\#(.*?)\#/', $keterangan_perundang_raw, $matches);
-        $templateData = [];
-        foreach (array_unique($matches[1]) as $index => $task) {
-            $templateData[] = [
-                'ik' => $index + 1 . '.',
-                'keterangan_perundung' => trim($task),
-            ];
-        }
-
-        $templateProcessor->cloneRowAndSetValues('ik', $templateData);
-
-        $dasar_sp_raw = $praPenindakan->dasar_sp;
-        $dasar_sp_raw = preg_replace('/\s+/', ' ', trim($dasar_sp_raw));
-        preg_match_all('/\#(.*?)\#/', $dasar_sp_raw, $matches);
-        $templateData = [];
-        foreach (array_unique($matches[1]) as $index => $task) {
-            $templateData[] = [
-                'is' => $index + 1 . '.',
-                'dasar_surat' => trim($task),
-            ];
-        }
-
-        $templateProcessor->cloneRowAndSetValues('is', $templateData);
-
-        $perintah_sp_raw = $praPenindakan->perintah_sp;
-        $perintah_sp_raw = preg_replace('/\s+/', ' ', trim($perintah_sp_raw));
-        preg_match_all('/\#(.*?)\#/', $perintah_sp_raw, $matches);
-        $templateData = [];
-        foreach (array_unique($matches[1]) as $index => $task) {
-            $templateData[] = [
-                'no' => $index + 1 . '.',
-                'perintah_surat' => trim($task),
-            ];
-        }
-
-        $templateProcessor->cloneRowAndSetValues('no', $templateData);
-
-        $ketentuan_lain_raw = $praPenindakan->ketentuan_lain;
-        $ketentuan_lain_raw = preg_replace('/\s+/', ' ', trim($ketentuan_lain_raw));
-        preg_match_all('/\#(.*?)\#/', $ketentuan_lain_raw, $matches);
-        $templateData = [];
-        foreach (array_unique($matches[1]) as $index => $task) {
-            $templateData[] = [
-                'ke' => $index + 1 . '.',
-                'ket_lain' => trim($task),
-            ];
-        }
-
-        $templateProcessor->cloneRowAndSetValues('ke', $templateData);
-
-        $tglPrint = $praPenindakan->tgl_print;
-
-        if (!empty($tglPrint)) {
-            $tahunSuratPrint = date('Y', strtotime($tglPrint));
-        } else {
-            $tahunSuratPrint = '-';
-        }
-
-        $data['tahun_print'] = $tahunSuratPrint;
-
-        $templateProcessor->setValue('tahun_print', $tahunSuratPrint);
-
-        if (!empty($praPenindakan->skema_penindakan_perintah)) {
-            $tipePenindakan = strtoupper($praPenindakan->skema_penindakan_perintah);
-            $noPrint = $data['no_print'] ?? '1';
-            $tahunPrint = $data['tahun_print'];
-
-            switch ($tipePenindakan) {
-                case 'MANDIRI':
-                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/MANDIRI/KPU.2/KPU.206/{$tahunPrint}";
-                    break;
-                case 'PERBANTUAN':
-                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/KPU.206/{$tahunPrint}";
-                    break;
-                case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
-                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/BERSAMA INSTANSI LAIN/KPU.206/{$tahunPrint}";
-                    break;
-                default:
-                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/UNKNOWN/KPU.2/KPU.206/{$tahunPrint}";
-                    break;
-            }
-        } else {
-            $data['format_nomor'] = "Nomor PRIN-{$data['no_print']}/UNKNOWN/KPU.2/KPU.206/{$data['tahun_print']}";
-        }
-
-        $templateProcessor->setValue('format_nomor', $data['format_nomor']);
-
-        // dd($data);
-
-        $fileName = 'Dokumen_Pra_Penindakan_Surat_Perintah_Nomor_' . $praPenindakan->no_print . '.docx';
-
-        $filePath = storage_path('app/public/' . $fileName);
-        $templateProcessor->saveAs($filePath);
-
-        return response()->download($filePath)->deleteFileAfterSend(true);
-    }
-
     public function print_surat_mpp($id)
     {
         $praPenindakan = TblLaporanInformasi::findOrFail($id);
@@ -737,6 +570,666 @@ class PraPenindakanController extends Controller
         $templateProcessor->setValue('tahun_print', $tahunSuratPrint);
 
         $fileName = 'Dokumen_Pra_Penindakan_Surat_MPP_Nomor_' . $praPenindakan->no_mpp . '.docx';
+
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function print_surat_perintah_nhi_pra_penindakan($id)
+    {
+        $praPenindakan = TblLaporanInformasi::findOrFail($id);
+        $data = $praPenindakan->toArray();
+
+        $pejabatKeys = ['id_pejabat_sp_1', 'id_pejabat_sp_2'];
+
+        foreach ($pejabatKeys as $key) {
+            if ($praPenindakan->$key) {
+                $pejabat = $praPenindakan->pejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        $data['id_pejabat_sp_1'] = [];
+        if (!empty($praPenindakan->id_pejabat_sp_1)) {
+            $pejabatsp = json_decode($praPenindakan->id_pejabat_sp_1, true) ?? [];
+            foreach ($pejabatsp as $index => $id) {
+                $user = User::where('id_admin', $id)->first();
+                $data['id_pejabat_sp_1'][] = [
+                    'no' => $index + 1,
+                    'nama' => $user->nama_admin ?? '',
+                    'pangkat' => $user->pangkat ?? '',
+                    'jabatan' => $user->jabatan ?? '',
+                    'nip' => $user->nip ?? '',
+                ];
+            }
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $data = $this->formatDates($data);
+
+        $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
+
+        // dd($data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/surat-perintah/surat-perintah-nhi.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        if (!empty($data['id_pejabat_sp_1'])) {
+            $tempData = $data['id_pejabat_sp_1'];
+
+            $templateProcessor->cloneBlock('memberi_perintah_section', count($tempData), true, true);
+
+            foreach ($tempData as $index => $tim) {
+                $realIndex = $index + 1;
+
+                $templateProcessor->setValue("kepada#$realIndex", $index === 0 ? 'Kepada      :' : '');
+
+                $templateProcessor->setValue("i#$realIndex", "$realIndex.");
+                $templateProcessor->setValue("memberi_perintah_nama#$realIndex", $tim['nama']);
+                $templateProcessor->setValue("memberi_perintah_pangkat#$realIndex", $tim['pangkat']);
+                $templateProcessor->setValue("memberi_perintah_nip#$realIndex", $tim['nip']);
+                $templateProcessor->setValue("memberi_perintah_jabatan#$realIndex", $tim['jabatan']);
+            }
+        } else {
+            $templateProcessor->deleteBlock('memberi_perintah_section');
+        }
+
+        // $keterangan_perundang_raw = $praPenindakan->ket_perundang;
+        // $keterangan_perundang_raw = preg_replace('/\s+/', ' ', trim($keterangan_perundang_raw));
+        // preg_match_all('/\#(.*?)\#/', $keterangan_perundang_raw, $matches);
+        // $templateData = [];
+        // foreach (array_unique($matches[1]) as $index => $task) {
+        //     $templateData[] = [
+        //         'ik' => $index + 1 . '.',
+        //         'keterangan_perundung' => trim($task),
+        //     ];
+        // }
+
+        // $templateProcessor->cloneRowAndSetValues('ik', $templateData);
+
+        // $dasar_sp_raw = $praPenindakan->dasar_sp;
+        // $dasar_sp_raw = preg_replace('/\s+/', ' ', trim($dasar_sp_raw));
+        // preg_match_all('/\#(.*?)\#/', $dasar_sp_raw, $matches);
+        // $templateData = [];
+        // foreach (array_unique($matches[1]) as $index => $task) {
+        //     $templateData[] = [
+        //         'is' => $index + 1 . '.',
+        //         'dasar_surat' => trim($task),
+        //     ];
+        // }
+
+        // $templateProcessor->cloneRowAndSetValues('is', $templateData);
+
+        // $perintah_sp_raw = $praPenindakan->perintah_sp;
+        // $perintah_sp_raw = preg_replace('/\s+/', ' ', trim($perintah_sp_raw));
+        // preg_match_all('/\#(.*?)\#/', $perintah_sp_raw, $matches);
+        // $templateData = [];
+        // foreach (array_unique($matches[1]) as $index => $task) {
+        //     $templateData[] = [
+        //         'no' => $index + 1 . '.',
+        //         'perintah_surat' => trim($task),
+        //     ];
+        // }
+
+        // $templateProcessor->cloneRowAndSetValues('no', $templateData);
+
+        // $ketentuan_lain_raw = $praPenindakan->ketentuan_lain;
+        // $ketentuan_lain_raw = preg_replace('/\s+/', ' ', trim($ketentuan_lain_raw));
+        // preg_match_all('/\#(.*?)\#/', $ketentuan_lain_raw, $matches);
+        // $templateData = [];
+        // foreach (array_unique($matches[1]) as $index => $task) {
+        //     $templateData[] = [
+        //         'ke' => $index + 1 . '.',
+        //         'ket_lain' => trim($task),
+        //     ];
+        // }
+
+        // $templateProcessor->cloneRowAndSetValues('ke', $templateData);
+
+        $tglPrint = $praPenindakan->tgl_print;
+
+        if (!empty($tglPrint)) {
+            $tahunSuratPrint = date('Y', strtotime($tglPrint));
+        } else {
+            $tahunSuratPrint = '-';
+        }
+
+        $data['tahun_print'] = $tahunSuratPrint;
+
+        $templateProcessor->setValue('tahun_print', $tahunSuratPrint);
+
+        if (!empty($praPenindakan->skema_penindakan_perintah)) {
+            $tipePenindakan = strtoupper($praPenindakan->skema_penindakan_perintah);
+            $noPrint = $data['no_print'] ?? '1';
+            $tahunPrint = $data['tahun_print'];
+
+            switch ($tipePenindakan) {
+                case 'MANDIRI':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/MANDIRI/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+                case 'PERBANTUAN':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+                case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/BERSAMA INSTANSI LAIN/KPU.206/{$tahunPrint}";
+                    break;
+                default:
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+            }
+        } else {
+            $data['format_nomor'] = "Nomor PRIN-{$data['no_print']}/KPU.2/KPU.206/{$data['tahun_print']}";
+        }
+
+        $templateProcessor->setValue('format_nomor', $data['format_nomor']);
+
+        // dd($data);
+
+        $fileName = 'Dokumen_Pra_Penindakan_Surat_Perintah_NHI_Nomor_' . $praPenindakan->no_print . '.docx';
+
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function print_surat_pemberitahuan_nhi_pra_penindakan($id)
+    {
+        $praPenindakan = TblLaporanInformasi::findOrFail($id);
+        $data = $praPenindakan->toArray();
+
+        // Ambil data pejabat
+        $pejabatKeys = ['id_pejabat_pemnhi'];
+
+        foreach ($pejabatKeys as $key) {
+            if ($praPenindakan->$key) {
+                $pejabat = $praPenindakan->pejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        // Format tanggal surat ke versi lokal
+        $data = $this->formatDates($data);
+
+        // Isi tambahan: no_surat dan tahun_surat dari tanggal_surat_pemberitahuan_nhi
+        $data['no_surat'] = $praPenindakan->nomor_surat_pemberitahuan_nhi ?? '';
+        $data['tahun_surat'] = $praPenindakan->tanggal_surat_pemberitahuan_nhi ? date('Y', strtotime($praPenindakan->tanggal_surat_pemberitahuan_nhi)) : '';
+        $data['format_tanggal'] = $data['tanggal_surat_pemberitahuan_nhi'] ?? '';
+
+        // Format hari dan tanggal dari rentang_pemberitahuan_nhi
+        $rentang = $praPenindakan->rentang_pemberitahuan_nhi;
+
+        if ($rentang && strpos($rentang, ' - ') !== false) {
+            [$tanggalAwal, $tanggalAkhir] = explode(' - ', $rentang);
+
+            // Format hari (misal: Rabu – Minggu)
+            try {
+                $hariAwal = Carbon::parse($tanggalAwal)->locale('id')->isoFormat('dddd');
+                $hariAkhir = Carbon::parse($tanggalAkhir)->locale('id')->isoFormat('dddd');
+                $data['format_hari'] = ucfirst($hariAwal) . ' – ' . ucfirst($hariAkhir);
+            } catch (\Exception $e) {
+                $data['format_hari'] = '';
+            }
+
+            // Format tanggal rentang (misal: 4 Juni 2025 – 8 Juni 2025)
+            $formatted = $this->formatDates([
+                'awal' => $tanggalAwal,
+                'akhir' => $tanggalAkhir,
+            ]);
+            $data['format_tanggal_rentang'] = $formatted['awal'] . ' – ' . $formatted['akhir'];
+        } else {
+            $data['format_hari'] = '';
+            $data['format_tanggal_rentang'] = '';
+        }
+
+        // Bersihkan nilai null
+        $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
+
+        // dd($data);
+
+        // Template dokumen
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/surat-perintah/surat-pemberitahuan-nhi.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        // Tahun dari tgl_print
+        $tglPrint = $praPenindakan->tgl_print;
+
+        $tahunSuratPrint = $tglPrint ? date('Y', strtotime($tglPrint)) : '-';
+        $data['tahun_print'] = $tahunSuratPrint;
+
+        $templateProcessor->setValue('tahun_print', $tahunSuratPrint);
+
+        $fileName = 'Dokumen_Pra_Penindakan_Surat_Pemberitahuan_NHI_Nomor_' . $praPenindakan->nomor_surat_pemberitahuan_nhi . '.docx';
+        $filePath = storage_path('app/public/' . $fileName);
+
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function print_surat_perintah_oc_pra_penindakan($id)
+    {
+        $praPenindakan = TblLaporanInformasi::findOrFail($id);
+        $data = $praPenindakan->toArray();
+
+        $pejabatKeys = ['id_pejabat_sp_1', 'id_pejabat_sp_2'];
+
+        foreach ($pejabatKeys as $key) {
+            if ($praPenindakan->$key) {
+                $pejabat = $praPenindakan->pejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        // Ambil daftar pejabat dari id_pejabat_sp_1 (berbentuk JSON array)
+        $data['id_pejabat_sp_1'] = [];
+        if (!empty($praPenindakan->id_pejabat_sp_1)) {
+            $pejabatsp = json_decode($praPenindakan->id_pejabat_sp_1, true) ?? [];
+            foreach ($pejabatsp as $index => $id) {
+                $user = User::where('id_admin', $id)->first();
+                $data['id_pejabat_sp_1'][] = [
+                    'no' => $index + 1,
+                    'nama' => $user->nama_admin ?? '',
+                    'pangkat' => $user->pangkat ?? '',
+                    'jabatan' => $user->jabatan ?? '',
+                    'nip' => $user->nip ?? '',
+                ];
+            }
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $data = $this->formatDates($data);
+
+        // Hilangkan null jadi string kosong
+        $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/surat-perintah/surat-perintah-oc.docx'));
+
+        // Set value biasa
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        // Gunakan cloneRowAndSetValues untuk id_pejabat_sp_1
+        if (!empty($data['id_pejabat_sp_1'])) {
+            $rows = [];
+
+            foreach ($data['id_pejabat_sp_1'] as $index => $tim) {
+                $rows[] = [
+                    'i' => $index + 1,
+                    'nama_sp1' => $tim['nama'],
+                    'pangkat_sp1' => $tim['pangkat'],
+                    'nip_sp1' => $tim['nip'],
+                    'jabatan_sp1' => $tim['jabatan'],
+                ];
+            }
+
+            // Pastikan placeholder di Word: ${i}, ${memberi_perintah_nama}, dll.
+            $templateProcessor->cloneRowAndSetValues('i', $rows);
+        }
+
+        // Format nomor surat
+        $tglPrint = $praPenindakan->tgl_print;
+
+        if (!empty($tglPrint)) {
+            $tahunSuratPrint = date('Y', strtotime($tglPrint));
+        } else {
+            $tahunSuratPrint = '-';
+        }
+
+        $data['tahun_print'] = $tahunSuratPrint;
+        $templateProcessor->setValue('tahun_print', $tahunSuratPrint);
+
+        if (!empty($praPenindakan->skema_penindakan_perintah)) {
+            $tipePenindakan = strtoupper($praPenindakan->skema_penindakan_perintah);
+            $noPrint = $data['no_print'] ?? '1';
+            $tahunPrint = $data['tahun_print'];
+
+            switch ($tipePenindakan) {
+                case 'MANDIRI':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/MANDIRI/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+                case 'PERBANTUAN':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+                case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/BERSAMA INSTANSI LAIN/KPU.206/{$tahunPrint}";
+                    break;
+                default:
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+            }
+        } else {
+            $data['format_nomor'] = "Nomor PRIN-{$data['no_print']}/KPU.2/KPU.206/{$data['tahun_print']}";
+        }
+
+        $templateProcessor->setValue('format_nomor', $data['format_nomor']);
+
+        $fileName = 'Dokumen_Pra_Penindakan_Surat_Perintah_OC_Nomor_' . $praPenindakan->no_print . '.docx';
+        $filePath = storage_path('app/public/' . $fileName);
+
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function print_surat_perintah_patroli_laut_pra_penindakan($id)
+    {
+        $praPenindakan = TblLaporanInformasi::findOrFail($id);
+        $data = $praPenindakan->toArray();
+
+        $pejabatKeys = ['id_pejabat_sp_1', 'id_pejabat_sp_2'];
+
+        foreach ($pejabatKeys as $key) {
+            if ($praPenindakan->$key) {
+                $pejabat = $praPenindakan->pejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        $data['id_pejabat_sp_1'] = [];
+        if (!empty($praPenindakan->id_pejabat_sp_1)) {
+            $pejabatsp = json_decode($praPenindakan->id_pejabat_sp_1, true) ?? [];
+            foreach ($pejabatsp as $index => $id) {
+                $user = User::where('id_admin', $id)->first();
+                $data['id_pejabat_sp_1'][] = [
+                    'no' => $index + 1,
+                    'nama' => $user->nama_admin ?? '',
+                    'pangkat' => $user->pangkat ?? '',
+                    'jabatan' => $user->jabatan ?? '',
+                    'nip' => $user->nip ?? '',
+                ];
+            }
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $data = $this->formatDates($data);
+
+        $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
+
+        // dd($data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/surat-perintah/surat-perintah-patroli-laut.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        if (!empty($data['id_pejabat_sp_1'])) {
+            $tempData = $data['id_pejabat_sp_1'];
+
+            $templateProcessor->cloneBlock('memberi_perintah_section', count($tempData), true, true);
+
+            foreach ($tempData as $index => $tim) {
+                $realIndex = $index + 1;
+
+                $templateProcessor->setValue("kepada#$realIndex", $index === 0 ? 'Kepada      :' : '');
+
+                $templateProcessor->setValue("i#$realIndex", "$realIndex.");
+                $templateProcessor->setValue("memberi_perintah_nama#$realIndex", $tim['nama']);
+                $templateProcessor->setValue("memberi_perintah_pangkat#$realIndex", $tim['pangkat']);
+                $templateProcessor->setValue("memberi_perintah_nip#$realIndex", $tim['nip']);
+                $templateProcessor->setValue("memberi_perintah_jabatan#$realIndex", $tim['jabatan']);
+            }
+        } else {
+            $templateProcessor->deleteBlock('memberi_perintah_section');
+        }
+
+        $tglPrint = $praPenindakan->tgl_print;
+
+        if (!empty($tglPrint)) {
+            $tahunSuratPrint = date('Y', strtotime($tglPrint));
+        } else {
+            $tahunSuratPrint = '-';
+        }
+
+        $data['tahun_print'] = $tahunSuratPrint;
+
+        $templateProcessor->setValue('tahun_print', $tahunSuratPrint);
+
+        if (!empty($praPenindakan->skema_penindakan_perintah)) {
+            $tipePenindakan = strtoupper($praPenindakan->skema_penindakan_perintah);
+            $noPrint = $data['no_print'] ?? '1';
+            $tahunPrint = $data['tahun_print'];
+
+            switch ($tipePenindakan) {
+                case 'MANDIRI':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/MANDIRI/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+                case 'PERBANTUAN':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+                case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/BERSAMA INSTANSI LAIN/KPU.206/{$tahunPrint}";
+                    break;
+                default:
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+            }
+        } else {
+            $data['format_nomor'] = "Nomor PRIN-{$data['no_print']}/KPU.2/KPU.206/{$data['tahun_print']}";
+        }
+
+        $templateProcessor->setValue('format_nomor', $data['format_nomor']);
+
+        // dd($data);
+
+        $fileName = 'Dokumen_Pra_Penindakan_Surat_Perintah_PATLA_Nomor_' . $praPenindakan->no_print . '.docx';
+
+        $filePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function print_surat_perintah_bulanan_pra_penindakan($id)
+    {
+        $praPenindakan = TblLaporanInformasi::findOrFail($id);
+        $data = $praPenindakan->toArray();
+
+        $pejabatKeys = ['id_pejabat_sp_2', 'pejabat_bulanan'];
+
+        foreach ($pejabatKeys as $key) {
+            if ($praPenindakan->$key) {
+                $pejabat = $praPenindakan->pejabat($key)->first();
+                $data[$key . '_nama'] = $pejabat->nama_admin ?? '';
+                $data[$key . '_pangkat'] = $pejabat->pangkat ?? '';
+                $data[$key . '_jabatan'] = $pejabat->jabatan ?? '';
+                $data[$key . '_nip'] = $pejabat->nip ?? '';
+            } else {
+                $data[$key . '_nama'] = '';
+                $data[$key . '_pangkat'] = '';
+                $data[$key . '_jabatan'] = '';
+                $data[$key . '_nip'] = '';
+            }
+        }
+
+        $data['tahun_sekarang'] = date('Y');
+
+        $data = $this->formatDates($data);
+
+        $data = array_map(fn($value) => is_null($value) ? '' : $value, $data);
+
+        // dd($data);
+
+        $templateProcessor = new TemplateProcessor(resource_path('templates/Dokpenindakan/surat-perintah/surat-perintah-bulanan.docx'));
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $templateProcessor->setValue($key, $value);
+            }
+        }
+
+        $tglPrint = $praPenindakan->tgl_print;
+
+        if (!empty($tglPrint)) {
+            $tahunSuratPrint = date('Y', strtotime($tglPrint));
+        } else {
+            $tahunSuratPrint = '-';
+        }
+
+        $data['tahun_print'] = $tahunSuratPrint;
+
+        $templateProcessor->setValue('tahun_print', $tahunSuratPrint);
+
+        if (!empty($praPenindakan->skema_penindakan_perintah)) {
+            $tipePenindakan = strtoupper($praPenindakan->skema_penindakan_perintah);
+            $noPrint = $data['no_print'] ?? '1';
+            $tahunPrint = $data['tahun_print'];
+
+            switch ($tipePenindakan) {
+                case 'MANDIRI':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/MANDIRI/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+                case 'PERBANTUAN':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+                case 'PERBANTUAN/BERSAMA INSTANSI LAIN':
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/PERBANTUAN/KPU.2/BERSAMA INSTANSI LAIN/KPU.206/{$tahunPrint}";
+                    break;
+                default:
+                    $data['format_nomor'] = "Nomor PRIN-{$noPrint}/KPU.2/KPU.206/{$tahunPrint}";
+                    break;
+            }
+        } else {
+            $data['format_nomor'] = "Nomor PRIN-{$data['no_print']}/KPU.2/KPU.206/{$data['tahun_print']}";
+        }
+
+        $templateProcessor->setValue('format_nomor', $data['format_nomor']);
+
+        // Proses data pejabat_bulanan untuk clone block dengan format cluster
+        $data['pejabat_bulanan_clusters'] = [];
+        if (!empty($praPenindakan->pejabat_bulanan)) {
+            $pejabatBulanan = json_decode($praPenindakan->pejabat_bulanan, true) ?? [];
+
+            foreach ($pejabatBulanan as $clusterId => $clusterData) {
+                $clusterInfo = [
+                    'cluster_name' => $clusterData['cluster'] ?? '',
+                    'wilayah' => $clusterData['wilayah'] ?? '', // Ini akan digunakan sebagai pos pengawasan
+                    'pejabat_list' => [],
+                ];
+
+                // Process pejabat dalam cluster
+                if (!empty($clusterData['pejabat']) && is_array($clusterData['pejabat'])) {
+                    foreach ($clusterData['pejabat'] as $index => $pejabatId) {
+                        $user = User::where('id_admin', $pejabatId)->first();
+                        if ($user) {
+                            $clusterInfo['pejabat_list'][] = [
+                                'no_urut' => $index + 1,
+                                'nama' => $user->nama_admin ?? '',
+                                'nip' => $user->nip ?? '',
+                                'pangkat' => $user->pangkat ?? '',
+                                'jabatan' => $user->jabatan ?? '',
+                            ];
+                        }
+                    }
+                }
+
+                // Hanya tambahkan cluster jika ada pejabat
+                if (!empty($clusterInfo['pejabat_list'])) {
+                    $data['pejabat_bulanan_clusters'][] = $clusterInfo;
+                }
+            }
+        }
+
+        // Clone block implementation untuk format cluster
+        if (!empty($data['pejabat_bulanan_clusters'])) {
+            $clusters = $data['pejabat_bulanan_clusters'];
+
+            // Clone block untuk setiap cluster
+            $templateProcessor->cloneBlock('cluster_section', count($clusters), true, true);
+
+            foreach ($clusters as $clusterIndex => $cluster) {
+                $clusterRealIndex = $clusterIndex + 1;
+
+                // Set nilai cluster header
+                $templateProcessor->setValue("cluster_name#$clusterRealIndex", strtoupper($cluster['cluster_name']));
+                $templateProcessor->setValue("pos_pengawasan#$clusterRealIndex", $cluster['wilayah']);
+
+                // Clone row untuk setiap pejabat dalam cluster
+                if (!empty($cluster['pejabat_list'])) {
+                    $pejabatCount = count($cluster['pejabat_list']);
+
+                    // Clone row pejabat
+                    $templateProcessor->cloneRow("pejabat_no#$clusterRealIndex", $pejabatCount);
+
+                    foreach ($cluster['pejabat_list'] as $pejabatIndex => $pejabat) {
+                        $pejabatRealIndex = $pejabatIndex + 1;
+
+                        // Format nama dengan NIP
+                        $namaLengkap = $pejabat['nama'];
+                        if (!empty($pejabat['nip'])) {
+                            $namaLengkap .= '/ ' . $pejabat['nip'];
+                        }
+
+                        $templateProcessor->setValue("pejabat_no#{$clusterRealIndex}#{$pejabatRealIndex}", $pejabat['no_urut']);
+                        $templateProcessor->setValue("pejabat_nama#{$clusterRealIndex}#{$pejabatRealIndex}", $namaLengkap);
+                        $templateProcessor->setValue("pejabat_pangkat#{$clusterRealIndex}#{$pejabatRealIndex}", $pejabat['pangkat']);
+                        $templateProcessor->setValue("pejabat_jabatan#{$clusterRealIndex}#{$pejabatRealIndex}", $pejabat['jabatan']);
+                    }
+                }
+            }
+        } else {
+            // Jika tidak ada data, hapus block
+            $templateProcessor->deleteBlock('cluster_section');
+        }
+
+        // dd($data);
+
+        $fileName = 'Dokumen_Pra_Penindakan_Surat_Perintah_Bulanan_Nomor_' . $praPenindakan->no_print . '.docx';
 
         $filePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($filePath);

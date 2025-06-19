@@ -72,6 +72,14 @@
                                                     <span class="d-none d-sm-block">Surat Perintah</span>
                                                 </a>
                                             </li>
+                                            <li class="nav-item" id="navtabs2-pemnhi-tab-item" style="display: none;">
+                                                <a class="nav-link" id="navtabs2-pemnhi-tab" data-bs-toggle="tab"
+                                                    href="#navtabs2-pemnhi" role="tab" aria-controls="navtabs2-pemnhi"
+                                                    aria-selected="false">
+                                                    <span class="d-block d-sm-none">SP NHI</span>
+                                                    <span class="d-none d-sm-block">Surat Pemberitahuan NHI</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -297,7 +305,7 @@
                                                                 <td colspan="4">
                                                                     <select
                                                                         class="form-select border-0 border-bottom select2"
-                                                                        name="dugaan_pelanggaran_mpp"  >
+                                                                        name="dugaan_pelanggaran_mpp">
                                                                         <option value="" disabled>- Pilih -</option>
                                                                         @foreach ($jenis_pelanggaran as $pelanggaran)
                                                                             @php
@@ -321,7 +329,7 @@
                                                                 <td>:</td>
                                                                 <td colspan="4">
                                                                     <select class="form-control form-select select2"
-                                                                        name="modus_pelanggaran_mpp"  >
+                                                                        name="modus_pelanggaran_mpp">
                                                                         <option value="" disabled>- Pilih -</option>
                                                                         @foreach ($uraian_modus as $modus)
                                                                             <option value="{{ $modus->uraian_modus }}"
@@ -338,7 +346,7 @@
                                                                 <td>:</td>
                                                                 <td colspan="4">
                                                                     <select class="form-control form-select select2"
-                                                                        name="locus_pelanggaran_mpp"  >
+                                                                        name="locus_pelanggaran_mpp">
                                                                         <option value="" disabled>- Pilih -</option>
                                                                         @foreach ($tempat as $locus)
                                                                             <option value="{{ $locus->locus }}"
@@ -633,7 +641,7 @@
                                                                 </div>
                                                                 <div class="col-md-8">
                                                                     <select class="form-control form-select select2"
-                                                                        name="keterangan_dugaan_pelanggaran"  >
+                                                                        name="keterangan_dugaan_pelanggaran">
                                                                         <option value="" disabled>- Pilih -</option>
                                                                         @foreach ($jenis_pelanggaran as $pelanggaran)
                                                                             <option
@@ -676,7 +684,7 @@
                                                                 </div>
                                                                 <div class="col-md-8">
                                                                     <select class="form-control form-select select2"
-                                                                        name="keterangan_locus"  >
+                                                                        name="keterangan_locus">
                                                                         <option value="" disabled>- Pilih -</option>
                                                                         @foreach ($tempat as $locus)
                                                                             <option value="{{ $locus->locus }}"
@@ -1239,8 +1247,7 @@
                                                         <span>Nomor PRIN- </span>
                                                         <input type="text" class="form-control form-control-sm mx-2"
                                                             style="width: 50px;" name="no_print"
-                                                            value="{{ old('no_print', $praPenindakan->no_print) }}"
-                                                             >
+                                                            value="{{ old('no_print', $praPenindakan->no_print) }}">
                                                         <span>/</span>
                                                         <span>KPU.206</span>
                                                         <span>/</span>
@@ -1283,22 +1290,54 @@
                                             </div>
 
                                             <!-- Bagian Kepada (Tidak berubah) -->
+                                            <div id="kepada-normal-section">
                                             <div class="row mt-3">
-                                            <div class="col-2 fw-bold">Kepada</div>
-                                            <div class="col-1 text-center">:</div>
-                                            <div class="col-9">
-                                                <div class="mb-3">
-                                                    <select class="form-select select2" id="id_pejabat_sp_1" name="id_pejabat_sp_1[]" multiple>
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id_admin }}"
-                                                            @if(in_array($user->id_admin, old('id_pejabat_sp_1', json_decode($praPenindakan->id_pejabat_sp_1 ?? '[]', true)))) selected @endif>
-                                                            {{ $user->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                                <div class="col-2 fw-bold">Kepada</div>
+                                                <div class="col-1 text-center">:</div>
+                                                <div class="col-9">
+                                                    <div class="mb-3">
+                                                        <select class="form-select select2" id="id_pejabat_sp_1"
+                                                            name="id_pejabat_sp_1[]" multiple>
+                                                            @foreach ($users as $user)
+                                                                <option value="{{ $user->id_admin }}"
+                                                                    @if (in_array($user->id_admin, old('id_pejabat_sp_1', json_decode($praPenindakan->id_pejabat_sp_1 ?? '[]', true)))) selected @endif>
+                                                                    {{ $user->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            </div>
+
+                                            <div id="kepada-bulanan-section" style="display: none;">
+                                                <div class="row mt-3">
+                                                    <div class="col-2 fw-bold">Kepada</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-9">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center mb-3">
+                                                            <h6 class="mb-0">Penugasan Pejabat per Wilayah</h6>
+                                                            <button type="button" class="btn btn-sm btn-primary"
+                                                                onclick="tambahPejabatWilayah()">
+                                                                <i class="fas fa-plus"></i> Tambah Pejabat & Wilayah
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Container untuk kelompok pejabat dan wilayah -->
+                                                        <div id="pejabat-wilayah-container">
+                                                            <!-- Kelompok pejabat akan ditambahkan secara dinamis di sini -->
+                                                        </div>
+
+                                                        <!-- Pesan jika belum ada kelompok -->
+                                                        <div id="empty-message" class="text-center text-muted py-4">
+                                                            <i class="fas fa-info-circle"></i>
+                                                            <p class="mb-0">Belum ada kelompok pejabat. Klik tombol
+                                                                "Tambah Pejabat & Wilayah" untuk memulai.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
                                             <!-- Bagian Untuk -->
@@ -1320,7 +1359,7 @@
                                                 <div class="col-9">
                                                     <input type="text" class="form-control" name="wilayah"
                                                         placeholder="Wilayah"
-                                                        value="{{ old('wilayah', $praPenindakan->wilayah) }}"  >
+                                                        value="{{ old('wilayah', $praPenindakan->wilayah) }}">
                                                 </div>
                                             </div>
 
@@ -1334,14 +1373,12 @@
                                                         <span>Berlaku mulai tanggal</span>
                                                         <input type="date" class="form-control mx-2"
                                                             name="tanggal_mulai_print" style="width: 170px;"
-                                                            value="{{ old('tanggal_mulai_print', $praPenindakan->tanggal_mulai_print) }}"
-                                                             >
+                                                            value="{{ old('tanggal_mulai_print', $praPenindakan->tanggal_mulai_print) }}">
                                                         <span>s.d</span>
                                                         <input type="date" class="form-control mx-2"
                                                             id="tanggal_berakhir_print" name="tanggal_berakhir_print"
                                                             style="width: 170px;"
-                                                            value="{{ old('tanggal_berakhir_print', $praPenindakan->tanggal_berakhir_print) }}"
-                                                             >
+                                                            value="{{ old('tanggal_berakhir_print', $praPenindakan->tanggal_berakhir_print) }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1376,7 +1413,7 @@
                                                     <div class="d-flex flex-column">
                                                         <div>
                                                             <select class="form-control form-select mb-2" id="plh"
-                                                                name="plh"  >
+                                                                name="plh">
                                                                 <option value="" disabled
                                                                     {{ old('plh', $praPenindakan->plh) ? '' : 'selected' }}>
                                                                     - Pilih Plh -</option>
@@ -1388,19 +1425,20 @@
                                                                     Tidak Ada Pelaksana Harian</option>
                                                             </select>
                                                         </div>
-                                                        <select class="form-control form-select mb-3" id="id_pejabat_sp_2"
-                                                            name="id_pejabat_sp_2"  >
+                                                        <select class="form-control form-select select2 mb-3"
+                                                            id="id_pejabat_sp_2" name="id_pejabat_sp_2">
                                                             <option value="" disabled
-                                                                {{ old('id_pejabat_sp_2', $praPenindakan->id_pejabat_sp_2) ? '' : 'selected' }}>
+                                                                {{ old('id_pejabat_sp_2', $praPenindakan->id_pejabat_sp_2) == '' ? 'selected' : '' }}>
                                                                 - Pilih Pejabat Yang Menandatangani -
                                                             </option>
-                                                            <option value="1"
-                                                                {{ old('id_pejabat_sp_2', $praPenindakan->id_pejabat_sp_2) == 1 ? 'selected' : '' }}>
-                                                                Kepala Kantor</option>
-                                                            <option value="2"
-                                                                {{ old('id_pejabat_sp_2', $praPenindakan->id_pejabat_sp_2) == 2 ? 'selected' : '' }}>
-                                                                Wakil Kepala Kantor</option>
+                                                            @foreach ($users as $user)
+                                                                <option value="{{ $user->id_admin }}"
+                                                                    {{ old('id_pejabat_sp_2', $praPenindakan->id_pejabat_sp_2) == $user->id_admin ? 'selected' : '' }}>
+                                                                    {{ $user->name }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
+
                                                         <p class="mb-0">NIP. ..............................</p>
                                                     </div>
                                                 </div>
@@ -1422,7 +1460,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Penentuan Skema Penindakan</label>
                                                         <select class="form-control form-select"
-                                                            name="skema_penindakan_perintah"  >
+                                                            name="skema_penindakan_perintah">
                                                             <option value="" disabled
                                                                 {{ old('skema_penindakan_perintah', $praPenindakan->skema_penindakan_perintah) ? '' : 'selected' }}>
                                                                 - Pilih -
@@ -1444,7 +1482,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Dilakukannya Patroli</label>
                                                         <select class="form-control form-select"
-                                                            name="dilakukannya_patroli"  >
+                                                            name="dilakukannya_patroli">
                                                             <option value="" disabled
                                                                 {{ old('dilakukannya_patroli', $praPenindakan->dilakukannya_patroli) ? '' : 'selected' }}>
                                                                 - Pilih -
@@ -1464,11 +1502,217 @@
 
                                         </div>
 
+                                        <!-- Bagian Edit - Surat Pemberitahuan NHI -->
+                                        <div class="container my-4 tab-pane text-black" id="navtabs2-pemnhi"
+                                            role="tabpanel">
+                                            <!-- Header Surat -->
+                                            <!-- (Bagian header logo dan alamat tetap, tidak perlu diedit) -->
+                                            <div class="row mb-3 align-items-center">
+                                                <div class="col-2 text-center">
+                                                    <img src="/images/logocop.png" alt="Logo" class="img-fluid"
+                                                        style="max-height:120px;">
+                                                </div>
+                                                <div class="col-10 text-center">
+                                                    <h5 class="mb-1 fw-bold">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h5>
+                                                    <p class="small mb-0 fw-semibold">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                                                    <p class="small mb-0 fw-semibold">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                        TIPE B BATAM</p>
+                                                    <p class="small mb-0" style="font-size: 0.75rem;">
+                                                        JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU 29432; TELEPON
+                                                        (0778) 458118, 458263;
+                                                        FAKSIMILE (0778) 458149;
+                                                    </p>
+                                                    <p class="small mb-0" style="font-size: 0.75rem;">
+                                                        LAMAN WWW.BCBATAM.BEACUKAI.GO.ID; PUSAT KONTAK LAYANAN 1500225;
+                                                        SUREL BCBPBATAM@CUSTOMS.GO.ID, KPBC.BATAM@KEMENKEU.GO.ID
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <hr class="border-dark border-2 mb-4">
+
+                                            <!-- Info Surat -->
+                                            <div class="row mb-3">
+                                                <div class="col-8">
+                                                    <table class="table table-borderless" style="font-size: 0.9rem;">
+                                                        <tr>
+                                                            <td class="p-1" style="width: 100px;">Nomor</td>
+                                                            <td class="p-1" style="width: 20px;">:</td>
+                                                            <td class="p-1">
+                                                                <div class="d-flex align-items-center">
+                                                                    S-
+                                                                    <input type="text"
+                                                                        name="nomor_surat_pemberitahuan_nhi"
+                                                                        class="form-control form-control-sm me-1"
+                                                                        placeholder="Nomor Surat"
+                                                                        value="{{ old('nomor_surat_pemberitahuan_nhi', $praPenindakan->nomor_surat_pemberitahuan_nhi) }}"
+                                                                        style="width: 100px;">
+                                                                    /KPU.2/KPU.206/
+                                                                    <input type="date"
+                                                                        name="tanggal_surat_pemberitahuan_nhi"
+                                                                        class="form-control form-control-sm ms-1"
+                                                                        style="width: 150px;"
+                                                                        value="{{ old('tanggal_surat_pemberitahuan_nhi', $praPenindakan->tanggal_surat_pemberitahuan_nhi) }}">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="p-1">Sifat</td>
+                                                            <td class="p-1">:</td>
+                                                            <td class="p-1">
+                                                                <select name="tingkat_kepentingan_pemberitahuan_nhi"
+                                                                    class="form-select select2 form-select-sm">
+                                                                    <option value="Segera" @selected(old('tingkat_kepentingan_pemberitahuan_nhi', $praPenindakan->tingkat_kepentingan_pemberitahuan_nhi) == 'Segera')>
+                                                                        Segera</option>
+                                                                    <option value="Sangat Segera"
+                                                                        @selected(old('tingkat_kepentingan_pemberitahuan_nhi', $praPenindakan->tingkat_kepentingan_pemberitahuan_nhi) == 'Sangat Segera')>Sangat Segera</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="p-1 align-top">Hal</td>
+                                                            <td class="p-1 align-top">:</td>
+                                                            <td class="p-1">
+                                                                <textarea name="uraian_pemberitahuan_nhi" class="form-control form-control-sm" rows="3"
+                                                                    placeholder="Masukkan uraian tindakan...">{{ old('uraian_pemberitahuan_nhi', $praPenindakan->uraian_pemberitahuan_nhi) }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!-- Kepada -->
+                                            <div class="mb-4">
+                                                <p class="mb-1" style="font-size: 0.9rem;"><strong>Yth. (Sudah Otomatis
+                                                        Terisi Seperti Dibagian Surat Perintah)</strong></p>
+                                            </div>
+
+                                            <!-- Isi Surat -->
+                                            <div class="mb-4">
+                                                <p class="text-justify" style="font-size: 0.9rem; line-height: 1.6;">
+                                                    Sehubungan dengan diterbitkannya Nota Dinas Kepala Pemeriksa Bea dan
+                                                    Cukai Ahli Muda
+                                                    Kantor Pelayanan Bea dan Cukai Tipe B Batam Nomor
+                                                    <strong>{{ $praPenindakan->nomor_nota_dinas ?? '.......................' }}</strong>
+                                                    tanggal
+                                                    <strong>{{ $praPenindakan->tanggal_nota_dinas ?? '........' }}</strong>
+                                                    Hal
+                                                    <strong>{{ $praPenindakan->hal_nota_dinas ?? '....................................................' }}</strong>:
+                                                </p>
+                                            </div>
+
+                                            <!-- Tabel Data -->
+                                            <div class="row mb-4">
+                                                <div class="col-6">
+                                                    <table class="table-borderless" style="font-size: 0.85rem;">
+                                                        <tr>
+                                                            <td style="width: 150px;">Pemilik/Import/Eksportir</td>
+                                                            <td style="width: 20px;">:</td>
+                                                            <td>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    placeholder="Nama Perusahaan">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Jenis/No. & Tgl. Dokumen</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    placeholder="Masukkan informasi dokumen">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Jumlah & Jenis Kemasan</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                <textarea class="form-control form-control-sm" rows="2" 
+                                                                    placeholder="Masukkan nama barang"></textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Lokasi Penindakan</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    placeholder="Masukkan lokasi">
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!-- Jadwal -->
+                                            <div class="mb-4">
+                                                <table class="table table-borderless" style="font-size: 0.9rem;">
+                                                    <tr>
+                                                        <td style="width: 80px;">Rentang Waktu</td>
+                                                        <td style="width: 20px;">:</td>
+                                                        <td><input type="text" name="rentang_pemberitahuan_nhi"
+                                                                class="form-control" id="date-range-picker"
+                                                                value="{{ old('rentang_pemberitahuan_nhi', $praPenindakan->rentang_pemberitahuan_nhi) }}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tempat</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            <input type="text" class="form-control"
+                                                                name="tempat_pemberitahuan_nhi"
+                                                                value="{{ old('tempat_pemberitahuan_nhi', $praPenindakan->tempat_pemberitahuan_nhi) }}">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+
+                                            <!-- Paragraf Penutup -->
+                                            <div class="mb-4">
+                                                <p class="text-justify" style="font-size: 0.9rem; line-height: 1.6;">
+                                                    Apabila lewat dari 3 (tiga) hari setelah diterimanya pemberitahuan ini,
+                                                    Saudara tidak datang ke tempat atau membuat pelaksanaan kegiatan, maka
+                                                    pengeluaran dan penyegelan akan dilakukan tanpa dihadiri oleh Saudara.
+                                                </p>
+                                                <p class="text-justify" style="font-size: 0.9rem; line-height: 1.6;">
+                                                    Demikian disampaikan atas atas perhatian dan kerja sama Saudara
+                                                    diucapkan terima kasih.
+                                                </p>
+                                            </div>
+
+                                            <!-- Penandatangan -->
+                                            <div class="row mt-4">
+                                                <div class="col-6"></div>
+                                                <div class="col-6 text-center">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <select class="form-control select2 form-select mb-2"
+                                                                id="plh_pemberitahuan" name="plh_pemberitahuan">
+                                                                <option value="" disabled>- Pilih Plh -</option>
+                                                                <option value="Plh" @selected(old('plh_pemberitahuan', $praPenindakan->plh_pemberitahuan) == 'Plh')>
+                                                                    Pelaksana Harian</option>
+                                                                <option value="" @selected(old('plh_pemberitahuan', $praPenindakan->plh_pemberitahuan) == '')>Tidak
+                                                                    Ada Pelaksana Harian</option>
+                                                            </select>
+                                                        </div>
+                                                        <select class="form-control select2 form-select mb-3"
+                                                            id="id_pejabat_pemnhi" name="id_pejabat_pemnhi">
+                                                            <option value="" selected disabled>- Pilih Pejabat Yang
+                                                                Menandatangani -</option>
+                                                            @foreach ($users as $user)
+                                                                <option value="{{ $user->id_admin }}"
+                                                                    @selected(old('id_pejabat_pemnhi', $praPenindakan->id_pejabat_pemnhi) == $user->id_admin)>
+                                                                    {{ $user->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
 
                                         <div class="card-footer d-flex justify-content-end">
                                             <button type="submit"
                                                 class="btn btn-success btn-sm d-flex align-items-center">
-                                                <i data-feather="save" class="me-1"></i> Simpan Data LI
+                                                <i data-feather="save" class="me-1"></i> Simpan Data Pra-Penindakan
                                             </button>
                                         </div>
 
@@ -1491,46 +1735,48 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const selectElement = document.getElementById("pilihan_kegiatan");
-            const skemaPenindakanElement = document.getElementById("skema_penindakan");
+            const selectKegiatan = document.getElementById("pilihan_kegiatan");
+            const skemaPenindakan = document.getElementById("skema_penindakan");
+            const skemaPatroli = document.getElementById("skema_patroli");
+            const selectSuratPerintah = $('#tipe_surat_perintah_pra_penindakan');
 
             function updateSectionsAndTabs() {
-                const selectedValue = selectElement.value;
-                const skemaPenindakanValue = skemaPenindakanElement ? skemaPenindakanElement.value : null;
+                const kegiatan = selectKegiatan.value;
+                const skemaP = skemaPenindakan ? skemaPenindakan.value : null;
+                const skemaPat = skemaPatroli ? skemaPatroli.value : null;
 
-                // Sembunyikan semua section
+                // Reset semua section
                 document.getElementById("penindakan_section").classList.add("d-none");
                 document.getElementById("patroli_section").classList.add("d-none");
                 document.getElementById("tidak_layak_section").classList.add("d-none");
 
-                // Tampilkan section sesuai pilihan
-                if (selectedValue === "penindakan") {
+                if (kegiatan === "penindakan") {
                     document.getElementById("penindakan_section").classList.remove("d-none");
-                } else if (selectedValue === "patroli") {
+                } else if (kegiatan === "patroli") {
                     document.getElementById("patroli_section").classList.remove("d-none");
-                } else if (selectedValue === "tidak_layak") {
+                } else if (kegiatan === "tidak_layak") {
                     document.getElementById("tidak_layak_section").classList.remove("d-none");
                 }
 
-                // Konfigurasi tab yang tampil
+                // Konfigurasi visibilitas tab
                 const tabsConfig = [{
                         id: "navtabs2-messages-tab-item",
                         linkId: "navtabs2-messages-tab",
-                        condition: selectedValue === "tidak_layak",
+                        condition: kegiatan === "tidak_layak",
                     },
                     {
                         id: "navtabs2-mpp-tab-item",
                         linkId: "navtabs2-mpp-tab",
-                        condition: selectedValue === "penindakan" && skemaPenindakanValue === "PELIMPAHAN",
+                        condition: (kegiatan === "penindakan" && skemaP === "PELIMPAHAN") ||
+                            (kegiatan === "patroli" && skemaPat === "PELIMPAHAN"),
                     },
                     {
                         id: "navtabs2-settings-tab-item",
                         linkId: "navtabs2-settings-tab",
-                        condition: selectedValue === "penindakan" || selectedValue === "patroli",
+                        condition: kegiatan === "penindakan" || kegiatan === "patroli",
                     },
                 ];
 
-                // Update visibilitas tab
                 tabsConfig.forEach(({
                     id,
                     linkId,
@@ -1541,7 +1787,6 @@
 
                     if (tabElement) {
                         tabElement.style.display = condition ? "block" : "none";
-
                         if (condition && tabLinkElement) {
                             tabLinkElement.classList.add("highlight");
                             setTimeout(() => tabLinkElement.classList.remove("highlight"), 1000);
@@ -1550,29 +1795,49 @@
                 });
             }
 
-            // Ambil nilai lama atau dari model Laravel (untuk edit)
+            // Ambil data lama dari Laravel (edit)
             const oldPilihanKegiatan = '{{ old('pilihan_kegiatan', $praPenindakan->pilihan_kegiatan ?? '') }}';
             const oldSkemaPenindakan =
                 '{{ old('skem_layak_penindakan', $praPenindakan->skem_layak_penindakan ?? '') }}';
+            const oldSkemaPatroli = '{{ old('skem_layak_patroli', $praPenindakan->skem_layak_patroli ?? '') }}';
+            const oldTipeSurat =
+                '{{ old('tipe_surat_perintah_pra_penindakan', $praPenindakan->tipe_surat_perintah_pra_penindakan ?? '') }}';
 
-            // Tunggu sebentar untuk memastikan elemen terisi dengan benar
+            // Tunggu sebentar untuk memastikan semua elemen telah terisi (terutama jika pakai Select2)
             setTimeout(() => {
-                if (selectElement) selectElement.value = oldPilihanKegiatan;
-                if (skemaPenindakanElement) skemaPenindakanElement.value = oldSkemaPenindakan;
+                if (selectKegiatan) selectKegiatan.value = oldPilihanKegiatan;
+                if (skemaPenindakan) skemaPenindakan.value = oldSkemaPenindakan;
+                if (skemaPatroli) skemaPatroli.value = oldSkemaPatroli;
+
+                // Trigger select2 (jQuery)
+                if (selectSuratPerintah.length > 0) {
+                    selectSuratPerintah.val(oldTipeSurat).trigger('change');
+                }
 
                 updateSectionsAndTabs();
             }, 100);
 
-            // Event listener saat user mengubah pilihan
-            if (selectElement) {
-                selectElement.addEventListener("change", updateSectionsAndTabs);
-            }
+            // Event listeners untuk perubahan user
+            if (selectKegiatan) selectKegiatan.addEventListener("change", updateSectionsAndTabs);
+            if (skemaPenindakan) skemaPenindakan.addEventListener("change", updateSectionsAndTabs);
+            if (skemaPatroli) skemaPatroli.addEventListener("change", updateSectionsAndTabs);
 
-            if (skemaPenindakanElement) {
-                skemaPenindakanElement.addEventListener("change", updateSectionsAndTabs);
+            // Event untuk tipe surat perintah
+            if (selectSuratPerintah.length > 0) {
+                selectSuratPerintah.on('change', function() {
+                    const selectedValue = $(this).val();
+                    const nhiTabItem = document.getElementById('navtabs2-pemnhi-tab-item');
+                    if (nhiTabItem) {
+                        nhiTabItem.style.display = selectedValue === 'Surat Perintah NHI' ? 'block' :
+                            'none';
+                    }
+                });
             }
         });
     </script>
+
+
+
 
 
     <script>
@@ -1844,128 +2109,430 @@
         };
 
         // Fungsi untuk mengubah konten berdasarkan tipe surat
-        function updateKontenSurat() {
-            const selectElement = document.getElementById('tipe_surat_perintah_pra_penindakan');
-            const tipe = selectElement.value;
+function updateKontenSurat() {
+    const selectElement = document.getElementById('tipe_surat_perintah_pra_penindakan');
+    const tipe = selectElement.value;
 
-            //console.log('Tipe surat dipilih:', tipe); // Untuk debugging
+    if (tipe && kontenSurat[tipe]) {
+        // Update konten yang berubah
+        const menimbangEl = document.getElementById('content-menimbang');
+        const dasarEl = document.getElementById('content-dasar');
+        const untukEl = document.getElementById('content-untuk');
+        const ketentuanEl = document.getElementById('content-ketentuan');
+        const tambahanEl = document.getElementById('content-tambahan');
 
-            if (tipe && kontenSurat[tipe]) {
-                // Update konten yang berubah
-                const menimbangEl = document.getElementById('content-menimbang');
-                const dasarEl = document.getElementById('content-dasar');
-                const untukEl = document.getElementById('content-untuk');
-                const ketentuanEl = document.getElementById('content-ketentuan');
-                const tambahanEl = document.getElementById('content-tambahan');
+        if (menimbangEl) menimbangEl.innerHTML = kontenSurat[tipe].menimbang;
+        if (dasarEl) dasarEl.innerHTML = kontenSurat[tipe].dasar;
+        if (untukEl) untukEl.innerHTML = kontenSurat[tipe].untuk;
+        if (ketentuanEl) ketentuanEl.innerHTML = kontenSurat[tipe].ketentuan;
+        if (tambahanEl) tambahanEl.innerHTML = kontenSurat[tipe].tambahan;
+    } else {
+        // Reset ke konten default jika tidak ada pilihan
+        const defaultText = '<p class="text-muted">Pilih tipe surat perintah untuk melihat konten</p>';
 
-                if (menimbangEl) menimbangEl.innerHTML = kontenSurat[tipe].menimbang;
-                if (dasarEl) dasarEl.innerHTML = kontenSurat[tipe].dasar;
-                if (untukEl) untukEl.innerHTML = kontenSurat[tipe].untuk;
-                if (ketentuanEl) ketentuanEl.innerHTML = kontenSurat[tipe].ketentuan;
-                if (tambahanEl) tambahanEl.innerHTML = kontenSurat[tipe].tambahan;
+        const menimbangEl = document.getElementById('content-menimbang');
+        const dasarEl = document.getElementById('content-dasar');
+        const untukEl = document.getElementById('content-untuk');
+        const ketentuanEl = document.getElementById('content-ketentuan');
+        const tambahanEl = document.getElementById('content-tambahan');
 
-                // console.log('Konten berhasil diupdate'); // Untuk debugging
-            } else {
-                // Reset ke konten default jika tidak ada pilihan
-                const defaultText = '<p class="text-muted">Pilih tipe surat perintah untuk melihat konten</p>';
+        if (menimbangEl) menimbangEl.innerHTML = defaultText;
+        if (dasarEl) dasarEl.innerHTML = defaultText;
+        if (untukEl) untukEl.innerHTML = defaultText;
+        if (ketentuanEl) ketentuanEl.innerHTML = defaultText;
+        if (tambahanEl) tambahanEl.innerHTML = defaultText;
+    }
 
-                const menimbangEl = document.getElementById('content-menimbang');
-                const dasarEl = document.getElementById('content-dasar');
-                const untukEl = document.getElementById('content-untuk');
-                const ketentuanEl = document.getElementById('content-ketentuan');
-                const tambahanEl = document.getElementById('content-tambahan');
+    // Toggle tampilan kepada berdasarkan tipe surat
+    toggleKepadaSection(tipe);
+}
 
-                if (menimbangEl) menimbangEl.innerHTML = defaultText;
-                if (dasarEl) dasarEl.innerHTML = defaultText;
-                if (untukEl) untukEl.innerHTML = defaultText;
-                if (ketentuanEl) ketentuanEl.innerHTML = defaultText;
-                if (tambahanEl) tambahanEl.innerHTML = defaultText;
+// Fungsi untuk toggle section kepada
+function toggleKepadaSection(tipe) {
+    const kepadaNormalSection = document.getElementById('kepada-normal-section');
+    const kepadaBulananSection = document.getElementById('kepada-bulanan-section');
 
-                //  console.log('Konten direset ke default'); // Untuk debugging
-            }
+    if (kepadaNormalSection && kepadaBulananSection) {
+        if (tipe === 'Surat Perintah Bulanan') {
+            kepadaNormalSection.style.display = 'none';
+            kepadaBulananSection.style.display = 'block';
+        } else {
+            kepadaNormalSection.style.display = 'block';
+            kepadaBulananSection.style.display = 'none';
         }
+    }
+}
 
-        // Event listener ketika DOM sudah siap
-        document.addEventListener('DOMContentLoaded', function() {
-            //console.log('DOM Content Loaded'); // Untuk debugging
-            updateKontenSurat();
-            // PERBAIKAN UNTUK SELECT2 - METODE 1: Menggunakan jQuery dan event select2:select
-            if (typeof $ !== 'undefined') {
-                // Jika jQuery tersedia, gunakan event khusus Select2
-                $('#tipe_surat_perintah_pra_penindakan').on('select2:select', function(e) {
-                    //console.log('Select2 event triggered'); // Untuk debugging
-                    updateKontenSurat();
-                });
+// Counter untuk ID unik setiap kelompok (tidak akan dikurangi)
+let uniqueGroupCounter = 1;
 
-                // Alternatif: gunakan event change dengan jQuery
-                $('#tipe_surat_perintah_pra_penindakan').on('change', function() {
-                    //console.log('jQuery change event triggered'); // Untuk debugging
-                    updateKontenSurat();
-                });
+// Array untuk menyimpan pejabat yang sudah dipilih
+let selectedPejabatIds = [];
 
-                //console.log('Event listener Select2 berhasil ditambahkan dengan jQuery');
-            } else {
-                // PERBAIKAN UNTUK SELECT2 - METODE 2: Fallback tanpa jQuery
-                // Gunakan MutationObserver untuk mendeteksi perubahan DOM
-                const tipeSuratSelect = document.getElementById('tipe_surat_perintah_pra_penindakan');
+// Data existing dari database (akan diisi dari PHP)
+let existingPejabatData = {};
 
-                if (tipeSuratSelect) {
-                    // Event listener biasa (untuk fallback)
-                    tipeSuratSelect.addEventListener('change', updateKontenSurat);
+// Fungsi untuk mendapatkan nomor urut kelompok berikutnya
+function getNextGroupNumber() {
+    const groups = document.querySelectorAll('.pejabat-group');
+    return groups.length + 1;
+}
 
-                    // MutationObserver untuk mendeteksi perubahan value (untuk Select2)
-                    const observer = new MutationObserver(function(mutations) {
-                        mutations.forEach(function(mutation) {
-                            if (mutation.type === 'attributes' && mutation.attributeName ===
-                                'value') {
-                                console.log('Value changed detected by MutationObserver');
-                                updateKontenSurat();
-                            }
-                        });
-                    });
+// Fungsi untuk mengumpulkan semua pejabat yang sudah dipilih
+function updateSelectedPejabatIds() {
+    selectedPejabatIds = [];
+    const allSelects = document.querySelectorAll('.select2-pejabat');
 
-                    // Mulai observasi
-                    observer.observe(tipeSuratSelect, {
-                        attributes: true,
-                        attributeFilter: ['value']
-                    });
+    allSelects.forEach(select => {
+        const selectedValues = Array.from(select.selectedOptions).map(option => option.value);
+        selectedPejabatIds = selectedPejabatIds.concat(selectedValues);
+    });
+}
 
-                    // Tambahan: Polling untuk memastikan perubahan terdeteksi
-                    let lastValue = tipeSuratSelect.value;
-                    setInterval(function() {
-                        if (tipeSuratSelect.value !== lastValue) {
-                            //console.log('Value change detected by polling');
-                            lastValue = tipeSuratSelect.value;
-                            updateKontenSurat();
-                        }
-                    }, 500); // Cek setiap 500ms
+// Fungsi untuk menonaktifkan option yang sudah dipilih di kelompok lain
+function disableSelectedOptions() {
+    updateSelectedPejabatIds();
 
-                    // console.log('Event listener dan MutationObserver berhasil ditambahkan');
-                } else {
-                    // console.error('Element dengan ID tipe_surat_perintah_pra_penindakan tidak ditemukan!');
-                }
+    const allSelects = document.querySelectorAll('.select2-pejabat');
+
+    allSelects.forEach(select => {
+        const currentSelectedValues = Array.from(select.selectedOptions).map(option => option.value);
+        const options = select.querySelectorAll('option');
+
+        options.forEach(option => {
+            const optionValue = option.value;
+            // Jika option sudah dipilih di kelompok lain dan bukan di kelompok ini
+            if (selectedPejabatIds.includes(optionValue) && !currentSelectedValues.includes(optionValue)) {
+                option.disabled = true;
+            } else if (!selectedPejabatIds.includes(optionValue) || currentSelectedValues.includes(optionValue)) {
+                option.disabled = false;
             }
         });
+    });
 
-        // PERBAIKAN UNTUK SELECT2 - METODE 3: Callback setelah Select2 diinisialisasi
-        // Tambahkan ini setelah inisialisasi Select2 di kode Anda
-        function initSelect2Callback() {
-            if (typeof $ !== 'undefined') {
-                // Pastikan Select2 sudah terinisialisasi
-                setTimeout(function() {
-                    $('#tipe_surat_perintah_pra_penindakan').on('select2:select', function(e) {
-                        console.log('Select2 callback event triggered');
-                        updateKontenSurat();
-                    });
-                }, 100);
-            }
+    // Refresh Select2 untuk menampilkan perubahan
+    if (typeof $ !== 'undefined') {
+        $('.select2-pejabat').select2();
+    }
+}
+
+// Fungsi untuk load data existing ke dalam form
+function loadExistingPejabatData(data) {
+    existingPejabatData = data;
+    const container = document.getElementById('pejabat-wilayah-container');
+    
+    // Clear container first
+    container.innerHTML = '';
+    
+    // Jika ada data existing, load semua kelompok
+    if (data && Object.keys(data).length > 0) {
+        Object.keys(data).forEach(groupKey => {
+            const groupData = data[groupKey];
+            createPejabatGroup(groupKey, groupData);
+        });
+        
+        // Update counter untuk kelompok baru
+        const maxKey = Math.max(...Object.keys(data).map(key => parseInt(key)));
+        uniqueGroupCounter = maxKey + 1;
+    }
+    
+    // Toggle empty message
+    toggleEmptyMessage();
+    
+    // Update selected options setelah semua group dimuat
+    setTimeout(() => {
+        disableSelectedOptions();
+    }, 500);
+}
+
+// Fungsi untuk membuat kelompok pejabat (untuk existing data atau baru)
+function createPejabatGroup(groupKey, groupData = null) {
+    const container = document.getElementById('pejabat-wilayah-container');
+    const groupNumber = getNextGroupNumber();
+    const groupId = 'pejabat-group-' + groupKey;
+
+    const newGroup = document.createElement('div');
+    newGroup.className = 'card mb-3 pejabat-group';
+    newGroup.id = groupId;
+    newGroup.setAttribute('data-group-id', groupKey);
+
+    newGroup.innerHTML = `
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Kelompok Pejabat ${groupNumber}</h6>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapusPejabatWilayah('${groupId}')">
+                <i class="fas fa-trash"></i> Hapus
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Pejabat:</label>
+                </div>
+                <div class="col-md-9">
+                    <select class="form-select select2-pejabat" name="pejabat_bulanan[${groupKey}][pejabat][]" multiple>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id_admin }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Nama Cluster:</label>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="pejabat_bulanan[${groupKey}][cluster]" 
+                           placeholder="Masukkan nama cluster" value="${groupData ? groupData.cluster || '' : ''}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Wilayah Tugas:</label>
+                </div>
+                <div class="col-md-9">
+                    <textarea class="form-control" name="pejabat_bulanan[${groupKey}][wilayah]" 
+                              rows="3" placeholder="Masukkan wilayah tugas yang akan dikerjakan">${groupData ? groupData.wilayah || '' : ''}</textarea>
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(newGroup);
+
+    // Inisialisasi Select2 untuk element baru
+    initializeSelect2ForNewGroup(groupId, groupData);
+}
+
+function tambahPejabatWilayah() {
+    const newGroupKey = uniqueGroupCounter;
+    createPejabatGroup(newGroupKey);
+    
+    // Update counter unik
+    uniqueGroupCounter++;
+
+    // Update opsi yang tersedia
+    setTimeout(() => {
+        disableSelectedOptions();
+    }, 200);
+}
+
+// Fungsi untuk menghapus kelompok pejabat
+function hapusPejabatWilayah(groupId) {
+    const group = document.getElementById(groupId);
+    if (group) {
+        // Konfirmasi sebelum menghapus
+        if (confirm('Apakah Anda yakin ingin menghapus kelompok pejabat ini?')) {
+            group.remove();
+
+            // Update nomor kelompok yang tersisa agar tetap berurutan
+            updateGroupNumbers();
+
+            // Update opsi yang tersedia setelah menghapus kelompok
+            setTimeout(() => {
+                disableSelectedOptions();
+            }, 100);
         }
+    }
+}
 
-        // Panggil fungsi ini setelah Select2 diinisialisasi
-        // Contoh: setelah $('.select2').select2();
-        // initSelect2Callback();
+// Fungsi untuk update nomor kelompok setelah ada yang dihapus
+function updateGroupNumbers() {
+    const groups = document.querySelectorAll('.pejabat-group');
+    groups.forEach((group, index) => {
+        const header = group.querySelector('.card-header h6');
+        if (header) {
+            header.textContent = `Kelompok Pejabat ${index + 1}`;
+        }
+    });
+}
+
+// Inisialisasi Select2 untuk grup baru dengan data existing (jika ada)
+function initializeSelect2ForNewGroup(groupId, groupData = null) {
+    if (typeof $ !== 'undefined') {
+        setTimeout(() => {
+            const selectElement = $(`#${groupId} .select2-pejabat`);
+            
+            selectElement.select2({
+                placeholder: "Pilih pejabat...",
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Set selected values jika ada data existing
+            if (groupData && groupData.pejabat && Array.isArray(groupData.pejabat)) {
+                selectElement.val(groupData.pejabat).trigger('change');
+            }
+
+            // Tambahkan event listener untuk perubahan pilihan pejabat
+            selectElement.on('select2:select select2:unselect', function(e) {
+                // Delay untuk memastikan DOM sudah terupdate
+                setTimeout(() => {
+                    disableSelectedOptions();
+                }, 100);
+            });
+        }, 100);
+    }
+}
+
+// Event listener ketika DOM sudah siap
+document.addEventListener('DOMContentLoaded', function() {
+    // Inisialisasi Select2 events
+    if (typeof $ !== 'undefined') {
+        // Event untuk tipe surat
+        $('#tipe_surat_perintah_pra_penindakan').on('select2:select', function(e) {
+            updateKontenSurat();
+        });
+
+        $('#tipe_surat_perintah_pra_penindakan').on('change', function() {
+            updateKontenSurat();
+        });
+
+        // Event untuk pejabat yang sudah ada (jika ada)
+        $(document).on('select2:select select2:unselect', '.select2-pejabat', function(e) {
+            setTimeout(() => {
+                disableSelectedOptions();
+            }, 100);
+        });
+
+    } else {
+        // Fallback tanpa jQuery
+        const tipeSuratSelect = document.getElementById('tipe_surat_perintah_pra_penindakan');
+
+        if (tipeSuratSelect) {
+            tipeSuratSelect.addEventListener('change', updateKontenSurat);
+
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                        updateKontenSurat();
+                    }
+                });
+            });
+
+            observer.observe(tipeSuratSelect, {
+                attributes: true,
+                attributeFilter: ['value']
+            });
+
+            let lastValue = tipeSuratSelect.value;
+            setInterval(function() {
+                if (tipeSuratSelect.value !== lastValue) {
+                    lastValue = tipeSuratSelect.value;
+                    updateKontenSurat();
+                }
+            }, 500);
+        }
+    }
+
+    // Inisialisasi tampilan kepada saat pertama kali load
+    const initialTipe = document.getElementById('tipe_surat_perintah_pra_penindakan')?.value;
+    if (initialTipe) {
+        toggleKepadaSection(initialTipe);
+    }
+});
+
+// Callback setelah Select2 diinisialisasi
+function initSelect2Callback() {
+    if (typeof $ !== 'undefined') {
+        setTimeout(function() {
+            $('#tipe_surat_perintah_pra_penindakan').on('select2:select', function(e) {
+                updateKontenSurat();
+            });
+
+            // Tambahkan event listener untuk semua select2-pejabat yang sudah ada
+            $('.select2-pejabat').on('select2:select select2:unselect', function(e) {
+                setTimeout(() => {
+                    disableSelectedOptions();
+                }, 100);
+            });
+        }, 100);
+    }
+}
+
+// Script untuk menyembunyikan/menampilkan empty message
+function toggleEmptyMessage() {
+    const container = document.getElementById('pejabat-wilayah-container');
+    const emptyMessage = document.getElementById('empty-message');
+
+    if (container && emptyMessage) {
+        const hasGroups = container.children.length > 0;
+        emptyMessage.style.display = hasGroups ? 'none' : 'block';
+    }
+}
+
+// Override fungsi tambahPejabatWilayah untuk include toggle empty message
+const originalTambahPejabatWilayah = window.tambahPejabatWilayah;
+window.tambahPejabatWilayah = function() {
+    if (originalTambahPejabatWilayah) {
+        originalTambahPejabatWilayah();
+    } else {
+        tambahPejabatWilayah();
+    }
+    toggleEmptyMessage();
+};
+
+// Override fungsi hapusPejabatWilayah untuk include toggle empty message
+const originalHapusPejabatWilayah = window.hapusPejabatWilayah;
+window.hapusPejabatWilayah = function(groupId) {
+    if (originalHapusPejabatWilayah) {
+        originalHapusPejabatWilayah(groupId);
+    } else {
+        hapusPejabatWilayah(groupId);
+    }
+    setTimeout(toggleEmptyMessage, 100);
+};
+
+// Fungsi untuk inisialisasi data existing dari PHP
+function initializeEditForm(pejabatBulananData) {
+    // Parse data jika berupa string JSON
+    let parsedData = pejabatBulananData;
+    if (typeof pejabatBulananData === 'string') {
+        try {
+            parsedData = JSON.parse(pejabatBulananData);
+        } catch (e) {
+            console.error('Error parsing pejabat bulanan data:', e);
+            parsedData = {};
+        }
+    }
+    
+    // Load existing data ke form
+    loadExistingPejabatData(parsedData);
+}
     </script>
 
+
+<!-- Di bagian akhir blade template, sebelum closing </body> -->
+<script>
+    // Inisialisasi data existing saat DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Data dari PHP (pejabat_bulanan dari $praPenindakan)
+        const pejabatBulananData = @json($praPenindakan->pejabat_bulanan ?? []);
+        
+        // Tunggu sampai semua komponen siap
+        setTimeout(() => {
+            initializeEditForm(pejabatBulananData);
+        }, 1000);
+    });
+</script>
+
+<!-- Atau jika Anda ingin memuat data lebih awal, gunakan ini: -->
+<script>
+    // Set data global sebelum DOM ready
+    window.existingPejabatBulananData = @json($praPenindakan->pejabat_bulanan ?? []);
+    
+    // Fungsi untuk inisialisasi setelah Select2 ready
+    function initializeExistingData() {
+        if (window.existingPejabatBulananData) {
+            initializeEditForm(window.existingPejabatBulananData);
+        }
+    }
+    
+    // Panggil setelah DOM dan Select2 ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Delay untuk memastikan Select2 sudah diinisialisasi
+        setTimeout(initializeExistingData, 1500);
+    });
+</script>
 
 
     <style>

@@ -115,8 +115,12 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('Dokpenindakan/pra-penindakan/{id}/print-laporan-informasi', [PraPenindakanController::class, 'print_laporan_informasi'])->name('laporan-informasi.print');
     Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-npi', [PraPenindakanController::class, 'print_surat_npi'])->name('surat-npi.print');
     Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-lapp', [PraPenindakanController::class, 'print_surat_lapp'])->name('surat-lapp.print');
-    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-perintah', [PraPenindakanController::class, 'print_surat_perintah'])->name('surat-perintah.print');
     Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-mpp', [PraPenindakanController::class, 'print_surat_mpp'])->name('surat-mpp.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-perintah-nhi-pra-penindakan', [PraPenindakanController::class, 'print_surat_perintah_nhi_pra_penindakan'])->name('surat-perintah-nhi-pra-penindakan.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-pemberitahuan-nhi-pra-penindakan', [PraPenindakanController::class, 'print_surat_pemberitahuan_nhi_pra_penindakan'])->name('surat-pemberitahuan-nhi-pra-penindakan.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-perintah-oc-pra-penindakan', [PraPenindakanController::class, 'print_surat_perintah_oc_pra_penindakan'])->name('surat-perintah-oc-pra-penindakan.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-perintah-patroli-laut-pra-penindakan', [PraPenindakanController::class, 'print_surat_perintah_patroli_laut_pra_penindakan'])->name('surat-perintah-patroli-laut-pra-penindakan.print');
+    Route::get('Dokpenindakan/pra-penindakan/{id}/print-surat-perintah-bulanan-pra-penindakan', [PraPenindakanController::class, 'print_surat_perintah_bulanan_pra_penindakan'])->name('surat-perintah-bulanan-pra-penindakan.print');
 
     // Pra penindakan NPP routes
     Route::resource('Dokpenindakan/pra-penindakan-npp', PraPenindakanNppController::class);
