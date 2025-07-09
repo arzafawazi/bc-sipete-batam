@@ -18,7 +18,7 @@
                     <!-- Row 1: Cards untuk Dokumen Utama -->
                     <div class="row g-3 mb-4">
                         <!-- Card Dok. Pra Penindakan -->
-                        <div class="col-md-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-3">
                             <div class="card h-100 shadow-sm hover-shadow-lg transition-300">
                                 <div class="card-body position-relative overflow-hidden">
                                     <div class="d-flex align-items-center mb-3">
@@ -56,7 +56,7 @@
                         </div>
 
                         <!-- Card Dok. Penindakan -->
-                        <div class="col-md-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-3">
                             <div class="card h-100 shadow-sm hover-shadow-lg transition-300">
                                 <div class="card-body position-relative overflow-hidden">
                                     <div class="d-flex align-items-center mb-3">
@@ -95,7 +95,7 @@
                         </div>
 
                         <!-- Card Pengawasan -->
-                        <div class="col-md-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-3">
                             <div class="card h-100 shadow-sm hover-shadow-lg transition-300">
                                 <div class="card-body position-relative overflow-hidden">
                                     <div class="d-flex align-items-center mb-3">
@@ -134,7 +134,7 @@
                         </div>
 
                         <!-- Card Pasca Penindakan -->
-                        <div class="col-md-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-3">
                             <div class="card h-100 shadow-sm hover-shadow-lg transition-300">
                                 <div class="card-body position-relative overflow-hidden">
                                     <div class="d-flex align-items-center mb-3">

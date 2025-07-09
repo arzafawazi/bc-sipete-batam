@@ -22,25 +22,23 @@ class LaporanPengawasanControllers extends Controller
 {
     public function index()
     {
-        $laporanpengawasan = TblLaporanPengawasan::all();
+        $laporanpengawasan = TblLaporanPengawasan::latest()->paginate(50);
 
-        foreach ($laporanpengawasan as $laporan) {
+        $laporanpengawasan->getCollection()->transform(function ($laporan) {
             $laporan->status_lpt = empty($laporan->pegawai_pembuat_lpt) ? 'LPT-1 belum diisi' : 'LPT-1 lengkap';
-
             $laporan->status_lppi = empty($laporan->pejabat_lppi) ? 'LPP-I belum diisi' : 'LPP-I lengkap';
-
             $laporan->status_lkai = empty($laporan->hasil_analisis_diterima_tanggal_2_lkai) ? 'LKA-I belum diisi' : 'LKA-I lengkap';
 
-            $laporanData = $laporan->toArray();
-            $laporanFormatted = $this->formatDates($laporanData);
+            $formatted = $this->formatDates($laporan->toArray());
 
-            $laporan->tgl_st = $laporanFormatted['tgl_st'];
-        }
+            $laporan->tgl_st = $formatted['tgl_st'] ?? $laporan->tgl_st;
 
-        // dd($laporanpengawasan);
+            return $laporan;
+        });
 
         return view('Dokintelijen.laporan-pengawasan.index', compact('laporanpengawasan'));
     }
+
 
     public function create()
     {

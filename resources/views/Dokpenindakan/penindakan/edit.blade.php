@@ -19,7 +19,8 @@
             </div>
 
             <div class="card-body">
-                <form action="{{ route('penindakan.update', ['penindakan' => $penindakans->id]) }}" method="POST">
+                <form action="{{ route('penindakan.update', ['penindakan' => $penindakans->id]) }}"
+                    enctype="multipart/form-data" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="card">
@@ -188,17 +189,20 @@
                                             <div class="row field-row">
                                                 <div class="col-md-6">
                                                     <label class="fw-bold">No. Surat Perintah:</label>
-                                                    <input type="text" value="{{ $laporan->no_print }}"
+                                                    <input type="text"
+                                                        value="{{ old('no_print', $laporan->no_print) }}"
                                                         class="form-control bg-primary text-white" readonly>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="fw-bold">Tgl. Surat Perintah:</label>
-                                                    <input type="date" value="{{ $laporan->tgl_print }}"
+                                                    <input type="date"
+                                                        value="{{ old('tgl_print', $laporan->tgl_print) }}"
                                                         class="form-control bg-primary text-white" readonly>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
 
                                     <!-- Section 2: Data Petugas -->
                                     <div class="form-section">
@@ -212,7 +216,7 @@
                                                         @foreach ($users as $user)
                                                             <option value="{{ $user->id_admin }}"
                                                                 {{ old('id_petugas_1_sbp', $penindakans->id_petugas_1_sbp) == $user->id_admin ? 'selected' : '' }}
-                                                                {{ old('id_petugas_1_sbp', $penindakans->id_petugas_1_sbp) != $user->id_admin ? 'disabled' : '' }}>
+                                                                {{ $penindakans->id_petugas_1_sbp != $user->id_admin ? 'disabled' : '' }}>
                                                                 {{ $user->name }}
                                                             </option>
                                                         @endforeach
@@ -262,7 +266,6 @@
 
 
                                     <!-- Section 3: Data Lokasi dan Waktu -->
-                                    <!-- Section 3: Lokasi Penindakan -->
                                     <div class="form-section">
                                         <div class="section-header">3. Lokasi Penindakan</div>
                                         <div class="p-3">
@@ -275,6 +278,8 @@
                                         </div>
                                     </div>
 
+
+                                    <!-- Section 4: Waktu Penindakan -->
                                     <!-- Section 4: Waktu Penindakan -->
                                     <div class="form-section">
                                         <div class="section-header">4. Waktu Penindakan</div>
@@ -289,15 +294,14 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="fw-bold">Tanggal & Waktu Selesai:</label>
-                                                    <input type="text" class="form-control" name="tgl_selesai"
-                                                        id="datetime-datepicker"
+                                                    <input type="text" class="form-control" id="datetime-datepicker"
+                                                        name="tgl_selesai"
                                                         value="{{ old('tgl_selesai', $penindakans->tgl_selesai) }}"
                                                         placeholder="dd/mm/yyyy HH:mm">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
 
                                     <!-- Section 5: Alasan Penindakan -->
                                     <div class="form-section">
@@ -307,21 +311,12 @@
                                                 <label class="fw-bold">Alasan Penindakan:</label>
                                                 <select class="form-control select2" name="alasan_penindakan"
                                                     id="alasan_penindakan">
-                                                    <option value="" disabled
-                                                        {{ old('alasan_penindakan', $penindakans->alasan_penindakan) ? '' : 'selected' }}>
-                                                        Pilih Alasan Penindakan
-                                                    </option>
+                                                    <option value="" disabled>Pilih Alasan Penindakan</option>
                                                     @foreach ($jenisPelanggaran->unique('alasan_penindakan') as $jenis)
-                                                        @php
-                                                            $optionValue =
-                                                                $jenis->alasan_penindakan .
-                                                                ' (' .
-                                                                $jenis->jenis_pelanggaran .
-                                                                ')';
-                                                        @endphp
-                                                        <option value="{{ $optionValue }}"
+                                                        <option
+                                                            value="{{ $jenis->alasan_penindakan }} ({{ $jenis->jenis_pelanggaran }})"
                                                             data-jenis="{{ $jenis->jenis_pelanggaran }}"
-                                                            {{ old('alasan_penindakan', $penindakans->alasan_penindakan) == $optionValue ? 'selected' : '' }}>
+                                                            {{ old('alasan_penindakan', $penindakans->alasan_penindakan) == $jenis->alasan_penindakan . ' (' . $jenis->jenis_pelanggaran . ')' ? 'selected' : '' }}>
                                                             {{ $jenis->alasan_penindakan }}
                                                         </option>
                                                     @endforeach
@@ -329,13 +324,11 @@
                                             </div>
                                             <div class="field-row mt-3">
                                                 <label class="fw-bold">Jenis Pelanggaran:</label>
-                                                <textarea class="form-control bg-light mt-2" rows="3" id="jenis_pelanggaran" readonly>{{ old('jenis_pelanggaran', $penindakans->jenis_pelanggaran) }}</textarea>
+                                                <textarea class="form-control bg-light mt-2" rows="3" id="jenis_pelanggaran" readonly>{{ $penindakans->jenis_pelanggaran }}</textarea>
                                             </div>
                                         </div>
                                     </div>
 
-
-                                    <!-- Section 6: Uraian Penindakan -->
                                     <!-- Section 6: Uraian Penindakan -->
                                     <div class="form-section">
                                         <div class="section-header">6. Uraian Penindakan</div>
@@ -347,10 +340,9 @@
 
                                     <!-- Section 7: Hal Yang Terjadi -->
                                     <div class="form-section">
-                                        <div class="section-header">7. Hal Yang Terjadi</div>
+                                        <div class="section-header">7. Kesimpulan Penindakan</div>
                                         <div class="p-3">
-                                            <textarea class="form-control" name="hal_yang_terjadi" rows="5"
-                                                placeholder="Kronologi kejadian yang ditemukan">{{ old('hal_yang_terjadi', $penindakans->hal_yang_terjadi) }}</textarea>
+                                        
                                         </div>
                                     </div>
 
@@ -374,7 +366,6 @@
                                                         placeholder="Pekerjaan saksi">
                                                 </div>
                                             </div>
-
                                             <div class="row field-row">
                                                 <div class="col-md-6">
                                                     <label class="fw-bold">No. Identitas:</label>
@@ -390,7 +381,6 @@
                                                         placeholder="KTP/SIM/Paspor">
                                                 </div>
                                             </div>
-
                                             <div class="row field-row">
                                                 <div class="col-md-12">
                                                     <label class="fw-bold">Alamat:</label>
@@ -399,7 +389,6 @@
                                                         placeholder="Alamat lengkap saksi">
                                                 </div>
                                             </div>
-
                                             <div class="row field-row">
                                                 <div class="col-md-4">
                                                     <label class="fw-bold">Jenis Kelamin:</label>
@@ -426,16 +415,12 @@
                                                         placeholder="Tahun">
                                                 </div>
                                             </div>
-
                                             <div class="row field-row">
                                                 <div class="col-md-6">
                                                     <label class="fw-bold">Kewarganegaraan:</label>
                                                     <select class="form-control form-input select2"
                                                         name="kewarganegaraan_saksi">
-                                                        <option value="" disabled
-                                                            {{ old('kewarganegaraan_saksi', $penindakans->kewarganegaraan_saksi) ? '' : 'selected' }}>
-                                                            - Pilih Kewarganegaraan -
-                                                        </option>
+                                                        <option value="" disabled>- Pilih Kewarganegaraan -</option>
                                                         @foreach ($nama_negara as $benua => $negara)
                                                             <optgroup label="{{ $benua }}">
                                                                 @foreach ($negara as $item)
@@ -455,7 +440,6 @@
                                                         placeholder="08xxxxxxxxxx">
                                                 </div>
                                             </div>
-
                                             <div class="row field-row">
                                                 <div class="col-md-6">
                                                     <label class="fw-bold">NPWP:</label>
@@ -484,6 +468,7 @@
                                                 <div class="accordion accordion-flush" id="objekPenindakanAccordion">
 
                                                     <!-- A. Sarana Pengangkut -->
+                                                    <!-- Toggle Data -->
                                                     <div class="accordion-item">
                                                         <h2 class="accordion-header">
                                                             <button class="accordion-button collapsed fw-semibold bg-light"
@@ -496,7 +481,6 @@
                                                         <div id="accordionSarana" class="accordion-collapse collapse"
                                                             data-bs-parent="#objekPenindakanAccordion">
                                                             <div class="accordion-body bg-light">
-                                                                <!-- Toggle Data -->
                                                                 <div class="row mb-4">
                                                                     <label for="data_sarkut"
                                                                         class="col-sm-3 col-form-label fw-bold">Isi
@@ -526,8 +510,8 @@
                                                                                 class="form-control form-input"
                                                                                 name="nama_jenis_sarkut"
                                                                                 value="{{ old('nama_jenis_sarkut', $penindakans->nama_jenis_sarkut) }}"
-                                                                                placeholder="Nama Sarkut"
-                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) == 'YA' ? '' : 'disabled' }}>
+                                                                                placeholder="Masukkan nama/jenis sarana"
+                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Jenis
@@ -537,7 +521,7 @@
                                                                                 name="jenis_sarkut"
                                                                                 value="{{ old('jenis_sarkut', $penindakans->jenis_sarkut) }}"
                                                                                 placeholder="Masukkan jenis sarana"
-                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
 
@@ -550,7 +534,7 @@
                                                                                 name="no_flight"
                                                                                 value="{{ old('no_flight', $penindakans->no_flight) }}"
                                                                                 placeholder="Masukkan nomor voyage/penerbangan/trayek"
-                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label
@@ -560,7 +544,7 @@
                                                                                 name="kapasitas_muatan"
                                                                                 value="{{ old('kapasitas_muatan', $penindakans->kapasitas_muatan) }}"
                                                                                 placeholder="Masukkan ukuran/kapasitas muatan"
-                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
 
@@ -573,7 +557,7 @@
                                                                                 name="pengemudi" id="pengemudi"
                                                                                 value="{{ old('pengemudi', $penindakans->pengemudi) }}"
                                                                                 placeholder="Masukkan nama nahkoda/pilot/pengemudi"
-                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
@@ -584,7 +568,7 @@
                                                                                 id="no_identitas_pengemudi"
                                                                                 value="{{ old('no_identitas_pengemudi', $penindakans->no_identitas_pengemudi) }}"
                                                                                 placeholder="Masukkan nomor identitas"
-                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
 
@@ -597,7 +581,7 @@
                                                                                 name="bendera"
                                                                                 value="{{ old('bendera', $penindakans->bendera) }}"
                                                                                 placeholder="Masukkan bendera"
-                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
@@ -607,7 +591,7 @@
                                                                                 name="no_polisi"
                                                                                 value="{{ old('no_polisi', $penindakans->no_polisi) }}"
                                                                                 placeholder="Masukkan nomor registrasi/polisi"
-                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_sarkut', $penindakans->data_sarkut) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -615,7 +599,9 @@
                                                         </div>
                                                     </div>
 
+
                                                     <!-- B. Data Barang -->
+                                                    <!-- Toggle Data -->
                                                     <div class="accordion-item">
                                                         <h2 class="accordion-header">
                                                             <button class="accordion-button collapsed fw-semibold bg-light"
@@ -628,7 +614,6 @@
                                                         <div id="accordionBarang" class="accordion-collapse collapse"
                                                             data-bs-parent="#objekPenindakanAccordion">
                                                             <div class="accordion-body bg-light">
-                                                                <!-- Toggle Data -->
                                                                 <div class="row mb-4">
                                                                     <label for="data_barang"
                                                                         class="col-sm-3 col-form-label fw-bold">Isi
@@ -652,33 +637,30 @@
                                                                     <div class="mb-3">
                                                                         <label
                                                                             class="form-label fw-semibold">Jumlah/Jenis/Ukuran/Nomor</label>
-                                                                        <textarea class="form-control form-input " placeholder="Jumlah/Jenis/Ukuran/Nomor" name="jumlah_jenis_ukuran_no"
-                                                                            rows="3" {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>{{ old('jumlah_jenis_ukuran_no', $penindakans->jumlah_jenis_ukuran_no) }}</textarea>
+                                                                        <textarea class="form-control form-input" name="jumlah_jenis_ukuran_no" rows="3"
+                                                                            placeholder="Masukkan jumlah, jenis, ukuran, dan nomor barang"
+                                                                            {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>{{ old('jumlah_jenis_ukuran_no', $penindakans->jumlah_jenis_ukuran_no) }}</textarea>
                                                                     </div>
 
                                                                     <div class="row mb-3">
                                                                         <div class="col-md-6">
                                                                             <label
                                                                                 class="form-label fw-semibold">Kemasan</label>
-                                                                            <select
-                                                                                class="form-select form-control form-input"
+                                                                            <select class="form-control form-input select2"
                                                                                 name="id_kemasan"
-                                                                                {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>
-                                                                                <option value="">- Pilih Kemasan -
-                                                                                </option>
-                                                                                <option value="Kardus"
-                                                                                    {{ old('id_kemasan', $penindakans->id_kemasan) == 'Kardus' ? 'selected' : '' }}>
-                                                                                    Kardus</option>
-                                                                                <option value="Plastik"
-                                                                                    {{ old('id_kemasan', $penindakans->id_kemasan) == 'Plastik' ? 'selected' : '' }}>
-                                                                                    Plastik</option>
-                                                                                <option value="Kayu"
-                                                                                    {{ old('id_kemasan', $penindakans->id_kemasan) == 'Kayu' ? 'selected' : '' }}>
-                                                                                    Kayu</option>
-                                                                                <option value="Metal"
-                                                                                    {{ old('id_kemasan', $penindakans->id_kemasan) == 'Metal' ? 'selected' : '' }}>
-                                                                                    Metal</option>
+                                                                                {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>
+                                                                                <option value="" disabled
+                                                                                    {{ old('id_kemasan', $penindakans->id_kemasan) ? '' : 'selected' }}>
+                                                                                    - Pilih -</option>
+                                                                                @foreach ($kemasans as $kemasan)
+                                                                                    <option
+                                                                                        value="{{ $kemasan->id_kemasan }}"
+                                                                                        {{ old('id_kemasan', $penindakans->id_kemasan) == $kemasan->id_kemasan ? 'selected' : '' }}>
+                                                                                        {{ $kemasan->nama_kemasan }}
+                                                                                    </option>
+                                                                                @endforeach
                                                                             </select>
+
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Jumlah
@@ -686,9 +668,9 @@
                                                                             <input type="number"
                                                                                 class="form-control form-input"
                                                                                 name="jumlah_barang"
-                                                                                placeholder="Masukkan jumlah barang"
                                                                                 value="{{ old('jumlah_barang', $penindakans->jumlah_barang) }}"
-                                                                                {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>
+                                                                                placeholder="Masukkan jumlah barang"
+                                                                                {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
 
@@ -697,7 +679,7 @@
                                                                             Barang</label>
                                                                         <textarea class="form-control form-input" name="jenis_barang" rows="2"
                                                                             placeholder="Masukkan uraian detail barang"
-                                                                            {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>{{ old('jenis_barang', $penindakans->jenis_barang) }}</textarea>
+                                                                            {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>{{ old('jenis_barang', $penindakans->jenis_barang) }}</textarea>
                                                                     </div>
 
                                                                     <div class="row mb-3">
@@ -707,9 +689,9 @@
                                                                             <input type="text"
                                                                                 class="form-control form-input"
                                                                                 name="jenis_no_tgl_dok"
-                                                                                placeholder="Masukkan jenis/nomor dokumen"
                                                                                 value="{{ old('jenis_no_tgl_dok', $penindakans->jenis_no_tgl_dok) }}"
-                                                                                {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>
+                                                                                placeholder="Masukkan jenis/nomor dokumen"
+                                                                                {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Tgl.
@@ -718,7 +700,7 @@
                                                                                 class="form-control form-input"
                                                                                 name="tgl_dokumen"
                                                                                 value="{{ old('tgl_dokumen', $penindakans->tgl_dokumen) }}"
-                                                                                {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
 
@@ -730,7 +712,7 @@
                                                                                 class="form-control form-input"
                                                                                 name="masa_berlaku_dokumen"
                                                                                 value="{{ old('masa_berlaku_dokumen', $penindakans->masa_berlaku_dokumen) }}"
-                                                                                {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>
+                                                                                {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
 
@@ -741,9 +723,9 @@
                                                                             <input type="text"
                                                                                 class="form-control form-input"
                                                                                 name="pemilik" id="pemilik"
-                                                                                placeholder="Masukkan nama pemilik/importir/eksportir"
                                                                                 value="{{ old('pemilik', $penindakans->pemilik) }}"
-                                                                                {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>
+                                                                                placeholder="Masukkan nama pemilik/importir/eksportir"
+                                                                                {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
@@ -752,9 +734,9 @@
                                                                                 class="form-control form-input"
                                                                                 name="no_identitas_pemilik"
                                                                                 id="no_identitas_pemilik"
-                                                                                placeholder="Masukkan nomor identitas"
                                                                                 value="{{ old('no_identitas_pemilik', $penindakans->no_identitas_pemilik) }}"
-                                                                                {{ old('data_barang', $penindakans->data_barang) == 'YA' ? '' : 'disabled' }}>
+                                                                                placeholder="Masukkan nomor identitas"
+                                                                                {{ old('data_barang', $penindakans->data_barang) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -764,6 +746,7 @@
 
 
                                                     <!-- C. Data Bangunan/Tempat -->
+                                                    <!-- Toggle Data -->
                                                     <div class="accordion-item">
                                                         <h2 class="accordion-header">
                                                             <button class="accordion-button collapsed fw-semibold bg-light"
@@ -776,7 +759,6 @@
                                                         <div id="accordionBangunan" class="accordion-collapse collapse"
                                                             data-bs-parent="#objekPenindakanAccordion">
                                                             <div class="accordion-body bg-light">
-                                                                <!-- Toggle Data -->
                                                                 <div class="row mb-4">
                                                                     <label for="data_bangunan"
                                                                         class="col-sm-3 col-form-label fw-bold">Isi
@@ -802,7 +784,7 @@
                                                                             Bangunan/Tempat</label>
                                                                         <textarea class="form-control form-input" name="alamat_bangunan" rows="2"
                                                                             placeholder="Masukkan alamat lengkap bangunan/tempat"
-                                                                            {{ old('data_bangunan', $penindakans->data_bangunan) == 'YA' ? '' : 'disabled' }}>{{ old('alamat_bangunan', $penindakans->alamat_bangunan) }}</textarea>
+                                                                            {{ old('data_bangunan', $penindakans->data_bangunan) != 'YA' ? 'disabled' : '' }}>{{ old('alamat_bangunan', $penindakans->alamat_bangunan) }}</textarea>
                                                                     </div>
 
                                                                     <div class="mb-3">
@@ -811,9 +793,9 @@
                                                                         <input type="text"
                                                                             class="form-control form-input"
                                                                             name="no_bangunan"
-                                                                            placeholder="Masukkan nomor registrasi bangunan/NPPBKC"
                                                                             value="{{ old('no_bangunan', $penindakans->no_bangunan) }}"
-                                                                            {{ old('data_bangunan', $penindakans->data_bangunan) == 'YA' ? '' : 'disabled' }}>
+                                                                            placeholder="Masukkan nomor registrasi bangunan/NPPBKC"
+                                                                            {{ old('data_bangunan', $penindakans->data_bangunan) != 'YA' ? 'disabled' : '' }}>
                                                                     </div>
 
                                                                     <div class="row mb-3">
@@ -824,9 +806,9 @@
                                                                                 class="form-control form-input"
                                                                                 name="nama_pemilik_bangunan"
                                                                                 id="nama_pemilik_bangunan"
-                                                                                placeholder="Masukkan nama pemilik/yang menguasai"
                                                                                 value="{{ old('nama_pemilik_bangunan', $penindakans->nama_pemilik_bangunan) }}"
-                                                                                {{ old('data_bangunan', $penindakans->data_bangunan) == 'YA' ? '' : 'disabled' }}>
+                                                                                placeholder="Masukkan nama pemilik/yang menguasai"
+                                                                                {{ old('data_bangunan', $penindakans->data_bangunan) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
@@ -835,9 +817,9 @@
                                                                                 class="form-control form-input"
                                                                                 name="no_identitas_pemilik_bangunan"
                                                                                 id="no_identitas_pemilik_bangunan"
-                                                                                placeholder="Masukkan nomor identitas"
                                                                                 value="{{ old('no_identitas_pemilik_bangunan', $penindakans->no_identitas_pemilik_bangunan) }}"
-                                                                                {{ old('data_bangunan', $penindakans->data_bangunan) == 'YA' ? '' : 'disabled' }}>
+                                                                                placeholder="Masukkan nomor identitas"
+                                                                                {{ old('data_bangunan', $penindakans->data_bangunan) != 'YA' ? 'disabled' : '' }}>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -850,17 +832,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Section 10: Keterangan -->
-                                    {{-- <div class="form-section">
-                                        <div class="section-header">10. Keterangan</div>
-                                        <div class="p-3">
-                                            <div style="min-height: 100px; border: 1px solid #ddd; padding: 10px;">
-                                                <p class="text-muted small mb-0">Keterangan tambahan dapat ditulis di
-                                                    sini...</p>
-                                            </div>
-                                        </div>
-                                    </div> --}}
 
                                     <!-- Signature Section -->
                                     <div class="row mt-5">
@@ -935,341 +906,925 @@
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck1" data-id="flush-collapse1"
-                                                        name="ba_riksa"
-                                                        value="{{ old('ba_riksa', $penindakans->ba_riksa) }}"
-                                                        {{ old('ba_riksa', $penindakans->ba_riksa) == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse1">
+                                                        name="ba_riksa" value="YA"
+                                                        {{ old('ba_riksa', $penindakans->ba_riksa) === 'YA' ? 'checked' : '' }}
+                                                        aria-expanded="{{ old('ba_riksa', $penindakans->ba_riksa) === 'YA' ? 'true' : 'false' }}"
+                                                        aria-controls="flush-collapse1">
                                                     <label class="form-check-label" for="flexSwitchCheck1"
                                                         id="switch-label-1">
-                                                        {{ old('ba_riksa', $penindakans->ba_riksa) == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_riksa', $penindakans->ba_riksa) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
                                             </div>
+
                                             <hr class="my-0">
-                                            <div id="flush-collapse1" class="accordion-collapse collapse"
+                                            <div id="flush-collapse1" class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-                                                    <div class="row">
-                                                        <!-- Left Column (Data Laporan Informasi) -->
-                                                        <div class="col-lg-6">
-                                                            <h6><b>A. Data B.A Riksa</b></h6>
-                                                            <hr>
-                                                            <div class="row">
-                                                                <div class="row">
-                                                                    <div class="col-md-6 mb-3">
-                                                                        <label>No. B.A Riksa</label>
-                                                                        <input type="text"
-                                                                            class="form-control bg-primary text-white"
-                                                                            value="{{ old('no_ba_riksa', $penindakans->no_ba_riksa) }}"
-                                                                            placeholder="No. B.A Riksa" name="no_ba_riksa"
-                                                                            readonly>
-                                                                    </div>
-
-                                                                    <div class="col-md-6 mb-3">
-                                                                        <label>Tgl. B.A Riksa</label>
-                                                                        <input type="date"
-                                                                            class="form-control bg-primary text-white"
-                                                                            name="tgl_ba_riksa"
-                                                                            value="{{ old('tgl_ba_riksa', $penindakans->tgl_ba_riksa) }}">
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <h6><b>B. Data Pemeriksaan</b></h6>
-                                                                <hr>
-
-                                                                <div class="mb-3 form-group">
-                                                                    <label>Lokasi Pemeriksaan</label>
-                                                                    <div class="col-sm-12">
-                                                                        <textarea class="form-control form-input" placeholder="Lokasi Pemeriksaan" name="lokasi_pemeriksaan" rows="3">{{ old('lokasi_pemeriksaan', $penindakans->lokasi_pemeriksaan) }}</textarea>
-                                                                    </div>
-                                                                </div>
-
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI</p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
                                                             </div>
                                                         </div>
 
-                                                        <!-- Right Column (Pejabat Selection) -->
-                                                        <div class="col-lg-6">
-                                                            <h6><b>C. Data Lainnya</b></h6>
-                                                            <hr>
+                                                        <hr class="border border-dark border-2">
 
-                                                            <div class="mb-3 form-group">
-                                                                <label>Rincian Hasil Pemeriksaan</label>
-                                                                <div class="col-sm-12">
-                                                                    <textarea class="form-control form-input" placeholder="Rincian Hasil Pemeriksaan" name="rincian_hasil_pemeriksaan"
-                                                                        rows="9">{{ old('rincian_hasil_pemeriksaan', $penindakans->rincian_hasil_pemeriksaan) }}</textarea>
+
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold">BERITA ACARA PEMERIKSAAN</h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_riksa" id="no_ba_riksa"
+                                                                    value="{{ old('no_ba_riksa', $penindakans->no_ba_riksa) }}"
+                                                                    readonly>
+                                                                <span class="input-group-text">/Riksa/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_riksa"
+                                                                    value="{{ old('tgl_ba_riksa', $penindakans->tgl_ba_riksa) }}">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
+
+
+
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
+
+
+
+
+                                                            <p>Kami yang bertanda tangan di bawah ini telah melakukan
+                                                                pemeriksaan terhadap:</p>
+                                                        </div>
+
+                                                        <!-- A. Sarana Pengangkut -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">A. Sarana Pengangkut</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama dan Jenis Sarkut</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
                                                                 </div>
                                                             </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No Reg./No. Polisi</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Bendera</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nakhoda/Pilot/Pengemudi<span
+                                                                            class="text-danger">*</span></label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- B. Barang -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">B. Barang</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jumlah/Jenis/No Peti
+                                                                        Kemas/Kemasan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Surat Muatan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jenis/No dan Tgl
+                                                                        Dokumen</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">
+                                                                        Pemilik/Importir/Eksportir/Kuasa<span
+                                                                            class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- C. Orang dan tempat -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">C. Orang dan Tempat</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Alamat
+                                                                        Bangunan/Tempat</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No Reg Bangunan/NPPBKC/NPWP
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama Pemilik/Yang Menguasai
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- Lokasi Pemeriksaan -->
+                                                        <div class="mb-4">
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Lokasi Pemeriksaan</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" name="lokasi_pemeriksaan"
+                                                                    placeholder="Diisi Tempat Lokasi Pemeriksaan"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1"
+                                                                    value="{{ old('lokasi_pemeriksaan', $penindakans->lokasi_pemeriksaan) }}">
+                                                            </div>
+
+
+                                                            <p>Hasil Pemeriksaan sesuai Laporan hasil
+                                                                pemeriksaan/penanganan/penembakan/sebagaimana terlampir.</p>
+
+                                                            <p>
+                                                                Dengan diketahui oleh
+                                                                pengangkut/pemilik/penguasa/instansi/ketua lingkungan/
+                                                                <span class="text-danger">*</span>
+                                                            </p>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Nama</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Alamat</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Pekerjaan</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Identitas (KTP/SIM/Passport)</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
+
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pemilik/Kuasanya/Saksi*,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;" value="terisi otomatis"
+                                                                            readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;" value="terisi otomatis"
+                                                                            readonly></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;" value="terisi otomatis"
+                                                                            readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;" value="terisi otomatis"
+                                                                            readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
+                                                        </div>
+
+                                                        <hr class="my-5">
+
+                                                        <!-- LAMPIRAN BERITA ACARA PEMERIKSAAN -->
+                                                        <div class="mt-5">
+                                                            <div class="text-center mb-4">
+                                                                <p>Lampiran Berita Acara Pemeriksaan</p>
+                                                                <p>Nomor : BA - <input type="text"
+                                                                        class="form-control d-inline border-0 border-bottom border-dark"
+                                                                        style="width: 100px;" value="terisi otomatis"
+                                                                        readonly></p>
+                                                                <p>Tanggal : <input type="text"
+                                                                        class="form-control d-inline border-0 border-bottom border-dark"
+                                                                        style="width: 100px;" value="terisi otomatis"
+                                                                        readonly></p>
+                                                            </div>
+
+                                                            <div class="text-center mb-4">
+                                                                <h5 class="fw-bold text-decoration-underline">LAPORAN HASIL
+                                                                    PEMERIKSAAN</h5>
+                                                            </div>
+
+                                                            <p>Hasil pemeriksaan kedapatan :</p>
+                                                            <div class="mb-4">
+                                                                <textarea class="form-control border-0" name="rincian_hasil_pemeriksaan" rows="5"
+                                                                    style="border-bottom: 1px solid black !important; resize: none;" placeholder="Diisi Hasil Rincian Pemeriksaan">{{ old('rincian_hasil_pemeriksaan', $penindakans->rincian_hasil_pemeriksaan) }}</textarea>
+                                                            </div>
+
+
+                                                            <div class="card-body table-responsive mb-4">
+                                                                <h3>Barang Pemberitahuan</h3>
+                                                                <table id="pemberitahuan_table"
+                                                                    class="table table-hover align-middle border-separate"
+                                                                    style="border-spacing: 0 8px;">
+                                                                    <thead>
+                                                                        <tr class="bg-light">
+                                                                            <th>Uraian Barang</th>
+                                                                            <th>Jml</th>
+                                                                            <th>Kondisi</th>
+                                                                            <th><button type="button"
+                                                                                    class="bg-primary text-white btn btn-outline-light px-3 py-1 rounded shadow-sm transition"
+                                                                                    style="transition: all 0.2s ease-in-out;"
+                                                                                    onmouseover="this.classList.add('shadow'); this.style.transform='scale(1.05)'"
+                                                                                    onmouseout="this.classList.remove('shadow'); this.style.transform='scale(1)'"
+                                                                                    onclick="addRow('pemberitahuan')">+</button>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody>
+                                                                </table>
+
+                                                                <h3>Barang Kedapatan</h3>
+                                                                <table id="kedapatan_table"
+                                                                    class="table table-hover align-middle border-separate"
+                                                                    style="border-spacing: 0 8px;">
+                                                                    <thead>
+                                                                        <tr class="bg-light">
+                                                                            <th>Uraian Barang</th>
+                                                                            <th>Jml</th>
+                                                                            <th>Kondisi</th>
+                                                                            <th><button type="button"
+                                                                                    class="bg-primary text-white btn btn-outline-light px-3 py-1 rounded shadow-sm transition"
+                                                                                    style="transition: all 0.2s ease-in-out;"
+                                                                                    onmouseover="this.classList.add('shadow'); this.style.transform='scale(1.05)'"
+                                                                                    onmouseout="this.classList.remove('shadow'); this.style.transform='scale(1)'"
+                                                                                    onclick="addRow('kedapatan')">+</button>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <input type="hidden" name="hasil_pemeriksaan_barang"
+    id="hasil_pemeriksaan_barang"
+    value="{{ old('hasil_pemeriksaan_barang', $penindakans->hasil_pemeriksaan_barang) }}"
+    data-old="{{ old('hasil_pemeriksaan_barang', $penindakans->hasil_pemeriksaan_barang) }}">
+
+
+                                                            <div class="mb-4">
+                                                                <textarea class="form-control border-0" name="keterangan_hasil_pemeriksaan" rows="2"
+                                                                    style="border-bottom: 1px solid black !important; resize: none;"
+                                                                    placeholder="Diisi Keterangan Dari Barang Hasil Pemberitahuan Dan Barang Kedapatan">{{ old('keterangan_hasil_pemeriksaan', $penindakans->keterangan_hasil_pemeriksaan) }}</textarea>
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <textarea class="form-control border-0" name="kesimpulan_hasil_pemeriksaan" rows="2"
+                                                                    style="border-bottom: 1px solid black !important; resize: none;"
+                                                                    placeholder="Diisi Kesimpulan Dari Barang Hasil Pemberitahuan Dan Barang Kedapatan">{{ old('kesimpulan_hasil_pemeriksaan', $penindakans->kesimpulan_hasil_pemeriksaan) }}</textarea>
+                                                            </div>
+
+
+                                                            <!-- Bagian Dokumentasi Pemeriksaan -->
+                                                            <div class="card-body table-responsive mb-4">
+                                                                <h3>Dokumentasi Pemeriksaan</h3>
+
+                                                                @php
+    $dokumentasiLama = old('dokumentasi_pemeriksaan', $penindakans->dokumentasi_pemeriksaan ?? '[]');
+@endphp
+
+<div id="image-preview-container" class="row g-3 mb-3"
+     data-old='@json(json_decode($dokumentasiLama))'>
+</div>
+
+
+                                                                <div class="row g-2 mb-3">
+                                                                    <!-- Input Gambar -->
+                                                                    <div class="col-md-4">
+                                                                        <input type="file" class="form-control"
+                                                                            id="image-upload" accept="image/*">
+                                                                    </div>
+
+                                                                    <!-- Input Caption -->
+                                                                    <div class="col-md-6">
+                                                                        <input type="text" class="form-control"
+                                                                            id="image-caption" placeholder="Caption">
+                                                                    </div>
+
+                                                                    <!-- Tombol Tambah -->
+                                                                    <div class="col-md-2 d-grid">
+                                                                        <button type="button"
+                                                                            class="btn btn-primary shadow-sm"
+                                                                            onclick="addImage()">Tambah</button>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Tempat menyimpan field tersembunyi caption dan file -->
+                                                                <div id="hidden-fields" class="d-none"></div>
+                                                            </div>
+
+
+
+
+                                                            <!-- Tanda Tangan Laporan -->
+                                                            <div class="row mt-5">
+                                                                <div class="col-md-6">
+                                                                    <div class="text-center">
+                                                                        <p>Pemilik/Kuasanya/Saksi*,</p>
+                                                                        <div style="height: 80px;"></div>
+                                                                        <p>(<input type="text"
+                                                                                class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                                style="width: 150px;"
+                                                                                value="terisi otomatis" readonly>)</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="text-center">
+                                                                        <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                        <div style="height: 80px;"></div>
+                                                                        <p>(<input type="text"
+                                                                                class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                                style="width: 150px;"
+                                                                                value="terisi otomatis" readonly>)</p>
+                                                                        <p>NIP. <input type="text"
+                                                                                class="form-control d-inline border-0 border-bottom border-dark"
+                                                                                style="width: 120px;"
+                                                                                value="terisi otomatis" readonly> </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
 
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
 
+                                        <!-- B.A Riksa Badan -->
                                         <div class="accordion-item border rounded mt-2">
                                             <div class="d-flex justify-content-between align-items-center p-3 bg-light">
                                                 <span class="fw-bold">B.A Riksa Badan</span>
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck2" data-id="flush-collapse2"
-                                                        name="ba_riksa_badan"
-                                                        value="{{ old('ba_riksa_badan', $penindakans->ba_riksa_badan) }}"
-                                                        {{ old('ba_riksa_badan', $penindakans->ba_riksa_badan) == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse2">
+                                                        name="ba_riksa_badan" value="YA"
+                                                        {{ old('ba_riksa_badan', $penindakans->ba_riksa_badan) === 'YA' ? 'checked' : '' }}
+                                                        aria-expanded="{{ old('ba_riksa_badan', $penindakans->ba_riksa_badan) === 'YA' ? 'true' : 'false' }}"
+                                                        aria-controls="flush-collapse2">
                                                     <label class="form-check-label" for="flexSwitchCheck2"
                                                         id="switch-label-2">
-                                                        {{ old('ba_riksa_badan', $penindakans->ba_riksa_badan) == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_riksa_badan', $penindakans->ba_riksa_badan) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
                                             </div>
+
                                             <hr class="my-0">
-                                            <div id="flush-collapse2" class="accordion-collapse collapse"
+                                            <div id="flush-collapse2" class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-                                                    <div class="row">
-                                                        <!-- Left Column (Data Laporan Informasi) -->
-                                                        <div class="col-lg-6">
-                                                            <h6><b>A. Data B.A Riksa Badan</b></h6>
-                                                            <hr>
-                                                            <div class="row">
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label>No. B.A Riksa Badan</label>
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI
+                                                                </p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <hr class="border border-dark border-2">
+
+
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold"><u>BERITA ACARA PEMERIKSAAN BADAN</u></h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_riksa_badan" id="no_ba_riksa_badan"
+                                                                    value="{{ old('no_ba_riksa_badan', $penindakans->no_ba_riksa_badan) }}"
+                                                                    readonly>
+                                                                <span class="input-group-text">/Badan/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_riksa_badan"
+                                                                    value="{{ old('tgl_ba_riksa_badan', $penindakans->tgl_ba_riksa_badan) }}">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
+
+
+
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
+
+                                                            <p>Kami yang bertanda tangan di bawah ini telah melakukan
+                                                                pemeriksaan Badan terhadap:</p>
+                                                        </div>
+
+                                                        <!-- A. Sarana Pengangkut -->
+                                                        <div class="mb-4">
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label
+                                                                        class="form-label">Nama</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0 border-bottom border-dark" name="nama" rows="2"
+                                                                        placeholder="Diisi nama orang yang terhadapnya dilakukan pemeriksaan badan">{{ old('nama', $penindakans->nama) }}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label class="form-label">Tempat
+                                                                        dan Tanggal Lahir</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
                                                                     <input type="text"
-                                                                        class="form-control bg-primary text-white"
-                                                                        value="{{ old('no_ba_riksa_badan', $penindakans->no_ba_riksa_badan) }}"
-                                                                        placeholder="No. B.A Riksa"
-                                                                        name="no_ba_riksa_badan" readonly>
-                                                                </div>
-
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label>Tgl. B.A Riksa Badan</label>
-                                                                    <input type="date"
-                                                                        class="form-control bg-primary text-white"
-                                                                        value="{{ old('tgl_ba_riksa_badan', $penindakans->tgl_ba_riksa_badan) }}"
-                                                                        name="tgl_ba_riksa_badan">
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        placeholder="Tempat dan Tanggal Lahir"
+                                                                        name="TTL"
+                                                                        value="{{ old('TTL', $penindakans->TTL) }}">
                                                                 </div>
                                                             </div>
 
-                                                            <div class="mb-3 form-group">
-                                                                <label>
-                                                                    Lokasi pemeriksaan Badan
-                                                                </label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control"
-                                                                        placeholder="Lokasi pemeriksaan Badan"
-                                                                        name="lokasi_pemeriksaan_badan"
-                                                                        value="{{ old('lokasi_pemeriksaan_badan', $penindakans->lokasi_pemeriksaan_badan ?? '') }}">
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label class="form-label">Jenis
+                                                                        Kelamin</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <select
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        name="jenis_kelamin">
+                                                                        <option value="" disabled
+                                                                            {{ old('jenis_kelamin', $penindakans->jenis_kelamin) == '' ? 'selected' : '' }}>
+                                                                            - Pilih -</option>
+                                                                        <option value="Laki-Laki"
+                                                                            {{ old('jenis_kelamin', $penindakans->jenis_kelamin) == 'Laki-Laki' ? 'selected' : '' }}>
+                                                                            Laki-Laki</option>
+                                                                        <option value="Perempuan"
+                                                                            {{ old('jenis_kelamin', $penindakans->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>
+                                                                            Perempuan</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="mb-3 form-group">
-                                                                <label>
-                                                                    Uraian pakaian yang dibuka/pemeriksaan medis
-                                                                </label>
-                                                                <div class="col-sm-12">
-                                                                    <textarea class="form-control form-input" placeholder="Uraian pakaian yang dibuka/pemeriksaan medis"
-                                                                        name="rincian_pemeriksaan_badan" rows="3">{{ old('rincian_pemeriksaan_badan', $penindakans->rincian_pemeriksaan_badan ?? '') }}</textarea>
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label
+                                                                        class="form-label">Kewarganegaraan</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text"
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        placeholder="Kewarganegaraan"
+                                                                        name="kewarganegaraan"
+                                                                        value="{{ old('kewarganegaraan', $penindakans->kewarganegaraan) }}">
                                                                 </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label class="form-label">Alamat
+                                                                        Tempat Tinggal</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0 border-bottom border-dark" name="alamat_tempat_tinggal" rows="2"
+                                                                        placeholder="Alamat Tempat Tinggal">{{ old('alamat_tempat_tinggal', $penindakans->alamat_tempat_tinggal) }}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label class="form-label">Alamat
+                                                                        KTP/Paspor</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0 border-bottom border-dark" name="alamat_ktp" rows="2"
+                                                                        placeholder="Alamat KTP/Paspor">{{ old('alamat_ktp', $penindakans->alamat_ktp) }}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label class="form-label">Nomor
+                                                                        KTP/Paspor</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text"
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        placeholder="Nomor KTP/Paspor" name="nomor_ktp"
+                                                                        value="{{ old('nomor_ktp', $penindakans->nomor_ktp) }}">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label
+                                                                        class="form-label">Tempat/Pejabat yang
+                                                                        Mengeluarkan KTP/Paspor</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0 border-bottom border-dark" name="tempat_pejabat" rows="2"
+                                                                        placeholder="Nama tempat/pejabat yang mengeluarkan KTP/Paspor">{{ old('tempat_pejabat', $penindakans->tempat_pejabat) }}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label class="form-label">Datang
+                                                                        Dari</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text"
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        placeholder="Datang Dari" name="datang_dari"
+                                                                        value="{{ old('datang_dari', $penindakans->datang_dari) }}">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label class="form-label">Tempat
+                                                                        Tujuan</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text"
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        placeholder="Tempat Tujuan" name="tempat_tujuan"
+                                                                        value="{{ old('tempat_tujuan', $penindakans->tempat_tujuan) }}">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label
+                                                                        class="form-label">Nama/Identitas orang yang
+                                                                        bepergian dengannya</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0 border-bottom border-dark" name="nama_orang_bersamanya" rows="2"
+                                                                        placeholder="Nama/identitas orang yang ikut bepergian">{{ old('nama_orang_bersamanya', $penindakans->nama_orang_bersamanya) }}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4"><label
+                                                                        class="form-label">Jenis/Nomor dan Tgl Dokumen
+                                                                        barang yang dibawa</label></div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0 border-bottom border-dark" name="jenis_dokumen" rows="2"
+                                                                        placeholder="Jenis/Nomor dan tanggal dokumen">{{ old('jenis_dokumen', $penindakans->jenis_dokumen) }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                        <!-- Lokasi Pemeriksaan -->
+                                                        <div class="mb-4">
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Lokasi Pemeriksaan</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" name="lokasi_pemeriksaan_badan"
+                                                                    placeholder="Diisi Tempat Lokasi Pemeriksaan Badan"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1"
+                                                                    value="{{ old('lokasi_pemeriksaan_badan', $penindakans->lokasi_pemeriksaan_badan) }}">
+                                                            </div>
+
+                                                            <p>Dalam pemeriksaan yang bersangkutan diminta membuka/tidak
+                                                                membuka pakaian/pemeriksaan medis*.
+                                                                Uraian pakaian yang dibuka/pemeriksaan medis*:</p>
+
+                                                            <div class="mb-4">
+                                                                <textarea class="form-control border-0" name="rincian_pemeriksaan_badan" rows="3"
+                                                                    style="border-bottom: 1px solid black !important; resize: none;"
+                                                                    placeholder="Diisi Uraian pakaian yang dibuka/pemeriksaan medis">{{ old('rincian_pemeriksaan_badan', $penindakans->rincian_pemeriksaan_badan) }}</textarea>
+                                                            </div>
+
+                                                            <p>Hasil pemeriksaan kedapatan sebagai berikut:</p>
+
+                                                            <div class="mb-4">
+                                                                <textarea class="form-control border-0" name="hasil_pemeriksaan_badan" rows="3"
+                                                                    style="border-bottom: 1px solid black !important; resize: none;"
+                                                                    placeholder="Diisi Hasil pemeriksaan kedapatan">{{ old('hasil_pemeriksaan_badan', $penindakans->hasil_pemeriksaan_badan) }}</textarea>
                                                             </div>
                                                         </div>
 
 
 
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
 
-                                                        <!-- Right Column (Pejabat Selection) -->
-                                                        <div class="col-lg-6">
-
-                                                            <div class="mb-3 form-group">
-                                                                <label>
-                                                                    Hasil pemeriksaan kedapatan
-                                                                </label>
-                                                                <div class="col-sm-12">
-                                                                    <textarea class="form-control form-input" placeholder="Hasil pemeriksaan kedapatan" name="hasil_pemeriksaan_badan"
-                                                                        rows="13">{{ old('hasil_pemeriksaan_badan', $penindakans->hasil_pemeriksaan_badan ?? '') }}</textarea>
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Orang Yang Diperiksa,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
                                                                 </div>
                                                             </div>
-
-                                                            {{-- <div class="row mb-3 form-group">
-                                    <label class="col-sm-4 col-form-label">
-                                      Nama Saksi
-                                    </label>
-                                    <div class="col-sm-8">
-                                      <input type="text" class="form-control" placeholder="Nama Saksi" name="nama_saksi_ba_riksa_badan" value="{{ old('nama_saksi_ba_riksa_badan', $penindakans->nama_saksi_ba_riksa_badan ?? '') }}">
-                                    </div>
-                                  </div> --}}
-
-
-                                                        </div>
-
-                                                        <h6><b>B. Data Pemeriksaan Badan</b></h6>
-                                                        <hr>
-
-                                                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseopmn">
-                                                                        Pemeriksaan Badan
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseopmn"
-                                                                    class="accordion-collapse collapse">
-                                                                    <div
-                                                                        class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Nama
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input" placeholder="Diisi nama orang yang terhadapnya dilakukan pemeriksaan badan"
-                                                                                    name="nama" rows="3">{{ old('nama', $penindakans->nama) }}</textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Tempat dan Tanggal Lahir
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text" class="form-control"
-                                                                                    placeholder="Tempat dan Tanggal Lahir"
-                                                                                    name="TTL"
-                                                                                    value="{{ old('TTL', $penindakans->TTL) }}">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Jenis Kelamin
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <select
-                                                                                    class="form-control form-select select2"
-                                                                                    name="jenis_kelamin">
-                                                                                    <option value="" selected
-                                                                                        disabled>- Pilih -</option>
-                                                                                    <option value="Laki-Laki"
-                                                                                        {{ old('jenis_kelamin', $penindakans->jenis_kelamin) == 'Laki-Laki' ? 'selected' : '' }}>
-                                                                                        Laki-Laki</option>
-                                                                                    <option value="Perempuan"
-                                                                                        {{ old('jenis_kelamin', $penindakans->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>
-                                                                                        Perempuan</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Kewarganegaraan
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text" class="form-control"
-                                                                                    placeholder="Kewarganegaraan"
-                                                                                    name="kewarganegaraan"
-                                                                                    value="{{ old('kewarganegaraan', $penindakans->kewarganegaraan) }}">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Alamat Tempat Tinggal
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input" placeholder="Alamat Tempat Tinggal" name="alamat_tempat_tinggal"
-                                                                                    rows="3">{{ old('alamat_tempat_tinggal', $penindakans->alamat_tempat_tinggal) }}</textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Alamat KTP/Paspor
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input" placeholder="Alamat KTP/Paspor" name="alamat_ktp" rows="3">{{ old('alamat_ktp', $penindakans->alamat_ktp) }}</textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Nomor KTP/Paspor
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text" class="form-control"
-                                                                                    placeholder="Nomor KTP/Paspor"
-                                                                                    name="nomor_ktp"
-                                                                                    value="{{ old('nomor_ktp', $penindakans->nomor_ktp) }}">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Tempat/Pejabat yang Mengeluarkan KTP/Paspor
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input"
-                                                                                    placeholder="Diisi nama tempat/pejabat yang mengeluarkan KTP/Paspor orang yang terhadapnya dilakukan pemeriksaan badan."
-                                                                                    name="tempat_pejabat" rows="3">{{ old('tempat_pejabat', $penindakans->tempat_pejabat) }}</textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Datang Dari
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text" class="form-control"
-                                                                                    placeholder="Datang Dari"
-                                                                                    name="datang_dari"
-                                                                                    value="{{ old('datang_dari', $penindakans->datang_dari) }}">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Tempat tujuan
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text" class="form-control"
-                                                                                    placeholder="Tujuan"
-                                                                                    name="tempat_tujuan"
-                                                                                    value="{{ old('tempat_tujuan', $penindakans->tempat_tujuan) }}">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Nama/Identitas orang yang bepergian
-                                                                                dengannya
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input"
-                                                                                    placeholder="Diisi nama/identitas orang yang ikut bepergian dan memiliki relasi dengan orang yang terhadapnya dilakukan pemeriksaan badan."
-                                                                                    name="nama_orang_bersamanya" rows="3">{{ old('nama_orang_bersamanya', $penindakans->nama_orang_bersamanya) }}</textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">
-                                                                                Jenis/Nomor dan Tgl Dokumen barang yang
-                                                                                dibawa
-                                                                            </label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input"
-                                                                                    placeholder="Diisi jenis/nomor dan tanggal dokumen yang dibawa orang yang terhadapnya dilakukan pemeriksaan badan"
-                                                                                    name="jenis_dokumen" rows="3">{{ old('jenis_dokumen', $penindakans->jenis_dokumen) }}</textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
                                                                 </div>
                                                             </div>
                                                         </div>
 
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Saksi,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1282,25 +1837,25 @@
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck3" data-id="flush-collapse3"
-                                                        name="soc" value="{{ old('soc', $penindakans->soc) }}"
-                                                        {{ old('soc', $penindakans->soc) == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse3">
+                                                        name="soc" value="YA" aria-expanded="false"
+                                                        aria-controls="flush-collapse3"
+                                                        {{ old('soc', $penindakans->soc) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck3"
                                                         id="switch-label-3">
-                                                        {{ old('soc', $penindakans->soc) == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('soc', $penindakans->soc) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
-
-
                                             </div>
                                             <hr class="my-0">
-                                            <div id="flush-collapse3" class="accordion-collapse collapse"
+                                            <div id="flush-collapse3"
+                                                class="accordion-collapse collapse {{ old('soc', $penindakans->soc) === 'YA' ? 'show' : '' }}"
                                                 data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body bg-light">
                                                     Isi dari soc
                                                 </div>
                                             </div>
                                         </div>
+
 
                                         <!-- DOC -->
                                         <div class="accordion-item border rounded mt-2">
@@ -1309,24 +1864,25 @@
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck4" data-id="flush-collapse4"
-                                                        name="doc" value="{{ old('doc', $penindakans->doc) }}"
-                                                        {{ old('doc', $penindakans->doc) == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse4">
+                                                        name="doc" value="YA" aria-expanded="false"
+                                                        aria-controls="flush-collapse4"
+                                                        {{ old('doc', $penindakans->doc) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck4"
                                                         id="switch-label-4">
-                                                        {{ old('doc', $penindakans->doc) == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('doc', $penindakans->doc) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
                                             </div>
-
                                             <hr class="my-0">
-                                            <div id="flush-collapse4" class="accordion-collapse collapse"
+                                            <div id="flush-collapse4"
+                                                class="accordion-collapse collapse {{ old('doc', $penindakans->doc) === 'YA' ? 'show' : '' }}"
                                                 data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body bg-light">
                                                     Isi dari doc
                                                 </div>
                                             </div>
                                         </div>
+
 
                                     </div>
                                 </div>
@@ -1337,125 +1893,373 @@
 
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
 
-                                        <!-- B.A Riksa -->
+
                                         <div class="accordion-item border rounded">
                                             <div class="d-flex justify-content-between align-items-center p-3 bg-light">
                                                 <span class="fw-bold">B.A Sarkut</span>
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
-                                                        role="switch" id="flexSwitchCheck10" data-id="flush-collapse10"
-                                                        name="ba_sarkut"
-                                                        value="{{ old('ba_sarkut', $penindakans->ba_sarkut) }}"
-                                                        {{ old('ba_sarkut', $penindakans->ba_sarkut) == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse10">
+                                                        role="switch" id="flexSwitchCheck10"
+                                                        data-id="flush-collapse10" name="ba_sarkut" value="YA"
+                                                        aria-expanded="false" aria-controls="flush-collapse10"
+                                                        {{ old('ba_sarkut', $penindakans->ba_sarkut) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck10"
                                                         id="switch-label-10">
-                                                        {{ old('ba_sarkut', $penindakans->ba_sarkut) == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_sarkut', $penindakans->ba_sarkut) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
-
                                             </div>
+
                                             <hr class="my-0">
-                                            <div id="flush-collapse10" class="accordion-collapse collapse"
+                                            <div id="flush-collapse10" class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-                                                    <div class="row">
-                                                        <!-- Left Column (Data Laporan Informasi) -->
-                                                        <div class="col-lg-6">
-                                                            <h6><b>A. Data B.A Sarkut</b></h6>
-                                                            <hr>
-                                                            <div class="row">
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label>No. B.A Sarkut</label>
-                                                                    <input type="text"
-                                                                        class="form-control bg-primary text-white"
-                                                                        value="{{ old('no_ba_sarkut', $penindakans->no_ba_sarkut ?? '') }}"
-                                                                        placeholder="No. B.A Sarkut" name="no_ba_sarkut"
-                                                                        readonly>
-                                                                </div>
-
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label>Tgl. B.A Sarkut</label>
-                                                                    <input type="date"
-                                                                        class="form-control bg-primary text-white"
-                                                                        name="tgl_ba_sarkut"
-                                                                        value="{{ old('tgl_ba_sarkut', $penindakans->tgl_ba_sarkut ?? '') }}">
-                                                                </div>
-
-                                                                <h6><b>B. Data Pembawaan</b></h6>
-                                                                <hr>
-
-                                                                <div class="mb-3 form-group">
-                                                                    <label>Dari</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="text"
-                                                                            class="form-control form-input"
-                                                                            name="dibawa_dari"
-                                                                            placeholder="Tempat sarkut mulai dibawa"
-                                                                            value="{{ old('dibawa_dari', $penindakans->dibawa_dari ?? '') }}">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="mb-3 form-group">
-                                                                    <label>Tujuan</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="text"
-                                                                            class="form-control form-input" name="tujuan"
-                                                                            placeholder="Tempat tujuan sarkut"
-                                                                            value="{{ old('tujuan', $penindakans->tujuan ?? '') }}">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="mb-3 form-group">
-                                                                    <label>Alasan</label>
-                                                                    <div class="col-sm-12">
-                                                                        <textarea class="form-control form-input" placeholder="Diisi pertimbangan dan alasan sarana pengangkut/barang dibawa"
-                                                                            name="alasan" rows="3">{{ old('alasan', $penindakans->alasan ?? '') }}</textarea>
-                                                                    </div>
-                                                                </div>
-
-
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI
+                                                                </p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
                                                             </div>
                                                         </div>
 
-                                                        <!-- Right Column (Pejabat Selection) -->
-                                                        <div class="col-lg-6">
-                                                            <h6><b>C. Data Lainnya</b></h6>
-                                                            <hr>
+                                                        <hr class="border border-dark border-2">
 
-                                                            <div class="mb-3 form-group">
-                                                                <label>Waktu Berangkat</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control"
-                                                                        name="waktu_berangkat" id="datetime-datepicker"
-                                                                        placeholder="Waktu Keberangkatan"
-                                                                        value="{{ old('waktu_berangkat', $penindakans->waktu_berangkat ?? '') }}">
+
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold"><u>BERITA ACARA MEMBAWA SARANA
+                                                                    PENGANGKUT/BARANG*</u></h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_sarkut" id="no_ba_sarkut"
+                                                                    value="{{ old('no_ba_sarkut', $penindakans->no_ba_sarkut) }}"
+                                                                    readonly>
+                                                                <span class="input-group-text">/Sarkut/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_sarkut"
+                                                                    value="{{ old('tgl_ba_sarkut', $penindakans->tgl_ba_sarkut ?? '') }}">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
+
+
+
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
+
+
+
+
+                                                            <p>Kami yang bertanda tangan di bawah ini telah membawa:</p>
+                                                        </div>
+
+                                                        <!-- A. Sarana Pengangkut -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">A. Sarana Pengangkut</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama dan Jenis
+                                                                        Sarkut</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
                                                                 </div>
                                                             </div>
 
-                                                            <div class="mb-3 form-group">
-                                                                <label>Waktu Tiba</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control"
-                                                                        name="waktu_tiba" id="datetime-datepicker"
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No Reg./No. Polisi</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Bendera</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nakhoda/Pilot/Pengemudi<span
+                                                                            class="text-danger">*</span></label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- B. Barang -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">B. Barang</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jumlah/Jenis/No Peti
+                                                                        Kemas/Kemasan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jumlah/Jenis Barang</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jenis/No dan Tgl
+                                                                        Dokumen</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">
+                                                                        Pemilik/Importir/Eksportir/Kuasa<span
+                                                                            class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Dari</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" name="dibawa_dari"
+                                                                        placeholder="Diisi dengan tempat sarkut mulai dibawa"
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        value="{{ old('dibawa_dari', $penindakans->dibawa_dari) }}">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Ke/tujuan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" name="tujuan"
+                                                                        placeholder="Diisi dengan tempat tujuan sarkut"
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        value="{{ old('tujuan', $penindakans->tujuan) }}">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Alasan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0" placeholder="Diisi pertimbangan dan alasan sarana pengangkut/barang dibawa"
+                                                                        name="alasan" rows="3" style="border-bottom: 1px solid black !important; resize: none;">{{ old('alasan', $penindakans->alasan) }}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Waktu Berangkat</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" name="waktu_berangkat"
+                                                                        id="datetime-datepicker"
+                                                                        placeholder="Diisi Waktu Keberangkatan"
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        value="{{ old('waktu_berangkat', $penindakans->waktu_berangkat) }}">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Waktu Tiba</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" name="waktu_tiba"
+                                                                        id="datetime-datepicker"
                                                                         placeholder="Waktu Tiba"
-                                                                        value="{{ old('waktu_tiba', $penindakans->waktu_tiba ?? '') }}">
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        value="{{ old('waktu_tiba', $penindakans->waktu_tiba) }}">
                                                                 </div>
                                                             </div>
 
-
-
-
                                                         </div>
-                                                    </div>
 
+
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
+
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pemilik/Kuasanya/Saksi*,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
-
                                 </div>
 
                                 <div class="tab-pane fade " id="ba-contoh" role="tabpanel"
@@ -1463,107 +2267,279 @@
 
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
 
-                                        <!-- B.A Riksa -->
+                                        <!-- B.A Contoh -->
                                         <div class="accordion-item border rounded">
                                             <div class="d-flex justify-content-between align-items-center p-3 bg-light">
                                                 <span class="fw-bold">B.A Contoh</span>
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck101"
-                                                        data-id="flush-collapse101" name="ba_contoh"
-                                                        value="{{ old('ba_contoh', $penindakans->ba_contoh) }}"
-                                                        {{ old('ba_contoh', $penindakans->ba_contoh ?? '') == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse101">
+                                                        data-id="flush-collapse101" name="ba_contoh" value="YA"
+                                                        aria-expanded="false" aria-controls="flush-collapse101"
+                                                        {{ old('ba_contoh', $penindakans->ba_contoh) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck101"
                                                         id="switch-label-101">
-                                                        {{ old('ba_contoh', $penindakans->ba_contoh ?? '') == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_contoh', $penindakans->ba_contoh) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
-
                                             </div>
+
                                             <hr class="my-0">
-                                            <div id="flush-collapse101" class="accordion-collapse collapse"
+                                            <div id="flush-collapse101" class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-                                                    <!-- Left Column (Data Laporan Informasi) -->
-
-                                                    <h6><b>A. Data B.A Contoh</b></h6>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>No. B.A Contoh</label>
-                                                            <input type="text"
-                                                                class="form-control bg-primary text-white"
-                                                                value="{{ old('no_ba_contoh', $penindakans->no_ba_contoh) }}"
-                                                                placeholder="No. B.A Contoh" name="no_ba_contoh"
-                                                                readonly>
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI
+                                                                </p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>Tgl. B.A Contoh</label>
-                                                            <input type="date"
-                                                                class="form-control bg-primary text-white"
-                                                                value="{{ old('tgl_ba_contoh', $penindakans->tgl_ba_contoh) }}"
-                                                                name="tgl_ba_contoh">
+                                                        <hr class="border border-dark border-2">
+
+
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold">BERITA ACARA PENGAMBILAN CONTOH BARANG
+                                                            </h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_contoh" id="no_ba_contoh"
+                                                                    value="{{ old('no_ba_contoh', $penindakans->no_ba_contoh) }}"
+                                                                    readonly>
+                                                                <span class="input-group-text">/Contoh/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_contoh"
+                                                                    value="{{ old('tgl_ba_contoh', $penindakans->tgl_ba_contoh ?? '') }}">
+                                                            </div>
                                                         </div>
-                                                    </div>
-
-                                                    <h6><b>B. Data Pengambilan Barang Contoh</b></h6>
-                                                    <hr>
-
-                                                    <div class="card-body">
-                                                        <div class="accordion accordion-flush"
-                                                            id="accordionFlushExample">
 
 
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapserrte">
-                                                                        Barang
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapserrte"
-                                                                    class="accordion-collapse collapse">
-                                                                    <div
-                                                                        class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">Jumlah
-                                                                                dan Jenis Barang</label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input" placeholder="Jumlah dan Jenis Barang Contoh"
-                                                                                    name="jumlah_jenis_barang_contoh" rows="3">{{ old('jumlah_jenis_barang_contoh', $penindakans->jumlah_jenis_barang_contoh) }}</textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label
-                                                                                class="col-sm-4 col-form-label">Lokasi</label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text"
-                                                                                    class="form-control form-input"
-                                                                                    value="{{ old('lokasi_barcon', $penindakans->lokasi_barcon) }}"
-                                                                                    placeholder="Lokasi Pengambilan Barang Contoh"
-                                                                                    name="lokasi_barcon">
-                                                                            </div>
-                                                                        </div>
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
 
 
-                                                                    </div>
+
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
+
+
+
+
+                                                            <p>Kami yang bertanda tangan di bawah ini telah melakukan
+                                                                pengambilan barang contoh atas:</p>
+                                                        </div>
+
+
+                                                        <!-- B. Barang -->
+                                                        <div class="mb-4">
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jumlah Dan Jenis
+                                                                        Barang</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0" placeholder="Jumlah dan Jenis Barang Contoh"
+                                                                        name="jumlah_jenis_barang_contoh" rows="3"
+                                                                        style="border-bottom: 1px solid black !important; resize: none;">{{ old('jumlah_jenis_barang_contoh', $penindakans->jumlah_jenis_barang_contoh) }}</textarea>
                                                                 </div>
                                                             </div>
 
 
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">
+                                                                        Pemilik/Importir/Eksportir/Kuasa<span
+                                                                            class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jenis/Nomor Dan Tgl
+                                                                        Dokumen</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Lokasi</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text"
+                                                                        placeholder="Diisi Lokasi Pengambilan Barang Contoh"
+                                                                        name="lokasi_barcon"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
                                                         </div>
+
+
+
+                                                        <div class="mb-4">
+
+                                                            <p>Pengambilan contoh disaksikan oleh
+                                                                pengangkut/pemilik/importir/eksportir atau kuasanya*:</p>
+
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Nama</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Alamat</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Pekerjaan</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Identitas (KTP/SIM/Passport)</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
+
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pemilik/Kuasanya/Saksi*,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
+                                                        </div>
+
                                                     </div>
-
-
-
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -1584,51 +2560,274 @@
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck102n"
-                                                        data-id="flush-collapse102n" name="ba_dok"
-                                                        value="{{ old('ba_dok', $penindakans->ba_dok) }}"
-                                                        {{ old('ba_dok', $penindakans->ba_dok ?? '') == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse102n">
+                                                        data-id="flush-collapse102n" name="ba_dok" value="YA"
+                                                        aria-expanded="false" aria-controls="flush-collapse102n"
+                                                        {{ old('ba_dok', $penindakans->ba_dok) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck102n"
                                                         id="switch-label-102n">
-                                                        {{ old('ba_dok', $penindakans->ba_dok ?? '') == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_dok', $penindakans->ba_dok) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
-
                                             </div>
+
                                             <hr class="my-0">
-                                            <div id="flush-collapse102n" class="accordion-collapse collapse"
+                                            <div id="flush-collapse102n" class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-
-                                                    <h6><b>A. Data B.A Dokumentasi</b></h6>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>No. B.A Dokumentasi</label>
-                                                            <input type="text"
-                                                                class="form-control bg-primary text-white"
-                                                                value="{{ old('no_ba_dok', $penindakans->no_ba_dok) }}"
-                                                                placeholder="No. B.A Dokumentasi" name="no_ba_dok"
-                                                                readonly>
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI
+                                                                </p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>Tgl. B.A Dokumentasi</label>
-                                                            <input type="date"
-                                                                class="form-control bg-primary text-white"
-                                                                name="tgl_ba_dok"
-                                                                value="{{ old('tgl_ba_dok', $penindakans->tgl_ba_dok) }}">
+                                                        <hr class="border border-dark border-2">
+
+
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold">BERITA ACARA PENGAMBILAN DOKUMENTASI
+                                                                BARANG</h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_dok" id="no_ba_dok"
+                                                                    value="{{ old('no_ba_dok', $penindakans->no_ba_dok) }}"
+                                                                    readonly>
+                                                                <span
+                                                                    class="input-group-text">/Dokumentasi/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_dok"
+                                                                    value="{{ old('tgl_ba_dok', $penindakans->tgl_ba_dok ?? '') }}">
+                                                            </div>
                                                         </div>
+
+
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
+
+
+
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
+
+
+
+
+                                                            <p>Kami yang bertanda tangan di bawah ini telah melakukan
+                                                                pengambilan dokumentasi barang atas :</p>
+                                                        </div>
+
+
+                                                        <!-- B. Barang -->
+                                                        <div class="mb-4">
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">komoditas/Jenis
+                                                                        Barang</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">
+                                                                        Pemilik/Importir/Eksportir/Kuasa<span
+                                                                            class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jenis/Nomor Dan Tgl
+                                                                        Dokumen</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Lokasi</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text"
+                                                                        placeholder="Lokasi Dokumentasi Barang"
+                                                                        name="lokasi_ba_dok"
+                                                                        class="form-control border-0 border-bottom border-dark"
+                                                                        value="{{ old('lokasi_ba_dok', $penindakans->lokasi_ba_dok) }}">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- Lokasi Pemeriksaan -->
+                                                        <div class="mb-4">
+
+                                                            <p>Pengambilan dokumentasi disaksikan oleh pengangkut/pemilik/
+                                                                atau kuasanya*:</p>
+
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Nama</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Alamat</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Pekerjaan</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Identitas (KTP/SIM/Passport)</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
+
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pemilik/Kuasanya/Saksi*,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
+                                                        </div>
+
                                                     </div>
-
-                                                    <div class="mb-3 form-group">
-                                                        <label>Lokasi</label>
-                                                        <div class="col-sm-12">
-                                                            <textarea class="form-control form-input" placeholder="Lokasi Dokumentasi Barang" name="lokasi_ba_dok"
-                                                                rows="3">{{ old('lokasi_ba_dok', $penindakans->lokasi_ba_dok) }}</textarea>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -1691,88 +2890,454 @@
                                     aria-labelledby="ba-segel-tab">
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
 
-                                        <!-- B.A Dokumentasi -->
+                                        <!-- B.A Segel -->
                                         <div class="accordion-item border rounded">
                                             <div class="d-flex justify-content-between align-items-center p-3 bg-light">
                                                 <span class="fw-bold">B.A Segel</span>
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck1032"
-                                                        data-id="flush-collapse1032" name="ba_segel"
-                                                        value="{{ old('ba_segel', $penindakans->ba_segel) }}"
-                                                        {{ old('ba_segel', $penindakans->ba_segel ?? '') == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse1032">
+                                                        data-id="flush-collapse1032" name="ba_segel" value="YA"
+                                                        aria-expanded="false" aria-controls="flush-collapse1032"
+                                                        {{ old('ba_segel', $penindakans->ba_segel) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck1032"
                                                         id="switch-label-1032">
-                                                        {{ old('ba_segel', $penindakans->ba_segel ?? '') == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_segel', $penindakans->ba_segel) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
-
                                             </div>
+
                                             <hr class="my-0">
-                                            <div id="flush-collapse1032" class="accordion-collapse collapse"
+                                            <div id="flush-collapse1032" class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-                                                    <h6><b>A. Data B.A Segel</b></h6>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>No. B.A Segel</label>
-                                                            <input type="text"
-                                                                class="form-control bg-primary text-white"
-                                                                value="{{ old('no_ba_segel', $penindakans->no_ba_segel) }}"
-                                                                placeholder="No. B.A Segel" name="no_ba_segel" readonly>
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI
+                                                                </p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>Tgl. B.A Segel</label>
-                                                            <input type="date"
-                                                                class="form-control bg-primary text-white"
-                                                                value="{{ old('tgl_ba_segel', $penindakans->tgl_ba_segel) }}"
-                                                                name="tgl_ba_segel">
-                                                        </div>
-                                                    </div>
+                                                        <hr class="border border-dark border-2">
 
-                                                    <div class="col-lg-12 mb-3">
-                                                        <label>Jenis Segel</label>
-                                                        <select class="form-control form-select select2"
-                                                            name="jenis_segel_ba_segel">
-                                                            <option value="" selected disabled>- Pilih -</option>
-                                                            @foreach ($segels as $segel)
-                                                                <option value="{{ $segel->jenis_segel }}"
-                                                                    {{ old('jenis_segel_ba_segel', $penindakans->jenis_segel_ba_segel) == $segel->jenis_segel ? 'selected' : '' }}>
-                                                                    {{ $segel->jenis_segel }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
 
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>Jumlah Segel</label>
-                                                            <input type="text" class="form-control"
-                                                                value="{{ old('jumlah_segel_ba_segel', $penindakans->jumlah_segel_ba_segel) }}"
-                                                                placeholder="Jumlah Segel" name="jumlah_segel_ba_segel">
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold">BERITA ACARA PENYEGELAN</h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_segel" id="no_ba_segel"
+                                                                    value="{{ old('no_ba_segel', $penindakans->no_ba_segel) }}"
+                                                                    readonly>
+                                                                <span class="input-group-text">/Riksa/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_segel"
+                                                                    value="{{ old('tgl_ba_segel', $penindakans->tgl_ba_segel ?? '') }}">
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>Nomor Segel</label>
-                                                            <input type="text" class="form-control"
-                                                                value="{{ old('nomor_segel_ba_segel', $penindakans->nomor_segel_ba_segel) }}"
-                                                                placeholder="Nomor Segel" name="nomor_segel_ba_segel">
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col-md-12 mb-3">
-                                                        <label>Peletakan Segel</label>
-                                                        <textarea class="form-control form-input" placeholder="Peletakan Segel" name="peletakan_segel_ba_segel"
-                                                            rows="3">{{ old('peletakan_segel_ba_segel', $penindakans->peletakan_segel_ba_segel) }}</textarea>
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
+
+
+
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
+
+
+
+
+                                                            <p>Kami yang bertanda tangan di bawah ini telah melakukan
+                                                                penyegelan atas :</p>
+                                                        </div>
+
+                                                        <!-- A. Sarana Pengangkut -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">A. Sarana Pengangkut</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama dan Jenis
+                                                                        Sarkut</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No Reg./No. Polisi</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Bendera</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nakhoda/Pilot/Pengemudi<span
+                                                                            class="text-danger">*</span></label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- B. Barang -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">B. Barang</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jumlah/Jenis/No Peti
+                                                                        Kemas/Kemasan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jumlah/Jenis Barang</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jenis/No dan Tgl
+                                                                        Dokumen</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">
+                                                                        Pemilik/Importir/Eksportir/Kuasa<span
+                                                                            class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- C. Orang dan tempat -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">C. Bangunan Atau Tempat</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Alamat
+                                                                        Bangunan/Tempat</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No Reg Bangunan/NPPBKC/NPWP
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama Pemilik/Yang Menguasai
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- Lokasi Pemeriksaan -->
+                                                        <div class="mb-4">
+
+                                                            <div class="mb-4">
+                                                                <p>
+                                                                    Menggunakan segel/tanda pengaman
+                                                                    <select
+                                                                        class="form-control d-inline border-0 border-bottom border-dark"
+                                                                        name="jenis_segel_ba_segel">
+                                                                        <option value="" disabled
+                                                                            {{ old('jenis_segel_ba_segel', $penindakans->jenis_segel_ba_segel) ? '' : 'selected' }}>
+                                                                            - Pilih -
+                                                                        </option>
+                                                                        @foreach ($segels as $segel)
+                                                                            <option value="{{ $segel->jenis_segel }}"
+                                                                                {{ old('jenis_segel_ba_segel', $penindakans->jenis_segel_ba_segel) == $segel->jenis_segel ? 'selected' : '' }}>
+                                                                                {{ $segel->jenis_segel }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+
+                                                                    sebanyak
+                                                                    <input type="text" placeholder="Jumlah Segel"
+                                                                        name="jumlah_segel_ba_segel"
+                                                                        class="form-control d-inline border-0 border-bottom border-dark"
+                                                                        style="width: 100px;"
+                                                                        value="{{ old('jumlah_segel_ba_segel', $penindakans->jumlah_segel_ba_segel) }}">
+
+                                                                    nomor
+
+                                                                    <input type="text" placeholder="Nomor Segel"
+                                                                        name="nomor_segel_ba_segel"
+                                                                        class="form-control d-inline border-0 border-bottom border-dark"
+                                                                        style="width: 80px;"
+                                                                        value="{{ old('nomor_segel_ba_segel', $penindakans->nomor_segel_ba_segel) }}">
+
+                                                                    dengan penempatan/pelekatan segel/tanda pengaman pada :
+
+                                                                    <textarea class="form-control border-0" placeholder="Peletakan Segel" name="peletakan_segel_ba_segel"
+                                                                        rows="3" style="border-bottom: 1px solid black !important; resize: none;">{{ old('peletakan_segel_ba_segel', $penindakans->peletakan_segel_ba_segel) }}</textarea>
+
+                                                                </p>
+
+                                                            </div>
+
+                                                            <p>
+                                                                Dengan diketahui oleh
+                                                                pengangkut/pemilik/penguasa/instansi/ketua lingkungan/dll
+                                                                <span class="text-danger">*</span>
+                                                            </p>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Nama</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Alamat</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Pekerjaan</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Identitas (KTP/SIM/Passport)</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
+
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pemilik/Kuasanya/Saksi*,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
 
@@ -1788,116 +3353,460 @@
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck1011"
-                                                        data-id="flush-collapse1011" name="ba_titip"
-                                                        value="{{ old('ba_titip', $penindakans->ba_titip) }}"
-                                                        {{ old('ba_titip', $penindakans->ba_titip ?? '') == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse1011">
+                                                        data-id="flush-collapse1011" name="ba_titip" value="YA"
+                                                        aria-expanded="false" aria-controls="flush-collapse1011"
+                                                        {{ old('ba_titip', $penindakans->ba_titip) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck1011"
                                                         id="switch-label-1011">
-                                                        {{ old('ba_titip', $penindakans->ba_titip ?? '') == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_titip', $penindakans->ba_titip) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
-
                                             </div>
+
                                             <hr class="my-0">
-                                            <div id="flush-collapse1011" class="accordion-collapse collapse"
+                                            <div id="flush-collapse1011" class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-
-                                                    <h6><b>A. Data B.A Titip</b></h6>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>No. B.A Titip</label>
-                                                            <input type="text"
-                                                                class="form-control bg-primary text-white"
-                                                                value="{{ old('no_ba_titip', $penindakans->no_ba_titip) }}"
-                                                                placeholder="No. B.A Titip" name="no_ba_titip" readonly>
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI
+                                                                </p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col-md-6 mb-3">
-                                                            <label>Tgl. B.A Titip</label>
-                                                            <input type="date"
-                                                                class="form-control bg-primary text-white"
-                                                                name="tgl_ba_titip"
-                                                                value="{{ old('tgl_ba_titip', $penindakans->tgl_ba_titip) }}">
+                                                        <hr class="border border-dark border-2">
+
+
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold">BERITA ACARA PENITIPAN</h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_titip" id="no_ba_titip"
+                                                                    value="{{ old('no_ba_titip', $penindakans->no_ba_titip) }}"
+                                                                    readonly>
+                                                                <span class="input-group-text">/Titip/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_titip"
+                                                                    value="{{ old('tgl_ba_titip', $penindakans->tgl_ba_titip) }}">
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <h6><b>B. Data Penitipan</b></h6>
-                                                    <hr>
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
 
-                                                    <div class="card-body">
-                                                        <div class="accordion accordion-flush"
-                                                            id="accordionFlushExample">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button
-                                                                        class="accordion-button btn fw-medium collapsed border-0 hover:bg-gray-100 transition-all duration-200 rounded-top-3"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapserrtez">
-                                                                        Penitipan
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapserrtez"
-                                                                    class="accordion-collapse collapse">
-                                                                    <div
-                                                                        class="accordion-body bg-white border-start border-4 border-primary shadow-sm rounded-bottom-3">
 
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">Lokasi
-                                                                                Penitipan</label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input" placeholder="Lokasi Penitipan" name="lokasi_penitipan_ba_titip"
-                                                                                    rows="3">{{ old('lokasi_penitipan_ba_titip', $penindakans->lokasi_penitipan_ba_titip) }}</textarea>
-                                                                            </div>
-                                                                        </div>
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
 
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">Nama
-                                                                                Yang Dititipkan</label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text"
-                                                                                    class="form-control form-input"
-                                                                                    placeholder="Nama Yang Dititipkan"
-                                                                                    name="nama_ba_titip"
-                                                                                    value="{{ old('nama_ba_titip', $penindakans->nama_ba_titip) }}">
-                                                                            </div>
-                                                                        </div>
 
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">Alamat
-                                                                                yang dtitipkan</label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea class="form-control form-input" placeholder="Alamat yang dtitipkan" name="alamat_ba_titip"
-                                                                                    rows="3">{{ old('alamat_ba_titip', $penindakans->alamat_ba_titip) }}</textarea>
-                                                                            </div>
-                                                                        </div>
 
-                                                                        <div class="row mb-3 form-group">
-                                                                            <label class="col-sm-4 col-form-label">Jabatan
-                                                                                yang dtitipkan</label>
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text"
-                                                                                    class="form-control form-input"
-                                                                                    placeholder="Jabatan yang dtitipkan"
-                                                                                    name="jabatan_ba_titip"
-                                                                                    value="{{ old('jabatan_ba_titip', $penindakans->jabatan_ba_titip) }}">
-                                                                            </div>
-                                                                        </div>
 
-                                                                    </div>
+                                                            <p>Kami yang bertanda tangan di bawah ini telah melakukan
+                                                                penitipan terhadap:</p>
+                                                        </div>
+
+                                                        <!-- A. Sarana Pengangkut -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">A. Sarana Pengangkut</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama dan Jenis
+                                                                        Sarkut</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No Reg./No. Polisi</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Bendera</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nakhoda/Pilot/Pengemudi<span
+                                                                            class="text-danger">*</span></label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
+
+                                                        <!-- B. Barang -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">B. Barang</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jumlah/Jenis/No Peti
+                                                                        Kemas/Kemasan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Surat Muatan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jenis/No dan Tgl
+                                                                        Dokumen</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">
+                                                                        Pemilik/Importir/Eksportir/Kuasa<span
+                                                                            class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- C. Orang dan tempat -->
+                                                        <div class="mb-4">
+                                                            <h6 class="fw-bold">C. Bangunan dan Tempat</h6>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Alamat
+                                                                        Bangunan/Tempat</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No Reg Bangunan/NPPBKC/NPWP
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama Pemilik/Yang Menguasai
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">No. Identitas</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- Lokasi Pemeriksaan -->
+                                                        <div class="mb-4">
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Lokasi Penitipan</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text"
+                                                                    placeholder="Diisi dengan Lokasi Penitipan"
+                                                                    name="lokasi_penitipan_ba_titip"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1"
+                                                                    value="{{ old('lokasi_penitipan_ba_titip', $penindakans->lokasi_penitipan_ba_titip) }}">
+                                                            </div>
+
+
+                                                            <p>Dititipkan Kepada pengangkut/pemilik/ atau kuasanya/ketua
+                                                                lingkungan /pihak lainnya* :</p>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Nama</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text" placeholder="Nama Yang Dititipkan"
+                                                                    name="nama_ba_titip"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1"
+                                                                    value="{{ old('nama_ba_titip', $penindakans->nama_ba_titip) }}">
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Alamat</span>
+                                                                <span class="me-2">:</span>
+                                                                <textarea class="form-control border-0" placeholder="Alamat yang dititipkan" name="alamat_ba_titip"
+                                                                    rows="3" style="border-bottom: 1px solid black !important; resize: none;">{{ old('alamat_ba_titip', $penindakans->alamat_ba_titip) }}</textarea>
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <span class="me-1">Jabatan</span>
+                                                                <span class="me-2">:</span>
+                                                                <input type="text"
+                                                                    placeholder="Jabatan yang dititipkan"
+                                                                    name="jabatan_ba_titip"
+                                                                    class="form-control border-0 border-bottom border-dark flex-grow-1"
+                                                                    value="{{ old('jabatan_ba_titip', $penindakans->jabatan_ba_titip) }}">
+                                                            </div>
+
+
+
+
+                                                            <div class="mb-4">
+                                                                <p>
+                                                                    Sesuai dengan BA Penyegelan Nomor
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control d-inline border-0 border-bottom border-dark"
+                                                                        style="width: 100px;">
+                                                                    tanggal
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control d-inline border-0 border-bottom border-dark"
+                                                                        style="width: 80px;">
+                                                                </p>
+
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
+
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Orang yang menerima penetapan</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan penitipan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Saksi</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
 
 
@@ -1931,96 +3840,215 @@
                                 <div class="tab-pane fade" id="tolak1" role="tabpanel" aria-labelledby="tolak1">
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
 
-                                        <!-- B.A Dokumentasi -->
+                                        <!-- B.A Tolak Pertama -->
                                         <div class="accordion-item border rounded">
                                             <div class="d-flex justify-content-between align-items-center p-3 bg-light">
                                                 <span class="fw-bold">B.A Tolak Pertama</span>
                                                 <div class="form-check form-switch mb-0">
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck10114"
-                                                        data-id="flush-collapse10114" name="ba_tolak_1"
-                                                        value="{{ old('ba_tolak_1', $penindakans->ba_tolak_1) }}"
-                                                        {{ old('ba_tolak_1', $penindakans->ba_tolak_1 ?? '') == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse10114">
+                                                        data-id="flush-collapse10114" name="ba_tolak_1" value="YA"
+                                                        aria-expanded="false" aria-controls="flush-collapse10114"
+                                                        {{ old('ba_tolak_1', $penindakans->ba_tolak_1) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck10114"
                                                         id="switch-label-10114">
-                                                        {{ old('ba_tolak_1', $penindakans->ba_tolak_1 ?? '') == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_tolak_1', $penindakans->ba_tolak_1) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
-
                                             </div>
+
                                             <hr class="my-0">
-                                            <div id="flush-collapse10114" class="accordion-collapse collapse"
+                                            <div id="flush-collapse10114" class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-                                                    <div class="row">
-                                                        <!-- Left Column (Data Laporan Informasi) -->
-                                                        <div class="col-lg-6">
-                                                            <h6><b>A. Data B.A Tolak Pertama</b></h6>
-                                                            <hr>
-                                                            <div class="row">
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label>No. B.A Tolak 1</label>
-                                                                    <input type="text"
-                                                                        class="form-control bg-primary text-white"
-                                                                        value="{{ old('no_ba_tolak_1', $penindakans->no_ba_tolak_1) }}"
-                                                                        placeholder="No. B.A Tolak Pertama"
-                                                                        name="no_ba_tolak_1" readonly>
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI
+                                                                </p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <hr class="border border-dark border-2">
+
+
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold">BERITA ACARA PENOLAKAN TANDA TANGAN SURAT
+                                                                BUKTI PENINDAKAN</h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_tolak_1" id="no_ba_tolak_1"
+                                                                    value="{{ old('no_ba_tolak_1', $penindakans->no_ba_tolak_1) }}"
+                                                                    readonly>
+                                                                <span class="input-group-text">/Tolak 1/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_tolak_1"
+                                                                    value="{{ old('tgl_ba_tolak_1', $penindakans->tgl_ba_tolak_1 ?? '') }}">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
+
+
+
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Berdasarkan surat perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
+
+
+
+
+                                                            <p>Kami yang bertanda tangan di bawah ini menyatakan bahwa
+                                                                setelah diberikan Surat Bukti Penindakan <input
+                                                                    type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;"> Tanggal <input type="text"
+                                                                    readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;"></p>
+                                                        </div>
+
+
+                                                        <!-- B. Barang -->
+                                                        <div class="mb-4">
+
+                                                            {{-- Nama --}}
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama</label>
                                                                 </div>
-
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label>Tgl. B.A Tolak 1</label>
-                                                                    <input type="date"
-                                                                        class="form-control bg-primary text-white"
-                                                                        name="tgl_ba_tolak_1"
-                                                                        value="{{ old('tgl_ba_tolak_1', $penindakans->tgl_ba_tolak_1) }}">
-                                                                </div>
-
-
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label>Nama Orang Yang Menolak</label>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
                                                                     <input type="text"
-                                                                        class="form-control form-input"
                                                                         placeholder="Nama Orang Yang Menolak"
                                                                         name="nama_ba_tolak1"
+                                                                        class="form-control border-0 border-bottom border-dark"
                                                                         value="{{ old('nama_ba_tolak1', $penindakans->nama_ba_tolak1) }}">
                                                                 </div>
+                                                            </div>
 
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label>Tempat Tanggal Lahir</label>
+                                                            {{-- Tempat/Tanggal Lahir --}}
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Tempat/tanggal lahir</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
                                                                     <input type="text"
-                                                                        class="form-control form-input"
                                                                         placeholder="Tempat Tanggal Lahir"
                                                                         name="ttl_ba_tolak1"
+                                                                        class="form-control border-0 border-bottom border-dark"
                                                                         value="{{ old('ttl_ba_tolak1', $penindakans->ttl_ba_tolak1) }}">
                                                                 </div>
+                                                            </div>
 
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label>Jenis Kelamin</label>
-                                                                    <select class="form-control form-select select2"
+                                                            {{-- Jenis Kelamin --}}
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jenis Kelamin</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <select
+                                                                        class="form-control border-0 border-bottom border-dark form-select select2"
                                                                         name="jk_ba_tolak1">
-                                                                        <option value="" selected disabled>- Pilih -
+                                                                        <option value="" disabled
+                                                                            {{ old('jk_ba_tolak1', $penindakans->jk_ba_tolak1) === null ? 'selected' : '' }}>
+                                                                            - Pilih -
                                                                         </option>
                                                                         <option value="Laki-laki"
-                                                                            {{ old('jk_ba_tolak1', $penindakans->jk_ba_tolak1) == 'Laki-laki' ? 'selected' : '' }}>
+                                                                            {{ old('jk_ba_tolak1', $penindakans->jk_ba_tolak1) === 'Laki-laki' ? 'selected' : '' }}>
                                                                             Laki-laki</option>
                                                                         <option value="Perempuan"
-                                                                            {{ old('jk_ba_tolak1', $penindakans->jk_ba_tolak1) == 'Perempuan' ? 'selected' : '' }}>
+                                                                            {{ old('jk_ba_tolak1', $penindakans->jk_ba_tolak1) === 'Perempuan' ? 'selected' : '' }}>
                                                                             Perempuan</option>
                                                                     </select>
                                                                 </div>
+                                                            </div>
 
-
-
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label>Alamat</label>
-                                                                    <textarea class="form-control form-input" placeholder="Alamat" name="alamat_ba_tolak1" rows="3">{{ old('alamat_ba_tolak1', $penindakans->alamat_ba_tolak1) }}</textarea>
+                                                            {{-- Alamat --}}
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Alamat</label>
                                                                 </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="form-control border-0" placeholder="Alamat" name="alamat_ba_tolak1" rows="3"
+                                                                        style="border-bottom: 1px solid black !important; resize: none;">{{ old('alamat_ba_tolak1', $penindakans->alamat_ba_tolak1) }}</textarea>
+                                                                </div>
+                                                            </div>
 
-
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label>Kewarganegaraan</label>
-                                                                    <select class="form-control form-select select2"
+                                                            {{-- Kewarganegaraan --}}
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Kewarganegaraan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <select
+                                                                        class="form-control border-0 border-bottom border-dark form-select select2"
                                                                         name="kewarganegaraan_ba_tolak1">
                                                                         <option value="" disabled
                                                                             {{ old('kewarganegaraan_ba_tolak1', $penindakans->kewarganegaraan_ba_tolak1) === null ? 'selected' : '' }}>
@@ -2038,44 +4066,81 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
+                                                            </div>
 
-
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label>Pekerjaan</label>
-                                                                    <input type="text"
-                                                                        class="form-control form-input"
-                                                                        placeholder="Pekerjaan"
+                                                            {{-- Pekerjaan --}}
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Pekerjaan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" placeholder="Pekerjaan"
                                                                         name="pekerjaan_ba_tolak1"
+                                                                        class="form-control border-0 border-bottom border-dark"
                                                                         value="{{ old('pekerjaan_ba_tolak1', $penindakans->pekerjaan_ba_tolak1) }}">
                                                                 </div>
-
-
                                                             </div>
+
+                                                            {{-- Alasan Penolakan --}}
+                                                            <p>Menolak untuk menandatangani Surat Bukti Penindakan tersebut
+                                                                di atas dengan alasan :</p>
+                                                            <div class="mb-4">
+                                                                <textarea class="form-control border-0" name="alasan_tolak_1" rows="5"
+                                                                    style="border-bottom: 1px solid black !important; resize: none;" placeholder="Diisi Alasan Penolakan">{{ old('alasan_tolak_1', $penindakans->alasan_tolak_1) }}</textarea>
+                                                            </div>
+
                                                         </div>
 
 
-                                                        <!-- Right Column (Pejabat Selection) -->
-                                                        <div class="col-lg-6">
 
 
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
 
-                                                            <div class="row mb-3 form-group">
-                                                                <label class="col-sm-3 col-form-label">Alasan Tolak
-                                                                    Pertama</label>
-                                                                <div class="col-sm-9">
-                                                                    <textarea class="form-control form-input" placeholder="Alasan Tolak Pertama" name="alasan_tolak_1"
-                                                                        rows="5">{{ old('alasan_tolak_1', $penindakans->alasan_tolak_1) }}</textarea>
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pemilik/Pengangkut/Kuasanya,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
                                                         </div>
 
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
-
 
                                     </div>
                                 </div>
@@ -2084,7 +4149,7 @@
                                 <div class="tab-pane fade" id="tolak2" role="tabpanel" aria-labelledby="tolak2">
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
 
-                                        <!-- B.A Dokumentasi -->
+                                        <!-- B.A Tolak 2 -->
                                         <div class="accordion-item border rounded">
                                             <div class="d-flex justify-content-between align-items-center p-3 bg-light">
                                                 <span class="fw-bold">B.A Tolak Kedua</span>
@@ -2092,88 +4157,271 @@
                                                     <input class="form-check-input status-toggle" type="checkbox"
                                                         role="switch" id="flexSwitchCheck101145"
                                                         data-id="flush-collapse101145" name="ba_tolak_2"
-                                                        value="{{ old('ba_tolak_2', $penindakans->ba_tolak_2) }}"
-                                                        {{ old('ba_tolak_2', $penindakans->ba_tolak_2 ?? '') == 'YA' ? 'checked' : '' }}
-                                                        aria-expanded="false" aria-controls="flush-collapse101145">
+                                                        value="YA" aria-expanded="false"
+                                                        aria-controls="flush-collapse101145"
+                                                        {{ old('ba_tolak_2', $penindakans->ba_tolak_2) === 'YA' ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheck101145"
                                                         id="switch-label-101145">
-                                                        {{ old('ba_tolak_2', $penindakans->ba_tolak_2 ?? '') == 'YA' ? 'YA' : 'TIDAK' }}
+                                                        {{ old('ba_tolak_2', $penindakans->ba_tolak_2) === 'YA' ? 'YA' : 'TIDAK' }}
                                                     </label>
                                                 </div>
-
                                             </div>
                                             <hr class="my-0">
-                                            <div id="flush-collapse101145" class="accordion-collapse collapse"
+                                            <div id="flush-collapse101145"
+                                                class="accordion-collapse collapse text-black"
                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body bg-light">
-                                                    <div class="row">
-                                                        <!-- Left Column (Data Laporan Informasi) -->
-                                                        <div class="col-lg-6">
-                                                            <h6><b>A. Data B.A Tolak Kedua</b></h6>
-                                                            <hr>
-                                                            <div class="row">
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label>No. B.A Tolak 2</label>
-                                                                    <input type="text"
-                                                                        class="form-control bg-primary text-white"
-                                                                        value="{{ old('no_ba_tolak_2', $penindakans->no_ba_tolak_2) }}"
-                                                                        placeholder="No. B.A Tolak Kedua"
-                                                                        name="no_ba_tolak_2" readonly>
-                                                                </div>
+                                                <div class="accordion-body">
+                                                    <div class="container mt-4">
+                                                        <!-- Header dengan Logo -->
+                                                        <div class="row mb-4 align-items-center">
+                                                            <div class="col-2 text-center">
+                                                                <img src="/images/logocop.png" alt="Logo"
+                                                                    class="img-fluid" style="max-height:170px;">
+                                                            </div>
+                                                            <div class="col-10 text-center">
+                                                                <h5 class="mb-0">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA
+                                                                </h5>
+                                                                <p class="small mb-0">DIREKTORAT JENDERAL BEA DAN CUKAI
+                                                                </p>
+                                                                <p class="small mb-0">KANTOR PELAYANAN UTAMA BEA DAN CUKAI
+                                                                    TIPE B BATAM
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    JALAN KUDA LAUT, BATU AMPAR, BATAM, KEPULAUAN RIAU
+                                                                    29432;
+                                                                    TELEPON (0778) 458118, 458263; FAKSIMILE (0778) 458149;
+                                                                </p>
+                                                                <p class="small mb-0">
+                                                                    LAMAN WWW.BCBATAM.BEACUKAI.GO.ID;
+                                                                    PUSAT KONTAK LAYANAN 1500225;
+                                                                    SUREL BCBPBATAM@CUSTOMS.GO.ID,
+                                                                    KPBC.BATAM@KEMENKEU.GO.ID
+                                                                </p>
+                                                            </div>
+                                                        </div>
 
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label>Tgl. B.A Tolak 2</label>
-                                                                    <input type="date"
-                                                                        class="form-control bg-primary text-white"
-                                                                        name="tgl_ba_tolak_2"
-                                                                        value="{{ old('tgl_ba_tolak_2', $penindakans->tgl_ba_tolak_2) }}">
-                                                                </div>
-
-
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label>Nama Saksi</label>
-                                                                    <input type="text"
-                                                                        class="form-control form-input"
-                                                                        placeholder="Saksi yang menyaksikan penolakan tanda tangan"
-                                                                        name="saksi_ba_tolak2"
-                                                                        value="{{ old('saksi_ba_tolak2', $penindakans->saksi_ba_tolak2) }}">
-                                                                </div>
+                                                        <hr class="border border-dark border-2">
 
 
+                                                        <!-- Nomor dan Tanggal -->
+                                                        <div class="text-center mb-4">
+                                                            <h5 class="fw-bold">
+                                                                BERITA ACARA PENOLAKAN TANDA TANGAN TERHADAP BERITA ACARA
+                                                                PENOLAKAN TANDA TANGAN SURAT BUKTI PENINDAKAN
+                                                            </h5>
+                                                            <div class="input-group flex-wrap">
+                                                                <span class="input-group-text">NOMOR : BA-</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="no_ba_tolak_2" id="no_ba_tolak_2"
+                                                                    value="{{ old('no_ba_tolak_2', $penindakans->no_ba_tolak_2) }}"
+                                                                    readonly>
+                                                                <span class="input-group-text">/Tolak 1/KPU.206/</span>
+                                                                <input type="date" class="form-control"
+                                                                    name="tgl_ba_tolak_2"
+                                                                    value="{{ old('tgl_ba_tolak_2', $penindakans->tgl_ba_tolak_2 ?? '') }}">
                                                             </div>
                                                         </div>
 
 
-                                                        <!-- Right Column (Pejabat Selection) -->
-                                                        <div class="col-lg-6">
+                                                        <p class="mb-2">
+                                                            <span class="text-danger">*</span> Isian dengan keterangan
+                                                            <span class="text-danger">"terisi otomatis"</span> di atas
+                                                            berasal dari data sebelumnya yang telah diinput melalui Data
+                                                            Penindakan.
+                                                        </p>
 
 
 
-                                                            <div class="row mb-3 form-group">
-                                                                <label class="col-sm-3 col-form-label">Alasan Tolak
-                                                                    Kedua</label>
-                                                                <div class="col-sm-9">
-                                                                    <textarea class="form-control form-input" placeholder="Alasan Tolak Kedua" name="alasan_tolak_2" rows="5">{{ old('alasan_tolak_2', $penindakans->alasan_tolak_2) }}</textarea>
+                                                        <!-- Pembukaan -->
+                                                        <div class="mb-4">
+                                                            <p>
+                                                                Pada hari ini
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Berdasarkan surat perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                bulan
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                tahun
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 80px;">
+                                                                Berdasarkan Surat Perintah :
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                                Nomor
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 150px;">
+                                                                tanggal
+                                                                <input type="text" readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;">
+                                                            </p>
+
+
+
+
+                                                            <p>Kami yang bertanda tangan di bawah ini menyatakan bahwa
+                                                                setelah diberikan Berita Acara Penolakan Tanda Tangan Surat
+                                                                Bukti Penindakan nomor <input type="text" readonly
+                                                                    value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;"> Tanggal <input type="text"
+                                                                    readonly value="terisi otomatis"
+                                                                    class="form-control d-inline border-0 border-bottom border-dark"
+                                                                    style="width: 100px;"></p>
+                                                        </div>
+
+
+                                                        <div class="mb-4">
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Nama</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text"
+                                                                        placeholder="terisi otomatis" readonly
+                                                                        class="form-control border-0 border-bottom border-dark">
                                                                 </div>
                                                             </div>
 
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">
+                                                                        Tempat/tanggal lahir
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Jenis Kelamin</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Alamat</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Kewarganegaraan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-4">
+                                                                    <label class="form-label">Pekerjaan</label>
+                                                                </div>
+                                                                <div class="col-md-1 text-center">:</div>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" readonly
+                                                                        value="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                </div>
+                                                            </div>
+
+                                                            <p>menolak untuk menandatangani Berita Acara Penolakan Tanda
+                                                                Tangan Surat Bukti Penindakan tersebut di atas dengan alasan
+                                                                :</p>
+
+                                                            <div class="mb-4">
+                                                                <textarea class="form-control border-0" name="alasan_tolak_2" rows="5"
+                                                                    style="border-bottom: 1px solid black !important; resize: none;" placeholder="Diisi Alasan Penolakan">{{ old('alasan_tolak_2', $penindakans->alasan_tolak_2) }}</textarea>
+                                                            </div>
+
+
+                                                            <p>atau tanpa alasan yang jelas/tidak ada alasan</p>
+
+
+                                                        </div>
+
+
+
+                                                        <p class="fw-bold">Demikian Berita Acara ini dibuat dengan
+                                                            sebenarnya.</p>
+
+                                                        <!-- Tanda Tangan -->
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Saksi,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;" placeholder="Diisi Nama Saksi"
+                                                                            value="{{ old('saksi_ba_tolak2', $penindakans->saksi_ba_tolak2) }}" name="saksi_ba_tolak2">)</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="text-center">
+                                                                    <p>Pejabat yang melakukan pemeriksaan,</p>
+                                                                    <div style="height: 80px;"></div>
+                                                                    <p>(<input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
+                                                                            style="width: 150px;"
+                                                                            value="terisi otomatis" readonly>)</p>
+                                                                    <p>NIP. <input type="text"
+                                                                            class="form-control d-inline border-0 border-bottom border-dark"
+                                                                            style="width: 120px;"
+                                                                            value="terisi otomatis" readonly></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Keterangan -->
+                                                        <div class="mt-4">
+                                                            <p><small>*Coret yang tidak perlu</small></p>
+                                                            <div class="text-center">
+                                                            </div>
                                                         </div>
 
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
-
                             </div>
-
-
-
-
                         </div>
                     </div><!-- end row -->
             </div>
@@ -2293,6 +4541,190 @@
             color: #888888;
         }
     </style>
+
+     <script>
+    function addRow(type, defaultData = {}) {
+        const table = document.getElementById(`${type}_table`).querySelector("tbody");
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td><input type="text" class="form-control d-inline border-0 border-bottom border-dark"
+             name="${type}_uraian_barang[]" value="${defaultData.uraian_barang ?? ''}" /></td>
+            <td><input type="number" class="form-control d-inline border-0 border-bottom border-dark"
+             name="${type}_jml[]" value="${defaultData.jml ?? ''}" /></td>
+            <td>
+                <select name="${type}_kondisi[]" class="form-select select2">
+                    <option value="Baru" ${defaultData.kondisi === 'Baru' ? 'selected' : ''}>Baru</option>
+                    <option value="Bekas" ${defaultData.kondisi === 'Bekas' ? 'selected' : ''}>Bekas</option>
+                </select>
+            </td>
+            <td><button type="button"
+                class="bg-danger text-white btn btn-outline-light px-3 py-1 rounded shadow-sm transition"
+                style="transition: all 0.2s ease-in-out;" 
+                onmouseover="this.classList.add('shadow'); this.style.transform='scale(1.05)'"
+                onmouseout="this.classList.remove('shadow'); this.style.transform='scale(1)'"
+                onclick="this.parentElement.parentElement.remove()">-</button></td>
+        `;
+        table.appendChild(row);
+    }
+
+    function collectData() {
+        const getData = (type) => {
+            const uraian = document.getElementsByName(`${type}_uraian_barang[]`);
+            const jml = document.getElementsByName(`${type}_jml[]`);
+            const kondisi = document.getElementsByName(`${type}_kondisi[]`);
+
+            return Array.from(uraian).map((_, i) => ({
+                uraian_barang: uraian[i].value,
+                jml: parseInt(jml[i].value),
+                kondisi: kondisi[i].value
+            }));
+        };
+
+        const data = {
+            pemberitahuan: getData("pemberitahuan"),
+            kedapatan: getData("kedapatan")
+        };
+
+        document.getElementById("hasil_pemeriksaan_barang").value = JSON.stringify(data);
+    }
+
+    // Populate data saat edit
+    document.addEventListener("DOMContentLoaded", function () {
+        const oldData = document.getElementById("hasil_pemeriksaan_barang").dataset.old;
+        if (oldData) {
+            try {
+                const parsed = JSON.parse(oldData);
+                if (parsed.pemberitahuan && Array.isArray(parsed.pemberitahuan)) {
+                    parsed.pemberitahuan.forEach(item => addRow('pemberitahuan', item));
+                }
+                if (parsed.kedapatan && Array.isArray(parsed.kedapatan)) {
+                    parsed.kedapatan.forEach(item => addRow('kedapatan', item));
+                }
+            } catch (e) {
+                console.error("Gagal memuat data lama:", e);
+            }
+        }
+    });
+</script>
+
+<script>
+let imageIndex = 0;
+
+// Tambahkan gambar baru
+function addImage() {
+    const fileInput = document.getElementById('image-upload');
+    const captionInput = document.getElementById('image-caption');
+    const file = fileInput.files[0];
+    const caption = captionInput.value.trim();
+
+    if (!file || !caption) {
+        alert("Silakan pilih gambar dan isi caption.");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const previewContainer = document.getElementById('image-preview-container');
+        const col = document.createElement('div');
+        col.className = 'col-md-3 text-center';
+        col.id = `preview-${imageIndex}`;
+        col.innerHTML = `
+            <img src="${e.target.result}" class="img-fluid rounded mb-2" style="max-height:150px; object-fit:cover;">
+            <p class="mb-1"><strong>${caption}</strong></p>
+            <button type="button" class="btn btn-danger btn-sm" onclick="removeImage(${imageIndex})">Hapus</button>
+        `;
+        previewContainer.appendChild(col);
+    };
+    reader.readAsDataURL(file);
+
+    const hiddenFields = document.getElementById("hidden-fields");
+
+    const newFileInput = document.createElement('input');
+    newFileInput.type = 'file';
+    newFileInput.name = 'dokumentasi_gambar[]';
+    newFileInput.style.display = 'none';
+    newFileInput.id = `file-${imageIndex}`;
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    newFileInput.files = dt.files;
+    hiddenFields.appendChild(newFileInput);
+
+    const captionField = document.createElement('input');
+    captionField.type = 'hidden';
+    captionField.name = 'dokumentasi_caption[]';
+    captionField.value = caption;
+    captionField.id = `caption-${imageIndex}`;
+    hiddenFields.appendChild(captionField);
+
+    fileInput.value = '';
+    captionInput.value = '';
+    imageIndex++;
+}
+
+// Hapus gambar baru
+function removeImage(index) {
+    if (!confirm("Apakah Anda yakin ingin menghapus gambar ini?")) return;
+
+    const preview = document.getElementById(`preview-${index}`);
+    if (preview) preview.remove();
+    const caption = document.getElementById(`caption-${index}`);
+    if (caption) caption.remove();
+    const file = document.getElementById(`file-${index}`);
+    if (file) file.remove();
+}
+
+// Hapus gambar lama
+function removeOldImage(index) {
+    if (!confirm("Apakah Anda yakin ingin menghapus gambar ini?")) return;
+
+    const preview = document.getElementById(`preview-old-${index}`);
+    if (preview) preview.remove();
+    const field = document.getElementById(`dokumentasi-lama-${index}`);
+    if (field) field.remove();
+    const deleted = document.createElement("input");
+    deleted.type = "hidden";
+    deleted.name = "deleted_dokumentasi[]";
+    deleted.value = index;
+    document.getElementById("hidden-fields").appendChild(deleted);
+}
+
+// Tampilkan gambar lama saat halaman dimuat
+document.addEventListener("DOMContentLoaded", function () {
+    const previewContainer = document.getElementById("image-preview-container");
+    const oldData = previewContainer.dataset.old;
+
+    if (oldData) {
+        try {
+            const dokumentasi = JSON.parse(oldData);
+            dokumentasi.forEach((item, i) => {
+                const col = document.createElement('div');
+                col.className = 'col-md-3 text-center';
+                col.id = `preview-old-${i}`;
+                col.innerHTML = `
+                    <img src="/${item.image}" class="img-fluid rounded mb-2" style="max-height:150px; object-fit:cover;">
+                    <p class="mb-1"><strong>${item.caption}</strong></p>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeOldImage(${i})">Hapus</button>
+                `;
+                previewContainer.appendChild(col);
+
+                const field = document.createElement("input");
+                field.type = "hidden";
+                field.name = "dokumentasi_lama[]";
+                field.value = JSON.stringify(item);
+                field.id = `dokumentasi-lama-${i}`;
+                document.getElementById("hidden-fields").appendChild(field);
+            });
+        } catch (e) {
+            console.error("Gagal parsing dokumentasi lama:", e);
+        }
+    }
+});
+</script>
+
+
+
+
 @endsection
 @section('script')
     @vite(['resources/js/pages/datatable.init.js'])

@@ -25,23 +25,28 @@ class PascaPenindakanController extends Controller
 {
     public function index()
     {
-        $pascaPenindakan = TblPascaPenindakan::select('id', 'tgl_lphp', 'no_lphp')->get();
+        $pascaPenindakan = TblPascaPenindakan::select('id', 'tgl_lphp', 'no_lphp', 'id_penindakan_ref')
+            ->latest()
+            ->paginate(50);
 
-        $pascaPenindakan = $pascaPenindakan->map(function ($item) {
-            $item->tgl_lphp = $this->formatDates(['tgl_lphp' => $item->tgl_lphp])['tgl_lphp'];
-            return $item;
+        $pascaPenindakan->getCollection()->transform(function ($item) {
+            return (object) $this->formatDates($item->toArray());
         });
 
         $penindakan = TblSbp::select('no_sbp', 'tgl_sbp', 'id_pra_penindakan_ref', 'id_penindakan', 'opsi_penindakan')
+            ->whereNotIn('id_penindakan', function ($query) {
+                $query->select('id_penindakan_ref')->from('tbl_pasca_penindakan');
+            })
+            ->latest()
+            ->limit(500)
             ->get()
             ->map(function ($item) {
-                $item->tgl_sbp = $this->formatDates(['tgl_sbp' => $item->tgl_sbp])['tgl_sbp'];
-                return $item;
+                return (object) $this->formatDates($item->toArray());
             });
-
 
         return view('Dokpenindakan.pasca-penindakan.index', compact('pascaPenindakan', 'penindakan'));
     }
+
 
     public function create(Request $request)
     {

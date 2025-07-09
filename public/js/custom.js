@@ -48,99 +48,97 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-const videoInput = document.querySelector("#rekaman-video");
-if (videoInput) {
-    const videoTagify = new Tagify(videoInput, {
-        delimiters: ",",
-        maxTags: 10,
-        placeholder: "Masukkan Link Video",
-        dropdown: {
-            enabled: 0,
-        },
-    });
+// const videoInput = document.querySelector("#rekaman-video");
+// if (videoInput) {
+//     const videoTagify = new Tagify(videoInput, {
+//         delimiters: ",",
+//         maxTags: 10,
+//         placeholder: "Masukkan Link Video",
+//         dropdown: {
+//             enabled: 0,
+//         },
+//     });
 
-    videoTagify.on("change", function (e) {
-        const values = e.detail.value.map((tag) => tag.value);
-        videoInput.value = values.length ? values.join(",") : "";
-    });
-}
+//     videoTagify.on("change", function (e) {
+//         const values = e.detail.value.map((tag) => tag.value);
+//         videoInput.value = values.length ? values.join(",") : "";
+//     });
+// }
 
-const audioInput = document.querySelector("#rekaman-audio");
-if (audioInput) {
-    const audioTagify = new Tagify(audioInput, {
-        delimiters: ",",
-        maxTags: 10,
-        placeholder: "Masukkan Link Audio",
-        dropdown: {
-            enabled: 0,
-        },
-    });
+// const audioInput = document.querySelector("#rekaman-audio");
+// if (audioInput) {
+//     const audioTagify = new Tagify(audioInput, {
+//         delimiters: ",",
+//         maxTags: 10,
+//         placeholder: "Masukkan Link Audio",
+//         dropdown: {
+//             enabled: 0,
+//         },
+//     });
 
-    audioTagify.on("change", function (e) {
-        const values = e.detail.value.map((tag) => tag.value);
-        audioInput.value = values.length ? values.join(",") : "";
-    });
-}
+//     audioTagify.on("change", function (e) {
+//         const values = e.detail.value.map((tag) => tag.value);
+//         audioInput.value = values.length ? values.join(",") : "";
+//     });
+// }
 
-const form = document.querySelector("form");
-if (form) {
-    form.addEventListener("submit", function (e) {
-        try {
-            const videoInput = document.querySelector("#rekaman-video");
-            if (videoInput && window.videoTagify) {
-                const videoLinks = videoTagify.value.map((tag) => tag.value);
-                videoInput.value = videoLinks.length
-                    ? videoLinks.join(",")
-                    : "";
-            }
+// const form = document.querySelector("form");
+// if (form) {
+//     form.addEventListener("submit", function (e) {
+//         try {
+//             const videoInput = document.querySelector("#rekaman-video");
+//             if (videoInput && window.videoTagify) {
+//                 const videoLinks = videoTagify.value.map((tag) => tag.value);
+//                 videoInput.value = videoLinks.length
+//                     ? videoLinks.join(",")
+//                     : "";
+//             }
 
-            const audioInput = document.querySelector("#rekaman-audio");
-            if (audioInput && window.audioTagify) {
-                const audioLinks = audioTagify.value.map((tag) => tag.value);
-                audioInput.value = audioLinks.length
-                    ? audioLinks.join(",")
-                    : "";
-            }
+//             const audioInput = document.querySelector("#rekaman-audio");
+//             if (audioInput && window.audioTagify) {
+//                 const audioLinks = audioTagify.value.map((tag) => tag.value);
+//                 audioInput.value = audioLinks.length
+//                     ? audioLinks.join(",")
+//                     : "";
+//             }
 
-            console.log("Form submitted with:", {
-                video: videoInput ? videoInput.value : "no video input",
-                audio: audioInput ? audioInput.value : "no audio input",
-            });
-        } catch (error) {
-            console.error("Error preparing form data:", error);
-        }
-    });
-}
+//             console.log("Form submitted with:", {
+//                 video: videoInput ? videoInput.value : "no video input",
+//                 audio: audioInput ? audioInput.value : "no audio input",
+//             });
+//         } catch (error) {
+//             console.error("Error preparing form data:", error);
+//         }
+//     });
+// }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        // Inisialisasi Quill.js
-        var quill = new Quill("#editor-container", {
-            theme: "snow",
-            modules: {
-                toolbar: [
-                    ["bold", "italic", "underline"],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    [{ align: [] }],
-                    ["clean"],
-                ],
-            },
-        });
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     // Inisialisasi Quill.js
+    //     var quill = new Quill("#editor-container", {
+    //         theme: "snow",
+    //         modules: {
+    //             toolbar: [
+    //                 ["bold", "italic", "underline"],
+    //                 [{ list: "ordered" }, { list: "bullet" }],
+    //                 [{ align: [] }],
+    //                 ["clean"],
+    //             ],
+    //         },
+    //     });
 
-        var hiddenInput = document.querySelector("#melaksanakan_tugas_st");
+    //     var hiddenInput = document.querySelector("#melaksanakan_tugas_st");
 
-        hiddenInput.value = quill.root.innerHTML;
+    //     hiddenInput.value = quill.root.innerHTML;
 
-        quill.on("text-change", function () {
-            hiddenInput.value = quill.root.innerHTML;
-        });
+    //     quill.on("text-change", function () {
+    //         hiddenInput.value = quill.root.innerHTML;
+    //     });
 
-        var form = document.querySelector("form");
-        form.onsubmit = function () {
-            hiddenInput.value = quill.root.innerHTML;
-        };
-    });
-
-
+    //     var form = document.querySelector("form");
+    //     form.onsubmit = function () {
+    //         hiddenInput.value = quill.root.innerHTML;
+    //     };
+    // });
 
 // footer
 
@@ -204,6 +202,125 @@ $(document).ready(function () {
         }
     });
 });
+
+
+function initLokasiPenindakan() {
+    const $el = $('#lokasi_penindakan');
+
+    if ($el.length === 0) return;
+
+    if ($el.hasClass('select2-hidden-accessible')) return;
+
+    $el.select2({
+        placeholder: 'Cari atau ketik Lokasi...',
+        allowClear: true,
+        tags: true,
+        ajax: {
+            url: '/data/lokasi-penindakan-sbp',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { term: params.term };
+            },
+            processResults: function (data) {
+                return { results: data };
+            },
+            cache: true
+        },
+        createTag: function (params) {
+            return {
+                id: params.term,
+                text: params.term,
+                newOption: true
+            };
+        },
+        insertTag: function (data, tag) {
+            data.push(tag);
+        }
+    });
+
+    // setTimeout(function () {
+    //     $el.select2('open');
+    //     $('.select2-search__field').focus();
+    // }, 500);
+}
+
+$(document).ready(function () {
+    // Inisialisasi langsung jika tab penindakan sudah aktif saat load
+    if ($('#tab-penindakan').hasClass('active') || $('#penindakan').hasClass('show active')) {
+        setTimeout(initLokasiPenindakan, 300);
+    }
+
+    // Inisialisasi saat tab diklik
+    $('a[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+        const target = $(e.target).attr("href");
+        if (target === '#penindakan') {
+            setTimeout(initLokasiPenindakan, 300);
+        }
+    });
+});
+
+
+function initKesimpulanPenindakan() {
+    const $el = $('#kesimpulan');
+
+    if ($el.length === 0) return;
+
+    if ($el.hasClass('select2-hidden-accessible')) return;
+
+    $el.select2({
+        placeholder: 'Cari atau ketik Kesimpulan...',
+        allowClear: true,
+        tags: true,
+        ajax: {
+            url: '/data/kesimpulan-penindakan',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { term: params.term };
+            },
+            processResults: function (data) {
+                return { results: data };
+            },
+            cache: true
+        },
+        createTag: function (params) {
+            return {
+                id: params.term,
+                text: params.term,
+                newOption: true
+            };
+        },
+        insertTag: function (data, tag) {
+            data.push(tag);
+        }
+    });
+
+    // setTimeout(function () {
+    //     $el.select2('open');
+    //     $('.select2-search__field').focus();
+    // }, 500);
+}
+
+$(document).ready(function () {
+    // Inisialisasi langsung jika tab penindakan sudah aktif saat load
+    if ($('#tab-penindakan').hasClass('active') || $('#penindakan').hasClass('show active')) {
+        setTimeout(initKesimpulanPenindakan, 300);
+    }
+
+    // Inisialisasi saat tab diklik
+    $('a[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+        const target = $(e.target).attr("href");
+        if (target === '#penindakan') {
+            setTimeout(initKesimpulanPenindakan, 300);
+        }
+    });
+});
+
+
+
+
+
 
 
 

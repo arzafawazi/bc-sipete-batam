@@ -7,8 +7,11 @@ use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Session\SymfonySessionDecorator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Uri;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\InputBag;
@@ -26,6 +29,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
         Concerns\InteractsWithContentTypes,
         Concerns\InteractsWithFlashData,
         Concerns\InteractsWithInput,
+        Conditionable,
         Macroable;
 
     /**
@@ -89,13 +93,23 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     }
 
     /**
+     * Get a URI instance for the request.
+     *
+     * @return \Illuminate\Support\Uri
+     */
+    public function uri()
+    {
+        return Uri::of($this->fullUrl());
+    }
+
+    /**
      * Get the root URL for the application.
      *
      * @return string
      */
     public function root()
     {
-        return rtrim($this->getSchemeAndHttpHost() . $this->getBaseUrl(), '/');
+        return rtrim($this->getSchemeAndHttpHost().$this->getBaseUrl(), '/');
     }
 
     /**
@@ -117,9 +131,9 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     {
         $query = $this->getQueryString();
 
-        $question = $this->getBaseUrl() . $this->getPathInfo() === '/' ? '/?' : '?';
+        $question = $this->getBaseUrl().$this->getPathInfo() === '/' ? '/?' : '?';
 
-        return $query ? $this->url() . $question . $query : $this->url();
+        return $query ? $this->url().$question.$query : $this->url();
     }
 
     /**
@@ -130,11 +144,11 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public function fullUrlWithQuery(array $query)
     {
-        $question = $this->getBaseUrl() . $this->getPathInfo() === '/' ? '/?' : '?';
+        $question = $this->getBaseUrl().$this->getPathInfo() === '/' ? '/?' : '?';
 
         return count($this->query()) > 0
-            ? $this->url() . $question . Arr::query(array_merge($this->query(), $query))
-            : $this->fullUrl() . $question . Arr::query($query);
+            ? $this->url().$question.Arr::query(array_merge($this->query(), $query))
+            : $this->fullUrl().$question.Arr::query($query);
     }
 
     /**
@@ -147,10 +161,10 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     {
         $query = Arr::except($this->query(), $keys);
 
-        $question = $this->getBaseUrl() . $this->getPathInfo() === '/' ? '/?' : '?';
+        $question = $this->getBaseUrl().$this->getPathInfo() === '/' ? '/?' : '?';
 
         return count($query) > 0
-            ? $this->url() . $question . Arr::query($query)
+            ? $this->url().$question.Arr::query($query)
             : $this->url();
     }
 
@@ -210,9 +224,8 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public function is(...$patterns)
     {
-        $path = $this->decodedPath();
-
-        return collect($patterns)->contains(fn($pattern) => Str::is($pattern, $path));
+        return (new Collection($patterns))
+            ->contains(fn ($pattern) => Str::is($pattern, $this->decodedPath()));
     }
 
     /**
@@ -234,9 +247,8 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public function fullUrlIs(...$patterns)
     {
-        $url = $this->fullUrl();
-
-        return collect($patterns)->contains(fn($pattern) => Str::is($pattern, $url));
+        return (new Collection($patterns))
+            ->contains(fn ($pattern) => Str::is($pattern, $this->fullUrl()));
     }
 
     /**
@@ -297,8 +309,8 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     public function prefetch()
     {
         return strcasecmp($this->server->get('HTTP_X_MOZ') ?? '', 'prefetch') === 0 ||
-            strcasecmp($this->headers->get('Purpose') ?? '', 'prefetch') === 0 ||
-            strcasecmp($this->headers->get('Sec-Purpose') ?? '', 'prefetch') === 0;
+               strcasecmp($this->headers->get('Purpose') ?? '', 'prefetch') === 0 ||
+               strcasecmp($this->headers->get('Sec-Purpose') ?? '', 'prefetch') === 0;
     }
 
     /**
@@ -362,9 +374,10 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public function mergeIfMissing(array $input)
     {
-        return $this->merge(collect($input)->filter(function ($value, $key) {
-            return $this->missing($key);
-        })->toArray());
+        return $this->merge((new Collection($input))
+            ->filter(fn ($value, $key) => $this->missing($key))
+            ->toArray()
+        );
     }
 
     /**
@@ -480,12 +493,8 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     public static function createFromBase(SymfonyRequest $request)
     {
         $newRequest = new static(
-            $request->query->all(),
-            $request->request->all(),
-            $request->attributes->all(),
-            $request->cookies->all(),
-            (new static)->filterFiles($request->files->all()) ?? [],
-            $request->server->all()
+            $request->query->all(), $request->request->all(), $request->attributes->all(),
+            $request->cookies->all(), (new static)->filterFiles($request->files->all()) ?? [], $request->server->all()
         );
 
         $newRequest->headers->replace($request->headers->all());
@@ -551,8 +560,8 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     public function getSession(): SessionInterface
     {
         return $this->hasSession()
-            ? $this->session
-            : throw new SessionNotFoundException;
+                    ? $this->session
+                    : throw new SessionNotFoundException;
     }
 
     /**
@@ -794,6 +803,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public function __get($key)
     {
-        return Arr::get($this->all(), $key, fn() => $this->route($key));
+        return Arr::get($this->all(), $key, fn () => $this->route($key));
     }
 }

@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Observers\GenericObserver;
+use Illuminate\Support\Facades\Log;
 
 
 class AuthenticatedSessionController extends Controller
@@ -29,19 +30,45 @@ class AuthenticatedSessionController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(LoginRequest $request)
-    {
-        // Autentikasi login
+{
+    try {
         $request->authenticate();
-
-        // Regenerasi session
+        
         $request->session()->regenerate();
-
-        // Catat aktivitas login menggunakan GenericObserver
-        $observer = new GenericObserver();
-        $observer->login(Auth::user());
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+        
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Login berhasil',
+                'redirect' => url('/home')
+            ]);
+        }
+        
+        return redirect()->intended('/home'); 
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Login gagal',
+                'errors' => $e->errors()
+            ], 422);
+        }
+        
+        throw $e;
+    } catch (\Exception $e) {
+        Log::error('Login error: ' . $e->getMessage());
+        
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan server',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        
+        throw $e;
     }
+}
 
     /**
      * Destroy an authenticated session.

@@ -16,28 +16,35 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\TblLocus;
+use App\Models\TblKesimpulanPenindakan;
 
 class PenindakanController extends Controller
 {
     public function index()
     {
-        $penindakans = TblSbp::select('id', 'tgl_sbp', 'no_sbp')->get();
+        $penindakans = TblSbp::select('id', 'tgl_sbp', 'no_sbp')
+            ->latest()
+            ->paginate(50);
 
-        $penindakans = $penindakans->map(function ($item) {
-            $item->tgl_sbp = $this->formatDates(['tgl_sbp' => $item->tgl_sbp])['tgl_sbp'];
-            return $item;
+        $penindakans->getCollection()->transform(function ($item) {
+            return (object) $this->formatDates($item->toArray());
         });
 
-        $laporanInformasi = TblLaporanInformasi::select('no_print', 'tanggal_mulai_print', 'no_li', 'tgl_li', 'id_pra_penindakan')
-            ->get()
-            ->map(function ($item) {
-                $item->tanggal_mulai_print = $this->formatDates(['tanggal_mulai_print' => $item->tanggal_mulai_print])['tanggal_mulai_print'];
-                $item->tgl_li = $this->formatDates(['tgl_li' => $item->tgl_li])['tgl_li'];
-                return $item;
-            });
+        $laporanInformasi = TblLaporanInformasi::select('no_print', 'tgl_print', 'no_li', 'tgl_li', 'id_pra_penindakan')
+            ->whereNotIn('id_pra_penindakan', function ($query) {
+                $query->select('id_pra_penindakan_ref')->from('tbl_sbp');
+            })
+            ->limit(500) 
+            ->get();
+
+        $laporanInformasi = $laporanInformasi->map(function ($item) {
+            return (object) $this->formatDates($item->toArray());
+        });
 
         return view('Dokpenindakan.penindakan.index', compact('laporanInformasi', 'penindakans'));
     }
+
 
     public function create(Request $request)
     {
@@ -121,6 +128,18 @@ class PenindakanController extends Controller
 
         $data['dokumentasi_pemeriksaan'] = json_encode($dokumentasi);
 
+        if ($request->filled('lokasi_penindakan')) {
+            TblLocus::firstOrCreate([
+                'locus' => $request->input('lokasi_penindakan'),
+            ]);
+        }
+
+        if ($request->filled('kesimpulan')) {
+            TblKesimpulanPenindakan::firstOrCreate([
+                'kesimpulan_penindakan' => $request->input('kesimpulan'),
+            ]);
+        }
+
         // dd($data);
 
         TblSbp::create($data);
@@ -159,17 +178,107 @@ class PenindakanController extends Controller
         return view('Dokpenindakan.penindakan.edit', compact('penindakans', 'users', 'segels', 'kemasans', 'jenisPelanggaran', 'no_ref', 'laporan', 'nama_negara'));
     }
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        $data = request()->all();
-
+        // Ambil data dari database
         $item = TblSbp::find($id);
-        if ($item) {
-            $item->update($data);
-            return redirect()->route('penindakan.index')->with('success', 'Data berhasil diperbarui.');
+        if (!$item) {
+            return redirect()->route('penindakan.index')->with('error', 'Data tidak ditemukan.');
         }
 
-        return redirect()->route('penindakan.index')->with('error', 'Data tidak ditemukan.');
+        // --- Ambil dokumentasi lama dari database ---
+        $dokumentasiLamaDB = json_decode($item->dokumentasi_pemeriksaan ?? '[]', true);
+
+        // --- Ambil dokumentasi yang masih dipertahankan (tidak dihapus via UI) ---
+        $dokumentasiDipakai = [];
+        if ($request->has('dokumentasi_lama')) {
+            foreach ($request->dokumentasi_lama as $json) {
+                $decoded = json_decode($json, true);
+                if ($decoded) {
+                    $dokumentasiDipakai[] = $decoded;
+                }
+            }
+        }
+
+        // --- Cari dan hapus gambar lama yang tidak dipakai lagi ---
+        $pathDipakai = array_column($dokumentasiDipakai, 'image');
+
+        foreach ($dokumentasiLamaDB as $lama) {
+            if (!in_array($lama['image'], $pathDipakai)) {
+                $realPath = str_replace('storage/', '', $lama['image']);
+                Storage::disk('public')->delete($realPath);
+            }
+        }
+
+        // --- Proses pemberitahuan ---
+        $pemberitahuan = [];
+        if ($request->has('pemberitahuan_uraian_barang')) {
+            foreach ($request->pemberitahuan_uraian_barang as $i => $uraian) {
+                if (isset($request->pemberitahuan_jml[$i]) && isset($request->pemberitahuan_kondisi[$i])) {
+                    $pemberitahuan[] = [
+                        'uraian_barang' => $uraian,
+                        'jml' => (int) $request->pemberitahuan_jml[$i],
+                        'kondisi' => $request->pemberitahuan_kondisi[$i],
+                    ];
+                }
+            }
+        }
+
+        // --- Proses kedapatan ---
+        $kedapatan = [];
+        if ($request->has('kedapatan_uraian_barang')) {
+            foreach ($request->kedapatan_uraian_barang as $i => $uraian) {
+                if (isset($request->kedapatan_jml[$i]) && isset($request->kedapatan_kondisi[$i])) {
+                    $kedapatan[] = [
+                        'uraian_barang' => $uraian,
+                        'jml' => (int) $request->kedapatan_jml[$i],
+                        'kondisi' => $request->kedapatan_kondisi[$i],
+                    ];
+                }
+            }
+        }
+
+        // --- Siapkan data utama (kecuali input array/file) ---
+        $data = $request->except(['pemberitahuan_uraian_barang', 'pemberitahuan_jml', 'pemberitahuan_kondisi', 'kedapatan_uraian_barang', 'kedapatan_jml', 'kedapatan_kondisi', 'dokumentasi_gambar', 'dokumentasi_caption', 'dokumentasi_lama', 'deleted_dokumentasi']);
+
+        // --- Simpan hasil pemeriksaan barang (JSON) ---
+        $data['hasil_pemeriksaan_barang'] = json_encode([
+            'pemberitahuan' => $pemberitahuan,
+            'kedapatan' => $kedapatan,
+        ]);
+
+        // --- Gabungkan dokumentasi lama + baru ---
+        $dokumentasi = $dokumentasiDipakai;
+
+        // Tambahkan gambar baru
+        if ($request->hasFile('dokumentasi_gambar')) {
+            foreach ($request->file('dokumentasi_gambar') as $i => $file) {
+                if ($file && $file->isValid()) {
+                    $path = $file->store('dokumentasi_pemeriksaan', 'public');
+                    $caption = $request->dokumentasi_caption[$i] ?? '';
+                    $dokumentasi[] = [
+                        'caption' => $caption,
+                        'image' => 'storage/' . $path,
+                    ];
+                }
+            }
+        }
+
+        $data['dokumentasi_pemeriksaan'] = json_encode($dokumentasi);
+
+        // Tambah locus dan kesimpulan baru jika diinput
+        if ($request->filled('lokasi_penindakan')) {
+            TblLocus::firstOrCreate(['locus' => $request->input('lokasi_penindakan')]);
+        }
+
+        if ($request->filled('kesimpulan')) {
+            TblKesimpulanPenindakan::firstOrCreate(['kesimpulan_penindakan' => $request->input('kesimpulan')]);
+        }
+
+        // Update ke DB
+        $item->update($data);
+
+        return redirect()->route('penindakan.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     public function destroy($id)

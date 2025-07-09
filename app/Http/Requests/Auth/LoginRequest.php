@@ -43,10 +43,8 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        // Ambil data pengguna berdasarkan nama yang diinput
         $user = \App\Models\User::where('name', $this->input('name'))->first();
 
-        // Jika pengguna ditemukan, periksa statusnya
         if ($user) {
             if ($user->status !== 'AKTIF') {
                 throw ValidationException::withMessages([
@@ -54,7 +52,6 @@ class LoginRequest extends FormRequest
                 ]);
             }
 
-            // Jika status pengguna aktif, lakukan pengecekan autentikasi password
             if (!Auth::attempt($this->only('name', 'password'), $this->filled('remember'))) {
                 RateLimiter::hit($this->throttleKey());
 
@@ -63,7 +60,6 @@ class LoginRequest extends FormRequest
                 ]);
             }
         } else {
-            // Jika pengguna tidak ditemukan, berikan pesan bahwa username atau password salah
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -71,12 +67,8 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        // Bersihkan batas percobaan login jika autentikasi berhasil
         RateLimiter::clear($this->throttleKey());
     }
-
-
-
 
     /**
      * Ensure the login request is not rate limited.
@@ -85,7 +77,7 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function ensureIsNotRateLimited()
+    protected function ensureIsNotRateLimited()
     {
         if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
@@ -108,8 +100,8 @@ class LoginRequest extends FormRequest
      *
      * @return string
      */
-    public function throttleKey()
+    protected function throttleKey()
     {
-        return Str::lower($this->input('name')) . '|' . $this->ip();
+        return Str::transliterate(Str::lower($this->input('name')) . '|' . $this->ip());
     }
 }

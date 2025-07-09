@@ -110,7 +110,7 @@
                     <td>{{ $laporan->no_li }}</td>
                     <td>{{ $laporan->tgl_li }}</td>
                     <td>{{ $laporan->no_print }}</td>
-                    <td>{{ $laporan->tanggal_mulai_print }}</td>
+                    <td>{{ $laporan->tgl_print }}</td>
                     <td>
                       <button type="button" class="btn btn-primary pilih-laporan" data-nomor="{{ $laporan->id_pra_penindakan }}" data-kategori="SBP">
                         SBP

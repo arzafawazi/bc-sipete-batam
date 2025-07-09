@@ -23,35 +23,31 @@ class PraPenindakanController extends Controller
 {
     public function index()
     {
-        $praPenindakans = TblLaporanInformasi::all();
+        $praPenindakans = TblLaporanInformasi::select('*')
+            ->latest()
+            ->paginate(50);
+
+        $praPenindakans->getCollection()->transform(function ($item) {
+            return (object) $this->formatDates($item->toArray());
+        });
 
         $dokumenIntelijen = TblLaporanPengawasan::select('id_pengawasan', 'no_st', 'tgl_st')
             ->whereNotIn('id_pengawasan', function ($query) {
                 $query->select('id_pengawasan_ref')->from('tbl_li');
             })
+            ->limit(500) 
             ->get();
 
         $dokumenIntelijen = $dokumenIntelijen->map(function ($item) {
-            $itemData = $item->toArray();
-            $formattedData = $this->formatDates($itemData);
-            return (object) $formattedData;
-        });
-
-        $laporanData = $praPenindakans->toArray();
-        $laporanFormatted = array_map([$this, 'formatDates'], $laporanData);
-
-        $praPenindakans = $praPenindakans->map(function ($item, $index) use ($laporanFormatted) {
-            $formatted = $laporanFormatted[$index];
-            $item->tgl_li = $formatted['tgl_li'] ?? null;
-            return $item;
-        });
-
-        $dokumenIntelijen = $dokumenIntelijen->filter(function ($item) {
+            $formatted = $this->formatDates($item->toArray());
+            return (object) $formatted;
+        })->filter(function ($item) {
             return !empty($item->no_st) && !empty($item->tgl_st);
         });
 
         return view('Dokpenindakan.pra-penindakan.index', compact('praPenindakans', 'dokumenIntelijen'));
     }
+
 
     public function create(Request $request)
     {

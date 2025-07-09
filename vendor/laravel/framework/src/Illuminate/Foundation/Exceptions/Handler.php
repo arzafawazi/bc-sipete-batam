@@ -18,6 +18,7 @@ use Illuminate\Contracts\Foundation\ExceptionRenderer;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\MultipleRecordsFoundException;
+use Illuminate\Database\RecordNotFoundException;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Foundation\Exceptions\Renderer\Renderer;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -28,9 +29,11 @@ use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Illuminate\Routing\Router;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Lottery;
 use Illuminate\Support\Reflector;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ReflectsClosures;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\Validation\ValidationException;
@@ -145,6 +148,7 @@ class Handler implements ExceptionHandlerContract
         HttpResponseException::class,
         ModelNotFoundException::class,
         MultipleRecordsFoundException::class,
+        RecordNotFoundException::class,
         RecordsNotFoundException::class,
         RequestExceptionInterface::class,
         TokenMismatchException::class,
@@ -247,7 +251,7 @@ class Handler implements ExceptionHandlerContract
     public function map($from, $to = null)
     {
         if (is_string($to)) {
-            $to = fn($exception) => new $to('', 0, $exception);
+            $to = fn ($exception) => new $to('', 0, $exception);
         }
 
         if (is_callable($from) && is_null($to)) {
@@ -351,10 +355,8 @@ class Handler implements ExceptionHandlerContract
     {
         $this->reportedExceptionMap[$e] = true;
 
-        if (
-            Reflector::isCallable($reportCallable = [$e, 'report']) &&
-            $this->container->call($reportCallable) !== false
-        ) {
+        if (Reflector::isCallable($reportCallable = [$e, 'report']) &&
+            $this->container->call($reportCallable) !== false) {
             return;
         }
 
@@ -370,11 +372,7 @@ class Handler implements ExceptionHandlerContract
             throw $e;
         }
 
-        $level = Arr::first(
-            $this->levels,
-            fn($level, $type) => $e instanceof $type,
-            LogLevel::ERROR
-        );
+        $level = $this->mapLogLevel($e);
 
         $context = $this->buildExceptionContext($e);
 
@@ -412,11 +410,11 @@ class Handler implements ExceptionHandlerContract
 
         $dontReport = array_merge($this->dontReport, $this->internalDontReport);
 
-        if (! is_null(Arr::first($dontReport, fn($type) => $e instanceof $type))) {
+        if (! is_null(Arr::first($dontReport, fn ($type) => $e instanceof $type))) {
             return true;
         }
 
-        return rescue(fn() => with($this->throttle($e), function ($throttle) use ($e) {
+        return rescue(fn () => with($this->throttle($e), function ($throttle) use ($e) {
             if ($throttle instanceof Unlimited || $throttle === null) {
                 return false;
             }
@@ -426,9 +424,9 @@ class Handler implements ExceptionHandlerContract
             }
 
             return ! $this->container->make(RateLimiter::class)->attempt(
-                with($throttle->key ?: 'illuminate:foundation:exceptions:' . $e::class, fn($key) => $this->hashThrottleKeys ? md5($key) : $key),
+                with($throttle->key ?: 'illuminate:foundation:exceptions:'.$e::class, fn ($key) => $this->hashThrottleKeys ? md5($key) : $key),
                 $throttle->maxAttempts,
-                fn() => true,
+                fn () => true,
                 $throttle->decaySeconds
             );
         }), rescue: false, report: false);
@@ -484,11 +482,11 @@ class Handler implements ExceptionHandlerContract
     {
         $exceptions = Arr::wrap($exceptions);
 
-        $this->dontReport = collect($this->dontReport)
-            ->reject(fn($ignored) => in_array($ignored, $exceptions))->values()->all();
+        $this->dontReport = (new Collection($this->dontReport))
+            ->reject(fn ($ignored) => in_array($ignored, $exceptions))->values()->all();
 
-        $this->internalDontReport = collect($this->internalDontReport)
-            ->reject(fn($ignored) => in_array($ignored, $exceptions))->values()->all();
+        $this->internalDontReport = (new Collection($this->internalDontReport))
+            ->reject(fn ($ignored) => in_array($ignored, $exceptions))->values()->all();
 
         return $this;
     }
@@ -637,13 +635,12 @@ class Handler implements ExceptionHandlerContract
             $e instanceof BackedEnumCaseNotFoundException => new NotFoundHttpException($e->getMessage(), $e),
             $e instanceof ModelNotFoundException => new NotFoundHttpException($e->getMessage(), $e),
             $e instanceof AuthorizationException && $e->hasStatus() => new HttpException(
-                $e->status(),
-                $e->response()?->message() ?: (Response::$statusTexts[$e->status()] ?? 'Whoops, looks like something went wrong.'),
-                $e
+                $e->status(), $e->response()?->message() ?: (Response::$statusTexts[$e->status()] ?? 'Whoops, looks like something went wrong.'), $e
             ),
             $e instanceof AuthorizationException && ! $e->hasStatus() => new AccessDeniedHttpException($e->getMessage(), $e),
             $e instanceof TokenMismatchException => new HttpException(419, $e->getMessage(), $e),
             $e instanceof RequestExceptionInterface => new BadRequestHttpException('Bad request.', $e),
+            $e instanceof RecordNotFoundException => new NotFoundHttpException('Not found.', $e),
             $e instanceof RecordsNotFoundException => new NotFoundHttpException('Not found.', $e),
             default => $e,
         };
@@ -657,10 +654,8 @@ class Handler implements ExceptionHandlerContract
      */
     protected function mapException(Throwable $e)
     {
-        if (
-            method_exists($e, 'getInnerException') &&
-            ($inner = $e->getInnerException()) instanceof Throwable
-        ) {
+        if (method_exists($e, 'getInnerException') &&
+            ($inner = $e->getInnerException()) instanceof Throwable) {
             return $inner;
         }
 
@@ -707,8 +702,8 @@ class Handler implements ExceptionHandlerContract
     protected function renderExceptionResponse($request, Throwable $e)
     {
         return $this->shouldReturnJson($request, $e)
-            ? $this->prepareJsonResponse($request, $e)
-            : $this->prepareResponse($request, $e);
+                    ? $this->prepareJsonResponse($request, $e)
+                    : $this->prepareResponse($request, $e);
     }
 
     /**
@@ -721,8 +716,8 @@ class Handler implements ExceptionHandlerContract
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         return $this->shouldReturnJson($request, $exception)
-            ? response()->json(['message' => $exception->getMessage()], 401)
-            : redirect()->guest($exception->redirectTo($request) ?? route('login'));
+                    ? response()->json(['message' => $exception->getMessage()], 401)
+                    : redirect()->guest($exception->redirectTo($request) ?? route('login'));
     }
 
     /**
@@ -739,8 +734,8 @@ class Handler implements ExceptionHandlerContract
         }
 
         return $this->shouldReturnJson($request, $e)
-            ? $this->invalidJson($request, $e)
-            : $this->invalid($request, $e);
+                    ? $this->invalidJson($request, $e)
+                    : $this->invalid($request, $e);
     }
 
     /**
@@ -817,8 +812,7 @@ class Handler implements ExceptionHandlerContract
         }
 
         return $this->toIlluminateResponse(
-            $this->renderHttpException($e),
-            $e
+            $this->renderHttpException($e), $e
         )->prepare($request);
     }
 
@@ -929,13 +923,13 @@ class Handler implements ExceptionHandlerContract
      */
     protected function getHttpExceptionView(HttpExceptionInterface $e)
     {
-        $view = 'errors::' . $e->getStatusCode();
+        $view = 'errors::'.$e->getStatusCode();
 
         if (view()->exists($view)) {
             return $view;
         }
 
-        $view = substr($view, 0, -2) . 'xx';
+        $view = substr($view, 0, -2).'xx';
 
         if (view()->exists($view)) {
             return $view;
@@ -955,15 +949,11 @@ class Handler implements ExceptionHandlerContract
     {
         if ($response instanceof SymfonyRedirectResponse) {
             $response = new RedirectResponse(
-                $response->getTargetUrl(),
-                $response->getStatusCode(),
-                $response->headers->all()
+                $response->getTargetUrl(), $response->getStatusCode(), $response->headers->all()
             );
         } else {
             $response = new Response(
-                $response->getContent(),
-                $response->getStatusCode(),
-                $response->headers->all()
+                $response->getContent(), $response->getStatusCode(), $response->headers->all()
             );
         }
 
@@ -1000,7 +990,7 @@ class Handler implements ExceptionHandlerContract
             'exception' => get_class($e),
             'file' => $e->getFile(),
             'line' => $e->getLine(),
-            'trace' => collect($e->getTrace())->map(fn($trace) => Arr::except($trace, ['args']))->all(),
+            'trace' => (new Collection($e->getTrace()))->map(fn ($trace) => Arr::except($trace, ['args']))->all(),
         ] : [
             'message' => $this->isHttpException($e) ? $e->getMessage() : 'Server Error',
         ];
@@ -1018,7 +1008,7 @@ class Handler implements ExceptionHandlerContract
     public function renderForConsole($output, Throwable $e)
     {
         if ($e instanceof CommandNotFoundException) {
-            $message = str($e->getMessage())->explode('.')->first();
+            $message = Str::of($e->getMessage())->explode('.')->first();
 
             if (! empty($alternatives = $e->getAlternatives())) {
                 $message .= '. Did you mean one of these?';
@@ -1058,6 +1048,19 @@ class Handler implements ExceptionHandlerContract
     protected function isHttpException(Throwable $e)
     {
         return $e instanceof HttpExceptionInterface;
+    }
+
+    /**
+     * Map the exception to a log level.
+     *
+     * @param  \Throwable  $e
+     * @return \Psr\Log\LogLevel::*
+     */
+    protected function mapLogLevel(Throwable $e)
+    {
+        return Arr::first(
+            $this->levels, fn ($level, $type) => $e instanceof $type, LogLevel::ERROR
+        );
     }
 
     /**

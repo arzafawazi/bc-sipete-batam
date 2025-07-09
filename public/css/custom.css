@@ -361,3 +361,84 @@ body.is-loaded {
 .sidebar-collapsed ~ .bawah-class {
     width: 100%;
 }
+
+.nav {
+    display: flex;
+    gap: 8px; /* Bisa kamu sesuaikan: 8px - 16px */
+}
+
+
+.nav-item .nav-link {
+    position: relative;
+    color: #287f71;
+    background-color: transparent;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.4;
+    text-decoration: none;
+    display: inline-block;
+    transition: 
+        background-color 0.4s ease,
+        color 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+    letter-spacing: 0.4px;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* Sliding underline effect */
+.nav-item .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 60%;
+    height: 2px;
+    background-color: currentColor;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease;
+    transform-origin: center;
+    opacity: 0;
+    z-index: 1;
+}
+
+/* Hover state - glassmorphism applied here only */
+.nav-item .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #287f71;
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(40, 127, 113, 0.2);
+}
+
+.nav-item .nav-link:hover::after {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
+}
+
+/* Active state - solid background, no glassmorphism */
+.nav-item .nav-link.active {
+    background-color: #287f71;
+    color: #ffffff;
+    pointer-events: none;
+    backdrop-filter: none;
+    box-shadow: 0 4px 12px rgba(40, 127, 113, 0.25);
+}
+
+/* Keep underline for active link */
+.nav-item .nav-link.active::after {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
+    background-color: #ffffff;
+}
+
+/* Click feedback */
+.nav-item .nav-link:active {
+    transform: scale(0.97);
+}
+

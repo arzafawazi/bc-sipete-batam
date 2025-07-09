@@ -24,9 +24,13 @@
                     <div class="card">
                         <div class="row">
                             <div class="tabs-container" id="tabs-container">
+                            <div class="mb-3 position-relative">
+                                <input type="text" id="searchTab" class="form-control ps-5 rounded-pill shadow-custom border-0" placeholder="Cari Surat...........">
+                                <i data-feather="search" class="search-iconnnnnn"></i>
+                                </div>
                                 <ul class="nav nav-pills nav-justified flex-nowrap overflow-auto mb-3"
                                     style="white-space: nowrap;" role="tablist">
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link active" id="penindakan-tab" data-bs-toggle="pill"
                                             href="#penindakan" role="tab" aria-controls="penindakan"
                                             aria-selected="true">
@@ -34,7 +38,7 @@
                                             <span class="d-none d-sm-block">Data Penindakan</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="ba-henti-tab" data-bs-toggle="pill" href="#ba-henti"
                                             role="tab" aria-controls="ba-henti" aria-selected="false">
                                             <span class="d-block d-sm-none">Penghentian</span>
@@ -42,7 +46,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="ba-riksa-tab" data-bs-toggle="pill" href="#ba-riksa"
                                             role="tab" aria-controls="ba-riksa" aria-selected="false">
                                             <span class="d-block d-sm-none">Pemeriksaan</span>
@@ -50,7 +54,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="ba-sarkut-tab" data-bs-toggle="pill" href="#ba-sarkut"
                                             role="tab" aria-controls="ba-sarkut" aria-selected="false">
                                             <span class="d-block d-sm-none">(B.A Sarkut)</span>
@@ -58,7 +62,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="ba-contoh-tab" data-bs-toggle="pill" href="#ba-contoh"
                                             role="tab" aria-controls="ba-contoh" aria-selected="false">
                                             <span class="d-block d-sm-none">(B.A Contoh)</span>
@@ -66,7 +70,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="ba-dok-tab" data-bs-toggle="pill" href="#ba-dok"
                                             role="tab" aria-controls="ba-dok" aria-selected="false">
                                             <span class="d-block d-sm-none">(B.A DOK)</span>
@@ -74,7 +78,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="ba-tegah-tab" data-bs-toggle="pill" href="#ba-tegah"
                                             role="tab" aria-controls="ba-tegah" aria-selected="false">
                                             <span class="d-block d-sm-none">(B.A Tegah)</span>
@@ -82,7 +86,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="ba-segel-tab" data-bs-toggle="pill" href="#ba-segel"
                                             role="tab" aria-controls="ba-segel" aria-selected="false">
                                             <span class="d-block d-sm-none">(B.A Segel)</span>
@@ -90,7 +94,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="ba-titip-tab" data-bs-toggle="pill" href="#ba-titip"
                                             role="tab" aria-controls="ba-titip" aria-selected="false">
                                             <span class="d-block d-sm-none">(B.A Titip)</span>
@@ -98,7 +102,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="bpc-tab" data-bs-toggle="pill" href="#bpc"
                                             role="tab" aria-controls="bpc" aria-selected="false">
                                             <span class="d-block d-sm-none">(BPC)</span>
@@ -106,7 +110,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="tolak1-tab" data-bs-toggle="pill" href="#tolak1"
                                             role="tab" aria-controls="tolak1" aria-selected="false">
                                             <span class="d-block d-sm-none">(B.A Tolak 1)</span>
@@ -114,7 +118,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item nav-item-penindakan">
                                         <a class="nav-link" id="tolak2-tab" data-bs-toggle="pill" href="#tolak2"
                                             role="tab" aria-controls="tolak2" aria-selected="false">
                                             <span class="d-block d-sm-none">(B.A Tolak 2)</span>
@@ -128,7 +132,7 @@
                             <div class="tab-content p-0 text-muted mt-md-0" id="v-pills-tabContent">
 
                                 <div class="container-fluid p-4 tab-pane fade show active text-black" id="penindakan"
-                                    role="tabpanel" aria-labelledby="penindakan-tab">
+                                    role="tabpanel">
                                     <!-- Header -->
                                     <div class="row mb-4 align-items-center">
                                         <div class="col-2 text-center">
@@ -256,8 +260,11 @@
                                         <div class="p-3">
                                             <div class="field-row">
                                                 <label class="fw-bold">Lokasi Penindakan:</label>
-                                                <input type="text" class="form-control mt-2" name="lokasi_penindakan"
-                                                    placeholder="Alamat lengkap lokasi penindakan">
+                                                <select id="lokasi_penindakan" name="lokasi_penindakan"
+                                                class="form-control form-input mt-2"
+                                                style="width: 100%">
+                                                <option></option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -316,12 +323,16 @@
                                         </div>
                                     </div>
 
+
                                     <!-- Section 7: Hal Yang Terjadi -->
                                     <div class="form-section">
-                                        <div class="section-header">7. Hal Yang Terjadi</div>
+                                        <div class="section-header">7. Kesimpulan Penindakan</div>
                                         <div class="p-3">
-                                            <textarea class="form-control" name="hal_yang_terjadi" rows="5"
-                                                placeholder="Kronologi kejadian yang ditemukan"></textarea>
+                                             <select id="kesimpulan" name="kesimpulan"
+                                                class="form-control form-input mt-2"
+                                                style="width: 100%">
+                                                <option></option>
+                                                </select>
                                         </div>
                                     </div>
 
@@ -462,7 +473,8 @@
                                                                             <label
                                                                                 class="form-label fw-semibold">Nama/Jenis
                                                                                 Sarana</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="nama_jenis_sarkut"
                                                                                 placeholder="Masukkan nama/jenis sarana"
                                                                                 disabled>
@@ -470,7 +482,8 @@
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Jenis
                                                                                 Sarana</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="jenis_sarkut"
                                                                                 placeholder="Masukkan jenis sarana"
                                                                                 disabled>
@@ -481,7 +494,8 @@
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
                                                                                 Voy/Penerbangan/Trayek</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="no_flight"
                                                                                 placeholder="Masukkan nomor voyage/penerbangan/trayek"
                                                                                 disabled>
@@ -489,7 +503,8 @@
                                                                         <div class="col-md-6">
                                                                             <label
                                                                                 class="form-label fw-semibold">Ukuran/Kapasitas</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="kapasitas_muatan"
                                                                                 placeholder="Masukkan ukuran/kapasitas muatan"
                                                                                 disabled>
@@ -500,7 +515,8 @@
                                                                         <div class="col-md-6">
                                                                             <label
                                                                                 class="form-label fw-semibold">Nahkoda/Pilot/Pengemudi</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="pengemudi" id="pengemudi"
                                                                                 placeholder="Masukkan nama nahkoda/pilot/pengemudi"
                                                                                 disabled>
@@ -508,7 +524,8 @@
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
                                                                                 Identitas</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="no_identitas_pengemudi"
                                                                                 id="no_identitas_pengemudi"
                                                                                 placeholder="Masukkan nomor identitas"
@@ -520,14 +537,16 @@
                                                                         <div class="col-md-6">
                                                                             <label
                                                                                 class="form-label fw-semibold">Bendera</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="bendera"
                                                                                 placeholder="Masukkan bendera" disabled>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
                                                                                 Registrasi/Polisi</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="no_polisi"
                                                                                 placeholder="Masukkan nomor registrasi/polisi"
                                                                                 disabled>
@@ -571,7 +590,7 @@
                                                                     <div class="mb-3">
                                                                         <label
                                                                             class="form-label fw-semibold">Jumlah/Jenis/Ukuran/Nomor</label>
-                                                                        <textarea class="form-control" name="jumlah_jenis_ukuran_no" rows="3"
+                                                                        <textarea class="form-control form-input" name="jumlah_jenis_ukuran_no" rows="3"
                                                                             placeholder="Masukkan jumlah, jenis, ukuran, dan nomor barang" disabled></textarea>
                                                                     </div>
 
@@ -579,20 +598,23 @@
                                                                         <div class="col-md-6">
                                                                             <label
                                                                                 class="form-label fw-semibold">Kemasan</label>
-                                                                            <select class="form-select" name="id_kemasan"
-                                                                                disabled>
-                                                                                <option value="">- Pilih Kemasan -
-                                                                                </option>
-                                                                                <option value="Kardus">Kardus</option>
-                                                                                <option value="Plastik">Plastik</option>
-                                                                                <option value="Kayu">Kayu</option>
-                                                                                <option value="Metal">Metal</option>
+                                                                            <select class="form-control form-input select2"
+                                                                                name="id_kemasan" disabled>
+                                                                                <option value="" disabled selected>-
+                                                                                    Pilih -</option>
+                                                                                @foreach ($kemasans as $kemasan)
+                                                                                    <option
+                                                                                        value="{{ $kemasan->id_kemasan }}">
+                                                                                        {{ $kemasan->nama_kemasan }}
+                                                                                    </option>
+                                                                                @endforeach
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Jumlah
                                                                                 Barang</label>
-                                                                            <input type="number" class="form-control"
+                                                                            <input type="number"
+                                                                                class="form-control form-input"
                                                                                 name="jumlah_barang"
                                                                                 placeholder="Masukkan jumlah barang"
                                                                                 disabled>
@@ -602,15 +624,16 @@
                                                                     <div class="mb-3">
                                                                         <label class="form-label fw-semibold">Uraian
                                                                             Barang</label>
-                                                                        <textarea class="form-control" name="jenis_barang" rows="2" placeholder="Masukkan uraian detail barang"
-                                                                            disabled></textarea>
+                                                                        <textarea class="form-control form-input" name="jenis_barang" rows="2"
+                                                                            placeholder="Masukkan uraian detail barang" disabled></textarea>
                                                                     </div>
 
                                                                     <div class="row mb-3">
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Jenis/No.
                                                                                 Dokumen</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="jenis_no_tgl_dok"
                                                                                 placeholder="Masukkan jenis/nomor dokumen"
                                                                                 disabled>
@@ -618,7 +641,8 @@
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Tgl.
                                                                                 Dokumen</label>
-                                                                            <input type="date" class="form-control"
+                                                                            <input type="date"
+                                                                                class="form-control form-input"
                                                                                 name="tgl_dokumen" disabled>
                                                                         </div>
                                                                     </div>
@@ -627,7 +651,8 @@
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Masa
                                                                                 Berlaku Dokumen</label>
-                                                                            <input type="date" class="form-control"
+                                                                            <input type="date"
+                                                                                class="form-control form-input"
                                                                                 name="masa_berlaku_dokumen" disabled>
                                                                         </div>
                                                                     </div>
@@ -636,7 +661,8 @@
                                                                         <div class="col-md-6">
                                                                             <label
                                                                                 class="form-label fw-semibold">Pemilik/Importir/Eksportir</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="pemilik" id="pemilik"
                                                                                 placeholder="Masukkan nama pemilik/importir/eksportir"
                                                                                 disabled>
@@ -644,7 +670,8 @@
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
                                                                                 Identitas</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="no_identitas_pemilik"
                                                                                 id="no_identitas_pemilik"
                                                                                 placeholder="Masukkan nomor identitas"
@@ -689,14 +716,15 @@
                                                                     <div class="mb-3">
                                                                         <label class="form-label fw-semibold">Alamat
                                                                             Bangunan/Tempat</label>
-                                                                        <textarea class="form-control" name="alamat_bangunan" rows="2"
+                                                                        <textarea class="form-control form-input" name="alamat_bangunan" rows="2"
                                                                             placeholder="Masukkan alamat lengkap bangunan/tempat" disabled></textarea>
                                                                     </div>
 
                                                                     <div class="mb-3">
                                                                         <label class="form-label fw-semibold">No. Reg
                                                                             Bangunan/NPPBKC</label>
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="text"
+                                                                            class="form-control form-input"
                                                                             name="no_bangunan"
                                                                             placeholder="Masukkan nomor registrasi bangunan/NPPBKC"
                                                                             disabled>
@@ -706,7 +734,8 @@
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">Nama
                                                                                 Pemilik/Yang Menguasai</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="nama_pemilik_bangunan"
                                                                                 id="nama_pemilik_bangunan"
                                                                                 placeholder="Masukkan nama pemilik/yang menguasai"
@@ -715,7 +744,8 @@
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-semibold">No.
                                                                                 Identitas</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="text"
+                                                                                class="form-control form-input"
                                                                                 name="no_identitas_pemilik_bangunan"
                                                                                 id="no_identitas_pemilik_bangunan"
                                                                                 placeholder="Masukkan nomor identitas"
@@ -3056,8 +3086,7 @@
                                                                         <option value="" selected disabled>- Pilih -
                                                                         </option>
                                                                         @foreach ($segels as $segel)
-                                                                            <option value="{{ $segel->jenis_segel }}"
-                                                                                {{ old('jenis_segel_ba_segel', $penindakans->jenis_segel_ba_segel) == $segel->jenis_segel ? 'selected' : '' }}>
+                                                                            <option value="{{ $segel->jenis_segel }}">
                                                                                 {{ $segel->jenis_segel }}
                                                                             </option>
                                                                         @endforeach
@@ -3842,7 +3871,7 @@
                                                                 <div class="col-md-7">
                                                                     <select
                                                                         class="form-control border-0 border-bottom border-dark form-select select2"
-                                                                        name="kewarganegaraan_ba_tolak1" required>
+                                                                        name="kewarganegaraan_ba_tolak1">
                                                                         <option value="" disabled
                                                                             {{ old('kewarganegaraan_ba_tolak1') === null ? 'selected' : '' }}>
                                                                             Pilih Kewarganegaraan
@@ -3899,10 +3928,6 @@
                                                                             class="form-control d-inline border-0 border-bottom border-dark text-center"
                                                                             style="width: 150px;"
                                                                             value="terisi otomatis" readonly>)</p>
-                                                                    <p>NIP. <input type="text"
-                                                                            class="form-control d-inline border-0 border-bottom border-dark"
-                                                                            style="width: 120px;"
-                                                                            value="terisi otomatis" readonly></p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -4077,9 +4102,8 @@
                                                                 <div class="col-md-1 text-center">:</div>
                                                                 <div class="col-md-7">
                                                                     <input type="text"
-                                                                        placeholder="Saksi yang menyaksikan penolakan tanda tangan"
-                                                                        name="saksi_ba_tolak2"
-                                                                        class="form-control border-0 border-bottom border-dark">
+                                                                        placeholder="terisi otomatis"
+                                                                        class="form-control border-0 border-bottom border-dark" readonly>
                                                                 </div>
                                                             </div>
 
@@ -4168,16 +4192,11 @@
                                                         <div class="row mt-5">
                                                             <div class="col-md-6">
                                                                 <div class="text-center">
-                                                                    <p>Pemilik/Pengangkut/Kuasanya,</p>
+                                                                    <p>Saksi,</p>
                                                                     <div style="height: 80px;"></div>
                                                                     <p>(<input type="text"
-                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center"
-                                                                            style="width: 150px;"
-                                                                            value="terisi otomatis" readonly>)</p>
-                                                                    <p>NIP. <input type="text"
-                                                                            class="form-control d-inline border-0 border-bottom border-dark"
-                                                                            style="width: 120px;"
-                                                                            value="terisi otomatis" readonly></p>
+                                                                            class="form-control d-inline border-0 border-bottom border-dark text-center" placeholder="Diisi Nama Saksi"
+                                                                            style="width: 150px;" name="saksi_ba_tolak2">)</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -4566,8 +4585,44 @@
     </script>
 
 
+    <script>
+    document.getElementById("searchTab").addEventListener("keyup", function() {
+      let filter = this.value.toLowerCase();
+      let tabs = document.querySelectorAll(".nav-item-penindakan");
+
+      tabs.forEach(tab => {
+        let tabText = tab.textContent.toLowerCase();
+        if (tabText.includes(filter)) {
+          tab.style.display = "";
+        } else {
+          tab.style.display = "none";
+        }
+      });
+    });
+
+    feather.replace();
+  </script>
+
+  <style>
+    #searchTab {
+      width: 60%;
+      max-width: 400px;
+    }
 
 
+    .search-iconnnnnn {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+
+    .shadow-custom {
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+  </style>
 
 
     <style>

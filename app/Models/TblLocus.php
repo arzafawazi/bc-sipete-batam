@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TblLocus extends Model
 {
     use HasFactory;
+    
     protected $table = 'tbl_locus';
 
     // protected $primaryKey = 'id';
